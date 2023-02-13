@@ -13,11 +13,16 @@ class UserProfile(Resource):
     @f_jwt.jwt_required()
     def get(self):
         user_id = f_jwt.get_jwt_identity()
-        # user_id=20
         app.logger.debug("user_id= %s", user_id)
+        claims = f_jwt.get_jwt()
+        user_type = claims['user_type']
+        app.logger.debug("user_type= %s", user_type)
+
         user_profile_dict = {}
 
-        GET_PROFILE = '''SELECT name, email, phone, TO_CHAR(dob, 'YYYY-MM-DD'), gender FROM users WHERE id= %s'''
+        GET_PROFILE = '''SELECT first_name, last_name, user_type, email, phone, TO_CHAR(dob, 'YYYY-MM-DD'), gender 
+        FROM users WHERE id= %s'''
+
         # catch exception for invalid SQL statement
         try:
             # declare a cursor object from the connection
@@ -29,11 +34,13 @@ class UserProfile(Resource):
             if not rows:
                 return {}
             for row in rows:
-                user_profile_dict['name'] = row[0]
-                user_profile_dict['email'] = row[1]
-                user_profile_dict['phone'] = row[2]
-                user_profile_dict['dob'] = row[3]
-                user_profile_dict['gender'] = row[4]
+                user_profile_dict['first_name'] = row[0]
+                user_profile_dict['last_name'] = row[1]
+                user_profile_dict['user_type'] = row[2]
+                user_profile_dict['email'] = row[3]
+                user_profile_dict['phone'] = row[4]
+                user_profile_dict['dob'] = row[5]
+                user_profile_dict['gender'] = row[6]
         except (Exception, psycopg2.Error) as err:
             app.logger.debug(err)
             abort(400, 'Bad Request')
@@ -53,7 +60,7 @@ class UserProfile(Resource):
 
         current_time = datetime.now()
         # app.logger.debug("cur time : %s", current_time)
-        UPDATE_USER = 'UPDATE users SET name= %s, dob=%s, gender=%s, updated_at= %s WHERE id= %s'
+        UPDATE_USER = 'UPDATE users SET first_name= %s, last_name= %s, dob=%s, gender=%s, updated_at= %s WHERE id= %s'
 
         # catch exception for invalid SQL statement
         try:
@@ -62,13 +69,14 @@ class UserProfile(Resource):
             # app.logger.debug("cursor object: %s", cursor)
 
             cursor.execute(
-                UPDATE_USER, (user_dict['name'], user_dict['dob'], user_dict['gender'], current_time, user_id,))
+                UPDATE_USER, (user_dict['first_name'], user_dict['last_name'], user_dict['dob'],
+                              user_dict['gender'], current_time, user_id,))
         except (Exception, psycopg2.Error) as err:
             app.logger.debug(err)
             abort(400, 'Bad Request')
         finally:
             cursor.close()
-        return {"message": f"user {user_dict['name']} modified."}, 200
+        return {"message": f"user_id {user_id} modified."}, 200
 
     @f_jwt.jwt_required()
     def delete(self):
