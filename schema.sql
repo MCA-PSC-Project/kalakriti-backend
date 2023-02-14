@@ -1,29 +1,10 @@
 BEGIN;
 --------------TYPES----------------------
-CREATE type "media__type" as enum ('image');
+CREATE type "media__type" as enum ('image', 'video', 'document', 'pdf', 'audio' );
+CREATE type "user__type" as enum ('customer', 'seller', 'admin');
 CREATE type "gender__type" as enum ('male', 'female', 'other');
-CREATE type "status__type" as enum ('in-progress', 'completed');
-CREATE type "task__type" as enum ('my_day', 'planned', 'assigned', 'custom');
-CREATE type "product__type" as enum ('grocery', 'stationery', 'electronics', 'other');
-CREATE type "theme__type" as enum ('color', 'image', 'none');
-CREATE type "mode__type" as enum ('light', 'dark');
-CREATE type "top__task__type" as enum ('in-progress', 'completed', 'priority');
-CREATE type "event__type" as enum (
-	'birthday',
-	'marriage_anniversary',
-	'death_anniversary',
-	'holiday',
-	'meeting',
-	'conference',
-	'other'
-);
-CREATE type "item__type" as enum (
-	'milk',
-	'water',
-	'newspaper',
-	'clothes',
-	'other'
-);
+
+
 -----------------------TABLES-------------------------------------------
 CREATE TABLE "media"(
 	"id" int PRIMARY KEY,
@@ -33,162 +14,84 @@ CREATE TABLE "media"(
 );
 CREATE TABLE "users"(
 	"id" serial PRIMARY KEY,
-	"name" varchar NOT NULL,
-	"email" VARCHAR NOT NULL UNIQUE,
-	"phone" VARCHAR(13) UNIQUE DEFAULT NULL,
+	"first_name" varchar NOT NULL,
+	"last_name" varchar NOT NULL,
+	"phone" VARCHAR(13) UNIQUE NOT NULL,
 	"password" varchar NOT NULL,
 	"dob" date NOT NULL,
 	"gender" gender__type NOT NULL,
-	"added_at" timestamp NOT NULL,
-	"updated_at" timestamp DEFAULT NULL,
+	"added_at" timestamptz NOT NULL,
+	"updated_at" timestamptz DEFAULT NULL,
 	"dp_id" int,
 	"trash" boolean DEFAULT false,
-	"is_verified" boolean NOT NULL DEFAULT false,
-	"verified_at" timestamp DEFAULT NULL,
+	"user_type" user__type NOT NULL,
+	"is_verified" BOOLEAN DEFAULT false,
+	"verified_at" timestamptz DEFAULT NULL,
 	FOREIGN KEY("dp_id") references "media"("id") ON DELETE
 	SET NULL
 );
-CREATE TABLE "lists"(
+CREATE TABLE "user_address"(
 	"id" serial PRIMARY KEY,
 	"user_id" integer,
-	"name" varchar NOT NULL,
-	"added_at" timestamp NOT NULL,
-	"updated_at" timestamp DEFAULT NULL,
+	"address" varchar NOT NULL,
+    "city" varchar NOT NULL,
+    "state" varchar NOT NULL,
+	"district" varchar NOT NULL,
+	"pincode" varchar NOT NULL,
+	"country" varchar NOT NULL,
+	"added_at" timestamptz NOT NULL,
+	"updated_at" timestamptz DEFAULT NULL,
 	FOREIGN KEY("user_id") references "users"("id") ON DELETE CASCADE
 );
-CREATE TABLE "tasks"(
-	"id" serial PRIMARY KEY,
-	"user_id" integer,
-	"title" varchar NOT NULL,
-	"description" varchar,
-	"status" status__type NOT NULL DEFAULT 'in-progress',
-	"added_at" timestamp NOT NULL,
-	"updated_at" timestamp DEFAULT NULL,
-	"plan_start_date" timestamp DEFAULT NULL,
-	"plan_end_date" timestamp DEFAULT NULL,
-	"actual_end_date" timestamp DEFAULT NULL,
-	"duration" integer,
-	"task_type" task__type NOT NULL,
-	"notify" boolean DEFAULT true,
-	"repeat" boolean DEFAULT false,
-	"priority" boolean DEFAULT false,
-	"list_id" integer,
-	FOREIGN KEY("user_id") references "users"("id") ON DELETE CASCADE,
-	FOREIGN KEY("list_id") references "lists"("id") ON DELETE CASCADE
-);
-CREATE TABLE "subtasks"(
-	"id" serial PRIMARY KEY,
-	"user_id" integer,
-	"task_id" integer,
-	"title" varchar NOT NULL,
-	"description" varchar,
-	"status" status__type NOT NULL DEFAULT 'in-progress',
-	"added_at" timestamp NOT NULL,
-	"updated_at" timestamp DEFAULT NULL,
-	"plan_start_date" timestamp DEFAULT NULL,
-	"plan_end_date" timestamp DEFAULT NULL,
-	"actual_end_date" timestamp DEFAULT NULL,
-	"duration" integer,
-	"subtask_type" task__type NOT NULL,
-	"notify" boolean DEFAULT true,
-	"repeat" boolean DEFAULT false,
-	"priority" boolean DEFAULT false,
-	FOREIGN KEY("user_id") references "users"("id") ON DELETE CASCADE,
-	FOREIGN KEY("task_id") references "tasks"("id") ON DELETE CASCADE
-);
-CREATE TABLE "assigned_tasks"(
-	"assigner_user_id" integer,
-	"assignee_user_id" integer,
-	"task_id" integer,
-	"assigned_at" timestamp NOT NULL,
-	"status" status__type NOT NULL DEFAULT 'in-progress',
-	PRIMARY KEY("assignee_user_id", "task_id"),
-	FOREIGN KEY("assigner_user_id") references "users"("id") ON DELETE
-	SET NULL,
-		FOREIGN KEY("assignee_user_id") references "users"("id") ON DELETE
-	SET NULL,
-		FOREIGN KEY("task_id") references "tasks"("id") ON DELETE CASCADE
-);
-CREATE TABLE "baskets"(
-	"id" serial PRIMARY KEY,
-	"user_id" integer,
-	"product_name" varchar NOT NULL,
-	"status_type" status__type NOT NULL DEFAULT 'in-progress',
-	"added_at" timestamp NOT NULL,
-	"updated_at" timestamp DEFAULT NULL,
-	"completed_at" timestamp DEFAULT NULL,
-	"product_type" product__type NOT NULL,
-	"repeat" boolean DEFAULT false,
-	FOREIGN KEY("user_id") references "users"("id") ON DELETE CASCADE
-);
-CREATE TABLE "events"(
+CREATE TABLE "categories"(
 	"id" serial PRIMARY KEY,
 	"name" varchar NOT NULL,
-	"user_id" integer,
-	"added_at" timestamp NOT NULL,
-	"updated_at" timestamp DEFAULT NULL,
-	"event_type" event__type NOT NULL,
-	"event_date" timestamp NOT NULL,
-	"event_end_date" timestamp DEFAULT NULL,
-	"notify" boolean DEFAULT true,
-	"repeat" boolean DEFAULT false,
-	FOREIGN KEY("user_id") references "users"("id") ON DELETE CASCADE
-);
-CREATE TABLE "bills"(
-	"id" serial PRIMARY KEY,
-	"user_id" integer,
-	"added_at" timestamp NOT NULL,
-	"updated_at" timestamp DEFAULT NULL,
-	"rate" float NOT NULL,
-	"quantity" float NOT NULL,
-	"item_type" item__type NOT NULL,
-	"paid" boolean DEFAULT false,
-	"paid_at" timestamp DEFAULT NULL,
-	FOREIGN KEY("user_id") references "users"("id") ON DELETE CASCADE
-);
-CREATE TABLE "monthly_bills"(
-	"id" serial PRIMARY KEY,
-	"user_id" integer,
-	"cost" float NOT NULL,
-	"item_type" item__type NOT NULL,
-	FOREIGN KEY("user_id") references "users"("id") ON DELETE CASCADE
-);
-CREATE TABLE "users_settings"(
-	"id" serial PRIMARY KEY,
-	"user_id" integer,
-	"theme_type" theme__type NOT NULL DEFAULT 'color',
-	"theme_color" varchar(10) DEFAULT 'white',
-	"background_image_id" integer DEFAULT NULL,
-	"confirm_deletion" boolean DEFAULT false,
-	"top_task_type" top__task__type NOT NULL DEFAULT 'in-progress',
-	"notify" boolean DEFAULT true,
-	"mode" mode__type NOT NULL DEFAULT 'light',
-	FOREIGN KEY("user_id") references "users"("id") ON DELETE CASCADE,
-	FOREIGN KEY("background_image_id") references "media"("id") ON DELETE
+	"added_at" timestamptz NOT NULL,
+	"updated_at" timestamptz DEFAULT NULL,
+	"added_by" int,
+	"cover_id" int,
+	"parent_id" int DEFAULT NULL,
+	FOREIGN KEY("added_by") references "users"("id") ON DELETE CASCADE,
+	FOREIGN KEY("parent_id") references "categories"("id"),
+	FOREIGN KEY("cover_id") references "media"("id") ON DELETE
 	SET NULL
 );
-
------ Indexes -----
-CREATE INDEX ON "users" ("email");
-CREATE INDEX ON "users" ("phone");
-
------ Triggers -----
-
-
----- todo: add trigger for completed at time when status is completed ----
-
--- trigger for creating a row in 'users_settings' table when new row is inserted in 'users' table  
-CREATE OR REPLACE FUNCTION create_user_settings() RETURNS trigger AS $$  
-BEGIN  
-	INSERT INTO "users_settings" (user_id) 
-	VALUES (NEW.id);
-  RETURN NEW;
-END; 
-$$ LANGUAGE plpgsql;
-
-
-CREATE TRIGGER "insert_into_users_settings_trigger" AFTER INSERT ON "users" 
-FOR EACH ROW EXECUTE PROCEDURE create_user_settings(); 
-
-
-END;
+CREATE TABLE "products"(
+	"id" serial PRIMARY KEY,
+	"name" varchar NOT NULL,
+	"description" varchar NOT NULL,
+	"category_id" int,
+	"subcategory_id" int,
+    "original_price" decimal(10,2) NOT NULL,
+	"offer_price" decimal(10,2) NOT NULL,
+	"added_at" timestamptz NOT NULL,
+	"updated_at" timestamptz DEFAULT NULL,
+	"has_variants" BOOLEAN DEFAULT false,
+	"SKU" varchar UNIQUE,
+	"stock" int,
+	FOREIGN KEY("category_id") references "categories"("id") ON DELETE SET NULL,
+	FOREIGN KEY("subcategory_id") references "categories"("id") ON DELETE SET NULL
+);
+CREATE TABLE "wishlists"(
+    "user_id" int ,
+	"product_id" int,
+	"added_at" timestamptz NOT NULL,
+	FOREIGN KEY("user_id") references "users"("id") ON DELETE SET NULL,
+	FOREIGN KEY("product_id") references "products"("id") ON DELETE SET NULL,
+	PRIMARY KEY(user_id,product_id)
+);
+CREATE TABLE "carts"(
+    "user_id" int PRIMARY KEY ,
+	"product_ids" int[],
+	"added_at" timestamptz NOT NULL,
+	"updated_at" timestamptz NOT NULL,
+	FOREIGN KEY("user_id") references "users"("id") ON DELETE SET NULL,
+	FOREIGN KEY("product_id") references "products"("id") ON DELETE SET NULL,
+);
+CREATE TABLE "banners"(
+	"id" serial PRIMARY KEY,
+	"media_id" int,
+	"redirect_type" varchar,
+	"redirect_url" varchar NOT NULL,
+	FOREIGN KEY("media_id") references "media"("id")
+)
