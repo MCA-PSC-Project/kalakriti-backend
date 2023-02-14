@@ -20,12 +20,12 @@ CREATE TABLE "users"(
 	"password" varchar NOT NULL,
 	"dob" date NOT NULL,
 	"gender" gender__type NOT NULL,
-	"added_at" timestamp NOT NULL,
-	"updated_at" timestamp DEFAULT NULL,
+	"added_at" timestamptz NOT NULL,
+	"updated_at" timestamptz DEFAULT NULL,
 	"dp_id" int,
 	"trash" boolean NOT NULL DEFAULT false,
 	"is_verified" boolean NOT NULL DEFAULT false,
-	"verified_at" timestamp DEFAULT NULL,
+	"verified_at" timestamptz DEFAULT NULL,
 	FOREIGN KEY("dp_id") references "media"("id") ON DELETE
 	SET NULL
 );

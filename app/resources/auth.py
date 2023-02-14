@@ -230,6 +230,6 @@ class VerifyEmail(Resource):
             flash('You have verified your account. Thanks!', 'success')
         # return redirect(url_for('main.home'))
         # todo : pass here homepage url for task tracker frontend
-        redirect_url = "homepage url for task tracker frontend"
+        redirect_url = "homepage url for kalakriti frontend"
         # return redirect(redirect_url)
         return f"redirect url= {redirect_url}", 200
