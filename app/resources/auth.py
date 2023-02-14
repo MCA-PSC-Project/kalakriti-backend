@@ -13,10 +13,10 @@ from app.mail import send_email
 class Register(Resource):
     def post(self):
         data = request.get_json()
+        first_name = data.get("first_name", None)
+        last_name = data.get("last_name", None)
         email = data.get("email", None)
         password = data.get("password", None)
-        name = data.get("name", None)
-        email = data.get("email", None)
         phone = data.get("phone", None)
         password = data.get("password", None)
         dob = data.get("dob", None)
@@ -48,8 +48,8 @@ class Register(Resource):
             password.encode('utf-8'), bcrypt.gensalt())
         hashed_password = hashed_password.decode('utf-8')
 
-        REGISTER_USER = '''INSERT INTO users(name, email, phone, password, dob, gender, added_at)
-        VALUES(%s, %s, %s, %s, %s, %s, %s) RETURNING id'''
+        REGISTER_USER = '''INSERT INTO users(first_name, last_name, email, phone, password, dob, gender, added_at)
+        VALUES(%s, %s, %s, %s, %s, %s, %s, %s) RETURNING id'''
 
         # catch exception for invalid SQL statement
         try:
@@ -57,7 +57,7 @@ class Register(Resource):
             cursor = main.db_conn.cursor()
             # app.logger.debug("cursor object: %s", cursor)
 
-            cursor.execute(REGISTER_USER, (name, email, phone,
+            cursor.execute(REGISTER_USER, (first_name, last_name, email, phone,
                            hashed_password, dob, gender, current_time,))
             user_id = cursor.fetchone()[0]
         except (Exception, psycopg2.Error) as err:
@@ -103,7 +103,7 @@ class Login(Resource):
             abort(400, 'Bad Request')
 
         # check if user of given email already exists
-        GET_USER = 'SELECT id, password, is_verified FROM users WHERE email= %s'
+        GET_USER = 'SELECT id, password, user_type, is_verified FROM users WHERE email= %s'
         try:
             # declare a cursor object from the connection
             cursor = main.db_conn.cursor()
@@ -116,7 +116,8 @@ class Login(Resource):
             else:
                 user_id = row[0]
                 hashed_password = row[1]
-                is_verified = row[2]
+                user_type = row[2]
+                is_verified = row[3]
         except (Exception, psycopg2.Error) as err:
             app.logger.debug(err)
             abort(400, 'Bad Request')
@@ -129,8 +130,9 @@ class Login(Resource):
 
         if is_verified:
             access_token = f_jwt.create_access_token(
-                identity=user_id, fresh=True)
-            refresh_token = f_jwt.create_refresh_token(user_id)
+                identity=user_id, additional_claims={"user_type": user_type}, fresh=True)
+            refresh_token = f_jwt.create_refresh_token(
+                identity=user_id, additional_claims={"user_type": user_type})
             return {
                 'access_token': access_token,
                 'refresh_token': refresh_token
@@ -138,7 +140,8 @@ class Login(Resource):
         else:
             # generate for sending token in email for email verification
             generated_email_token = generate_email_token(email)
-            app.logger.debug("Generated email token= %s", generated_email_token)
+            app.logger.debug("Generated email token= %s",
+                             generated_email_token)
 
             # send email
             # verify_url = url_for("accounts.verify_email", token=generate_email_token, _external=True)
@@ -152,21 +155,30 @@ class Login(Resource):
             app.logger.debug("Email sent successfully!")
             return f"verification Email sent to {email} successfully!", 201
 
+
 class RefreshToken(Resource):
     @f_jwt.jwt_required(refresh=True)
     def post(self):
         # retrive the user's identity from the refresh token using a Flask-JWT-Extended built-in method
         current_user_id = f_jwt.get_jwt_identity()
+        claims = f_jwt.get_jwt()
+        current_user_type = claims['user_type']
 
         # return a non-fresh token for the user
         new_token = f_jwt.create_access_token(
-            identity=current_user_id, fresh=False)
+            identity=current_user_id, additional_claims={"user_type": current_user_type}, fresh=False)
         return {'access_token': new_token}, 200
 
 
 class VerifyEmail(Resource):
-    def get(self, token):
-        app.logger.debug("verify email called")
+    def get(self):
+        # app.logger.debug("verify email called")
+        args = request.args  # retrieve args from query string
+        token = args.get('token', None)
+        app.logger.debug("?token=%s", token)
+        if not token:
+            abort(400, 'Bad Request')
+
         try:
             email = verify_email_token(token)
         except:
@@ -218,6 +230,6 @@ class VerifyEmail(Resource):
             flash('You have verified your account. Thanks!', 'success')
         # return redirect(url_for('main.home'))
         # todo : pass here homepage url for task tracker frontend
-        redirect_url = "homepage url for task tracker frontend"
+        redirect_url = "homepage url for kalakriti frontend"
         # return redirect(redirect_url)
         return f"redirect url= {redirect_url}", 200

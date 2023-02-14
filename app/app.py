@@ -46,7 +46,7 @@ def create_app(config_name):
     api.add_resource(Register, '/auth/register')
     api.add_resource(Login, '/auth/login')
     api.add_resource(RefreshToken, '/auth/refresh')
-    api.add_resource(VerifyEmail, '/auth/verify-email/<token>')
+    api.add_resource(VerifyEmail, '/auth/verify-email')
 
     api.add_resource(UserProfile, '/users/profile')
 

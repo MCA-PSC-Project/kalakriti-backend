@@ -16,7 +16,7 @@ class Config(object):
 
     EMAIL_SECURITY_PASSWORD_SALT = os.getenv('EMAIL_SECURITY_PASSWORD_SALT')
     # Mail Settings
-    MAIL_DEFAULT_SENDER = "noreply@tasktracker.com"
+    MAIL_DEFAULT_SENDER = "noreply@kalakriti.com"
     MAIL_SERVER = "smtp.gmail.com"
     MAIL_PORT = 465
     MAIL_USE_TLS = False
