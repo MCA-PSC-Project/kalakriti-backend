@@ -40,6 +40,8 @@ def upload_file_to_s3(file, bucket_name, acl="public-read"):
 
 
 class UploadImage(Resource):
+    ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif', 'webp'}
+
     @f_jwt.jwt_required()
     def post(self):
         if "file" not in request.files:
@@ -48,9 +50,12 @@ class UploadImage(Resource):
         source_file = request.files["file"]
 
         if source_file.filename == "":
-            return "Please select a file"
+            return "Please select a file", 400
 
         if source_file:
+            ext = source_file.filename.rsplit('.', 1)[1].lower()
+            if ext not in UploadImage.ALLOWED_EXTENSIONS:
+                return "File type not allowed", 400
 
             source_filename = secure_filename(source_file.filename)
             source_extension = os.path.splitext(source_filename)[1]
@@ -65,7 +70,7 @@ class UploadImage(Resource):
 
             current_time = datetime.now()
             INSERT_MEDIA = '''INSERT INTO media(name, path, media_type, added_at)
-            VALUES(%s, %s, %s, %s) RETURNING id'''
+         VALUES(%s, %s, %s, %s) RETURNING id'''
 
             # catch exception for invalid SQL statement
             try:
@@ -91,8 +96,9 @@ class UploadImage(Resource):
         else:
             abort(404)
 
+class UploadAudio(Resource):
+    ALLOWED_EXTENSIONS = {'mp3', 'ogg'}
 
-class UploadVideo(Resource):
     @f_jwt.jwt_required()
     def post(self):
         if "file" not in request.files:
@@ -101,9 +107,12 @@ class UploadVideo(Resource):
         source_file = request.files["file"]
 
         if source_file.filename == "":
-            return "Please select a file"
+            return "Please select a file", 400
 
         if source_file:
+            ext = source_file.filename.rsplit('.', 1)[1].lower()
+            if ext not in UploadAudio.ALLOWED_EXTENSIONS:
+                return "File type not allowed", 400
 
             source_filename = secure_filename(source_file.filename)
             source_extension = os.path.splitext(source_filename)[1]
@@ -118,7 +127,64 @@ class UploadVideo(Resource):
 
             current_time = datetime.now()
             INSERT_MEDIA = '''INSERT INTO media(name, path, media_type, added_at)
-            VALUES(%s, %s, %s, %s) RETURNING id'''
+         VALUES(%s, %s, %s, %s) RETURNING id'''
+
+            # catch exception for invalid SQL statement
+            try:
+                # declare a cursor object from the connection
+                cursor = main.db_conn.cursor()
+                # app.logger.debug("cursor object: %s", cursor)
+
+                cursor.execute(INSERT_MEDIA, (source_filename,
+                               path_name, 'audio', current_time,))
+                media_id = cursor.fetchone()[0]
+            except (Exception, psycopg2.Error) as err:
+                app.logger.debug(err)
+                abort(400, 'Bad Request')
+            finally:
+                cursor.close()
+            media_dict = {
+                "id": media_id,
+                "media_type": 'audio',
+                "path": path_name,
+                "full_url": full_url
+            }
+            return media_dict, 201
+        else:
+            abort(404)
+
+class UploadVideo(Resource):
+    ALLOWED_EXTENSIONS = {'mp4', 'mkv'}
+
+    @f_jwt.jwt_required()
+    def post(self):
+        if "file" not in request.files:
+            return "No user_file key in request.files"
+
+        source_file = request.files["file"]
+
+        if source_file.filename == "":
+            return "Please select a file", 400
+
+        if source_file:
+            ext = source_file.filename.rsplit('.', 1)[1].lower()
+            if ext not in UploadVideo.ALLOWED_EXTENSIONS:
+                return "File type not allowed", 400
+
+            source_filename = secure_filename(source_file.filename)
+            source_extension = os.path.splitext(source_filename)[1]
+            destination_filename = uuid4().hex + source_extension
+            app.logger.debug("destination file name= %s", destination_filename)
+            source_file.filename = destination_filename
+            path_name = upload_file_to_s3(
+                source_file, app.config["S3_BUCKET"])
+            # return str(output)
+            full_url = "{}/{}".format(app.config["S3_LOCATION"], path_name)
+            app.logger.debug(str(full_url))
+
+            current_time = datetime.now()
+            INSERT_MEDIA = '''INSERT INTO media(name, path, media_type, added_at)
+         VALUES(%s, %s, %s, %s) RETURNING id'''
 
             # catch exception for invalid SQL statement
             try:
@@ -145,8 +211,10 @@ class UploadVideo(Resource):
             abort(404)
 
 
-
 class UploadFile(Resource):
+    ALLOWED_EXTENSIONS = {'pdf', 'txt', 'doc',
+                          'docx', 'xls', 'xlsx', 'ppt', 'pptx'}
+
     @f_jwt.jwt_required()
     def post(self):
         if "file" not in request.files:
@@ -155,9 +223,12 @@ class UploadFile(Resource):
         source_file = request.files["file"]
 
         if source_file.filename == "":
-            return "Please select a file"
+            return "Please select a file", 400
 
         if source_file:
+            ext = source_file.filename.rsplit('.', 1)[1].lower()
+            if ext not in UploadFile.ALLOWED_EXTENSIONS:
+                return "File type not allowed", 400
 
             source_filename = secure_filename(source_file.filename)
             source_extension = os.path.splitext(source_filename)[1]
@@ -172,7 +243,7 @@ class UploadFile(Resource):
 
             current_time = datetime.now()
             INSERT_MEDIA = '''INSERT INTO media(name, path, media_type, added_at)
-            VALUES(%s, %s, %s, %s) RETURNING id'''
+         VALUES(%s, %s, %s, %s) RETURNING id'''
 
             # catch exception for invalid SQL statement
             try:
@@ -197,4 +268,3 @@ class UploadFile(Resource):
             return media_dict, 201
         else:
             abort(404)
-

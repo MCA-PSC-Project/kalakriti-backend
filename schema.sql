@@ -1,6 +1,6 @@
 BEGIN;
 --------------TYPES----------------------
-CREATE type "media__type" as enum ('image', 'audio', 'video', 'doc', 'pdf');
+CREATE type "media__type" as enum ('image', 'audio', 'video', 'file');
 CREATE type "user__type" as enum ('customer', 'seller', 'admin', 'super_admin');
 CREATE type "gender__type" as enum ('male', 'female', 'other');
 -----------------------TABLES-------------------------------------------
