@@ -25,6 +25,13 @@ class Config(object):
     MAIL_USERNAME = os.getenv("EMAIL_USER")
     MAIL_PASSWORD = os.getenv("EMAIL_PASSWORD")
 
+    S3_ENDPOINT = os.getenv("S3_ENDPOINT")
+    S3_BUCKET = os.getenv("S3_BUCKET")
+    S3_VIDEO_BUCKET = os.getenv("S3_VIDEO_BUCKET")
+    S3_KEY = os.getenv("S3_KEY")
+    S3_SECRET = os.getenv("S3_SECRET")
+    S3_LOCATION = os.getenv("S3_LOCATION")
+
 
 class DevelopmentConfig(Config):
     """Configurations for Development."""
