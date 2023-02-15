@@ -1,9 +1,11 @@
+from datetime import datetime
 import os
 from uuid import uuid4
 from flask import abort, request
 import flask_jwt_extended as f_jwt
 from flask import current_app as app
 from flask_restful import Resource
+import psycopg2
 from werkzeug.utils import secure_filename
 import app.main as main
 import boto3
@@ -33,8 +35,8 @@ def upload_file_to_s3(file, bucket_name, acl="public-read"):
         )
     except Exception as e:
         print("Something Happened: ", e)
-        return e
-    return "{}/{}".format(app.config["S3_LOCATION"], file.filename)
+        app.logger.debug(e)
+    return file.filename
 
 
 class UploadImage(Resource):
@@ -55,9 +57,37 @@ class UploadImage(Resource):
             destination_filename = uuid4().hex + source_extension
             app.logger.debug("destination file name= %s", destination_filename)
             source_file.filename = destination_filename
-            output = upload_file_to_s3(
+            path_name = upload_file_to_s3(
                 source_file, app.config["S3_BUCKET"])
-            return str(output)
+            # return str(output)
+            full_url = "{}/{}".format(app.config["S3_LOCATION"], path_name)
+            app.logger.debug(str(full_url))
+
+            current_time = datetime.now()
+            INSERT_MEDIA = '''INSERT INTO media(name, path, media_type, added_at)
+            VALUES(%s, %s, %s, %s) RETURNING id'''
+
+            # catch exception for invalid SQL statement
+            try:
+                # declare a cursor object from the connection
+                cursor = main.db_conn.cursor()
+                # app.logger.debug("cursor object: %s", cursor)
+
+                cursor.execute(INSERT_MEDIA, (source_filename,
+                               path_name, 'image', current_time,))
+                media_id = cursor.fetchone()[0]
+            except (Exception, psycopg2.Error) as err:
+                app.logger.debug(err)
+                abort(400, 'Bad Request')
+            finally:
+                cursor.close()
+            media_dict = {
+                "id": media_id,
+                "media_type": 'image',
+                "path": path_name,
+                "full_url": full_url
+            }
+            return media_dict, 201
         else:
             abort(404)
 

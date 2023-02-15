@@ -5,10 +5,11 @@ CREATE type "user__type" as enum ('customer', 'seller', 'admin', 'super_admin');
 CREATE type "gender__type" as enum ('male', 'female', 'other');
 -----------------------TABLES-------------------------------------------
 CREATE TABLE "media"(
-	"id" int PRIMARY KEY,
+	"id" serial PRIMARY KEY,
 	"name" varchar,
 	"path" varchar NOT NULL,
-	"mediatype" media__type
+	"media_type" media__type NOT NULL,
+	"added_at" TIMESTAMPTZ NOT NULL
 );
 CREATE TABLE "users"(
 	"id" serial PRIMARY KEY,
