@@ -8,15 +8,6 @@ from flask_restful import Resource
 import psycopg2
 from werkzeug.utils import secure_filename
 import app.main as main
-import boto3
-# class UploadMedia():
-#       UPLOAD_FOLDER = '/path/to/the/uploads'
-#       ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif', 'mp3', 'mp4', 'webp', 'mkv'}
-
-#       @staticmethod
-#       def allowed_file(filename):
-#          return '.' in filename and \
-#                filename.rsplit('.', 1)[1].lower() in UploadMedia.ALLOWED_EXTENSIONS
 
 
 def upload_file_to_s3(file, bucket_name, acl="public-read"):
@@ -45,7 +36,7 @@ class UploadImage(Resource):
     @f_jwt.jwt_required()
     def post(self):
         if "file" not in request.files:
-            return "No user_file key in request.files"
+            return "No user_file key in request.files", 400
 
         source_file = request.files["file"]
 
@@ -89,6 +80,7 @@ class UploadImage(Resource):
             media_dict = {
                 "id": media_id,
                 "media_type": 'image',
+                "media_name": source_filename,
                 "path": path_name,
                 "full_url": full_url
             }
@@ -96,13 +88,14 @@ class UploadImage(Resource):
         else:
             abort(404)
 
+
 class UploadAudio(Resource):
     ALLOWED_EXTENSIONS = {'mp3', 'ogg'}
 
     @f_jwt.jwt_required()
     def post(self):
         if "file" not in request.files:
-            return "No user_file key in request.files"
+            return "No user_file key in request.files", 400
 
         source_file = request.files["file"]
 
@@ -146,6 +139,7 @@ class UploadAudio(Resource):
             media_dict = {
                 "id": media_id,
                 "media_type": 'audio',
+                "media_name": source_filename,
                 "path": path_name,
                 "full_url": full_url
             }
@@ -153,13 +147,14 @@ class UploadAudio(Resource):
         else:
             abort(404)
 
+
 class UploadVideo(Resource):
     ALLOWED_EXTENSIONS = {'mp4', 'mkv'}
 
     @f_jwt.jwt_required()
     def post(self):
         if "file" not in request.files:
-            return "No user_file key in request.files"
+            return "No user_file key in request.files", 400
 
         source_file = request.files["file"]
 
@@ -203,6 +198,7 @@ class UploadVideo(Resource):
             media_dict = {
                 "id": media_id,
                 "media_type": 'video',
+                "media_name": source_filename,
                 "path": path_name,
                 "full_url": full_url
             }
@@ -218,7 +214,7 @@ class UploadFile(Resource):
     @f_jwt.jwt_required()
     def post(self):
         if "file" not in request.files:
-            return "No user_file key in request.files"
+            return "No user_file key in request.files", 400
 
         source_file = request.files["file"]
 
@@ -262,6 +258,7 @@ class UploadFile(Resource):
             media_dict = {
                 "id": media_id,
                 "media_type": 'file',
+                "media_name": source_filename,
                 "path": path_name,
                 "full_url": full_url
             }
