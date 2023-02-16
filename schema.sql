@@ -76,21 +76,47 @@ CREATE TABLE "categories"(
 );
 CREATE TABLE "products"(
 	"id" serial PRIMARY KEY,
-	"name" varchar NOT NULL,
-	"description" varchar NOT NULL,
+	"product_name" varchar NOT NULL,
+	"product_description" varchar NOT NULL,
 	"category_id" int,
 	"subcategory_id" int,
-	"original_price" decimal(10, 2) NOT NULL,
-	"offer_price" decimal(10, 2) NOT NULL,
+	"original_price" decimal(10, 2),
+	"offer_price" decimal(10, 2),
 	"added_at" timestamptz NOT NULL,
 	"updated_at" timestamptz DEFAULT NULL,
 	"has_variants" BOOLEAN DEFAULT false,
-	"SKU" varchar UNIQUE,
 	"stock" int,
 	FOREIGN KEY("category_id") references "categories"("id") ON DELETE
 	SET NULL,
 		FOREIGN KEY("subcategory_id") references "categories"("id") ON DELETE
 	SET NULL
+);
+CREATE TABLE "variants" (
+	"id" serial primary key,
+	"variant_name" varchar(50) NOT NULL
+);
+CREATE TABLE "variant_value"(
+	"id" serial primary key,
+	"variant_id" int,
+	"value" varchar(50) NOT NULL,
+	FOREIGN KEY("variant_id") references "variants"("id") ON DELETE CASCADE
+);
+CREATE TABLE "product_variants"(
+	"id" serial primary key,
+	"product_id" int,
+	"product_variant_name" varchar(50) NOT NULL,
+	"SKU" varchar(50) UNIQUE NOT NULL,
+	"original_price" decimal(10, 2) NOT NULL,
+	"offer_price" decimal(10, 2) NOT NULL,
+	"stock" int,
+	FOREIGN KEY("product_id") references "products"("id") ON DELETE CASCADE
+);
+CREATE TABLE "product_details"(
+	"id" serial primary key,
+	"product_variants_id" int,
+	"variant_value_id" int,
+	FOREIGN KEY("product_variants_id") references "product_variants"("id") ON DELETE CASCADE,
+	FOREIGN KEY("variant_value_id") references "variant_value"("id") ON DELETE CASCADE
 );
 CREATE TABLE "wishlists"(
 	"user_id" int,
