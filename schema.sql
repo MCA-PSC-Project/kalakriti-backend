@@ -1,6 +1,6 @@
 BEGIN;
 --------------TYPES----------------------
-CREATE type "media__type" as enum ('image', 'audio', 'video', 'doc', 'pdf');
+CREATE type "media__type" as enum ('image', 'audio', 'video', 'file');
 CREATE type "user__type" as enum ('customer', 'seller', 'admin', 'super_admin');
 CREATE type "gender__type" as enum ('male', 'female', 'other');
 CREATE type "order__status" as enum ('initiated', 'pending' ,'confirmed_by_seller', 'cancelled_by_seller',
@@ -10,10 +10,11 @@ CREATE type "payment__status" as enum ('failure', 'success', 'pending');
 CREATE type "approval__status" as enum ('pending', 'apporved', 'rejected');
 -----------------------TABLES-------------------------------------------
 CREATE TABLE "media"(
-	"id" int PRIMARY KEY,
+	"id" serial PRIMARY KEY,
 	"name" varchar,
 	"path" varchar NOT NULL,
-	"mediatype" media__type
+	"media_type" media__type NOT NULL,
+	"added_at" TIMESTAMPTZ NOT NULL
 );
 CREATE TABLE "users"(
 	"id" serial PRIMARY KEY,

@@ -7,3 +7,4 @@ itsdangerous
 psycopg2-binary
 bcrypt
 gunicorn
+boto3
