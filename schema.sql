@@ -69,8 +69,7 @@ CREATE TABLE "categories"(
 	"parent_id" int DEFAULT NULL,
 	FOREIGN KEY("added_by") references "users"("id") ON DELETE
 	SET NULL,
-		FOREIGN KEY("parent_id") references "categories"("id") ON DELETE
-	SET NULL,
+		FOREIGN KEY("parent_id") references "categories"("id") ON DELETE CASCADE,
 		FOREIGN KEY("cover_id") references "media"("id") ON DELETE
 	SET NULL
 );
