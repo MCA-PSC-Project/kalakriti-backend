@@ -118,7 +118,7 @@ class Categories(Resource):
                     # declare a cursor object from the connection
                     cursor = main.db_conn.cursor()
                     # app.logger.debug("cursor object: %s", cursor)
-                    print(categories_list[i]['id'])
+                    # app.logger.debug(categories_list[i]['id'])
                     cursor.execute(GET_SUBCATEGORIES,
                                    (str(categories_list[i]['id']),))
                     rows = cursor.fetchall()

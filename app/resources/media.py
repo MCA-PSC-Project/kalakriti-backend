@@ -10,7 +10,7 @@ from werkzeug.utils import secure_filename
 import app.main as main
 
 
-def upload_file_to_s3(file, bucket_name, acl="public-read"):
+def upload_file_to_bucket(file, bucket_name, acl="public-read"):
     """
     Docs: http://boto3.readthedocs.io/en/latest/guide/s3.html
     """
@@ -27,7 +27,65 @@ def upload_file_to_s3(file, bucket_name, acl="public-read"):
     except Exception as e:
         print("Something Happened: ", e)
         app.logger.debug(e)
+        return False
     return file.filename
+
+
+def delete_file_from_bucket(file_path, bucket_name):
+    try:
+        response = main.s3.delete_object(Bucket=bucket_name, Key=file_path)
+    except Exception as e:
+        print("Something Happened: ", e)
+        app.logger.debug(e)
+        return False
+    return True
+
+
+def delete_media_by_id(media_id):
+    GET_MEDIA_PATH = 'SELECT path FROM media WHERE id= %s'
+    # catch exception for invalid SQL statement
+    try:
+        # declare a cursor object from the connection
+        cursor = main.db_conn.cursor()
+        # app.logger.debug("cursor object: %s", cursor)
+
+        cursor.execute(GET_MEDIA_PATH, (media_id,))
+        row = cursor.fetchone()
+        if row is None:
+            abort(400, 'Bad Request')
+        file_path = row[0]
+    except (Exception, psycopg2.Error) as err:
+        app.logger.debug(err)
+        return False
+    finally:
+        cursor.close()
+
+    result = delete_file_from_bucket(file_path, app.config['S3_BUCKET'])
+    if result is False:
+        return False
+    else:
+        DELETE_MEDIA = 'DELETE FROM media WHERE id= %s'
+        try:
+            cursor = main.db_conn.cursor()
+            cursor.execute(DELETE_MEDIA, (media_id,))
+            # app.logger.debug("row_counts= %s", cursor.rowcount)
+            if cursor.rowcount != 1:
+                abort(400, 'Bad Request: delete row error')
+        except (Exception, psycopg2.Error) as err:
+            app.logger.debug(err)
+            return False
+        finally:
+            cursor.close()
+    return True
+
+
+class DeleteMedia(Resource):
+    @f_jwt.jwt_required()
+    def delete(self, media_id):
+        if delete_media_by_id(media_id):
+            return 200
+        else:
+            return 400
 
 
 class UploadImage(Resource):
@@ -53,9 +111,10 @@ class UploadImage(Resource):
             destination_filename = uuid4().hex + source_extension
             app.logger.debug("destination file name= %s", destination_filename)
             source_file.filename = destination_filename
-            path_name = upload_file_to_s3(
+            path_name = upload_file_to_bucket(
                 source_file, app.config["S3_BUCKET"])
-            # return str(output)
+            if path_name is False:
+                return "Error in uploading to s3 bucket", 400
             full_url = "{}/{}".format(app.config["S3_LOCATION"], path_name)
             app.logger.debug(str(full_url))
 
@@ -112,9 +171,10 @@ class UploadAudio(Resource):
             destination_filename = uuid4().hex + source_extension
             app.logger.debug("destination file name= %s", destination_filename)
             source_file.filename = destination_filename
-            path_name = upload_file_to_s3(
+            path_name = upload_file_to_bucket(
                 source_file, app.config["S3_BUCKET"])
-            # return str(output)
+            if path_name is False:
+                return "Error in uploading to s3 bucket", 400
             full_url = "{}/{}".format(app.config["S3_LOCATION"], path_name)
             app.logger.debug(str(full_url))
 
@@ -171,9 +231,10 @@ class UploadVideo(Resource):
             destination_filename = uuid4().hex + source_extension
             app.logger.debug("destination file name= %s", destination_filename)
             source_file.filename = destination_filename
-            path_name = upload_file_to_s3(
+            path_name = upload_file_to_bucket(
                 source_file, app.config["S3_BUCKET"])
-            # return str(output)
+            if path_name is False:
+                return "Error in uploading to s3 bucket", 400
             full_url = "{}/{}".format(app.config["S3_LOCATION"], path_name)
             app.logger.debug(str(full_url))
 
@@ -231,9 +292,10 @@ class UploadFile(Resource):
             destination_filename = uuid4().hex + source_extension
             app.logger.debug("destination file name= %s", destination_filename)
             source_file.filename = destination_filename
-            path_name = upload_file_to_s3(
+            path_name = upload_file_to_bucket(
                 source_file, app.config["S3_BUCKET"])
-            # return str(output)
+            if path_name is False:
+                return "Error in uploading to s3 bucket", 400
             full_url = "{}/{}".format(app.config["S3_LOCATION"], path_name)
             app.logger.debug(str(full_url))
 

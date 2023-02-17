@@ -10,7 +10,7 @@ import botocore
 from app.config import app_config
 from app.resources.auth import Register, Login, RefreshToken, VerifyEmail
 from app.resources.user import UserProfile, ResetEmail, ResetPhone, ResetPassword
-from app.resources.media import UploadImage, UploadAudio, UploadVideo, UploadFile
+from app.resources.media import UploadImage, UploadAudio, UploadVideo, UploadFile, DeleteMedia
 from app.resources.categories import Categories
 
 import app.main as main
@@ -65,6 +65,7 @@ def create_app(config_name):
     api.add_resource(UploadAudio, '/uploads/audio')
     api.add_resource(UploadVideo, '/uploads/video')
     api.add_resource(UploadFile, '/uploads/file')
+    api.add_resource(DeleteMedia, '/uploads/media/<int:media_id>')  # only for testing purpose
 
     # Auth
     api.add_resource(Register, '/auth/register')

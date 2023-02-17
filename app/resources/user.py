@@ -30,17 +30,16 @@ class UserProfile(Resource):
             # app.logger.debug("cursor object: %s", cursor)
 
             cursor.execute(GET_PROFILE, (user_id,))
-            rows = cursor.fetchall()
-            if not rows:
-                return {}
-            for row in rows:
-                user_profile_dict['first_name'] = row[0]
-                user_profile_dict['last_name'] = row[1]
-                user_profile_dict['user_type'] = row[2]
-                user_profile_dict['email'] = row[3]
-                user_profile_dict['phone'] = row[4]
-                user_profile_dict['dob'] = row[5]
-                user_profile_dict['gender'] = row[6]
+            row = cursor.fetchone()
+            if row is None:
+                abort(400, 'Bad Request')
+            user_profile_dict['first_name'] = row[0]
+            user_profile_dict['last_name'] = row[1]
+            user_profile_dict['user_type'] = row[2]
+            user_profile_dict['email'] = row[3]
+            user_profile_dict['phone'] = row[4]
+            user_profile_dict['dob'] = row[5]
+            user_profile_dict['gender'] = row[6]
         except (Exception, psycopg2.Error) as err:
             app.logger.debug(err)
             abort(400, 'Bad Request')
