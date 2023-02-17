@@ -11,6 +11,7 @@ from app.config import app_config
 from app.resources.auth import Register, Login, RefreshToken, VerifyEmail
 from app.resources.user import UserProfile, ResetEmail, ResetPhone, ResetPassword
 from app.resources.media import UploadImage, UploadAudio, UploadVideo, UploadFile
+from app.resources.categories import Categories
 
 import app.main as main
 
@@ -57,6 +58,8 @@ def create_app(config_name):
         print(f'  {bucket["Name"]}')
     # Endpoints
 
+    api.add_resource(Categories,'/categories','/categories/<int:category_id>')
+    
     # Media
     api.add_resource(UploadImage, '/uploads/image')
     api.add_resource(UploadAudio, '/uploads/audio')

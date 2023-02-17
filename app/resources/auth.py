@@ -78,7 +78,7 @@ class Register(Resource):
         verify_email_html_page = render_template(
             "verify_email.html", verify_url=verify_url)
         subject = "Please verify your email"
-        send_email(email, subject, verify_email_html_page)
+      # send_email(email, subject, verify_email_html_page)-------------------------------------------------------------------==============
         app.logger.debug("Email sent successfully!")
 
         # when authenticated, return a fresh access token and a refresh token
@@ -151,7 +151,7 @@ class Login(Resource):
             verify_email_html_page = render_template(
                 "verify_email.html", verify_url=verify_url)
             subject = "Please verify your email"
-            send_email(email, subject, verify_email_html_page)
+            # send_email(email, subject, verify_email_html_page)/-------------------------------------------------------------------------
             app.logger.debug("Email sent successfully!")
             return f"verification Email sent to {email} successfully!", 201
 
