@@ -44,39 +44,6 @@ class Categories(Resource):
             cursor.close()
         return f"category_id =  {id} created sucessfully", 201
 
-    # def get(self,category_id):
-    #     categories_list=[]
-    #     GET_CATEGORY = '''SELECT name,TO_CHAR(added_at, 'YYYY-MM-DD'), TO_CHAR(updated_at, 'YYYY-MM-DD'), added_by, cover_id
-    #     FROM categories WHERE id = %s or parent_id = %s'''
-
-    #     # catch exception for invalid SQL statement
-    #     try:
-    #         # declare a cursor object from the connection
-    #         cursor = main.db_conn.cursor()
-    #         # app.logger.debug("cursor object: %s", cursor)
-
-    #         cursor.execute(GET_CATEGORY, (category_id,category_id,))
-    #         rows = cursor.fetchall()
-    #         if not rows:
-    #             return {}
-    #         for row in rows:
-    #             categories_dict = {}
-    #             categories_dict['name'] = row[0]
-    #             categories_dict['added_at'] = row[1]
-    #             categories_dict['updated_at'] = row[2]
-    #             categories_dict['added_by'] = row[3]
-    #             categories_dict['cover_id'] = row[4]
-    #             # categories_dict['parent_id'] = row[5]
-    #             categories_list.append(categories_dict)
-    #     except (Exception, psycopg2.Error) as err:
-    #         app.logger.debug(err)
-    #         abort(400, 'Bad Request')
-
-    #     finally:
-    #         cursor.close()
-    #     app.logger.debug(categories_list)
-    #     return categories_list
-
     def get(self):
         categories_list = []
         GET_CATEGORY = '''SELECT c.id, c.name, c.parent_id,

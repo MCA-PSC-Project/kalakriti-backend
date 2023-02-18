@@ -10,9 +10,9 @@ class Config(object):
     SECRET_KEY = os.getenv('SECRET_KEY')
     JWT_ACCESS_TOKEN_EXPIRES = datetime.timedelta(hours=1)
     JWT_REFRESH_TOKEN_EXPIRES = datetime.timedelta(days=30)
-    DATABASE_URI = os.getenv("DATABASE_URL")
+    DATABASE_URI = os.getenv("DATABASE_URI")
     if DATABASE_URI == None:
-        DATABASE_URI = os.getenv("LOCAL_DATABASE_URL", "Not found")
+        DATABASE_URI = os.getenv("LOCAL_DATABASE_URI", "Not found")
 
     EMAIL_SECURITY_PASSWORD_SALT = os.getenv('EMAIL_SECURITY_PASSWORD_SALT')
     # Mail Settings
