@@ -58,14 +58,13 @@ def create_app(config_name):
         print(f'  {bucket["Name"]}')
     # Endpoints
 
-    api.add_resource(Categories,'/categories','/categories/<int:category_id>')
-    
     # Media
     api.add_resource(UploadImage, '/uploads/image')
     api.add_resource(UploadAudio, '/uploads/audio')
     api.add_resource(UploadVideo, '/uploads/video')
     api.add_resource(UploadFile, '/uploads/file')
-    api.add_resource(DeleteMedia, '/uploads/media/<int:media_id>')  # only for testing purpose
+    # only for testing purpose
+    api.add_resource(DeleteMedia, '/uploads/media/<int:media_id>')
 
     # Auth
     api.add_resource(Register, '/auth/register')
@@ -81,4 +80,7 @@ def create_app(config_name):
     # User Profile
     api.add_resource(UserProfile, '/users/profile')
 
+    # Category & Subcategory
+    api.add_resource(Categories, '/categories',
+                     '/categories/<int:category_id>')
     return app
