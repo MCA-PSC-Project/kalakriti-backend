@@ -120,12 +120,22 @@ class Categories(Resource):
 
     @ f_jwt.jwt_required()
     def put(self, category_id):
+        user_id = f_jwt.get_jwt_identity()
+        app.logger.debug("user_id= %s", user_id)
+        claims = f_jwt.get_jwt()
+        user_type = claims['user_type']
+        app.logger.debug("user_type= %s", user_type)
+
+
         app.logger.debug("category_id= %s", category_id)
         data = request.get_json()
         category_dict = json.loads(json.dumps(data))
         app.logger.debug(category_dict)
 
         current_time = datetime.now()
+
+        if user_type != "admin" and user_type != "super_admin":
+            abort(400, "super-admins and admins can create categories only")
 
         UPDATE_CATEGORY = 'UPDATE categories SET name= %s, parent_id= %s, cover_id=%s, updated_at= %s WHERE id= %s'
 
@@ -149,7 +159,16 @@ class Categories(Resource):
     def delete(self, category_id):
         # user_id = f_jwt.get_jwt_identity()
         # user_id=20
+        user_id = f_jwt.get_jwt_identity()
+        app.logger.debug("user_id= %s", user_id)
+        claims = f_jwt.get_jwt()
+        user_type = claims['user_type']
+        app.logger.debug("user_type= %s", user_type)
+
         app.logger.debug("category_id=%s", category_id)
+
+        if user_type != "admin" and user_type != "super_admin":
+            abort(400, "super-admins and admins can create categories only")
 
         DELETE_CATEGORY = 'DELETE FROM categories WHERE id= %s'
 
