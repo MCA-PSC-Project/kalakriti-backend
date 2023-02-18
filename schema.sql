@@ -43,6 +43,7 @@ CREATE TABLE "users"(
 	"trash" boolean NOT NULL DEFAULT false,
 	"is_verified" boolean NOT NULL DEFAULT false,
 	"verified_at" timestamptz DEFAULT NULL,
+	"enabled" BOOLEAN DEFAULT TRUE,
 	FOREIGN KEY("dp_id") references "media"("id") ON DELETE
 	SET NULL
 );
