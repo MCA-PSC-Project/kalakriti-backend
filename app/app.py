@@ -12,6 +12,7 @@ from app.resources.auth import Register, Login, RefreshToken, VerifyEmail
 from app.resources.user import UserProfile, ResetEmail, ResetPhone, ResetPassword
 from app.resources.media import UploadImage, UploadAudio, UploadVideo, UploadFile, DeleteMedia
 from app.resources.categories import Categories
+from app.resources.admin import GetSeller, GetCustomer, EnableDisableUser, PromoteToSeller
 
 import app.main as main
 
@@ -83,4 +84,11 @@ def create_app(config_name):
     # Category & Subcategory
     api.add_resource(Categories, '/categories',
                      '/categories/<int:category_id>')
+
+    #Admin
+    api.add_resource(GetSeller, '/sellers')
+    api.add_resource(GetCustomer, '/customers')
+    api.add_resource(EnableDisableUser, '/users/<int:users_id>/status')
+    api.add_resource(PromoteToSeller, '/admin/sellers/promote')
+
     return app
