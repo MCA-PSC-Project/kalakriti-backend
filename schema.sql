@@ -85,7 +85,7 @@ CREATE TABLE "products"(
 	"added_at" timestamptz NOT NULL,
 	"updated_at" timestamptz DEFAULT NULL,
 	"has_variants" BOOLEAN DEFAULT false,
-	"stock" int,
+	"quantity_in_stock" int,
 	FOREIGN KEY("category_id") references "categories"("id") ON DELETE
 	SET NULL,
 		FOREIGN KEY("subcategory_id") references "categories"("id") ON DELETE
@@ -93,7 +93,7 @@ CREATE TABLE "products"(
 );
 CREATE TABLE "variants" (
 	"id" serial primary key,
-	"variant_name" varchar(50) NOT NULL
+	"variant_type" VARCHAR NOT NULL
 );
 CREATE TABLE "variant_value"(
 	"id" serial primary key,
@@ -108,10 +108,10 @@ CREATE TABLE "product_variants"(
 	"SKU" varchar(50) UNIQUE NOT NULL,
 	"original_price" decimal(10, 2) NOT NULL,
 	"offer_price" decimal(10, 2) NOT NULL,
-	"stock" int,
+	"quantity_in_stock" int,
 	FOREIGN KEY("product_id") references "products"("id") ON DELETE CASCADE
 );
-CREATE TABLE "product_details"(
+CREATE TABLE "product_variants_values"(
 	"id" serial primary key,
 	"product_variants_id" int,
 	"variant_value_id" int,
