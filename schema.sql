@@ -78,15 +78,10 @@ CREATE TABLE "products"(
 	"id" SERIAL PRIMARY KEY,
 	"product_name" VARCHAR NOT NULL,
 	"product_description" VARCHAR NOT NULL,
-	"category_id" INT NOT NULL,
+	"category_id" INT,
 	"subcategory_id" INT,
-	"original_price" NUMERIC NOT NULL,
-	"offer_price" NUMERIC NOT NULL,
 	"added_at" TIMESTAMPTZ NOT NULL,
 	"updated_at" TIMESTAMPTZ DEFAULT NULL,
-	"has_variants" BOOLEAN DEFAULT FALSE,
-	"quantity_in_stock" INT NOT NULL,
-	"SKU" VARCHAR(50) UNIQUE NOT NULL,
 	FOREIGN KEY("category_id") REFERENCES "categories"("id") ON DELETE
 	SET NULL,
 		FOREIGN KEY("subcategory_id") REFERENCES "categories"("id") ON DELETE
@@ -94,7 +89,7 @@ CREATE TABLE "products"(
 );
 CREATE TABLE "variants" (
 	"id" SERIAL PRIMARY KEY,
-	"variant_type" VARCHAR NOT NULL
+	"variant_name" VARCHAR NOT NULL
 );
 CREATE TABLE "variant_value"(
 	"id" SERIAL PRIMARY KEY,
@@ -102,72 +97,63 @@ CREATE TABLE "variant_value"(
 	"value" VARCHAR(50) NOT NULL,
 	FOREIGN KEY("variant_id") REFERENCES "variants"("id") ON DELETE CASCADE
 );
-CREATE TABLE "product_variants"(
+CREATE TABLE "product_items"(
 	"id" SERIAL PRIMARY KEY,
-	"product_id" INT,
+	"product_id" INT NOT NULL,
 	"product_variant_name" VARCHAR(50) NOT NULL,
 	"SKU" VARCHAR(50) UNIQUE NOT NULL,
 	"original_price" NUMERIC NOT NULL,
 	"offer_price" NUMERIC NOT NULL,
 	"quantity_in_stock" INT NOT NULL,
+	-- "is_default" BOOLEAN NOT NULL DEFAULT TRUE,
 	FOREIGN KEY("product_id") REFERENCES "products"("id") ON DELETE CASCADE
 );
-CREATE TABLE "product_variants_values"(
+CREATE TABLE "product_item_values"(
 	"id" SERIAL PRIMARY KEY,
-	"product_variant_id" INT,
+	"product_item_id" INT,
 	"variant_value_id" INT,
-	FOREIGN KEY("product_variant_id") REFERENCES "product_variants"("id") ON DELETE CASCADE,
+	FOREIGN KEY("product_item_id") REFERENCES "product_items"("id") ON DELETE CASCADE,
 	FOREIGN KEY("variant_value_id") REFERENCES "variant_value"("id") ON DELETE CASCADE
 );
 CREATE TABLE "product_medias"(
 	-- "id" SERIAL PRIMARY KEY,
 	"media_id" INT NOT NULL,
-	"product_id" INT NOT NULL,
-	"product_variant_id" INT,
+	"product_item_id" INT NOT NULL,
 	"display_order" SMALLINT NOT NULL,
-	UNIQUE("media_id", "product_id", "product_variant_id"),
+	PRIMARY KEY("media_id", "product_item_id"),
 	FOREIGN KEY("media_id") REFERENCES "media"("id") ON DELETE
 	SET NULL,
-		FOREIGN KEY("product_id") REFERENCES "products"("id") ON DELETE CASCADE,
-		FOREIGN KEY("product_variant_id") REFERENCES "product_variants"("id") ON DELETE CASCADE
+		FOREIGN KEY("product_item_id") REFERENCES "product_items"("id") ON DELETE CASCADE
 );
 CREATE TABLE "wishlists"(
 	"user_id" INT NOT NULL,
-	"product_id" INT NOT NULL,
-	"product_variant_id" INT,
+	"product_item_id" INT NOT NULL,
 	"added_at" TIMESTAMPTZ NOT NULL,
-	-- PRIMARY KEY("user_id", "product_id"),
-	UNIQUE("user_id", "product_id", "product_variant_id"),
-	FOREIGN KEY("user_id") REFERENCES "users"("id") ON DELETE
-	SET NULL,
-		FOREIGN KEY("product_id") REFERENCES "products"("id") ON DELETE CASCADE,
-		FOREIGN KEY("product_variant_id") REFERENCES "product_variants"("id") ON DELETE CASCADE
+	PRIMARY KEY("user_id", "product_item_id"),
+	FOREIGN KEY("user_id") REFERENCES "users"("id") ON DELETE CASCADE,
+	FOREIGN KEY("product_item_id") REFERENCES "product_items"("id") ON DELETE CASCADE
 );
 CREATE TABLE "carts"(
 	"id" SERIAL PRIMARY KEY,
-	"user_id" INT,
-	FOREIGN KEY("user_id") REFERENCES "users"("id") ON DELETE
-	SET NULL
+	"user_id" INT NOT NULL,
+	FOREIGN KEY("user_id") REFERENCES "users"("id") ON DELETE CASCADE
 );
-CREATE TABLE "cart_products"(
+CREATE TABLE "cart_items"(
 	"cart_id" INT NOT NULL,
-	"product_id" INT NOT NULL,
-	"product_variant_id" INT,
+	"product_item_id" INT NOT NULL,
 	"quantity" INT DEFAULT 1,
 	"added_at" TIMESTAMPTZ NOT NULL,
-	"updated_at" TIMESTAMPTZ NOT NULL,
-	-- PRIMARY KEY("cart_id", "product_id"),
-	UNIQUE("cart_id", "product_id", "product_variant_id"),
+	"updated_at" TIMESTAMPTZ DEFAULT NULL,
+	PRIMARY KEY("cart_id", "product_item_id"),
 	FOREIGN KEY("cart_id") REFERENCES "carts"("id") ON DELETE CASCADE,
-	FOREIGN KEY("product_id") REFERENCES "products"("id") ON DELETE CASCADE,
-	FOREIGN KEY("product_variant_id") REFERENCES "product_variants"("id") ON DELETE CASCADE
+	FOREIGN KEY("product_item_id") REFERENCES "product_items"("id") ON DELETE CASCADE
 );
 CREATE TABLE "banners"(
 	"id" SERIAL PRIMARY KEY,
 	"media_id" INT,
 	"redirect_type" VARCHAR,
 	"redirect_url" VARCHAR NOT NULL,
-	FOREIGN KEY("media_id") REFERENCES "media"("id")
+	FOREIGN KEY("media_id") REFERENCES "media"("id") ON DELETE CASCADE
 );
 CREATE TABLE "orders"(
 	"id" SERIAL PRIMARY KEY,
@@ -186,37 +172,35 @@ CREATE TABLE "orders"(
 	"discount" NUMERIC NOT NULL DEFAULT 0,
 	"tax" NUMERIC NOT NULL DEFAULT 0,
 	"grand_total" NUMERIC NOT NULL,
-	FOREIGN KEY("user_id") REFERENCES "users"("id") ON DELETE CASCADE
+	FOREIGN KEY("user_id") REFERENCES "users"("id") ON DELETE
+	SET NULL
 );
-CREATE TABLE "order_products"(
-	"order_id" INT NOT NULL,
-	"product_id" INT NOT NULL,
-	"product_variant_id" INT,
+CREATE TABLE "order_items"(
+	"order_id" INT,
+	"product_item_id" INT,
 	"quantity" NUMERIC DEFAULT 1,
 	"original_price" NUMERIC NOT NULL,
 	"offer_price" NUMERIC NOT NULL,
 	"discount" NUMERIC NOT NULL,
 	"tax" NUMERIC NOT NULL,
-	UNIQUE("order_id", "product_id", "product_variant_id"),
+	PRIMARY KEY("order_id", "product_item_id"),
 	FOREIGN KEY("order_id") REFERENCES "orders"("id") ON DELETE
 	SET NULL,
-		FOREIGN KEY("product_id") REFERENCES "products"("id") ON DELETE
-	SET NULL,
-		FOREIGN KEY("product_variant_id") REFERENCES "product_variants"("id") ON DELETE
+		FOREIGN KEY("product_item_id") REFERENCES "product_items"("id") ON DELETE
 	SET NULL
 );
 CREATE TABLE "product_reviews"(
-	"product_id" INT,
-	"SKU" VARCHAR,
 	"user_id" INT,
+	"product_item_id" INT,
+	"SKU" VARCHAR,
 	"rating" NUMERIC(2, 1),
 	"review" VARCHAR,
 	"added_at" TIMESTAMPTZ NOT NULL,
 	"updated_at" TIMESTAMPTZ NOT NULL,
-	PRIMARY KEY("product_id", "user_id"),
-	FOREIGN KEY("product_id") REFERENCES "products"("id") ON DELETE
+	PRIMARY KEY("user_id", "product_item_id"),
+	FOREIGN KEY("user_id") REFERENCES "users"("id") ON DELETE
 	SET NULL,
-		FOREIGN KEY("user_id") REFERENCES "users"("id") ON DELETE
+		FOREIGN KEY("product_item_id") REFERENCES "product_items"("id") ON DELETE
 	SET NULL
 );
 CREATE TABLE "payments"(
@@ -252,6 +236,5 @@ CREATE TABLE "mobile_otp"(
 CREATE INDEX ON "users" ("email");
 CREATE INDEX ON "users" ("phone");
 CREATE INDEX ON "categories" ("name");
-CREATE INDEX ON "products" ("SKU");
-CREATE INDEX ON "product_variants" ("SKU");
+CREATE INDEX ON "product_items" ("SKU");
 END;
