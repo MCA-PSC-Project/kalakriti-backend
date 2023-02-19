@@ -31,7 +31,7 @@ class Categories(Resource):
         # catch exception for invalid SQL statement
         try:
             # declare a cursor object from the connection
-            cursor = app_globals.db_conn.cursor()
+            cursor = app_globals.get_cursor()
             # app.logger.debug("cursor object: %s", cursor)
 
             cursor.execute(CREATE_CATEGORY, (name, current_time,
@@ -55,8 +55,9 @@ class Categories(Resource):
         # catch exception for invalid SQL statement
         try:
             # declare a cursor object from the connection
-            cursor = app_globals.db_conn.cursor()
-            # app.logger.debug("cursor object: %s", cursor)
+            # cursor = app_globals.get_cursor()
+            cursor = app_globals.get_cursor()
+            app.logger.debug("cursor object: %s", cursor)
 
             cursor.execute(GET_CATEGORY)
             rows = cursor.fetchall()
@@ -83,7 +84,7 @@ class Categories(Resource):
 
                 try:
                     # declare a cursor object from the connection
-                    cursor = app_globals.db_conn.cursor()
+                    cursor = app_globals.get_cursor()
                     # app.logger.debug("cursor object: %s", cursor)
                     # app.logger.debug(categories_list[i]['id'])
                     cursor.execute(GET_SUBCATEGORIES,
@@ -114,7 +115,9 @@ class Categories(Resource):
             app.logger.debug(err)
             abort(400, 'Bad Request')
         finally:
+            # app.logger.debug("cursor closed: %s", cursor.closed)
             cursor.close()
+            # app.logger.debug("cursor closed: %s", cursor.closed)
         # app.logger.debug(categories_list)
         return categories_list
 
@@ -125,7 +128,6 @@ class Categories(Resource):
         claims = f_jwt.get_jwt()
         user_type = claims['user_type']
         app.logger.debug("user_type= %s", user_type)
-
 
         app.logger.debug("category_id= %s", category_id)
         data = request.get_json()
@@ -142,7 +144,7 @@ class Categories(Resource):
         # catch exception for invalid SQL statement
         try:
             # declare a cursor object from the connection
-            cursor = app_globals.db_conn.cursor()
+            cursor = app_globals.get_cursor()
             # app.logger.debug("cursor object: %s", cursor)
 
             cursor.execute(
@@ -175,7 +177,7 @@ class Categories(Resource):
         # catch exception for invalid SQL statement
         try:
             # declare a cursor object from the connection
-            cursor = app_globals.db_conn.cursor()
+            cursor = app_globals.get_cursor()
             app.logger.debug("cursor object: %s", cursor, "\n")
 
             cursor.execute(DELETE_CATEGORY, (category_id,))

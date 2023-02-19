@@ -9,8 +9,8 @@ from flask import current_app as app
 
 
 class GetSeller(Resource):
-   @f_jwt.jwt_required()
-   def get(self):
+    @f_jwt.jwt_required()
+    def get(self):
         user_id = f_jwt.get_jwt_identity()
         app.logger.debug("user_id= %s", user_id)
         claims = f_jwt.get_jwt()
@@ -21,9 +21,8 @@ class GetSeller(Resource):
         # user = args.get('user', None)
         # app.logger.debug("?user=%s", user)
 
-
         if user_type != "admin" and user_type != "super_admin":
-           abort(400, "super-admins and admins can create categories only")
+            abort(400, "super-admins and admins can create categories only")
 
         seller_list = []
 
@@ -33,7 +32,7 @@ class GetSeller(Resource):
         # catch exception for invalid SQL statement
         try:
             # declare a cursor object from the connection
-            cursor = app_globals.db_conn.cursor()
+            cursor = app_globals.get_cursor()
             # app.logger.debug("cursor object: %s", cursor)
 
             cursor.execute(GET_SELLERS_PROFILE, ('seller',))
@@ -58,9 +57,10 @@ class GetSeller(Resource):
         app.logger.debug(seller_list)
         return seller_list
 
+
 class GetCustomer(Resource):
-   @f_jwt.jwt_required()
-   def get(self):
+    @f_jwt.jwt_required()
+    def get(self):
         user_id = f_jwt.get_jwt_identity()
         app.logger.debug("user_id= %s", user_id)
         claims = f_jwt.get_jwt()
@@ -68,7 +68,7 @@ class GetCustomer(Resource):
         app.logger.debug("user_type= %s", user_type)
 
         if user_type != "admin" and user_type != "super_admin":
-           abort(400, "super-admins and admins can create categories only")
+            abort(400, "super-admins and admins can create categories only")
 
         customer_list = []
 
@@ -78,7 +78,7 @@ class GetCustomer(Resource):
         # catch exception for invalid SQL statement
         try:
             # declare a cursor object from the connection
-            cursor = app_globals.db_conn.cursor()
+            cursor = app_globals.get_cursor()
             # app.logger.debug("cursor object: %s", cursor)
 
             cursor.execute(GET_CUSTOMER_PROFILE, ('customer',))
@@ -103,9 +103,10 @@ class GetCustomer(Resource):
         app.logger.debug(customer_list)
         return customer_list
 
+
 class EnableDisableUser(Resource):
-   @f_jwt.jwt_required()
-   def put(self, users_id):
+    @f_jwt.jwt_required()
+    def put(self, users_id):
         # user_id = f_jwt.get_jwt_identity()
         # app.logger.debug("user_id= %s", user_id)
         claims = f_jwt.get_jwt()
@@ -116,33 +117,34 @@ class EnableDisableUser(Resource):
         user_dict = json.loads(json.dumps(data))
         app.logger.debug(user_dict)
 
-        current_time =  datetime.now()
+        current_time = datetime.now()
 
         if user_type != "admin" and user_type != "super_admin":
-           abort(400, "super-admins and admins can create categories only")
-
+            abort(400, "super-admins and admins can create categories only")
 
         UPDATE_USER = '''UPDATE users SET enabled= %s, updated_at= %s where id = %s'''
 
         # catch exception for invalid SQL statement
         try:
             # declare a cursor object from the connection
-            cursor = app_globals.db_conn.cursor()
+            cursor = app_globals.get_cursor()
             # app.logger.debug("cursor object: %s", cursor)
 
-            cursor.execute(UPDATE_USER, (user_dict['enabled'], current_time, users_id,))
-            
+            cursor.execute(
+                UPDATE_USER, (user_dict['enabled'], current_time, users_id,))
+
         except (Exception, psycopg2.Error) as err:
             app.logger.debug(err)
             abort(400, 'Bad Request')
         finally:
             cursor.close()
-       
-        return {"message": f"user_id {users_id} modified"},200
+
+        return {"message": f"user_id {users_id} modified"}, 200
+
 
 class PromoteToSeller(Resource):
-   @f_jwt.jwt_required()
-   def put(self):
+    @f_jwt.jwt_required()
+    def put(self):
         # user_id = f_jwt.get_jwt_identity()
         # app.logger.debug("user_id= %s", user_id)
         claims = f_jwt.get_jwt()
@@ -153,29 +155,28 @@ class PromoteToSeller(Resource):
         email_arg = args.get('email', None)
         app.logger.debug("?email=%s", email_arg)
 
-
         if user_type != "admin" and user_type != "super_admin":
-           abort(400, "super-admins and admins can create categories only")
+            abort(400, "super-admins and admins can create categories only")
 
-        current_time =  datetime.now()
+        current_time = datetime.now()
 
         UPDATE_USER = '''UPDATE users SET user_type= %s, updated_at= %s where email = %s'''
 
         # catch exception for invalid SQL statement
         try:
             # declare a cursor object from the connection
-            cursor = app_globals.db_conn.cursor()
+            cursor = app_globals.get_cursor()
             # app.logger.debug("cursor object: %s", cursor)
 
             cursor.execute(UPDATE_USER, ('seller', current_time, email_arg,))
-             # app.logger.debug("row_counts= %s", cursor.rowcount)
+            # app.logger.debug("row_counts= %s", cursor.rowcount)
             if cursor.rowcount != 1:
                 abort(400, 'Bad Request: update row error')
-                
+
         except (Exception, psycopg2.Error) as err:
             app.logger.debug(err)
             abort(400, 'Bad Request')
         finally:
             cursor.close()
-       
-        return {"message": f"{email_arg} is now seller"},200
+
+        return {"message": f"{email_arg} is now seller"}, 200

@@ -33,7 +33,8 @@ def upload_file_to_bucket(file, bucket_name, acl="public-read"):
 
 def delete_file_from_bucket(file_path, bucket_name):
     try:
-        response = app_globals.s3.delete_object(Bucket=bucket_name, Key=file_path)
+        response = app_globals.s3.delete_object(
+            Bucket=bucket_name, Key=file_path)
     except Exception as e:
         print("Something Happened: ", e)
         app.logger.debug(e)
@@ -46,7 +47,7 @@ def delete_media_by_id(media_id):
     # catch exception for invalid SQL statement
     try:
         # declare a cursor object from the connection
-        cursor = app_globals.db_conn.cursor()
+        cursor = app_globals.get_cursor()
         # app.logger.debug("cursor object: %s", cursor)
 
         cursor.execute(GET_MEDIA_PATH, (media_id,))
@@ -66,7 +67,7 @@ def delete_media_by_id(media_id):
     else:
         DELETE_MEDIA = 'DELETE FROM media WHERE id= %s'
         try:
-            cursor = app_globals.db_conn.cursor()
+            cursor = app_globals.get_cursor()
             cursor.execute(DELETE_MEDIA, (media_id,))
             # app.logger.debug("row_counts= %s", cursor.rowcount)
             if cursor.rowcount != 1:
@@ -125,7 +126,7 @@ class UploadImage(Resource):
             # catch exception for invalid SQL statement
             try:
                 # declare a cursor object from the connection
-                cursor = app_globals.db_conn.cursor()
+                cursor = app_globals.get_cursor()
                 # app.logger.debug("cursor object: %s", cursor)
 
                 cursor.execute(INSERT_MEDIA, (source_filename,
@@ -185,7 +186,7 @@ class UploadAudio(Resource):
             # catch exception for invalid SQL statement
             try:
                 # declare a cursor object from the connection
-                cursor = app_globals.db_conn.cursor()
+                cursor = app_globals.get_cursor()
                 # app.logger.debug("cursor object: %s", cursor)
 
                 cursor.execute(INSERT_MEDIA, (source_filename,
@@ -245,7 +246,7 @@ class UploadVideo(Resource):
             # catch exception for invalid SQL statement
             try:
                 # declare a cursor object from the connection
-                cursor = app_globals.db_conn.cursor()
+                cursor = app_globals.get_cursor()
                 # app.logger.debug("cursor object: %s", cursor)
 
                 cursor.execute(INSERT_MEDIA, (source_filename,
@@ -306,7 +307,7 @@ class UploadFile(Resource):
             # catch exception for invalid SQL statement
             try:
                 # declare a cursor object from the connection
-                cursor = app_globals.db_conn.cursor()
+                cursor = app_globals.get_cursor()
                 # app.logger.debug("cursor object: %s", cursor)
 
                 cursor.execute(INSERT_MEDIA, (source_filename,

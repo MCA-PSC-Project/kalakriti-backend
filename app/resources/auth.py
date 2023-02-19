@@ -30,7 +30,7 @@ class Register(Resource):
         CHECK_EMAIL = 'SELECT id FROM users WHERE email= %s'
         try:
             # declare a cursor object from the connection
-            cursor = app_globals.db_conn.cursor()
+            cursor = app_globals.get_cursor()
             # app.logger.debug("cursor object: %s", cursor)
 
             cursor.execute(CHECK_EMAIL, (email,))
@@ -54,7 +54,7 @@ class Register(Resource):
         # catch exception for invalid SQL statement
         try:
             # declare a cursor object from the connection
-            cursor = app_globals.db_conn.cursor()
+            cursor = app_globals.get_cursor()
             # app.logger.debug("cursor object: %s", cursor)
 
             cursor.execute(REGISTER_USER, (first_name, last_name, email, phone,
@@ -106,7 +106,7 @@ class Login(Resource):
         GET_USER = 'SELECT id, password, user_type, is_verified FROM users WHERE email= %s'
         try:
             # declare a cursor object from the connection
-            cursor = app_globals.db_conn.cursor()
+            cursor = app_globals.get_cursor()
             # app.logger.debug("cursor object: %s", cursor)
 
             cursor.execute(GET_USER, (email,))
@@ -188,7 +188,7 @@ class VerifyEmail(Resource):
         GET_USER = 'SELECT id, is_verified FROM users WHERE email= %s'
         try:
             # declare a cursor object from the connection
-            cursor = app_globals.db_conn.cursor()
+            cursor = app_globals.get_cursor()
             # app.logger.debug("cursor object: %s", cursor)
 
             cursor.execute(GET_USER, (email,))
@@ -216,7 +216,7 @@ class VerifyEmail(Resource):
             # catch exception for invalid SQL statement
             try:
                 # declare a cursor object from the connection
-                cursor = app_globals.db_conn.cursor()
+                cursor = app_globals.get_cursor()
                 # app.logger.debug("cursor object: %s", cursor)
 
                 cursor.execute(
