@@ -86,6 +86,7 @@ CREATE TABLE "products"(
 	"updated_at" timestamptz DEFAULT NULL,
 	"has_variants" BOOLEAN DEFAULT false,
 	"quantity_in_stock" int NOT NULL,
+	"SKU" varchar(50) UNIQUE NOT NULL,
 	FOREIGN KEY("category_id") references "categories"("id") ON DELETE
 	SET NULL,
 		FOREIGN KEY("subcategory_id") references "categories"("id") ON DELETE
@@ -120,17 +121,39 @@ CREATE TABLE "product_variants_values"(
 );
 CREATE TABLE "wishlists"(
 	"user_id" int,
-	"product_id" int,
+	"product_id" int NOT NULL,
+	-- "SKU" varchar(50) NOT NULL,
+	"product_variant_id" int,
 	"added_at" timestamptz NOT NULL,
 	PRIMARY KEY("user_id", "product_id"),
 	FOREIGN KEY("user_id") references "users"("id") ON DELETE
 	SET NULL,
 		FOREIGN KEY("product_id") references "products"("id") ON DELETE
+	SET NULL,
+		FOREIGN KEY("product_variant_id") references "product_variants"("id") ON DELETE
 	SET NULL
 );
 CREATE TABLE "carts"(
 	"user_id" int PRIMARY KEY,
-	"product_ids" int [],
+	"product_id" int NOT NULL,
+	-- "product_ids" int [],
+	-- "SKU" varchar(50) NOT NULL,
+	"product_variant_id" int,
+	"quantity" int DEFAULT 1,
+	"added_at" timestamptz NOT NULL,
+	"updated_at" timestamptz NOT NULL,
+	PRIMARY KEY("user_id", "product_id"),
+	FOREIGN KEY("user_id") references "users"("id") ON DELETE
+	SET NULL,
+	FOREIGN KEY("product_id") references "products"("id") ON DELETE
+	SET NULL,
+	FOREIGN KEY("product_variant_id") references "product_variants"("id") ON DELETE
+	SET NULL
+);
+CREATE TABLE "cart_products"(
+	"user_id" int PRIMARY KEY,
+	-- "SKU" varchar(50) NOT NULL,
+	"product_variant_id" int,
 	"added_at" timestamptz NOT NULL,
 	"updated_at" timestamptz NOT NULL,
 	FOREIGN KEY("user_id") references "users"("id") ON DELETE
