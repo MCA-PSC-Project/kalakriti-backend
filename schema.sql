@@ -1,9 +1,9 @@
 BEGIN;
 --------------TYPES----------------------
-CREATE type "media__type" as enum ('image', 'audio', 'video', 'file');
-CREATE type "user__type" as enum ('customer', 'seller', 'admin', 'super_admin');
-CREATE type "gender__type" as enum ('male', 'female', 'other');
-CREATE type "order__status" as enum (
+CREATE TYPE "media__type" AS ENUM ('image', 'audio', 'video', 'file');
+CREATE TYPE "user__type" AS ENUM ('customer', 'seller', 'admin', 'super_admin');
+CREATE TYPE "gender__type" AS ENUM ('male', 'female', 'other');
+CREATE TYPE "order__status" AS ENUM (
 	'initiated',
 	'pending',
 	'confirmed_by_seller',
@@ -17,224 +17,236 @@ CREATE type "order__status" as enum (
 	'returned',
 	'sold'
 );
-CREATE type "payment__status" as enum ('failure', 'success', 'pending');
-CREATE type "approval__status" as enum ('pending', 'approved', 'rejected');
+CREATE TYPE "payment__status" AS ENUM ('failure', 'success', 'pending');
+CREATE TYPE "approval__status" AS ENUM ('pending', 'approved', 'rejected');
 -----------------------TABLES-------------------------------------------
 CREATE TABLE "media"(
-	"id" serial PRIMARY KEY,
-	"name" varchar,
-	"path" varchar NOT NULL,
+	"id" SERIAL PRIMARY KEY,
+	"name" VARCHAR,
+	"path" VARCHAR NOT NULL,
 	"media_type" media__type NOT NULL,
 	"added_at" TIMESTAMPTZ NOT NULL
 );
 CREATE TABLE "users"(
-	"id" serial PRIMARY KEY,
-	"first_name" varchar NOT NULL,
-	"last_name" varchar NOT NULL,
+	"id" SERIAL PRIMARY KEY,
+	"first_name" VARCHAR NOT NULL,
+	"last_name" VARCHAR NOT NULL,
 	"user_type" user__type NOT NULL DEFAULT 'customer',
 	"email" VARCHAR NOT NULL UNIQUE,
 	"phone" VARCHAR(15) UNIQUE DEFAULT NULL,
-	"password" varchar NOT NULL,
+	"password" VARCHAR NOT NULL,
 	"dob" date NOT NULL,
 	"gender" gender__type NOT NULL,
-	"added_at" timestamptz NOT NULL,
-	"updated_at" timestamptz DEFAULT NULL,
-	"dp_id" int DEFAULT NULL,
-	"trash" boolean NOT NULL DEFAULT false,
-	"is_verified" boolean NOT NULL DEFAULT false,
-	"verified_at" timestamptz DEFAULT NULL,
+	"added_at" TIMESTAMPTZ NOT NULL,
+	"updated_at" TIMESTAMPTZ DEFAULT NULL,
+	"dp_id" INT DEFAULT NULL,
+	"trash" boolean NOT NULL DEFAULT FALSE,
+	"is_verified" boolean NOT NULL DEFAULT FALSE,
+	"verified_at" TIMESTAMPTZ DEFAULT NULL,
 	"enabled" BOOLEAN DEFAULT TRUE,
-	FOREIGN KEY("dp_id") references "media"("id") ON DELETE
+	FOREIGN KEY("dp_id") REFERENCES "media"("id") ON DELETE
 	SET NULL
 );
 CREATE TABLE "user_address"(
-	"id" serial PRIMARY KEY,
-	"user_id" integer,
-	"address" varchar NOT NULL,
-	"city" varchar NOT NULL,
-	"state" varchar NOT NULL,
-	"district" varchar NOT NULL,
-	"country" varchar NOT NULL,
-	"pincode" varchar NOT NULL,
-	"added_at" timestamptz NOT NULL,
-	"updated_at" timestamptz DEFAULT NULL,
-	FOREIGN KEY("user_id") references "users"("id") ON DELETE CASCADE
+	"id" SERIAL PRIMARY KEY,
+	"user_id" INT,
+	"address" VARCHAR NOT NULL,
+	"city" VARCHAR NOT NULL,
+	"state" VARCHAR NOT NULL,
+	"district" VARCHAR NOT NULL,
+	"country" VARCHAR NOT NULL,
+	"pincode" VARCHAR NOT NULL,
+	"added_at" TIMESTAMPTZ NOT NULL,
+	"updated_at" TIMESTAMPTZ DEFAULT NULL,
+	FOREIGN KEY("user_id") REFERENCES "users"("id") ON DELETE CASCADE
 );
 CREATE TABLE "categories"(
-	"id" serial PRIMARY KEY,
-	"name" varchar NOT NULL UNIQUE,
-	"added_at" timestamptz NOT NULL,
-	"updated_at" timestamptz DEFAULT NULL,
-	"added_by" int,
-	"cover_id" int,
-	"parent_id" int DEFAULT NULL,
-	FOREIGN KEY("added_by") references "users"("id") ON DELETE
+	"id" SERIAL PRIMARY KEY,
+	"name" VARCHAR NOT NULL UNIQUE,
+	"added_at" TIMESTAMPTZ NOT NULL,
+	"updated_at" TIMESTAMPTZ DEFAULT NULL,
+	"added_by" INT,
+	"cover_id" INT,
+	"parent_id" INT DEFAULT NULL,
+	FOREIGN KEY("added_by") REFERENCES "users"("id") ON DELETE
 	SET NULL,
-		FOREIGN KEY("parent_id") references "categories"("id") ON DELETE CASCADE,
-		FOREIGN KEY("cover_id") references "media"("id") ON DELETE
+		FOREIGN KEY("parent_id") REFERENCES "categories"("id") ON DELETE CASCADE,
+		FOREIGN KEY("cover_id") REFERENCES "media"("id") ON DELETE
 	SET NULL
 );
 CREATE TABLE "products"(
-	"id" serial PRIMARY KEY,
-	"product_name" varchar NOT NULL,
-	"product_description" varchar NOT NULL,
-	"category_id" int NOT NULL,
-	"subcategory_id" int,
-	"original_price" numeric NOT NULL,
-	"offer_price" numeric NOT NULL,
-	"added_at" timestamptz NOT NULL,
-	"updated_at" timestamptz DEFAULT NULL,
-	"has_variants" BOOLEAN DEFAULT false,
-	"quantity_in_stock" int NOT NULL,
-	"SKU" varchar(50) UNIQUE NOT NULL,
-	FOREIGN KEY("category_id") references "categories"("id") ON DELETE
+	"id" SERIAL PRIMARY KEY,
+	"product_name" VARCHAR NOT NULL,
+	"product_description" VARCHAR NOT NULL,
+	"category_id" INT NOT NULL,
+	"subcategory_id" INT,
+	"original_price" NUMERIC NOT NULL,
+	"offer_price" NUMERIC NOT NULL,
+	"added_at" TIMESTAMPTZ NOT NULL,
+	"updated_at" TIMESTAMPTZ DEFAULT NULL,
+	"has_variants" BOOLEAN DEFAULT FALSE,
+	"quantity_in_stock" INT NOT NULL,
+	"SKU" VARCHAR(50) UNIQUE NOT NULL,
+	FOREIGN KEY("category_id") REFERENCES "categories"("id") ON DELETE
 	SET NULL,
-		FOREIGN KEY("subcategory_id") references "categories"("id") ON DELETE
+		FOREIGN KEY("subcategory_id") REFERENCES "categories"("id") ON DELETE
 	SET NULL
 );
 CREATE TABLE "variants" (
-	"id" serial primary key,
+	"id" SERIAL PRIMARY KEY,
 	"variant_type" VARCHAR NOT NULL
 );
 CREATE TABLE "variant_value"(
-	"id" serial primary key,
-	"variant_id" int,
-	"value" varchar(50) NOT NULL,
-	FOREIGN KEY("variant_id") references "variants"("id") ON DELETE CASCADE
+	"id" SERIAL PRIMARY KEY,
+	"variant_id" INT,
+	"value" VARCHAR(50) NOT NULL,
+	FOREIGN KEY("variant_id") REFERENCES "variants"("id") ON DELETE CASCADE
 );
 CREATE TABLE "product_variants"(
-	"id" serial primary key,
-	"product_id" int,
-	"product_variant_name" varchar(50) NOT NULL,
-	"SKU" varchar(50) UNIQUE NOT NULL,
-	"original_price" numeric NOT NULL,
-	"offer_price" numeric NOT NULL,
-	"quantity_in_stock" int NOT NULL,
-	FOREIGN KEY("product_id") references "products"("id") ON DELETE CASCADE
+	"id" SERIAL PRIMARY KEY,
+	"product_id" INT,
+	"product_variant_name" VARCHAR(50) NOT NULL,
+	"SKU" VARCHAR(50) UNIQUE NOT NULL,
+	"original_price" NUMERIC NOT NULL,
+	"offer_price" NUMERIC NOT NULL,
+	"quantity_in_stock" INT NOT NULL,
+	FOREIGN KEY("product_id") REFERENCES "products"("id") ON DELETE CASCADE
 );
 CREATE TABLE "product_variants_values"(
-	"id" serial primary key,
-	"product_variants_id" int,
-	"variant_value_id" int,
-	FOREIGN KEY("product_variants_id") references "product_variants"("id") ON DELETE CASCADE,
-	FOREIGN KEY("variant_value_id") references "variant_value"("id") ON DELETE CASCADE
+	"id" SERIAL PRIMARY KEY,
+	"product_variant_id" INT,
+	"variant_value_id" INT,
+	FOREIGN KEY("product_variant_id") REFERENCES "product_variants"("id") ON DELETE CASCADE,
+	FOREIGN KEY("variant_value_id") REFERENCES "variant_value"("id") ON DELETE CASCADE
+);
+CREATE TABLE "product_medias"(
+	-- "id" SERIAL PRIMARY KEY,
+	"media_id" INT NOT NULL,
+	"product_id" INT NOT NULL,
+	"product_variant_id" INT,
+	"display_order" SMALLINT NOT NULL,
+	UNIQUE("media_id", "product_id", "product_variant_id"),
+	FOREIGN KEY("media_id") REFERENCES "media"("id") ON DELETE
+	SET NULL,
+		FOREIGN KEY("product_id") REFERENCES "products"("id") ON DELETE CASCADE,
+		FOREIGN KEY("product_variant_id") REFERENCES "product_variants"("id") ON DELETE CASCADE
 );
 CREATE TABLE "wishlists"(
-	"user_id" int NOT NULL,
-	"product_id" int NOT NULL,
-	"product_variant_id" int,
-	"added_at" timestamptz NOT NULL,
+	"user_id" INT NOT NULL,
+	"product_id" INT NOT NULL,
+	"product_variant_id" INT,
+	"added_at" TIMESTAMPTZ NOT NULL,
 	-- PRIMARY KEY("user_id", "product_id"),
 	UNIQUE("user_id", "product_id", "product_variant_id"),
-	FOREIGN KEY("user_id") references "users"("id") ON DELETE
+	FOREIGN KEY("user_id") REFERENCES "users"("id") ON DELETE
 	SET NULL,
-		FOREIGN KEY("product_id") references "products"("id") ON DELETE CASCADE,
-		FOREIGN KEY("product_variant_id") references "product_variants"("id") ON DELETE CASCADE
+		FOREIGN KEY("product_id") REFERENCES "products"("id") ON DELETE CASCADE,
+		FOREIGN KEY("product_variant_id") REFERENCES "product_variants"("id") ON DELETE CASCADE
 );
 CREATE TABLE "carts"(
-	"id" serial PRIMARY KEY,
-	"user_id" int,
-	FOREIGN KEY("user_id") references "users"("id") ON DELETE
+	"id" SERIAL PRIMARY KEY,
+	"user_id" INT,
+	FOREIGN KEY("user_id") REFERENCES "users"("id") ON DELETE
 	SET NULL
 );
 CREATE TABLE "cart_products"(
-	"cart_id" int NOT NULL,
-	"product_id" int NOT NULL,
-	"product_variant_id" int,
-	"quantity" int DEFAULT 1,
-	"added_at" timestamptz NOT NULL,
-	"updated_at" timestamptz NOT NULL,
+	"cart_id" INT NOT NULL,
+	"product_id" INT NOT NULL,
+	"product_variant_id" INT,
+	"quantity" INT DEFAULT 1,
+	"added_at" TIMESTAMPTZ NOT NULL,
+	"updated_at" TIMESTAMPTZ NOT NULL,
 	-- PRIMARY KEY("cart_id", "product_id"),
 	UNIQUE("cart_id", "product_id", "product_variant_id"),
-	FOREIGN KEY("cart_id") references "carts"("id") ON DELETE CASCADE,
-	FOREIGN KEY("product_id") references "products"("id") ON DELETE CASCADE,
-	FOREIGN KEY("product_variant_id") references "product_variants"("id") ON DELETE CASCADE
+	FOREIGN KEY("cart_id") REFERENCES "carts"("id") ON DELETE CASCADE,
+	FOREIGN KEY("product_id") REFERENCES "products"("id") ON DELETE CASCADE,
+	FOREIGN KEY("product_variant_id") REFERENCES "product_variants"("id") ON DELETE CASCADE
 );
 CREATE TABLE "banners"(
-	"id" serial PRIMARY KEY,
-	"media_id" int,
-	"redirect_type" varchar,
-	"redirect_url" varchar NOT NULL,
-	FOREIGN KEY("media_id") references "media"("id")
+	"id" SERIAL PRIMARY KEY,
+	"media_id" INT,
+	"redirect_type" VARCHAR,
+	"redirect_url" VARCHAR NOT NULL,
+	FOREIGN KEY("media_id") REFERENCES "media"("id")
 );
 CREATE TABLE "orders"(
-	"id" serial PRIMARY KEY,
-	"user_id" integer,
-	"address" varchar NOT NULL,
-	"city" varchar NOT NULL,
-	"state" varchar NOT NULL,
-	"district" varchar NOT NULL,
-	"country" varchar NOT NULL,
-	"pincode" varchar NOT NULL,
-	"phone" varchar NOT NULL,
-	"ordered_at" timestamptz NOT NULL,
+	"id" SERIAL PRIMARY KEY,
+	"user_id" INT,
+	"address" VARCHAR NOT NULL,
+	"city" VARCHAR NOT NULL,
+	"state" VARCHAR NOT NULL,
+	"district" VARCHAR NOT NULL,
+	"country" VARCHAR NOT NULL,
+	"pincode" VARCHAR NOT NULL,
+	"phone" VARCHAR NOT NULL,
+	"ordered_at" TIMESTAMPTZ NOT NULL,
 	"order_status" order__status,
-	"updated_at" timestamptz DEFAULT NULL,
-	"sub_total" numeric NOT NULL,
-	"discount" numeric NOT NULL DEFAULT 0,
-	"tax" numeric NOT NULL DEFAULT 0,
-	"grand_total" numeric NOT NULL,
-	FOREIGN KEY("user_id") references "users"("id") ON DELETE CASCADE
+	"updated_at" TIMESTAMPTZ DEFAULT NULL,
+	"sub_total" NUMERIC NOT NULL,
+	"discount" NUMERIC NOT NULL DEFAULT 0,
+	"tax" NUMERIC NOT NULL DEFAULT 0,
+	"grand_total" NUMERIC NOT NULL,
+	FOREIGN KEY("user_id") REFERENCES "users"("id") ON DELETE CASCADE
 );
 CREATE TABLE "order_products"(
-	"order_id" int NOT NULL,
-	"product_id" int NOT NULL,
-	"product_variant_id" int,
-	"quantity" numeric DEFAULT 1,
-	"original_price" numeric NOT NULL,
-	"offer_price" numeric NOT NULL,
-	"discount" numeric NOT NULL,
-	"tax" numeric NOT NULL,
+	"order_id" INT NOT NULL,
+	"product_id" INT NOT NULL,
+	"product_variant_id" INT,
+	"quantity" NUMERIC DEFAULT 1,
+	"original_price" NUMERIC NOT NULL,
+	"offer_price" NUMERIC NOT NULL,
+	"discount" NUMERIC NOT NULL,
+	"tax" NUMERIC NOT NULL,
 	UNIQUE("order_id", "product_id", "product_variant_id"),
-	FOREIGN KEY("order_id") references "orders"("id") ON DELETE
+	FOREIGN KEY("order_id") REFERENCES "orders"("id") ON DELETE
 	SET NULL,
-		FOREIGN KEY("product_id") references "products"("id") ON DELETE
+		FOREIGN KEY("product_id") REFERENCES "products"("id") ON DELETE
 	SET NULL,
-		FOREIGN KEY("product_variant_id") references "product_variants"("id") ON DELETE
+		FOREIGN KEY("product_variant_id") REFERENCES "product_variants"("id") ON DELETE
 	SET NULL
 );
 CREATE TABLE "product_reviews"(
-	"product_id" int,
-	"SKU" varchar,
-	"user_id" int,
-	"rating" numeric(2, 1),
-	"review" varchar,
-	"added_at" timestamptz NOT NULL,
-	"updated_at" timestamptz NOT NULL,
+	"product_id" INT,
+	"SKU" VARCHAR,
+	"user_id" INT,
+	"rating" NUMERIC(2, 1),
+	"review" VARCHAR,
+	"added_at" TIMESTAMPTZ NOT NULL,
+	"updated_at" TIMESTAMPTZ NOT NULL,
 	PRIMARY KEY("product_id", "user_id"),
-	FOREIGN KEY("product_id") references "products"("id") ON DELETE
+	FOREIGN KEY("product_id") REFERENCES "products"("id") ON DELETE
 	SET NULL,
-		FOREIGN KEY("user_id") references "users"("id") ON DELETE
+		FOREIGN KEY("user_id") REFERENCES "users"("id") ON DELETE
 	SET NULL
 );
 CREATE TABLE "payments"(
-	"id" serial PRIMARY KEY,
-	"order_id" int,
-	"provider" varchar(50) NOT NULL,
-	"provider_order_id" varchar NOT NULL,
-	"provider_payment_id" varchar NOT NULL,
+	"id" SERIAL PRIMARY KEY,
+	"order_id" INT,
+	"provider" VARCHAR(50) NOT NULL,
+	"provider_order_id" VARCHAR NOT NULL,
+	"provider_payment_id" VARCHAR NOT NULL,
 	"payment_status" payment__status,
-	"added_at" timestamptz NOT NULL,
-	"updated_at" timestamptz NOT NULL,
-	FOREIGN KEY("order_id") references "orders"("id") ON DELETE
+	"added_at" TIMESTAMPTZ NOT NULL,
+	"updated_at" TIMESTAMPTZ NOT NULL,
+	FOREIGN KEY("order_id") REFERENCES "orders"("id") ON DELETE
 	SET NULL
 );
 CREATE TABLE "seller_applicant_forms"(
-	"id" serial PRIMARY KEY,
-	"name" varchar NOT NULL,
-	"email" varchar NOT NULL,
-	"mobile_no" varchar NOT NULL,
-	"reviewed" BOOLEAN DEFAULT false,
-	"added_at" timestamptz NOT NULL,
-	"updated_at" timestamptz NOT NULL,
+	"id" SERIAL PRIMARY KEY,
+	"name" VARCHAR NOT NULL,
+	"email" VARCHAR NOT NULL,
+	"mobile_no" VARCHAR NOT NULL,
+	"reviewed" BOOLEAN DEFAULT FALSE,
+	"added_at" TIMESTAMPTZ NOT NULL,
+	"updated_at" TIMESTAMPTZ NOT NULL,
 	"approval_status" approval__status DEFAULT 'pending',
-	"description" varchar,
-	"path" varchar DEFAULT ''
+	"description" VARCHAR,
+	"path" VARCHAR DEFAULT ''
 );
 CREATE TABLE "mobile_otp"(
-	"mobile_no" varchar(15) PRIMARY KEY,
-	"otp" varchar(6) NOT NULL,
-	"expiry" int
+	"mobile_no" VARCHAR(15) PRIMARY KEY,
+	"otp" VARCHAR(6) NOT NULL,
+	"expiry" INT
 );
 ----- Indexes -----
 CREATE INDEX ON "users" ("email");
