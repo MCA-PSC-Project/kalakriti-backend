@@ -107,8 +107,8 @@ CREATE TABLE "product_variants"(
 	"product_id" int,
 	"product_variant_name" varchar(50) NOT NULL,
 	"SKU" varchar(50) UNIQUE NOT NULL,
-	"original_price" decimal(10, 2) NOT NULL,
-	"offer_price" decimal(10, 2) NOT NULL,
+	"original_price" FLOAT NOT NULL,
+	"offer_price" FLOAT NOT NULL,
 	"quantity_in_stock" int NOT NULL,
 	FOREIGN KEY("product_id") references "products"("id") ON DELETE CASCADE
 );
@@ -120,44 +120,35 @@ CREATE TABLE "product_variants_values"(
 	FOREIGN KEY("variant_value_id") references "variant_value"("id") ON DELETE CASCADE
 );
 CREATE TABLE "wishlists"(
-	"user_id" int,
+	"user_id" int NOT NULL,
 	"product_id" int NOT NULL,
-	-- "SKU" varchar(50) NOT NULL,
 	"product_variant_id" int,
 	"added_at" timestamptz NOT NULL,
-	PRIMARY KEY("user_id", "product_id"),
+	-- PRIMARY KEY("user_id", "product_id"),
+	UNIQUE("user_id", "product_id", "product_variant_id"),
 	FOREIGN KEY("user_id") references "users"("id") ON DELETE
 	SET NULL,
-		FOREIGN KEY("product_id") references "products"("id") ON DELETE
-	SET NULL,
-		FOREIGN KEY("product_variant_id") references "product_variants"("id") ON DELETE
-	SET NULL
+		FOREIGN KEY("product_id") references "products"("id") ON DELETE CASCADE,
+		FOREIGN KEY("product_variant_id") references "product_variants"("id") ON DELETE CASCADE
 );
 CREATE TABLE "carts"(
-	"user_id" int PRIMARY KEY,
+	"id" serial PRIMARY KEY,
+	"user_id" int,
+	FOREIGN KEY("user_id") references "users"("id") ON DELETE
+	SET NULL
+);
+CREATE TABLE "cart_products"(
+	"cart_id" int NOT NULL,
 	"product_id" int NOT NULL,
-	-- "product_ids" int [],
-	-- "SKU" varchar(50) NOT NULL,
 	"product_variant_id" int,
 	"quantity" int DEFAULT 1,
 	"added_at" timestamptz NOT NULL,
 	"updated_at" timestamptz NOT NULL,
-	PRIMARY KEY("user_id", "product_id"),
-	FOREIGN KEY("user_id") references "users"("id") ON DELETE
-	SET NULL,
-	FOREIGN KEY("product_id") references "products"("id") ON DELETE
-	SET NULL,
-	FOREIGN KEY("product_variant_id") references "product_variants"("id") ON DELETE
-	SET NULL
-);
-CREATE TABLE "cart_products"(
-	"user_id" int PRIMARY KEY,
-	-- "SKU" varchar(50) NOT NULL,
-	"product_variant_id" int,
-	"added_at" timestamptz NOT NULL,
-	"updated_at" timestamptz NOT NULL,
-	FOREIGN KEY("user_id") references "users"("id") ON DELETE
-	SET NULL
+	-- PRIMARY KEY("cart_id", "product_id"),
+	UNIQUE("cart_id", "product_id", "product_variant_id"),
+	FOREIGN KEY("cart_id") references "carts"("id") ON DELETE CASCADE,
+	FOREIGN KEY("product_id") references "products"("id") ON DELETE CASCADE,
+	FOREIGN KEY("product_variant_id") references "product_variants"("id") ON DELETE CASCADE
 );
 CREATE TABLE "banners"(
 	"id" serial PRIMARY KEY,
