@@ -46,7 +46,7 @@ class UserProfile(Resource):
             abort(400, 'Bad Request')
         finally:
             cursor.close()
-        app.logger.debug(user_profile_dict)
+        # app.logger.debug(user_profile_dict)
         return user_profile_dict
 
     @f_jwt.jwt_required()

@@ -26,7 +26,8 @@ class GetSeller(Resource):
 
         seller_list = []
 
-        GET_SELLERS_PROFILE = '''SELECT first_name, last_name, user_type, email, phone, TO_CHAR(dob, 'YYYY-MM-DD'), gender, enabled 
+        GET_SELLERS_PROFILES = '''SELECT first_name, last_name, user_type, email, phone,
+        TO_CHAR(dob, 'YYYY-MM-DD'), gender, enabled 
         FROM users WHERE user_type= %s'''
 
         # catch exception for invalid SQL statement
@@ -35,7 +36,7 @@ class GetSeller(Resource):
             cursor = app_globals.get_cursor()
             # app.logger.debug("cursor object: %s", cursor)
 
-            cursor.execute(GET_SELLERS_PROFILE, ('seller',))
+            cursor.execute(GET_SELLERS_PROFILES, ('seller',))
             rows = cursor.fetchall()
             if not rows:
                 return {}
@@ -55,7 +56,7 @@ class GetSeller(Resource):
             abort(400, 'Bad Request')
         finally:
             cursor.close()
-        app.logger.debug(seller_list)
+        # app.logger.debug(seller_list)
         return seller_list
 
 
@@ -73,7 +74,8 @@ class GetCustomer(Resource):
 
         customer_list = []
 
-        GET_CUSTOMER_PROFILE = '''SELECT first_name, last_name, user_type, email, phone, TO_CHAR(dob, 'YYYY-MM-DD'), gender , enabled
+        GET_CUSTOMERS_PROFILES = '''SELECT first_name, last_name, user_type, email, phone, 
+        TO_CHAR(dob, 'YYYY-MM-DD'), gender , enabled 
         FROM users WHERE user_type= %s'''
 
         # catch exception for invalid SQL statement
@@ -82,7 +84,7 @@ class GetCustomer(Resource):
             cursor = app_globals.get_cursor()
             # app.logger.debug("cursor object: %s", cursor)
 
-            cursor.execute(GET_CUSTOMER_PROFILE, ('customer',))
+            cursor.execute(GET_CUSTOMERS_PROFILES, ('customer',))
             rows = cursor.fetchall()
             if not rows:
                 return {}
@@ -102,7 +104,7 @@ class GetCustomer(Resource):
             abort(400, 'Bad Request')
         finally:
             cursor.close()
-        app.logger.debug(customer_list)
+        # app.logger.debug(customer_list)
         return customer_list
 
 
@@ -122,9 +124,9 @@ class EnableDisableUser(Resource):
         current_time = datetime.now()
 
         if user_type != "admin" and user_type != "super_admin":
-            abort(400, "super-admins and admins can create categories only")
+            abort(400, "only super-admins and admins can update categories")
 
-        UPDATE_USER = '''UPDATE users SET enabled= %s, updated_at= %s where id = %s'''
+        UPDATE_USER_ENABLED_STATUS = '''UPDATE users SET enabled= %s, updated_at= %s where id = %s'''
 
         # catch exception for invalid SQL statement
         try:
@@ -133,8 +135,8 @@ class EnableDisableUser(Resource):
             # app.logger.debug("cursor object: %s", cursor)
 
             cursor.execute(
-                UPDATE_USER, (user_dict['enabled'], current_time, users_id,))
-             # app.logger.debug("row_counts= %s", cursor.rowcount)
+                UPDATE_USER_ENABLED_STATUS, (user_dict['enabled'], current_time, users_id,))
+            # app.logger.debug("row_counts= %s", cursor.rowcount)
             if cursor.rowcount != 1:
                 abort(400, 'Bad Request: update row error')
         except (Exception, psycopg2.Error) as err:
@@ -155,16 +157,15 @@ class PromoteToSeller(Resource):
         user_type = claims['user_type']
         app.logger.debug("user_type= %s", user_type)
 
-        args = request.args  # retrieve args from query string
-        email_arg = args.get('email', None)
-        app.logger.debug("?email=%s", email_arg)
+        data = request.get_json()
+        email = data.get("email", None)
 
         if user_type != "admin" and user_type != "super_admin":
-            abort(400, "super-admins and admins can create categories only")
+            abort(400, "only super-admins and admins can promote to seller")
 
         current_time = datetime.now()
 
-        UPDATE_USER = '''UPDATE users SET user_type= %s, updated_at= %s where email = %s'''
+        PROMOTE_TO_SELLER = '''UPDATE users SET user_type= %s, updated_at= %s where email = %s'''
 
         # catch exception for invalid SQL statement
         try:
@@ -172,7 +173,7 @@ class PromoteToSeller(Resource):
             cursor = app_globals.get_cursor()
             # app.logger.debug("cursor object: %s", cursor)
 
-            cursor.execute(UPDATE_USER, ('seller', current_time, email_arg,))
+            cursor.execute(PROMOTE_TO_SELLER, ('seller', current_time, email,))
             # app.logger.debug("row_counts= %s", cursor.rowcount)
             if cursor.rowcount != 1:
                 abort(400, 'Bad Request: update row error')
@@ -183,4 +184,4 @@ class PromoteToSeller(Resource):
         finally:
             cursor.close()
 
-        return {"message": f"{email_arg} is now seller"}, 200
+        return {"message": f"{email} is now seller"}, 200

@@ -7,6 +7,7 @@ import flask_jwt_extended as f_jwt
 import json
 from flask import current_app as app
 
+
 class GetAllAdmins(Resource):
     @f_jwt.jwt_required()
     def get(self):
@@ -16,13 +17,12 @@ class GetAllAdmins(Resource):
         user_type = claims['user_type']
         app.logger.debug("user_type= %s", user_type)
 
-
         if user_type != "super_admin":
-            abort(400, "only super_admin can see all admin's")
-        
+            abort(400, "only super_admin can see all admins")
+
         admin_list = []
 
-        GET_ADMIN_PROFILE = '''SELECT first_name, last_name, user_type, email, phone, TO_CHAR(dob, 'YYYY-MM-DD'), gender, enabled
+        GET_ADMINS_PROFILES = '''SELECT first_name, last_name, user_type, email, phone, TO_CHAR(dob, 'YYYY-MM-DD'), gender, enabled
         FROM users WHERE user_type= %s'''
 
         # catch exception for invalid SQL statement
@@ -31,7 +31,7 @@ class GetAllAdmins(Resource):
             cursor = app_globals.get_cursor()
             # app.logger.debug("cursor object: %s", cursor)
 
-            cursor.execute(GET_ADMIN_PROFILE, ('admin',))
+            cursor.execute(GET_ADMINS_PROFILES, ('admin',))
             rows = cursor.fetchall()
             if not rows:
                 return {}
@@ -51,7 +51,7 @@ class GetAllAdmins(Resource):
             abort(400, 'Bad Request')
         finally:
             cursor.close()
-        app.logger.debug(admin_list)
+        # app.logger.debug(admin_list)
         return admin_list
 
 
@@ -64,16 +64,15 @@ class PromoteToAdmin(Resource):
         user_type = claims['user_type']
         app.logger.debug("user_type= %s", user_type)
 
-        args = request.args  # retrieve args from query string
-        email_arg = args.get('email', None)
-        app.logger.debug("?email=%s", email_arg)
+        data = request.get_json()
+        email = data.get("email", None)
 
         if user_type != "super_admin":
-            abort(400, "only super_admin have privilege to convert in admin")
+            abort(400, "only super_admins have privilege to promote to admin")
 
         current_time = datetime.now()
 
-        UPDATE_USER = '''UPDATE users SET user_type= %s, updated_at= %s where email = %s'''
+        UPDATE_USER_ENABLED_STATUS = '''UPDATE users SET user_type= %s, updated_at= %s where email = %s'''
 
         # catch exception for invalid SQL statement
         try:
@@ -81,7 +80,7 @@ class PromoteToAdmin(Resource):
             cursor = app_globals.get_cursor()
             # app.logger.debug("cursor object: %s", cursor)
 
-            cursor.execute(UPDATE_USER, ('admin', current_time, email_arg,))
+            cursor.execute(UPDATE_USER_ENABLED_STATUS, ('admin', current_time, email,))
             # app.logger.debug("row_counts= %s", cursor.rowcount)
             if cursor.rowcount != 1:
                 abort(400, 'Bad Request: update row error')
@@ -92,4 +91,4 @@ class PromoteToAdmin(Resource):
         finally:
             cursor.close()
 
-        return {"message": f"{email_arg} is now admin"}, 200
+        return {"message": f"{email} is now admin"}, 200

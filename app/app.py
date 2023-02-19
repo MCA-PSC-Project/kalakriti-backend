@@ -90,16 +90,17 @@ def create_app(config_name):
     api.add_resource(Categories, '/categories',
                      '/categories/<int:category_id>')
 
-    # Admin
+    # Admin related endpoints
     api.add_resource(GetSeller, '/sellers')
     api.add_resource(GetCustomer, '/customers')
     api.add_resource(EnableDisableUser, '/users/<int:users_id>/status')
     api.add_resource(PromoteToSeller, '/admin/sellers/promote')
 
-    # Super_Admin
+    # Super_Admin related endpoints
     api.add_resource(GetAllAdmins, '/admins')
     api.add_resource(PromoteToAdmin, '/super-admin/admin/promote')
 
+    # to be exceuted at app exit for cleanups
     @atexit.register
     def close_connection_pool():
         # app.logger.debug(app_globals.db_conn_pool)
