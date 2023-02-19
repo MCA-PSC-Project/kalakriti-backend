@@ -14,7 +14,7 @@ from app.resources.media import UploadImage, UploadAudio, UploadVideo, UploadFil
 from app.resources.categories import Categories
 from app.resources.admin import GetSeller, GetCustomer, EnableDisableUser, PromoteToSeller
 
-import app.main as main
+import app.app_globals as app_globals
 
 # db_conn = psycopg2.connect()
 
@@ -37,23 +37,23 @@ def create_app(config_name):
     app.logger.debug('SECRET_KEY=%s ' % app.config['SECRET_KEY'])
 
     # global db_conn
-    main.db_conn = psycopg2.connect(app.config['DATABASE_URI'])
+    app_globals.db_conn = psycopg2.connect(app.config['DATABASE_URI'])
 
-    if main.db_conn == None:
+    if app_globals.db_conn == None:
         app.logger.fatal('Database connection error')
-    main.db_conn.autocommit = True
+    app_globals.db_conn.autocommit = True
 
     jwt = flask_jwt_extended.JWTManager(app)
-    main.mail = flask_mail.Mail(app)
+    app_globals.mail = flask_mail.Mail(app)
 
-    main.s3 = boto3.client(
+    app_globals.s3 = boto3.client(
         "s3",
         endpoint_url=app.config['S3_ENDPOINT'],
         aws_access_key_id=app.config['S3_KEY'],
         aws_secret_access_key=app.config['S3_SECRET']
     )
 
-    response = main.s3.list_buckets()
+    response = app_globals.s3.list_buckets()
     print('Existing buckets:')
     for bucket in response['Buckets']:
         print(f'  {bucket["Name"]}')

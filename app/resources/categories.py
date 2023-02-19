@@ -2,7 +2,7 @@ from datetime import datetime
 from flask import request, abort
 from flask_restful import Resource
 import psycopg2
-import app.main as main
+import app.app_globals as app_globals
 import flask_jwt_extended as f_jwt
 import json
 from flask import current_app as app
@@ -31,7 +31,7 @@ class Categories(Resource):
         # catch exception for invalid SQL statement
         try:
             # declare a cursor object from the connection
-            cursor = main.db_conn.cursor()
+            cursor = app_globals.db_conn.cursor()
             # app.logger.debug("cursor object: %s", cursor)
 
             cursor.execute(CREATE_CATEGORY, (name, current_time,
@@ -55,7 +55,7 @@ class Categories(Resource):
         # catch exception for invalid SQL statement
         try:
             # declare a cursor object from the connection
-            cursor = main.db_conn.cursor()
+            cursor = app_globals.db_conn.cursor()
             # app.logger.debug("cursor object: %s", cursor)
 
             cursor.execute(GET_CATEGORY)
@@ -83,7 +83,7 @@ class Categories(Resource):
 
                 try:
                     # declare a cursor object from the connection
-                    cursor = main.db_conn.cursor()
+                    cursor = app_globals.db_conn.cursor()
                     # app.logger.debug("cursor object: %s", cursor)
                     # app.logger.debug(categories_list[i]['id'])
                     cursor.execute(GET_SUBCATEGORIES,
@@ -142,7 +142,7 @@ class Categories(Resource):
         # catch exception for invalid SQL statement
         try:
             # declare a cursor object from the connection
-            cursor = main.db_conn.cursor()
+            cursor = app_globals.db_conn.cursor()
             # app.logger.debug("cursor object: %s", cursor)
 
             cursor.execute(
@@ -175,7 +175,7 @@ class Categories(Resource):
         # catch exception for invalid SQL statement
         try:
             # declare a cursor object from the connection
-            cursor = main.db_conn.cursor()
+            cursor = app_globals.db_conn.cursor()
             app.logger.debug("cursor object: %s", cursor, "\n")
 
             cursor.execute(DELETE_CATEGORY, (category_id,))

@@ -78,14 +78,14 @@ CREATE TABLE "products"(
 	"id" serial PRIMARY KEY,
 	"product_name" varchar NOT NULL,
 	"product_description" varchar NOT NULL,
-	"category_id" int,
+	"category_id" int NOT NULL,
 	"subcategory_id" int,
-	"original_price" decimal(10, 2),
-	"offer_price" decimal(10, 2),
+	"original_price" FLOAT NOT NULL,
+	"offer_price" FLOAT NOT NULL,
 	"added_at" timestamptz NOT NULL,
 	"updated_at" timestamptz DEFAULT NULL,
 	"has_variants" BOOLEAN DEFAULT false,
-	"quantity_in_stock" int,
+	"quantity_in_stock" int NOT NULL,
 	FOREIGN KEY("category_id") references "categories"("id") ON DELETE
 	SET NULL,
 		FOREIGN KEY("subcategory_id") references "categories"("id") ON DELETE
@@ -108,7 +108,7 @@ CREATE TABLE "product_variants"(
 	"SKU" varchar(50) UNIQUE NOT NULL,
 	"original_price" decimal(10, 2) NOT NULL,
 	"offer_price" decimal(10, 2) NOT NULL,
-	"quantity_in_stock" int,
+	"quantity_in_stock" int NOT NULL,
 	FOREIGN KEY("product_id") references "products"("id") ON DELETE CASCADE
 );
 CREATE TABLE "product_variants_values"(

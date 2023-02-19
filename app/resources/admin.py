@@ -2,7 +2,7 @@ from datetime import datetime
 from flask import request, abort
 from flask_restful import Resource
 import psycopg2
-import app.main as main
+import app.app_globals as app_globals
 import flask_jwt_extended as f_jwt
 import json
 from flask import current_app as app
@@ -33,7 +33,7 @@ class GetSeller(Resource):
         # catch exception for invalid SQL statement
         try:
             # declare a cursor object from the connection
-            cursor = main.db_conn.cursor()
+            cursor = app_globals.db_conn.cursor()
             # app.logger.debug("cursor object: %s", cursor)
 
             cursor.execute(GET_SELLERS_PROFILE, ('seller',))
@@ -78,7 +78,7 @@ class GetCustomer(Resource):
         # catch exception for invalid SQL statement
         try:
             # declare a cursor object from the connection
-            cursor = main.db_conn.cursor()
+            cursor = app_globals.db_conn.cursor()
             # app.logger.debug("cursor object: %s", cursor)
 
             cursor.execute(GET_CUSTOMER_PROFILE, ('customer',))
@@ -127,7 +127,7 @@ class EnableDisableUser(Resource):
         # catch exception for invalid SQL statement
         try:
             # declare a cursor object from the connection
-            cursor = main.db_conn.cursor()
+            cursor = app_globals.db_conn.cursor()
             # app.logger.debug("cursor object: %s", cursor)
 
             cursor.execute(UPDATE_USER, (user_dict['enabled'], current_time, users_id,))
@@ -164,7 +164,7 @@ class PromoteToSeller(Resource):
         # catch exception for invalid SQL statement
         try:
             # declare a cursor object from the connection
-            cursor = main.db_conn.cursor()
+            cursor = app_globals.db_conn.cursor()
             # app.logger.debug("cursor object: %s", cursor)
 
             cursor.execute(UPDATE_USER, ('seller', current_time, email_arg,))

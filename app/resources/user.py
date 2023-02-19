@@ -3,7 +3,7 @@ import bcrypt
 from flask import request, abort
 from flask_restful import Resource
 import psycopg2
-import app.main as main
+import app.app_globals as app_globals
 import flask_jwt_extended as f_jwt
 import json
 from flask import current_app as app
@@ -26,7 +26,7 @@ class UserProfile(Resource):
         # catch exception for invalid SQL statement
         try:
             # declare a cursor object from the connection
-            cursor = main.db_conn.cursor()
+            cursor = app_globals.db_conn.cursor()
             # app.logger.debug("cursor object: %s", cursor)
 
             cursor.execute(GET_PROFILE, (user_id,))
@@ -64,7 +64,7 @@ class UserProfile(Resource):
         # catch exception for invalid SQL statement
         try:
             # declare a cursor object from the connection
-            cursor = main.db_conn.cursor()
+            cursor = app_globals.db_conn.cursor()
             # app.logger.debug("cursor object: %s", cursor)
 
             cursor.execute(
@@ -88,7 +88,7 @@ class UserProfile(Resource):
         # catch exception for invalid SQL statement
         try:
             # declare a cursor object from the connection
-            cursor = main.db_conn.cursor()
+            cursor = app_globals.db_conn.cursor()
             app.logger.debug("cursor object: %s", cursor, "\n")
 
             cursor.execute(DELETE_USER, (user_id,))
@@ -119,7 +119,7 @@ class ResetEmail(Resource):
         # catch exception for invalid SQL statement
         try:
             # declare a cursor object from the connection
-            cursor = main.db_conn.cursor()
+            cursor = app_globals.db_conn.cursor()
             # app.logger.debug("cursor object: %s", cursor)
 
             cursor.execute(UPDATE_USER_EMAIL, (email, current_time, user_id,))
@@ -153,7 +153,7 @@ class ResetPhone(Resource):
         # catch exception for invalid SQL statement
         try:
             # declare a cursor object from the connection
-            cursor = main.db_conn.cursor()
+            cursor = app_globals.db_conn.cursor()
             # app.logger.debug("cursor object: %s", cursor)
 
             cursor.execute(UPDATE_USER_PHONE, (phone, current_time, user_id,))
@@ -188,7 +188,7 @@ class ResetPassword(Resource):
         # catch exception for invalid SQL statement
         try:
             # declare a cursor object from the connection
-            cursor = main.db_conn.cursor()
+            cursor = app_globals.db_conn.cursor()
             # app.logger.debug("cursor object: %s", cursor)
 
             cursor.execute(CHANGE_USER_PASSWORD,
