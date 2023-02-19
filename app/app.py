@@ -1,10 +1,10 @@
-import psycopg2
+# import psycopg2
+from psycopg2.pool import SimpleConnectionPool
 from flask import Flask, request
 from flask_restful import Api
 import flask_jwt_extended
 import flask_mail
 import boto3
-import botocore
 
 # local imports
 from app.config import app_config
@@ -36,9 +36,12 @@ def create_app(config_name):
     app.logger.debug('DATABASE_URI=%s ' % app.config['DATABASE_URI'])
     app.logger.debug('SECRET_KEY=%s ' % app.config['SECRET_KEY'])
 
-    # global db_conn
-    app_globals.db_conn = psycopg2.connect(app.config['DATABASE_URI'])
+    # app_globals.db_conn = psycopg2.connect(app.config['DATABASE_URI'])
 
+    # Connection pooling
+    app_globals.db_conn_pool = SimpleConnectionPool(
+        minconn=1, maxconn=10, dsn=app.config['DATABASE_URI'])
+    app_globals.db_conn = app_globals.db_conn_pool.getconn()
     if app_globals.db_conn == None:
         app.logger.fatal('Database connection error')
     app_globals.db_conn.autocommit = True
@@ -85,7 +88,7 @@ def create_app(config_name):
     api.add_resource(Categories, '/categories',
                      '/categories/<int:category_id>')
 
-    #Admin
+    # Admin
     api.add_resource(GetSeller, '/sellers')
     api.add_resource(GetCustomer, '/customers')
     api.add_resource(EnableDisableUser, '/users/<int:users_id>/status')
