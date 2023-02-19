@@ -80,8 +80,8 @@ CREATE TABLE "products"(
 	"product_description" varchar NOT NULL,
 	"category_id" int NOT NULL,
 	"subcategory_id" int,
-	"original_price" FLOAT NOT NULL,
-	"offer_price" FLOAT NOT NULL,
+	"original_price" numeric NOT NULL,
+	"offer_price" numeric NOT NULL,
 	"added_at" timestamptz NOT NULL,
 	"updated_at" timestamptz DEFAULT NULL,
 	"has_variants" BOOLEAN DEFAULT false,
@@ -107,8 +107,8 @@ CREATE TABLE "product_variants"(
 	"product_id" int,
 	"product_variant_name" varchar(50) NOT NULL,
 	"SKU" varchar(50) UNIQUE NOT NULL,
-	"original_price" FLOAT NOT NULL,
-	"offer_price" FLOAT NOT NULL,
+	"original_price" numeric NOT NULL,
+	"offer_price" numeric NOT NULL,
 	"quantity_in_stock" int NOT NULL,
 	FOREIGN KEY("product_id") references "products"("id") ON DELETE CASCADE
 );
@@ -176,18 +176,21 @@ CREATE TABLE "orders"(
 	"grand_total" numeric NOT NULL,
 	FOREIGN KEY("user_id") references "users"("id") ON DELETE CASCADE
 );
-CREATE TABLE "ordered_products"(
-	"order_id" int,
-	"product_id" int,
-	"SKU" varchar,
+CREATE TABLE "order_products"(
+	"order_id" int NOT NULL,
+	"product_id" int NOT NULL,
+	"product_variant_id" int,
+	"quantity" numeric DEFAULT 1,
 	"original_price" numeric NOT NULL,
 	"offer_price" numeric NOT NULL,
 	"discount" numeric NOT NULL,
 	"tax" numeric NOT NULL,
-	"quantity" numeric DEFAULT 1,
+	UNIQUE("order_id", "product_id", "product_variant_id"),
 	FOREIGN KEY("order_id") references "orders"("id") ON DELETE
 	SET NULL,
 		FOREIGN KEY("product_id") references "products"("id") ON DELETE
+	SET NULL,
+		FOREIGN KEY("product_variant_id") references "product_variants"("id") ON DELETE
 	SET NULL
 );
 CREATE TABLE "product_reviews"(
@@ -236,4 +239,7 @@ CREATE TABLE "mobile_otp"(
 ----- Indexes -----
 CREATE INDEX ON "users" ("email");
 CREATE INDEX ON "users" ("phone");
+CREATE INDEX ON "categories" ("name");
+CREATE INDEX ON "products" ("SKU");
+CREATE INDEX ON "product_variants" ("SKU");
 END;
