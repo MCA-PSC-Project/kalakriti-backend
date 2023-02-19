@@ -5,6 +5,7 @@ from flask_restful import Api
 import flask_jwt_extended
 import flask_mail
 import boto3
+import atexit
 
 # local imports
 from app.config import app_config
@@ -94,4 +95,10 @@ def create_app(config_name):
     api.add_resource(EnableDisableUser, '/users/<int:users_id>/status')
     api.add_resource(PromoteToSeller, '/admin/sellers/promote')
 
+    @atexit.register
+    def close_connection_pool():
+        # app.logger.debug(app_globals.db_conn_pool)
+        if app_globals.db_conn_pool:
+            app_globals.db_conn_pool.closeall()
+        app.logger.debug("Connection pool closed")
     return app
