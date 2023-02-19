@@ -26,7 +26,7 @@ class GetSeller(Resource):
 
         seller_list = []
 
-        GET_SELLERS_PROFILE = '''SELECT first_name, last_name, user_type, email, phone, TO_CHAR(dob, 'YYYY-MM-DD'), gender 
+        GET_SELLERS_PROFILE = '''SELECT first_name, last_name, user_type, email, phone, TO_CHAR(dob, 'YYYY-MM-DD'), gender, enabled 
         FROM users WHERE user_type= %s'''
 
         # catch exception for invalid SQL statement
@@ -48,6 +48,7 @@ class GetSeller(Resource):
                 seller_profile_dict['phone'] = row[4]
                 seller_profile_dict['dob'] = row[5]
                 seller_profile_dict['gender'] = row[6]
+                seller_profile_dict['enabled'] = row[7]
                 seller_list.append(seller_profile_dict)
         except (Exception, psycopg2.Error) as err:
             app.logger.debug(err)
@@ -72,7 +73,7 @@ class GetCustomer(Resource):
 
         customer_list = []
 
-        GET_CUSTOMER_PROFILE = '''SELECT first_name, last_name, user_type, email, phone, TO_CHAR(dob, 'YYYY-MM-DD'), gender 
+        GET_CUSTOMER_PROFILE = '''SELECT first_name, last_name, user_type, email, phone, TO_CHAR(dob, 'YYYY-MM-DD'), gender , enabled
         FROM users WHERE user_type= %s'''
 
         # catch exception for invalid SQL statement
@@ -94,6 +95,7 @@ class GetCustomer(Resource):
                 customer_profile_dict['phone'] = row[4]
                 customer_profile_dict['dob'] = row[5]
                 customer_profile_dict['gender'] = row[6]
+                customer_profile_dict['enabled'] = row[7]
                 customer_list.append(customer_profile_dict)
         except (Exception, psycopg2.Error) as err:
             app.logger.debug(err)

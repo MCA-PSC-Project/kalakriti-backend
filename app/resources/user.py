@@ -20,7 +20,7 @@ class UserProfile(Resource):
 
         user_profile_dict = {}
 
-        GET_PROFILE = '''SELECT first_name, last_name, user_type, email, phone, TO_CHAR(dob, 'YYYY-MM-DD'), gender 
+        GET_PROFILE = '''SELECT first_name, last_name, user_type, email, phone, TO_CHAR(dob, 'YYYY-MM-DD'), gender , enabled
         FROM users WHERE id= %s'''
 
         # catch exception for invalid SQL statement
@@ -40,6 +40,7 @@ class UserProfile(Resource):
             user_profile_dict['phone'] = row[4]
             user_profile_dict['dob'] = row[5]
             user_profile_dict['gender'] = row[6]
+            user_profile_dict['enabled'] = row[7]
         except (Exception, psycopg2.Error) as err:
             app.logger.debug(err)
             abort(400, 'Bad Request')
