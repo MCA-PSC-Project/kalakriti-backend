@@ -14,6 +14,7 @@ from app.resources.user import UserProfile, ResetEmail, ResetPhone, ResetPasswor
 from app.resources.media import UploadImage, UploadAudio, UploadVideo, UploadFile, DeleteMedia
 from app.resources.categories import Categories
 from app.resources.admin import GetSeller, GetCustomer, EnableDisableUser, PromoteToSeller
+from app.resources.super_admin import GetAllAdmins, PromoteToAdmin
 
 import app.app_globals as app_globals
 
@@ -94,6 +95,10 @@ def create_app(config_name):
     api.add_resource(GetCustomer, '/customers')
     api.add_resource(EnableDisableUser, '/users/<int:users_id>/status')
     api.add_resource(PromoteToSeller, '/admin/sellers/promote')
+
+    #Super_Admin
+    api.add_resource(GetAllAdmins, '/admins')
+    api.add_resource(PromoteToAdmin, '/super-admin/admin/promote')
 
     @atexit.register
     def close_connection_pool():
