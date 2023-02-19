@@ -71,6 +71,9 @@ class UserProfile(Resource):
             cursor.execute(
                 UPDATE_USER, (user_dict['first_name'], user_dict['last_name'], user_dict['dob'],
                               user_dict['gender'], current_time, user_id,))
+            # app.logger.debug("row_counts= %s", cursor.rowcount)
+            if cursor.rowcount != 1:
+                abort(400, 'Bad Request: update row error')
         except (Exception, psycopg2.Error) as err:
             app.logger.debug(err)
             abort(400, 'Bad Request')
@@ -93,6 +96,9 @@ class UserProfile(Resource):
             app.logger.debug("cursor object: %s", cursor, "\n")
 
             cursor.execute(DELETE_USER, (user_id,))
+            # app.logger.debug("row_counts= %s", cursor.rowcount)
+            if cursor.rowcount != 1:
+                abort(400, 'Bad Request: delete row error')
         except (Exception, psycopg2.Error) as err:
             app.logger.debug(err)
             abort(400, 'Bad Request')

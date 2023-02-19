@@ -219,8 +219,11 @@ class VerifyEmail(Resource):
                 cursor = app_globals.get_cursor()
                 # app.logger.debug("cursor object: %s", cursor)
 
-                cursor.execute(
-                    UPDATE_CONFIRM_USER, (is_verified, current_time, user_id,))
+                cursor.execute(UPDATE_CONFIRM_USER,
+                               (is_verified, current_time, user_id,))
+                # app.logger.debug("row_counts= %s", cursor.rowcount)
+                if cursor.rowcount != 1:
+                    abort(400, 'Bad Request: update row error')
             except (Exception, psycopg2.Error) as err:
                 app.logger.debug(err)
                 abort(400, 'Bad Request')

@@ -134,7 +134,9 @@ class EnableDisableUser(Resource):
 
             cursor.execute(
                 UPDATE_USER, (user_dict['enabled'], current_time, users_id,))
-
+             # app.logger.debug("row_counts= %s", cursor.rowcount)
+            if cursor.rowcount != 1:
+                abort(400, 'Bad Request: update row error')
         except (Exception, psycopg2.Error) as err:
             app.logger.debug(err)
             abort(400, 'Bad Request')

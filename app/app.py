@@ -96,7 +96,7 @@ def create_app(config_name):
     api.add_resource(EnableDisableUser, '/users/<int:users_id>/status')
     api.add_resource(PromoteToSeller, '/admin/sellers/promote')
 
-    #Super_Admin
+    # Super_Admin
     api.add_resource(GetAllAdmins, '/admins')
     api.add_resource(PromoteToAdmin, '/super-admin/admin/promote')
 
