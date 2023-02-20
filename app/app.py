@@ -15,6 +15,7 @@ from app.resources.media import UploadImage, UploadAudio, UploadVideo, UploadFil
 from app.resources.categories import Categories
 from app.resources.admin import GetSeller, GetCustomer, EnableDisableUser, PromoteToSeller
 from app.resources.super_admin import GetAllAdmins, PromoteToAdmin
+from app.resources.banners import Banners
 
 import app.app_globals as app_globals
 
@@ -99,6 +100,10 @@ def create_app(config_name):
     # Super_Admin related endpoints
     api.add_resource(GetAllAdmins, '/admins')
     api.add_resource(PromoteToAdmin, '/super-admin/admin/promote')
+
+    #banners
+    api.add_resource(Banners, '/banners', 
+                    '/banners/<int:banner_id>')
 
     # to be exceuted at app exit for cleanups
     @atexit.register
