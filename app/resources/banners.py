@@ -20,9 +20,8 @@ class Banners(Resource):
         redirect_type = data.get("redirect_type", None)
         redirect_url = data.get("redirect_url", None)
 
-
         if user_type != "admin" and user_type != "super_admin":
-            abort(400, "super-admins and admins can create categories only")
+            abort(400, "only super-admins and admins can create banner")
 
         CREATE_BANNER = '''INSERT INTO banners(media_id, redirect_type, redirect_url)
         VALUES(%s,%s, %s) RETURNING id'''
@@ -32,7 +31,8 @@ class Banners(Resource):
             cursor = app_globals.get_cursor()
             # app.logger.debug("cursor object: %s", cursor)
 
-            cursor.execute(CREATE_BANNER, (media_id, redirect_type, redirect_url,))
+            cursor.execute(
+                CREATE_BANNER, (media_id, redirect_type, redirect_url,))
             id = cursor.fetchone()[0]
         except (Exception, psycopg2.Error) as err:
             app.logger.debug(err)
@@ -42,7 +42,7 @@ class Banners(Resource):
         return f"banner_id =  {id} created sucessfully", 201
 
     def get(self):
-        banners_list=[]
+        banners_list = []
 
         GET_BANNERS = '''SELECT media_id, redirect_type, redirect_url FROM banners'''
 
@@ -80,11 +80,10 @@ class Banners(Resource):
         banner_dict = json.loads(json.dumps(data))
         app.logger.debug(banner_dict)
 
+        if user_type != "admin" and user_type != "super_admin":
+            abort(400, "only super-admins and admins can update banners")
 
-        if user_type == "customer" and user_type == "seller":
-            abort(400, "super-admins and admins can update banners")
-
-        UPDATE_CATEGORY = 'UPDATE banners SET redirect_type= %s, redirect_url= %s WHERE id= %s'
+        UPDATE_BANNER = 'UPDATE banners SET redirect_type= %s, redirect_url= %s WHERE id= %s'
 
         # catch exception for invalid SQL statement
         try:
@@ -93,7 +92,7 @@ class Banners(Resource):
             # app.logger.debug("cursor object: %s", cursor)
 
             cursor.execute(
-                UPDATE_CATEGORY, (banner_dict['redirect_type'], banner_dict['redirect_url'],banner_id,))
+                UPDATE_BANNER, (banner_dict['redirect_type'], banner_dict['redirect_url'], banner_id,))
             # app.logger.debug("row_counts= %s", cursor.rowcount)
             if cursor.rowcount != 1:
                 abort(400, 'Bad Request: update row error')
@@ -112,9 +111,9 @@ class Banners(Resource):
         user_type = claims['user_type']
 
         if user_type != "admin" and user_type != "super_admin":
-            abort(400, "super-admins and admins can create categories only")
+            abort(400, "Only super-admins and admins can delete banner")
 
-        DELETE_BANNERS = 'DELETE FROM banners WHERE id= %s'
+        DELETE_BANNER = 'DELETE FROM banners WHERE id= %s'
 
         # catch exception for invalid SQL statement
         try:
@@ -122,7 +121,7 @@ class Banners(Resource):
             cursor = app_globals.get_cursor()
             app.logger.debug("cursor object: %s", cursor, "\n")
 
-            cursor.execute(DELETE_BANNERS, (banner_id,))
+            cursor.execute(DELETE_BANNER, (banner_id,))
             # app.logger.debug("row_counts= %s", cursor.rowcount)
             if cursor.rowcount != 1:
                 abort(400, 'Bad Request: delete row error')

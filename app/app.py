@@ -101,9 +101,9 @@ def create_app(config_name):
     api.add_resource(GetAllAdmins, '/admins')
     api.add_resource(PromoteToAdmin, '/super-admin/admin/promote')
 
-    #banners
-    api.add_resource(Banners, '/banners', 
-                    '/banners/<int:banner_id>')
+    # Banners
+    api.add_resource(Banners, '/banners',
+                     '/banners/<int:banner_id>')
 
     # to be exceuted at app exit for cleanups
     @atexit.register
