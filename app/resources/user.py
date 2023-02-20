@@ -45,17 +45,17 @@ class UserProfile(Resource):
             user_profile_dict['gender'] = row[6]
             user_profile_dict['enabled'] = row[7]
 
-            media_dict = {}
-            media_dict['id'] = row[8]
-            media_dict['name'] = row[9]
+            dp_media_dict = {}
+            dp_media_dict['id'] = row[8]
+            dp_media_dict['name'] = row[9]
             # media_dict['path'] = row[10]
             path = row[10]
             if path is not None:
-                media_dict['path'] = "{}/{}".format(
+                dp_media_dict['path'] = "{}/{}".format(
                     app.config["S3_LOCATION"], row[10])
             else:
-                media_dict['path'] = None
-            user_profile_dict.update({"media": media_dict})
+                dp_media_dict['path'] = None
+            user_profile_dict.update({"dp": dp_media_dict})
         except (Exception, psycopg2.Error) as err:
             app.logger.debug(err)
             abort(400, 'Bad Request')
