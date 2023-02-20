@@ -65,16 +65,20 @@ class Categories(Resource):
                 return {}
             for row in rows:
                 category_dict = {}
-                media_dict = {}
+                cover_media_dict = {}
                 category_dict['id'] = row[0]
                 category_dict['name'] = row[1]
                 category_dict['parent_id'] = row[2]
-                media_dict['id'] = row[3]
-                media_dict['name'] = row[4]
+                cover_media_dict['id'] = row[3]
+                cover_media_dict['name'] = row[4]
                 # media_dict['path'] = row[5]
-                media_dict['path'] = "{}/{}".format(
-                    app.config["S3_LOCATION"], row[5])
-                category_dict.update({"media": media_dict})
+                path = row[5]
+                if path is not None:
+                    cover_media_dict['path'] = "{}/{}".format(
+                        app.config["S3_LOCATION"], row[5])
+                else:
+                    cover_media_dict['path'] = None
+                category_dict.update({"cover": cover_media_dict})
                 categories_list.append(category_dict)
 
             for i in range(0, len(categories_list)):
@@ -96,16 +100,20 @@ class Categories(Resource):
                         continue
                     for row in rows:
                         subcategory_dict = {}
-                        media_dict = {}
+                        cover_media_dict = {}
                         subcategory_dict['id'] = row[0]
                         subcategory_dict['name'] = row[1]
                         subcategory_dict['parent_id'] = row[2]
-                        media_dict['id'] = row[3]
-                        media_dict['name'] = row[4]
+                        cover_media_dict['id'] = row[3]
+                        cover_media_dict['name'] = row[4]
                         # media_dict['path'] = row[5]
-                        media_dict['path'] = "{}/{}".format(
-                            app.config["S3_LOCATION"], row[5])
-                        subcategory_dict.update({"media": media_dict})
+                        path = row[5]
+                        if path is not None:
+                            cover_media_dict['path'] = "{}/{}".format(
+                                app.config["S3_LOCATION"], row[5])
+                        else:
+                            cover_media_dict['path'] = None
+                        subcategory_dict.update({"cover": cover_media_dict})
                         subcategories_list.append(subcategory_dict)
                         categories_list[i].update(
                             {'subcategories': subcategories_list})
