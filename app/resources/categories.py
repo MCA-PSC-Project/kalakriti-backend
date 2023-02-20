@@ -71,7 +71,9 @@ class Categories(Resource):
                 category_dict['parent_id'] = row[2]
                 media_dict['id'] = row[3]
                 media_dict['name'] = row[4]
-                media_dict['path'] = row[5]
+                # media_dict['path'] = row[5]
+                media_dict['path'] = "{}/{}".format(
+                    app.config["S3_LOCATION"], row[5])
                 category_dict.update({"media": media_dict})
                 categories_list.append(category_dict)
 
@@ -100,7 +102,9 @@ class Categories(Resource):
                         subcategory_dict['parent_id'] = row[2]
                         media_dict['id'] = row[3]
                         media_dict['name'] = row[4]
-                        media_dict['path'] = row[5]
+                        # media_dict['path'] = row[5]
+                        media_dict['path'] = "{}/{}".format(
+                            app.config["S3_LOCATION"], row[5])
                         subcategory_dict.update({"media": media_dict})
                         subcategories_list.append(subcategory_dict)
                         categories_list[i].update(
