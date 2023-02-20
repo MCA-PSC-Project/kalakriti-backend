@@ -89,7 +89,7 @@ CREATE TABLE "products"(
 );
 CREATE TABLE "variants" (
 	"id" SERIAL PRIMARY KEY,
-	"variant_name" VARCHAR NOT NULL
+	"variant" VARCHAR NOT NULL
 );
 CREATE TABLE "variant_value"(
 	"id" SERIAL PRIMARY KEY,
@@ -105,7 +105,7 @@ CREATE TABLE "product_items"(
 	"original_price" NUMERIC NOT NULL,
 	"offer_price" NUMERIC NOT NULL,
 	"quantity_in_stock" INT NOT NULL,
-	-- "is_default" BOOLEAN NOT NULL DEFAULT TRUE,
+	"is_base" BOOLEAN NOT NULL DEFAULT TRUE,
 	FOREIGN KEY("product_id") REFERENCES "products"("id") ON DELETE CASCADE
 );
 CREATE TABLE "product_item_values"(
