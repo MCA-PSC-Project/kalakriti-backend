@@ -1,0 +1,97 @@
+[
+  {
+    "_id": "54272c7e-fbf6-40c2-abdc-32d096c941c5",
+    "name": "Local",
+    "default": true,
+    "sortNum": 10000,
+    "created": "2023-02-20T16:39:20.436Z",
+    "modified": "2023-02-20T16:39:20.436Z",
+    "data": [
+      {
+        "name": "baseUrl",
+        "value": "http://localhost:5000"
+      }
+    ]
+  },
+  {
+    "_id": "d74fa26a-7586-4245-b00c-a39671e45841",
+    "name": "Dev",
+    "default": false,
+    "sortNum": 20000,
+    "created": "2023-02-20T16:39:20.441Z",
+    "modified": "2023-02-20T16:39:20.441Z",
+    "data": [
+      {
+        "name": "baseUrl",
+        "value": "https://kalakriti-backend.onrender.com"
+      }
+    ]
+  },
+  {
+    "_id": "22012c0a-b7d7-4404-a1e6-11ba90d47c92",
+    "name": "Release",
+    "default": false,
+    "sortNum": 30000,
+    "created": "2023-02-20T16:39:20.445Z",
+    "modified": "2023-02-20T16:39:20.445Z",
+    "data": [
+      {
+        "name": "baseUrl",
+        "value": "https://kalakriti-backend.onrender.com"
+      }
+    ]
+  },
+  {
+    "_id": "ff90d057-c9b3-492d-8366-d67111216ab0",
+    "name": "Base Environment",
+    "default": false,
+    "sortNum": 40000,
+    "created": "2023-02-20T16:39:20.451Z",
+    "modified": "2023-02-20T16:39:20.451Z",
+    "data": [
+      {
+        "name": "token",
+        "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6dHJ1ZSwiaWF0IjoxNjc2NjM4ODE0LCJqdGkiOiI5NjlhMTVkYS1iMjIzLTQwMTgtYWZjZi02M2NlMjFiNGM5NjEiLCJ0eXBlIjoiYWNjZXNzIiwic3ViIjo1LCJuYmYiOjE2NzY2Mzg4MTQsImV4cCI6MTY3NjY0MjQxNCwidXNlcl90eXBlIjoiY3VzdG9tZXIifQ.Y1A6yNkRsmQfkZlJj85N9YJB7MJwiNhp6vLdB7ygnNg"
+      },
+      {
+        "name": "seller_token",
+        "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6dHJ1ZSwiaWF0IjoxNjc2MzA5NDUyLCJqdGkiOiIwYzQ0OWM4OC1iMzdmLTQ1YTMtYjhjOS0zNGM5OWE2Njc2M2UiLCJ0eXBlIjoiYWNjZXNzIiwic3ViIjoxLCJuYmYiOjE2NzYzMDk0NTIsImV4cCI6MTY3NjMxMzA1MiwidXNlcl90eXBlIjoiY3VzdG9tZXIifQ.jSZX9N--h3GSYYgAXGq9qFDb7dryuph1qrUeuDpIko4"
+      },
+      {
+        "name": "admin_token",
+        "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6dHJ1ZSwiaWF0IjoxNjc2MzA5NDUyLCJqdGkiOiIwYzQ0OWM4OC1iMzdmLTQ1YTMtYjhjOS0zNGM5OWE2Njc2M2UiLCJ0eXBlIjoiYWNjZXNzIiwic3ViIjoxLCJuYmYiOjE2NzYzMDk0NTIsImV4cCI6MTY3NjMxMzA1MiwidXNlcl90eXBlIjoiY3VzdG9tZXIifQ.jSZX9N--h3GSYYgAXGq9qFDb7dryuph1qrUeuDpIko4"
+      },
+      {
+        "name": "super_admin_token",
+        "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6dHJ1ZSwiaWF0IjoxNjc2MzA5NDUyLCJqdGkiOiIwYzQ0OWM4OC1iMzdmLTQ1YTMtYjhjOS0zNGM5OWE2Njc2M2UiLCJ0eXBlIjoiYWNjZXNzIiwic3ViIjoxLCJuYmYiOjE2NzYzMDk0NTIsImV4cCI6MTY3NjMxMzA1MiwidXNlcl90eXBlIjoiY3VzdG9tZXIifQ.jSZX9N--h3GSYYgAXGq9qFDb7dryuph1qrUeuDpIko4"
+      }
+    ]
+  },
+  {
+    "_id": "5c1081a0-10e2-4059-9303-78df54800229",
+    "name": "(Global Env)",
+    "default": false,
+    "global": true,
+    "sortNum": -2,
+    "created": "2023-02-20T16:51:11.153Z",
+    "modified": "2023-02-20T16:51:11.153Z",
+    "data": [
+      {
+        "name": "token",
+        "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6dHJ1ZSwiaWF0IjoxNjc2OTExNjM0LCJqdGkiOiI3MGM1NThkMy0wOWVmLTRlYmUtOWU5Zi1kZGE1OWVlZTZkYzMiLCJ0eXBlIjoiYWNjZXNzIiwic3ViIjoxLCJuYmYiOjE2NzY5MTE2MzQsImV4cCI6MTY3NjkxNTIzNCwidXNlcl90eXBlIjoiY3VzdG9tZXIifQ.TbtxdI4LCJekNeKtM2Ny9bosumowmDsCVKpWCUuEStI"
+      },
+      {
+        "name": "seller_token",
+        "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6dHJ1ZSwiaWF0IjoxNjc2OTExNjM0LCJqdGkiOiI3MGM1NThkMy0wOWVmLTRlYmUtOWU5Zi1kZGE1OWVlZTZkYzMiLCJ0eXBlIjoiYWNjZXNzIiwic3ViIjoxLCJuYmYiOjE2NzY5MTE2MzQsImV4cCI6MTY3NjkxNTIzNCwidXNlcl90eXBlIjoiY3VzdG9tZXIifQ.TbtxdI4LCJekNeKtM2Ny9bosumowmDsCVKpWCUuEStI"
+      },
+      {
+        "name": "admin_token",
+        "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6dHJ1ZSwiaWF0IjoxNjc2OTExNjM0LCJqdGkiOiI3MGM1NThkMy0wOWVmLTRlYmUtOWU5Zi1kZGE1OWVlZTZkYzMiLCJ0eXBlIjoiYWNjZXNzIiwic3ViIjoxLCJuYmYiOjE2NzY5MTE2MzQsImV4cCI6MTY3NjkxNTIzNCwidXNlcl90eXBlIjoiY3VzdG9tZXIifQ.TbtxdI4LCJekNeKtM2Ny9bosumowmDsCVKpWCUuEStI"
+      },
+      {
+        "name": "super_admin_token",
+        "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6dHJ1ZSwiaWF0IjoxNjc2OTExNjM0LCJqdGkiOiI3MGM1NThkMy0wOWVmLTRlYmUtOWU5Zi1kZGE1OWVlZTZkYzMiLCJ0eXBlIjoiYWNjZXNzIiwic3ViIjoxLCJuYmYiOjE2NzY5MTE2MzQsImV4cCI6MTY3NjkxNTIzNCwidXNlcl90eXBlIjoiY3VzdG9tZXIifQ.TbtxdI4LCJekNeKtM2Ny9bosumowmDsCVKpWCUuEStI"
+      }
+    ]
+  }
+]
