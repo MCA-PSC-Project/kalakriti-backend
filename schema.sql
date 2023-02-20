@@ -237,4 +237,10 @@ CREATE INDEX ON "users" ("email");
 CREATE INDEX ON "users" ("phone");
 CREATE INDEX ON "categories" ("name");
 CREATE INDEX ON "product_items" ("SKU");
+
+----- Inserts -----
+INSERT INTO "variants"("variant") VALUES ('BASE');
+INSERT INTO "variants"("variant") VALUES ('COLOR');
+INSERT INTO "variants"("variant") VALUES ('MATERIAL');
+INSERT INTO "variants"("variant") VALUES ('SIZE');
 END;
