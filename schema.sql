@@ -105,8 +105,14 @@ CREATE TABLE "product_items"(
 	"original_price" NUMERIC NOT NULL,
 	"offer_price" NUMERIC NOT NULL,
 	"quantity_in_stock" INT NOT NULL,
-	"is_base" BOOLEAN NOT NULL DEFAULT TRUE,
+	-- "is_base" BOOLEAN NOT NULL DEFAULT TRUE,
 	FOREIGN KEY("product_id") REFERENCES "products"("id") ON DELETE CASCADE
+);
+CREATE TABLE "product_base_item"(
+	"product_id" INT NOT NULL UNIQUE,
+	"product_item_id" INT NOT NULL UNIQUE,
+	FOREIGN KEY("product_id") REFERENCES "products"("id") ON DELETE CASCADE,
+	FOREIGN KEY("product_item_id") REFERENCES "product_items"("id") ON DELETE CASCADE
 );
 CREATE TABLE "product_item_values"(
 	"id" SERIAL PRIMARY KEY,
@@ -237,10 +243,13 @@ CREATE INDEX ON "users" ("email");
 CREATE INDEX ON "users" ("phone");
 CREATE INDEX ON "categories" ("name");
 CREATE INDEX ON "product_items" ("SKU");
-
 ----- Inserts -----
-INSERT INTO "variants"("variant") VALUES ('BASE');
-INSERT INTO "variants"("variant") VALUES ('COLOR');
-INSERT INTO "variants"("variant") VALUES ('MATERIAL');
-INSERT INTO "variants"("variant") VALUES ('SIZE');
+INSERT INTO "variants"("variant")
+VALUES ('BASE');
+INSERT INTO "variants"("variant")
+VALUES ('COLOR');
+INSERT INTO "variants"("variant")
+VALUES ('MATERIAL');
+INSERT INTO "variants"("variant")
+VALUES ('SIZE');
 END;
