@@ -20,8 +20,11 @@ class UserProfile(Resource):
 
         user_profile_dict = {}
 
-        GET_PROFILE = '''SELECT first_name, last_name, user_type, email, phone, TO_CHAR(dob, 'YYYY-MM-DD'), gender , enabled
-        FROM users WHERE id= %s'''
+        GET_PROFILE = '''SELECT u.first_name, u.last_name, u.user_type, u.email, u.phone, 
+        TO_CHAR(u.dob, 'YYYY-MM-DD'), u.gender , u.enabled,
+        m.id, m.name, m.path
+        FROM users u LEFT JOIN media m on u.dp_id = m.id 
+        WHERE u.id= %s'''
 
         # catch exception for invalid SQL statement
         try:
@@ -41,6 +44,18 @@ class UserProfile(Resource):
             user_profile_dict['dob'] = row[5]
             user_profile_dict['gender'] = row[6]
             user_profile_dict['enabled'] = row[7]
+
+            media_dict = {}
+            media_dict['id'] = row[8]
+            media_dict['name'] = row[9]
+            # media_dict['path'] = row[10]
+            path = row[10]
+            if path is not None:
+                media_dict['path'] = "{}/{}".format(
+                    app.config["S3_LOCATION"], row[10])
+            else:
+                media_dict['path'] = None
+            user_profile_dict.update({"media": media_dict})
         except (Exception, psycopg2.Error) as err:
             app.logger.debug(err)
             abort(400, 'Bad Request')
