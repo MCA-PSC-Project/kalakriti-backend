@@ -91,6 +91,7 @@ CREATE TABLE "products"(
 	"seller_user_id" INT NOT NULL,
 	"currency" varchar(5) DEFAULT 'INR',
 	"product_status" product__status DEFAULT ('draft'),
+	"tags" text [],
 	"added_at" TIMESTAMPTZ NOT NULL,
 	"updated_at" TIMESTAMPTZ DEFAULT NULL,
 	FOREIGN KEY("category_id") REFERENCES "categories"("id") ON DELETE
@@ -101,9 +102,9 @@ CREATE TABLE "products"(
 );
 CREATE TABLE "variants" (
 	"id" SERIAL PRIMARY KEY,
-	"variant" VARCHAR NOT NULL
+	"variant" VARCHAR NOT NULL UNIQUE
 );
-CREATE TABLE "variant_value"(
+CREATE TABLE "variant_values"(
 	"id" SERIAL PRIMARY KEY,
 	"variant_id" INT,
 	"value" VARCHAR(50) NOT NULL,
@@ -131,7 +132,7 @@ CREATE TABLE "product_item_values"(
 	"product_item_id" INT,
 	"variant_value_id" INT,
 	FOREIGN KEY("product_item_id") REFERENCES "product_items"("id") ON DELETE CASCADE,
-	FOREIGN KEY("variant_value_id") REFERENCES "variant_value"("id") ON DELETE CASCADE
+	FOREIGN KEY("variant_value_id") REFERENCES "variant_values"("id") ON DELETE CASCADE
 );
 CREATE TABLE "product_medias"(
 	-- "id" SERIAL PRIMARY KEY,
