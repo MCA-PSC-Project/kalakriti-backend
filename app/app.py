@@ -10,6 +10,7 @@ import atexit
 # local imports
 from app.config import app_config
 from app.resources.auth import Register, Login, RefreshToken, VerifyEmail
+from app.resources.product import Products
 from app.resources.user import UserProfile, ResetEmail, ResetPhone, ResetPassword
 from app.resources.media import UploadImage, UploadAudio, UploadVideo, UploadFile, DeleteMedia
 from app.resources.categories import Categories
@@ -105,6 +106,9 @@ def create_app(config_name):
     api.add_resource(Banners, '/banners',
                      '/banners/<int:banner_id>')
 
+    # Products
+    api.add_resource(Products, '/products',
+                     '/products/<int:product_id>')
     # to be exceuted at app exit for cleanups
     @atexit.register
     def close_connection_pool():

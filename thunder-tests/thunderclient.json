@@ -26,16 +26,16 @@
     "method": "POST",
     "sortNum": 20000,
     "created": "2023-02-20T16:38:51.029Z",
-    "modified": "2023-02-20T16:47:14.755Z",
+    "modified": "2023-02-21T05:20:16.370Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n\t\"email\": \"mywebnewslettersinbox123@gmail.com\",\n\t\"password\": \"abcd@123\"\n}",
+      "raw": "{\r\n    \"email\": \"seller@gmail.com\",\r\n    \"password\": \"abcd@123\"\r\n}",
       "form": []
     },
     "tests": [],
-    "docs": "```json\n{\n\t\"email\": \"sheetal@gmail.com\",\n\t\"password\": \"abcd@123\"\n}\n```"
+    "docs": "```json\n{\n\t\"email\": \"sheetal@gmail.com\",\n\t\"password\": \"abcd@123\"\n}\n```\n\n```json\n{\n\t\"email\": \"mywebnewslettersinbox123@gmail.com\",\n\t\"password\": \"abcd@123\"\n}\n```\n\n```json\n{\n\t\"email\": \"seller@gmail.com\",\n\t\"password\": \"abcd@123\"\n}\n```\n"
   },
   {
     "_id": "e4888b8e-9242-4be3-8747-c2cd265f5c50",
@@ -1135,18 +1135,19 @@
     "method": "POST",
     "sortNum": 550000,
     "created": "2023-02-20T16:38:51.083Z",
-    "modified": "2023-02-20T16:38:51.083Z",
+    "modified": "2023-02-21T06:15:48.798Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n\t\"description\" : \"\"\n}\n"
+      "raw": "{\n  \"product_name\": \"paitning\",\n  \"product_description\": \"dxvxk\",\n  \"category_id\": 4,\n  \"subcategory_id\": null,\n  \"currency\": \"INR\",\n  \"tags\": [\n    \"painting\",\n    \"madhubani\"\n  ],\n  \"product_items\": [\n    {\n      \"variant\": \"BASE\",\n      \"variant_value\": \"BASE\",\n      \"product_variant_name\": \"BASE\",\n      \"SKU\": \"abc\",\n      \"original_price\": 1000,\n      \"offer_price\": 500,\n      \"quantity_in_stock\": 10\n    }\n  ]\n}",
+      "form": []
     },
     "auth": {
       "type": "bearer",
-      "bearer": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2NDIyNDY5MTUsImlkIjoyLCJ1c2VyX3R5cGUiOiJlZHVjYXRvciJ9.9S-vO3PAvjTlQp2WrGhOb7EUjVu4Z8zMkEcYFQ6Hv88"
+      "bearer": "{{seller_token}}"
     },
-    "docs": ""
+    "tests": []
   },
   {
     "_id": "142e64b1-99ee-4aec-816e-ab7a181e5059",
