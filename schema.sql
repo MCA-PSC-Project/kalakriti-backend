@@ -3,6 +3,14 @@ BEGIN;
 CREATE TYPE "media__type" AS ENUM ('image', 'audio', 'video', 'file');
 CREATE TYPE "user__type" AS ENUM ('customer', 'seller', 'admin', 'super_admin');
 CREATE TYPE "gender__type" AS ENUM ('male', 'female', 'other');
+CREATE TYPE "product__status" AS ENUM (
+	'published',
+	'unpublished',
+	'draft',
+	'submitted_for_review',
+	'review_rejected',
+	'trashed'
+);
 CREATE TYPE "order__status" AS ENUM (
 	'initiated',
 	'pending',
@@ -80,12 +88,16 @@ CREATE TABLE "products"(
 	"product_description" VARCHAR NOT NULL,
 	"category_id" INT,
 	"subcategory_id" INT,
+	"seller_user_id" INT NOT NULL,
+	"currency" varchar(5) DEFAULT 'INR',
+	"product_status" product__status DEFAULT ('draft'),
 	"added_at" TIMESTAMPTZ NOT NULL,
 	"updated_at" TIMESTAMPTZ DEFAULT NULL,
 	FOREIGN KEY("category_id") REFERENCES "categories"("id") ON DELETE
 	SET NULL,
 		FOREIGN KEY("subcategory_id") REFERENCES "categories"("id") ON DELETE
-	SET NULL
+	SET NULL,
+		FOREIGN KEY("seller_user_id") REFERENCES "users"("id") ON DELETE
 );
 CREATE TABLE "variants" (
 	"id" SERIAL PRIMARY KEY,
