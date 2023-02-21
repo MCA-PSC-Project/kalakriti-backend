@@ -1099,14 +1099,14 @@
     "colId": "80d178ef-5176-474a-8708-db78bd45faee",
     "containerId": "d3f02f76-889e-4a8d-88e7-d026529d83a9",
     "name": "get product by id",
-    "url": "{{baseUrl}}/products/60",
+    "url": "{{baseUrl}}/products/26",
     "method": "GET",
     "sortNum": 530000,
     "created": "2023-02-20T16:38:51.081Z",
-    "modified": "2023-02-20T16:38:51.081Z",
+    "modified": "2023-02-21T16:59:20.374Z",
     "headers": [],
     "params": [],
-    "docs": ""
+    "tests": []
   },
   {
     "_id": "3e159fa3-6e0e-46bc-b06f-8585033e42c5",

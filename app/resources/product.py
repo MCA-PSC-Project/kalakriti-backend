@@ -9,6 +9,7 @@ from flask import current_app as app
 
 
 class Products(Resource):
+    # todo: work on medias and tags
     @f_jwt.jwt_required()
     def post(self):
         user_id = f_jwt.get_jwt_identity()
@@ -92,96 +93,70 @@ class Products(Resource):
             cursor.close()
         app_globals.db_conn.commit()
         app_globals.db_conn.autocommit = True
-        return f"product_id = {product_id} with product_item_id= {product_item_id} created sucessfully", 201
+        return f"product_id = {product_id} with product_item_id= {product_item_id} created successfully", 201
 
-    def get(self):
-        categories_list = []
-        GET_CATEGORY = '''SELECT c.id, c.name, c.parent_id,
-        m.id, m.name, m.path
-		FROM categories c LEFT JOIN media m ON m.id= cover_id
-		WHERE c.parent_id IS NULL
-		ORDER BY c.id DESC'''
+    def get(self, product_id):
+        product_dict = {}
+
+        GET_PRODUCT = '''SELECT p.id, p.product_name, p.product_description, 
+        ct.id, ct.name,
+        sct.id, sct.name, sct.parent_id, 
+        p.currency, p.product_status,
+        p.added_at, p.updated_at, 
+        u.id, u.first_name, u.last_name, u.email 
+        FROM products p 
+        JOIN categories ct ON p.category_id = ct.id
+        LEFT JOIN categories sct ON p.subcategory_id = sct.id
+        JOIN users u ON p.seller_user_id = u.id 
+        WHERE p.id= %s'''
 
         # catch exception for invalid SQL statement
         try:
             # declare a cursor object from the connection
-            # cursor = app_globals.get_cursor()
             cursor = app_globals.get_cursor()
-            app.logger.debug("cursor object: %s", cursor)
+            # app.logger.debug("cursor object: %s", cursor)
 
-            cursor.execute(GET_CATEGORY)
-            rows = cursor.fetchall()
-            if not rows:
-                return {}
-            for row in rows:
-                category_dict = {}
-                cover_media_dict = {}
-                category_dict['id'] = row[0]
-                category_dict['name'] = row[1]
-                category_dict['parent_id'] = row[2]
-                cover_media_dict['id'] = row[3]
-                cover_media_dict['name'] = row[4]
-                # media_dict['path'] = row[5]
-                path = row[5]
-                if path is not None:
-                    cover_media_dict['path'] = "{}/{}".format(
-                        app.config["S3_LOCATION"], row[5])
-                else:
-                    cover_media_dict['path'] = None
-                category_dict.update({"cover": cover_media_dict})
-                categories_list.append(category_dict)
+            cursor.execute(GET_PRODUCT, (product_id,))
+            row = cursor.fetchone()
+            if row is None:
+                abort(400, 'Bad Request')
+            product_dict['id'] = row[0]
+            product_dict['product_name'] = row[1]
+            product_dict['product_description'] = row[2]
 
-            for i in range(0, len(categories_list)):
-                subcategories_list = []
-                GET_SUBCATEGORIES = '''SELECT c.id, c.name,c.parent_id,
-                m.id, m.name, m.path
-                FROM categories c LEFT JOIN media m on c.cover_id = m.id
-                WHERE c.parent_id = %s ORDER BY c.id'''
+            category_dict = {}
+            category_dict['id'] = row[3]
+            category_dict['name'] = row[4]
+            product_dict.update({"category": category_dict})
 
-                try:
-                    # declare a cursor object from the connection
-                    cursor = app_globals.get_cursor()
-                    # app.logger.debug("cursor object: %s", cursor)
-                    # app.logger.debug(categories_list[i]['id'])
-                    cursor.execute(GET_SUBCATEGORIES,
-                                   (str(categories_list[i]['id']),))
-                    rows = cursor.fetchall()
-                    if not rows:
-                        continue
-                    for row in rows:
-                        subcategory_dict = {}
-                        cover_media_dict = {}
-                        subcategory_dict['id'] = row[0]
-                        subcategory_dict['name'] = row[1]
-                        subcategory_dict['parent_id'] = row[2]
-                        cover_media_dict['id'] = row[3]
-                        cover_media_dict['name'] = row[4]
-                        # media_dict['path'] = row[5]
-                        path = row[5]
-                        if path is not None:
-                            cover_media_dict['path'] = "{}/{}".format(
-                                app.config["S3_LOCATION"], row[5])
-                        else:
-                            cover_media_dict['path'] = None
-                        subcategory_dict.update({"cover": cover_media_dict})
-                        subcategories_list.append(subcategory_dict)
-                        categories_list[i].update(
-                            {'subcategories': subcategories_list})
-                except (Exception, psycopg2.Error) as err:
-                    app.logger.debug(err)
-                    abort(400, 'Bad Request')
-                finally:
-                    cursor.close()
+            subcategory_dict = {}
+            subcategory_dict['id'] = row[5]
+            subcategory_dict['name'] = row[6]
+            subcategory_dict['parent_id'] = row[7]
+            product_dict.update({"subcategory": subcategory_dict})
 
+            product_dict['currency'] = row[8]
+            product_dict['product_status'] = row[9]
+            # product_dict['added_at'] = row[9].isoformat()
+            product_dict.update(json.loads(
+                json.dumps({'added_at': row[10]}, default=str)))
+            # product_dict['updated_at'] = row[10].isoformat()
+            product_dict.update(json.loads(
+                json.dumps({'updated_at': row[11]}, default=str)))
+
+            seller_dict = {}
+            seller_dict['id'] = row[12]
+            seller_dict['first_name'] = row[13]
+            seller_dict['last_name'] = row[14]
+            seller_dict['email'] = row[15]
+            product_dict.update({"seller": seller_dict})
         except (Exception, psycopg2.Error) as err:
             app.logger.debug(err)
             abort(400, 'Bad Request')
         finally:
-            # app.logger.debug("cursor closed: %s", cursor.closed)
             cursor.close()
-            # app.logger.debug("cursor closed: %s", cursor.closed)
-        # app.logger.debug(categories_list)
-        return categories_list
+        # app.logger.debug(product_dict)
+        return product_dict
 
     @ f_jwt.jwt_required()
     def put(self, category_id):
