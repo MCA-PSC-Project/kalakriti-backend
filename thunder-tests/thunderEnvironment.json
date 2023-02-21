@@ -42,32 +42,6 @@
     ]
   },
   {
-    "_id": "ff90d057-c9b3-492d-8366-d67111216ab0",
-    "name": "Base Environment",
-    "default": false,
-    "sortNum": 40000,
-    "created": "2023-02-20T16:39:20.451Z",
-    "modified": "2023-02-20T16:39:20.451Z",
-    "data": [
-      {
-        "name": "token",
-        "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6dHJ1ZSwiaWF0IjoxNjc2NjM4ODE0LCJqdGkiOiI5NjlhMTVkYS1iMjIzLTQwMTgtYWZjZi02M2NlMjFiNGM5NjEiLCJ0eXBlIjoiYWNjZXNzIiwic3ViIjo1LCJuYmYiOjE2NzY2Mzg4MTQsImV4cCI6MTY3NjY0MjQxNCwidXNlcl90eXBlIjoiY3VzdG9tZXIifQ.Y1A6yNkRsmQfkZlJj85N9YJB7MJwiNhp6vLdB7ygnNg"
-      },
-      {
-        "name": "seller_token",
-        "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6dHJ1ZSwiaWF0IjoxNjc2MzA5NDUyLCJqdGkiOiIwYzQ0OWM4OC1iMzdmLTQ1YTMtYjhjOS0zNGM5OWE2Njc2M2UiLCJ0eXBlIjoiYWNjZXNzIiwic3ViIjoxLCJuYmYiOjE2NzYzMDk0NTIsImV4cCI6MTY3NjMxMzA1MiwidXNlcl90eXBlIjoiY3VzdG9tZXIifQ.jSZX9N--h3GSYYgAXGq9qFDb7dryuph1qrUeuDpIko4"
-      },
-      {
-        "name": "admin_token",
-        "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6dHJ1ZSwiaWF0IjoxNjc2MzA5NDUyLCJqdGkiOiIwYzQ0OWM4OC1iMzdmLTQ1YTMtYjhjOS0zNGM5OWE2Njc2M2UiLCJ0eXBlIjoiYWNjZXNzIiwic3ViIjoxLCJuYmYiOjE2NzYzMDk0NTIsImV4cCI6MTY3NjMxMzA1MiwidXNlcl90eXBlIjoiY3VzdG9tZXIifQ.jSZX9N--h3GSYYgAXGq9qFDb7dryuph1qrUeuDpIko4"
-      },
-      {
-        "name": "super_admin_token",
-        "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6dHJ1ZSwiaWF0IjoxNjc2MzA5NDUyLCJqdGkiOiIwYzQ0OWM4OC1iMzdmLTQ1YTMtYjhjOS0zNGM5OWE2Njc2M2UiLCJ0eXBlIjoiYWNjZXNzIiwic3ViIjoxLCJuYmYiOjE2NzYzMDk0NTIsImV4cCI6MTY3NjMxMzA1MiwidXNlcl90eXBlIjoiY3VzdG9tZXIifQ.jSZX9N--h3GSYYgAXGq9qFDb7dryuph1qrUeuDpIko4"
-      }
-    ]
-  },
-  {
     "_id": "5c1081a0-10e2-4059-9303-78df54800229",
     "name": "(Global Env)",
     "default": false,
@@ -82,7 +56,7 @@
       },
       {
         "name": "seller_token",
-        "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6dHJ1ZSwiaWF0IjoxNjc2OTY0MjY2LCJqdGkiOiI1Yzc1NjJmYi1kODNlLTRlNTctOGRkOS05NDNmYzNlNjA2MTQiLCJ0eXBlIjoiYWNjZXNzIiwic3ViIjo0LCJuYmYiOjE2NzY5NjQyNjYsImV4cCI6MTY3Njk2Nzg2NiwidXNlcl90eXBlIjoic2VsbGVyIn0.4QYjzhFiPiVLgypjC3YouiqCQnS4LRBA9U8_jB7H3dQ"
+        "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6dHJ1ZSwiaWF0IjoxNjc2OTg0ODg3LCJqdGkiOiJiMjc0ZmY2OS1kMGRjLTQ4NWMtOTBjNC1iN2MwNTg3NjllNmMiLCJ0eXBlIjoiYWNjZXNzIiwic3ViIjo0LCJuYmYiOjE2NzY5ODQ4ODcsImV4cCI6MTY3Njk4ODQ4NywidXNlcl90eXBlIjoic2VsbGVyIn0.u3cjnOpttLQB0S6wMMXbO55zCROz3ofJ2ZLgHbYZ-_4"
       },
       {
         "name": "admin_token",
