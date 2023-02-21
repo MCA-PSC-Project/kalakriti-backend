@@ -52,7 +52,7 @@
     "data": [
       {
         "name": "token",
-        "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6dHJ1ZSwiaWF0IjoxNjc2OTExNjM0LCJqdGkiOiI3MGM1NThkMy0wOWVmLTRlYmUtOWU5Zi1kZGE1OWVlZTZkYzMiLCJ0eXBlIjoiYWNjZXNzIiwic3ViIjoxLCJuYmYiOjE2NzY5MTE2MzQsImV4cCI6MTY3NjkxNTIzNCwidXNlcl90eXBlIjoiY3VzdG9tZXIifQ.TbtxdI4LCJekNeKtM2Ny9bosumowmDsCVKpWCUuEStI"
+        "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6dHJ1ZSwiaWF0IjoxNjc2OTkxNzUzLCJqdGkiOiI4MzkyMjcxOS01MDU4LTQ1NGYtYTU5NC02NjAyNzVlZmFmNmEiLCJ0eXBlIjoiYWNjZXNzIiwic3ViIjo1LCJuYmYiOjE2NzY5OTE3NTMsImV4cCI6MTY3Njk5NTM1MywidXNlcl90eXBlIjoic3VwZXJfYWRtaW4ifQ.YeVRCooKqd-FKnmR2E4VGvNrS6K-j5LBx0TO5SuNwjY"
       },
       {
         "name": "seller_token",
@@ -60,11 +60,11 @@
       },
       {
         "name": "admin_token",
-        "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6dHJ1ZSwiaWF0IjoxNjc2OTExNjM0LCJqdGkiOiI3MGM1NThkMy0wOWVmLTRlYmUtOWU5Zi1kZGE1OWVlZTZkYzMiLCJ0eXBlIjoiYWNjZXNzIiwic3ViIjoxLCJuYmYiOjE2NzY5MTE2MzQsImV4cCI6MTY3NjkxNTIzNCwidXNlcl90eXBlIjoiY3VzdG9tZXIifQ.TbtxdI4LCJekNeKtM2Ny9bosumowmDsCVKpWCUuEStI"
+        "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6dHJ1ZSwiaWF0IjoxNjc2OTkxNzUzLCJqdGkiOiI4MzkyMjcxOS01MDU4LTQ1NGYtYTU5NC02NjAyNzVlZmFmNmEiLCJ0eXBlIjoiYWNjZXNzIiwic3ViIjo1LCJuYmYiOjE2NzY5OTE3NTMsImV4cCI6MTY3Njk5NTM1MywidXNlcl90eXBlIjoic3VwZXJfYWRtaW4ifQ.YeVRCooKqd-FKnmR2E4VGvNrS6K-j5LBx0TO5SuNwjY"
       },
       {
         "name": "super_admin_token",
-        "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6dHJ1ZSwiaWF0IjoxNjc2OTExNjM0LCJqdGkiOiI3MGM1NThkMy0wOWVmLTRlYmUtOWU5Zi1kZGE1OWVlZTZkYzMiLCJ0eXBlIjoiYWNjZXNzIiwic3ViIjoxLCJuYmYiOjE2NzY5MTE2MzQsImV4cCI6MTY3NjkxNTIzNCwidXNlcl90eXBlIjoiY3VzdG9tZXIifQ.TbtxdI4LCJekNeKtM2Ny9bosumowmDsCVKpWCUuEStI"
+        "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6dHJ1ZSwiaWF0IjoxNjc2OTkxNzUzLCJqdGkiOiI4MzkyMjcxOS01MDU4LTQ1NGYtYTU5NC02NjAyNzVlZmFmNmEiLCJ0eXBlIjoiYWNjZXNzIiwic3ViIjo1LCJuYmYiOjE2NzY5OTE3NTMsImV4cCI6MTY3Njk5NTM1MywidXNlcl90eXBlIjoic3VwZXJfYWRtaW4ifQ.YeVRCooKqd-FKnmR2E4VGvNrS6K-j5LBx0TO5SuNwjY"
       }
     ]
   }

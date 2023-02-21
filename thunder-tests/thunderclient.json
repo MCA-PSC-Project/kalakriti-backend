@@ -26,12 +26,12 @@
     "method": "POST",
     "sortNum": 20000,
     "created": "2023-02-20T16:38:51.029Z",
-    "modified": "2023-02-21T05:20:16.370Z",
+    "modified": "2023-02-21T15:02:23.188Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\r\n    \"email\": \"seller@gmail.com\",\r\n    \"password\": \"abcd@123\"\r\n}",
+      "raw": "{\n    \"email\": \"updated_admin@gmail.com\",\n    \"password\": \"abcd@123\"\n}",
       "form": []
     },
     "tests": [],
@@ -835,14 +835,14 @@
     "method": "GET",
     "sortNum": 400000,
     "created": "2023-02-20T16:38:51.067Z",
-    "modified": "2023-02-20T16:38:51.067Z",
+    "modified": "2023-02-21T15:10:05.101Z",
     "headers": [],
     "params": [],
     "auth": {
       "type": "bearer",
       "bearer": "{{admin_token}}"
     },
-    "docs": ""
+    "tests": []
   },
   {
     "_id": "ccfb636f-1457-49b6-bc96-b68439c91c92",
@@ -853,20 +853,20 @@
     "method": "GET",
     "sortNum": 410000,
     "created": "2023-02-20T16:38:51.069Z",
-    "modified": "2023-02-20T16:38:51.069Z",
+    "modified": "2023-02-21T15:10:10.955Z",
     "headers": [],
     "params": [
       {
         "name": "purchased",
         "value": "true",
-        "isDisabled": false
+        "isPath": false
       }
     ],
     "auth": {
       "type": "bearer",
       "bearer": "{{admin_token}}"
     },
-    "docs": ""
+    "tests": []
   },
   {
     "_id": "854b7821-9d77-498c-a10c-2cc12fd48433",
@@ -1040,14 +1040,14 @@
     "method": "GET",
     "sortNum": 500000,
     "created": "2023-02-20T16:38:51.078Z",
-    "modified": "2023-02-20T16:38:51.078Z",
+    "modified": "2023-02-21T14:59:19.484Z",
     "headers": [],
     "params": [],
     "auth": {
       "type": "bearer",
       "bearer": "{{super_admin_token}}"
     },
-    "docs": ""
+    "tests": []
   },
   {
     "_id": "0fbf3e76-353e-401d-b977-a350c28ec764",
@@ -1685,5 +1685,87 @@
       "raw": "{\n\t\"amount\" : \"2000\",\n\t\"purpose\" : \"testing\"\n}"
     },
     "docs": ""
+  },
+  {
+    "_id": "804cf388-959b-4ae5-a3d5-c6059de77d70",
+    "colId": "80d178ef-5176-474a-8708-db78bd45faee",
+    "containerId": "f688fb68-9864-41a4-b257-bb38efeb6b05",
+    "name": "Create Banners",
+    "url": "{{baseUrl}}/banners",
+    "method": "POST",
+    "sortNum": 810000,
+    "created": "2023-02-21T14:25:16.253Z",
+    "modified": "2023-02-21T14:34:08.501Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\r\n\t\"media_id\" : 1,\r\n\t\"redirect_type\" : \"to_be_deleted\" ,\r\n\t\"redirect_url\" : \"www.example1.com\"\r\n}",
+      "form": []
+    },
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{token}}"
+    },
+    "tests": []
+  },
+  {
+    "_id": "deadc613-85c8-43fb-a439-cfd3e80c4539",
+    "colId": "80d178ef-5176-474a-8708-db78bd45faee",
+    "containerId": "f688fb68-9864-41a4-b257-bb38efeb6b05",
+    "name": "Get Banners",
+    "url": "{{baseUrl}}/banners",
+    "method": "GET",
+    "sortNum": 820000,
+    "created": "2023-02-21T14:26:22.027Z",
+    "modified": "2023-02-21T14:34:05.257Z",
+    "headers": [],
+    "params": [],
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{token}}"
+    },
+    "tests": []
+  },
+  {
+    "_id": "629dae84-7c8c-47e1-a683-75479f5b4ff8",
+    "colId": "80d178ef-5176-474a-8708-db78bd45faee",
+    "containerId": "f688fb68-9864-41a4-b257-bb38efeb6b05",
+    "name": "Update Banner",
+    "url": "{{baseUrl}}/banners/2",
+    "method": "PUT",
+    "sortNum": 830000,
+    "created": "2023-02-21T14:30:44.614Z",
+    "modified": "2023-02-21T14:34:01.087Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\r\n\t\"media_id\" : 1,\r\n\t\"redirect_type\" : \"rtype_updated\" ,\r\n\t\"redirect_url\" : \"www.example.com\"\r\n}",
+      "form": []
+    },
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{token}}"
+    },
+    "tests": []
+  },
+  {
+    "_id": "87fb9c35-5b29-45a5-b464-327dc3686df7",
+    "colId": "80d178ef-5176-474a-8708-db78bd45faee",
+    "containerId": "f688fb68-9864-41a4-b257-bb38efeb6b05",
+    "name": "Delete Banner",
+    "url": "{{baseUrl}}/banners/4",
+    "method": "DELETE",
+    "sortNum": 840000,
+    "created": "2023-02-21T14:33:12.257Z",
+    "modified": "2023-02-21T14:33:54.370Z",
+    "headers": [],
+    "params": [],
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{token}}"
+    },
+    "tests": []
   }
 ]

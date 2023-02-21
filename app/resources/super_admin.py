@@ -22,8 +22,10 @@ class GetAllAdmins(Resource):
 
         admin_list = []
 
-        GET_ADMINS_PROFILES = '''SELECT first_name, last_name, user_type, email, phone, TO_CHAR(dob, 'YYYY-MM-DD'), gender, enabled
-        FROM users WHERE user_type= %s'''
+        GET_ADMINS_PROFILES = '''SELECT u.first_name, u.last_name, u.user_type, u.email, u.phone, 
+        TO_CHAR(u.dob, 'YYYY-MM-DD'), u.gender , u.enabled,
+        m.id, m.name, m.path
+        FROM users u LEFT JOIN media m on u.dp_id = m.id WHERE user_type= %s'''
 
         # catch exception for invalid SQL statement
         try:
@@ -45,6 +47,18 @@ class GetAllAdmins(Resource):
                 admin_profile_dict['dob'] = row[5]
                 admin_profile_dict['gender'] = row[6]
                 admin_profile_dict['enabled'] = row[7]
+
+                dp_media_dict = {}
+                dp_media_dict['id'] = row[8]
+                dp_media_dict['name'] = row[9]
+                # media_dict['path'] = row[10]
+                path = row[10]
+                if path is not None:
+                    dp_media_dict['path'] = "{}/{}".format(
+                        app.config["S3_LOCATION"], row[10])
+                else:
+                    dp_media_dict['path'] = None
+                admin_profile_dict.update({"dp": dp_media_dict})
                 admin_list.append(admin_profile_dict)
         except (Exception, psycopg2.Error) as err:
             app.logger.debug(err)
