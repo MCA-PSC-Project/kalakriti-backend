@@ -25,70 +25,73 @@ class Products(Resource):
         if user_type != 'seller':
             abort(400, "only sellers can create products")
 
-        # app_globals.db_conn.autocommit = False
-        print(app_globals.db_conn)
+        # before beginning transaction autocommit must be off
+        app_globals.db_conn.autocommit = False
+        # print(app_globals.db_conn)
         # catch exception for invalid SQL statement
         try:
             # declare a cursor object from the connection
-            # cursor = app_globals.get_cursor()
-            cursor = app_globals.db_conn.cursor()
+            cursor = app_globals.get_cursor()
             # app.logger.debug("cursor object: %s", cursor)
 
-            with app_globals.db_conn.transaction():
-                CREATE_PRODUCT = '''INSERT INTO products(product_name, product_description, category_id, subcategory_id, 
-                currency, seller_user_id, added_at) 
-                VALUES(%s, %s, %s, %s, %s, %s, %s) RETURNING id'''
-                cursor.execute(CREATE_PRODUCT,
-                               (product_dict.get('product_name'), product_dict.get(
-                                'product_description'),
-                                product_dict.get('category_id'), product_dict.get(
-                                'subcategory_id'),
-                                product_dict.get('currency', 'INR'),
-                                user_id, current_time,))
-                product_id = cursor.fetchone()[0]
+            CREATE_PRODUCT = '''INSERT INTO products(product_name, product_description, category_id, subcategory_id, 
+            currency, seller_user_id, added_at) 
+            VALUES(%s, %s, %s, %s, %s, %s, %s) RETURNING id'''
+            cursor.execute(CREATE_PRODUCT,
+                           (product_dict.get('product_name'), product_dict.get(
+                               'product_description'),
+                            product_dict.get('category_id'), product_dict.get(
+                               'subcategory_id'),
+                            product_dict.get('currency', 'INR'),
+                            user_id, current_time,))
+            product_id = cursor.fetchone()[0]
 
-                GET_VARIANT_ID = '''SELECT id FROM variants WHERE variant= %s'''
-                cursor.execute(
-                    GET_VARIANT_ID, (product_item_dict.get('variant').upper(),))
-                row = cursor.fetchone()
-                if not row:
-                    app.logger.debug("variant_id not found!")
-                    app_globals.db_conn.rollback()
-                variant_id = row[0]
+            GET_VARIANT_ID = '''SELECT id FROM variants WHERE variant= %s'''
+            cursor.execute(
+                GET_VARIANT_ID, (product_item_dict.get('variant').upper(),))
+            row = cursor.fetchone()
+            if not row:
+                app.logger.debug("variant_id not found!")
+                app_globals.db_conn.rollback()
+            variant_id = row[0]
 
-                CREATE_VARIANT_VALUE = '''INSERT INTO variant_values(variant_id, variant_value) VALUES(%s, %s) RETURNING id'''
-                cursor.execute(CREATE_VARIANT_VALUE,
-                               (variant_id, product_item_dict.get('variant_value'),))
-                variant_value_id = cursor.fetchone()[0]
+            CREATE_VARIANT_VALUE = '''INSERT INTO variant_values(variant_id, variant_value) VALUES(%s, %s) RETURNING id'''
+            cursor.execute(CREATE_VARIANT_VALUE,
+                           (variant_id, product_item_dict.get('variant_value'),))
+            variant_value_id = cursor.fetchone()[0]
 
-                CREATE_PRODUCT_ITEM = '''INSERT INTO product_items(product_id, product_variant_name, "SKU",
-                original_price, offer_price, quantity_in_stock, added_at)
-                VALUES(%s, %s, %s, %s, %s, %s, %s) RETURNING id'''
-                cursor.execute(CREATE_PRODUCT_ITEM,
-                               (product_id, product_item_dict.get('product_variant_name'), product_item_dict.get('SKU'),
-                                product_item_dict.get('original_price'), product_item_dict.get(
-                                    'offer_price'),
-                                product_item_dict.get('quantity_in_stock'), current_time))
-                product_item_id = cursor.fetchone()[0]
+            CREATE_PRODUCT_ITEM = '''INSERT INTO product_items(product_id, product_variant_name, "SKU",
+            original_price, offer_price, quantity_in_stock, added_at)
+            VALUES(%s, %s, %s, %s, %s, %s, %s) RETURNING id'''
+            cursor.execute(CREATE_PRODUCT_ITEM,
+                           (product_id, product_item_dict.get('product_variant_name'), product_item_dict.get('SKU'),
+                            product_item_dict.get('original_price'), product_item_dict.get(
+                               'offer_price'),
+                            product_item_dict.get('quantity_in_stock'), current_time))
+            product_item_id = cursor.fetchone()[0]
 
-                ASSOCIATE_PRODUCT_ITEM_WITH_VARIANT = '''INSERT INTO product_item_values(product_item_id, variant_value_id)
-                VALUES(%s, %s)'''
-                cursor.execute(ASSOCIATE_PRODUCT_ITEM_WITH_VARIANT,
-                               (product_item_id, variant_value_id,))
-                # product_item_value_id = cursor.fetchone()[0]
+            ASSOCIATE_PRODUCT_ITEM_WITH_VARIANT = '''INSERT INTO product_item_values(product_item_id, variant_value_id)
+            VALUES(%s, %s)'''
+            cursor.execute(ASSOCIATE_PRODUCT_ITEM_WITH_VARIANT,
+                           (product_item_id, variant_value_id,))
+            # product_item_value_id = cursor.fetchone()[0]
 
-                ASSOCIATE_PRODUCT_WITH_BASE_ITEM = '''INSERT INTO product_base_item(product_id, product_item_id)
-                VALUES(%s, %s)'''
-                cursor.execute(ASSOCIATE_PRODUCT_WITH_BASE_ITEM,
-                               (product_id, product_item_id,))
-                # product_base_item_id = cursor.fetchone()[0]
+            ASSOCIATE_PRODUCT_WITH_BASE_ITEM = '''INSERT INTO product_base_item(product_id, product_item_id)
+            VALUES(%s, %s)'''
+            cursor.execute(ASSOCIATE_PRODUCT_WITH_BASE_ITEM,
+                           (product_id, product_item_id,))
+            # product_base_item_id = cursor.fetchone()[0]
 
         except (Exception, psycopg2.Error) as err:
-            app.logger.debug("cdsdssddssdcsdcscsdcsdcsdc")
             app.logger.debug(err)
+            app_globals.db_conn.rollback()
+            app_globals.db_conn.autocommit = True
+            app.logger.debug("autocommit switched back from off to on")
             abort(400, 'Bad Request')
         finally:
             cursor.close()
+        app_globals.db_conn.commit()
+        app_globals.db_conn.autocommit = True
         return f"product_id = {product_id} with product_item_id= {product_item_id} created sucessfully", 201
 
     def get(self):

@@ -24,7 +24,7 @@ class Categories(Resource):
         current_time = datetime.now()
 
         if user_type != "admin" and user_type != "super_admin":
-            abort(400, "super-admins and admins can create categories only")
+            abort(400, "only super-admins and admins can create category")
 
         CREATE_CATEGORY = '''INSERT INTO categories(name, added_at,cover_id,parent_id, added_by)
         VALUES(%s,%s, %s, %s, %s) RETURNING id'''
