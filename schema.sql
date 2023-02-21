@@ -107,7 +107,7 @@ CREATE TABLE "variants" (
 CREATE TABLE "variant_values"(
 	"id" SERIAL PRIMARY KEY,
 	"variant_id" INT,
-	"value" VARCHAR(50) NOT NULL,
+	"variant_value" VARCHAR(50) NOT NULL,
 	FOREIGN KEY("variant_id") REFERENCES "variants"("id") ON DELETE CASCADE
 );
 CREATE TABLE "product_items"(
@@ -118,6 +118,8 @@ CREATE TABLE "product_items"(
 	"original_price" NUMERIC NOT NULL,
 	"offer_price" NUMERIC NOT NULL,
 	"quantity_in_stock" INT NOT NULL,
+	"added_at" TIMESTAMPTZ NOT NULL,
+	"updated_at" TIMESTAMPTZ DEFAULT NULL,
 	-- "is_base" BOOLEAN NOT NULL DEFAULT TRUE,
 	FOREIGN KEY("product_id") REFERENCES "products"("id") ON DELETE CASCADE
 );
