@@ -41,5 +41,23 @@
     },
     "tests": [],
     "docs": "```json\n{\n\t\"email\": \"sheetal@gmail.com\",\n\t\"password\": \"abcd@123\"\n}\n```\n\n```json\n{\n\t\"email\": \"mywebnewslettersinbox123@gmail.com\",\n\t\"password\": \"abcd@123\"\n}\n```\n\n```json\n{\n\t\"email\": \"seller@gmail.com\",\n\t\"password\": \"abcd@123\"\n}\n```\n\n```json\n{\n    \"email\": \"updated_admin@gmail.com\",\n    \"password\": \"abcd@123\"\n}\n```"
+  },
+  {
+    "_id": "ad8e6ade-3f63-462c-a246-c755ea87bcc7",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/products",
+    "url": "{{baseUrl}}/products",
+    "method": "GET",
+    "sortNum": 0,
+    "created": "2023-02-22T17:29:52.835Z",
+    "modified": "2023-02-22T17:29:52.835Z",
+    "headers": [],
+    "params": [],
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{seller_token}}"
+    },
+    "tests": []
   }
 ]

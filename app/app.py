@@ -10,7 +10,7 @@ import atexit
 # local imports
 from app.config import app_config
 from app.resources.auth import Register, Login, RefreshToken, VerifyEmail
-from app.resources.product import Products
+from app.resources.product import Products, SellersProducts
 from app.resources.user import UserProfile, ResetEmail, ResetPhone, ResetPassword
 from app.resources.media import UploadImage, UploadAudio, UploadVideo, UploadFile, DeleteMedia
 from app.resources.categories import Categories
@@ -110,6 +110,8 @@ def create_app(config_name):
     # Products
     api.add_resource(Products, '/products',
                      '/products/<int:product_id>')
+
+    api.add_resource(SellersProducts, '/sellers/products')
 
     # Seller_Applicant_Form
     api.add_resource(Seller_Applicant_Form, '/sellers-form',

@@ -340,3 +340,138 @@ class Products(Resource):
         finally:
             cursor.close()
         return 200
+
+
+class SellersProducts(Resource):
+    @f_jwt.jwt_required
+    def get(self):
+        user_id = f_jwt.get_jwt_identity()
+        app.logger.debug("user_id= %s", user_id)
+        claims = f_jwt.get_jwt()
+        user_type = claims['user_type']
+        app.logger.debug("user_type= %s", user_type)
+
+        if user_type == "seller":
+            seller_user_id = user_id
+        elif user_type == "admin" or user_type != "super_admin":
+            args = request.args  # retrieve args from query string
+            seller_user_id = args.get('seller_user_id', None)
+            app.logger.debug("?seller_user_id=%s", seller_user_id)
+        else:
+            abort(400, "only sellers, admins and super_admins can view seller's products")
+
+        products_list = []
+
+        # catch exception for invalid SQL statement
+        try:
+            # declare a cursor object from the connection
+            cursor = app_globals.get_cursor()
+            # # app.logger.debug("cursor object: %s", cursor)
+            GET_PRODUCT = '''SELECT p.id, p.product_name, p.product_description, 
+            ct.id, ct.name,
+            sct.id, sct.name, sct.parent_id, 
+            p.currency, p.product_status,
+            p.added_at, p.updated_at, 
+            u.id, u.first_name, u.last_name, u.email 
+            FROM products p 
+            JOIN categories ct ON p.category_id = ct.id
+            LEFT JOIN categories sct ON p.subcategory_id = sct.id
+            JOIN users u ON p.seller_user_id = u.id 
+            WHERE p.seller_user_id= %s'''
+
+            cursor.execute(GET_PRODUCT, (seller_user_id,))
+            rows = cursor.fetchall()
+            
+            for row in rows:
+                product_dict = {}
+
+                product_dict['id'] = row[0]
+                product_dict['product_name'] = row[1]
+                product_dict['product_description'] = row[2]
+
+                category_dict = {}
+                category_dict['id'] = row[3]
+                category_dict['name'] = row[4]
+                product_dict.update({"category": category_dict})
+
+                subcategory_dict = {}
+                subcategory_dict['id'] = row[5]
+                subcategory_dict['name'] = row[6]
+                subcategory_dict['parent_id'] = row[7]
+                product_dict.update({"subcategory": subcategory_dict})
+
+                product_dict['currency'] = row[8]
+                product_dict['product_status'] = row[9]
+                product_dict.update(json.loads(
+                    json.dumps({'added_at': row[10]}, default=str)))
+                product_dict.update(json.loads(
+                    json.dumps({'updated_at': row[11]}, default=str)))
+
+                seller_dict = {}
+                seller_dict['id'] = row[12]
+                seller_dict['first_name'] = row[13]
+                seller_dict['last_name'] = row[14]
+                seller_dict['email'] = row[15]
+                product_dict.update({"seller": seller_dict})
+
+            GET_BASE_PRODUCT_ITEM_ID = '''SELECT product_item_id 
+            FROM product_base_item
+            WHERE product_id = %s'''
+
+            cursor.execute(GET_BASE_PRODUCT_ITEM_ID, (product_id,))
+            row = cursor.fetchone()
+            if row is None:
+                abort(400, 'Bad Request')
+            base_product_item_id = row[0]
+            app.logger.debug("base_product_item_id= %s",
+                             base_product_item_id)
+            product_dict['base_product_item_id'] = base_product_item_id
+
+            product_items_list = []
+            GET_PRODUCT_ITEMS = '''SELECT pi.id, pi.product_id, pi.product_variant_name, pi."SKU", 
+            pi.original_price, pi.offer_price, pi.quantity_in_stock, pi.added_at, pi.updated_at,
+            (SELECT v.variant AS variant FROM variants v WHERE v.id = 
+            (SELECT vv.variant_id FROM variant_values vv WHERE vv.id = piv.variant_value_id)),
+            (SELECT vv.variant_value AS variant_value FROM variant_values vv WHERE vv.id = piv.variant_value_id)
+            FROM product_items pi 
+            JOIN product_item_values piv ON pi.id = piv.product_item_id
+            WHERE pi.product_id=%s
+            ORDER BY pi.id
+            '''
+
+            cursor.execute(GET_PRODUCT_ITEMS, (product_id,))
+            rows = cursor.fetchall()
+            if not rows:
+                app.logger.debug("No rows")
+                return product_dict
+            for row in rows:
+                product_item_dict = {}
+                product_item_dict['id'] = row[0]
+                product_item_dict['product_id'] = row[1]
+                product_item_dict['product_variant_name'] = row[2]
+                product_item_dict['SKU'] = row[3]
+
+                product_item_dict.update(json.loads(
+                    json.dumps({'original_price': row[4]}, default=str)))
+                product_item_dict.update(json.loads(
+                    json.dumps({'offer_price': row[5]}, default=str)))
+
+                product_item_dict['quantity_in_stock'] = row[6]
+                product_item_dict.update(json.loads(
+                    json.dumps({'added_at': row[7]}, default=str)))
+                product_item_dict.update(json.loads(
+                    json.dumps({'updated_at': row[8]}, default=str)))
+
+                product_item_dict['variant'] = row[9]
+                product_item_dict['variant_value'] = row[10]
+
+                product_items_list.append(product_item_dict)
+
+            product_dict.update({'product_items': product_items_list})
+        except (Exception, psycopg2.Error) as err:
+            app.logger.debug(err)
+            abort(400, 'Bad Request')
+        finally:
+            cursor.close()
+        # app.logger.debug(product_dict)
+        return product_dict
