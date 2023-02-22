@@ -150,10 +150,14 @@ class Products(Resource):
             seller_dict['email'] = row[15]
             product_dict.update({"seller": seller_dict})
 
-            product_items=[]
-            GET_PRODUCT_ITEMS='''SELECT pi.id, pi.product_id, pi.product_variant_name, pi."SKU", 
-            pi.original_price, pi.offer_price, pi.quantity_in_stock, pi.added_at, pi.updated_at
+            product_items = []
+            GET_PRODUCT_ITEMS = '''SELECT pi.id, pi.product_id, pi.product_variant_name, pi."SKU", 
+            pi.original_price, pi.offer_price, pi.quantity_in_stock, pi.added_at, pi.updated_at,
+            (SELECT v.variant FROM variants v WHERE v.id = 
+            (SELECT vv.variant_id FROM variant_values vv WHERE vv.id = piv.variant_value_id)),
+            (SELECT vv.variant_value FROM variant_values vv WHERE vv.id = piv.variant_value_id),
             FROM product_items pi 
+            JOIN product_item_values piv ON pi.id = piv.product_item_id
             WHERE pi.product_id=%s
             '''
         except (Exception, psycopg2.Error) as err:
