@@ -266,15 +266,27 @@ class Products(Resource):
 
         app.logger.debug("product_id= %s", product_id)
         data = request.get_json()
-        # app.logger.debug(data['trashed'])
 
+        if 'product_status' in data.keys():
+            if user_type != "admin" and user_type != "super_admin":
+                abort(
+                    400, "only super-admins and admins are allowed to update product status")
+            value = data['product_status']
+            # app.logger.debug("product_status= %s", value)
+            UPDATE_PRODUCT_STATUS = '''UPDATE products SET product_status= %s, updated_at= %s
+            WHERE id= %s'''
+            PATCH_PRODUCT = UPDATE_PRODUCT_STATUS
+        elif 'trashed' in data.keys():
+            if user_type != "seller" and user_type != "admin" and user_type != "super_admin":
+                abort(400, "only seller, super-admins and admins can trash a product")
+            value = data['trashed']
+            # app.logger.debug("trashed= %s", value)
+            UPDATE_PRODUCT_TRASHED_VALUE = '''UPDATE products SET trashed= %s, updated_at= %s
+            WHERE id= %s'''
+            PATCH_PRODUCT = UPDATE_PRODUCT_TRASHED_VALUE
+        else:
+            abort(400, "Bad Request")
         current_time = datetime.now()
-
-        if user_type != "seller" and user_type != "admin" and user_type != "super_admin":
-            abort(400, "only seller, super-admins and admins can update product")
-
-        UPDATE_PRODUCT_TRASHED_STATUS = '''UPDATE products SET trashed= %s, updated_at= %s
-        WHERE id= %s'''
 
         # catch exception for invalid SQL statement
         try:
@@ -283,7 +295,7 @@ class Products(Resource):
             # # app.logger.debug("cursor object: %s", cursor)
 
             cursor.execute(
-                UPDATE_PRODUCT_TRASHED_STATUS, (data['trashed'], current_time, product_id,))
+                PATCH_PRODUCT, (value, current_time, product_id,))
             # app.logger.debug("row_counts= %s", cursor.rowcount)
             if cursor.rowcount != 1:
                 abort(400, 'Bad Request: update row error')
