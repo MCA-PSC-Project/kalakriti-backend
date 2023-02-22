@@ -790,43 +790,6 @@
     "docs": ""
   },
   {
-    "_id": "c55f1246-2722-4877-b812-ea34a3c1f275",
-    "colId": "80d178ef-5176-474a-8708-db78bd45faee",
-    "containerId": "6fd7e743-cc8b-4d37-bb40-e47d132e9276",
-    "name": "submit sellers application form",
-    "url": "{{baseUrl}}/seller-form",
-    "method": "POST",
-    "sortNum": 390000,
-    "created": "2023-02-20T16:38:51.066Z",
-    "modified": "2023-02-20T16:38:51.066Z",
-    "headers": [
-      {
-        "name": "",
-        "value": ""
-      }
-    ],
-    "params": [],
-    "body": {
-      "form": [
-        {
-          "name": "name",
-          "value": "Prashant"
-        },
-        {
-          "name": "email",
-          "value": "prashant@email.com"
-        },
-        {
-          "name": "mobile_no",
-          "value": "9876543210"
-        }
-      ],
-      "files": [],
-      "type": "formdata"
-    },
-    "docs": ""
-  },
-  {
     "_id": "4ecd6309-6ad7-4efe-a964-47bb930c6bad",
     "colId": "80d178ef-5176-474a-8708-db78bd45faee",
     "containerId": "b47f348c-ce46-42a9-ae9f-4c0f43d70b24",
@@ -1760,6 +1723,84 @@
     "sortNum": 840000,
     "created": "2023-02-21T14:33:12.257Z",
     "modified": "2023-02-21T14:33:54.370Z",
+    "headers": [],
+    "params": [],
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{token}}"
+    },
+    "tests": []
+  },
+  {
+    "_id": "3b66d875-b605-4dc4-a25d-8ffd012d8f78",
+    "colId": "80d178ef-5176-474a-8708-db78bd45faee",
+    "containerId": "6fd7e743-cc8b-4d37-bb40-e47d132e9276",
+    "name": "Create Seller Applicant form",
+    "url": "{{baseUrl}}/sellers-form",
+    "method": "POST",
+    "sortNum": 850000,
+    "created": "2023-02-22T07:21:17.396Z",
+    "modified": "2023-02-22T08:16:24.281Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n \"name\" : \"apply_for_seller2\",\n \"email\" : \"apply@seller2.com\",\n \"mobile_no\" : \"98765438880\",\n \"description\" : \"want to sell saree\"\n}",
+      "form": []
+    },
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{token}}"
+    },
+    "tests": []
+  },
+  {
+    "_id": "da9a4da0-2ccb-4d9b-ba86-5c2e311ecc14",
+    "colId": "80d178ef-5176-474a-8708-db78bd45faee",
+    "containerId": "6fd7e743-cc8b-4d37-bb40-e47d132e9276",
+    "name": "Get Seller Applicant Form",
+    "url": "{{baseUrl}}/sellers-form",
+    "method": "GET",
+    "sortNum": 860000,
+    "created": "2023-02-22T07:22:00.663Z",
+    "modified": "2023-02-22T08:14:42.947Z",
+    "headers": [],
+    "params": [],
+    "tests": []
+  },
+  {
+    "_id": "badb3018-5218-4068-9264-e7eb40c8ff5a",
+    "colId": "80d178ef-5176-474a-8708-db78bd45faee",
+    "containerId": "6fd7e743-cc8b-4d37-bb40-e47d132e9276",
+    "name": "Update Seller Applicant Form",
+    "url": "{{baseUrl}}/sellers-form/1",
+    "method": "PUT",
+    "sortNum": 870000,
+    "created": "2023-02-22T07:22:40.579Z",
+    "modified": "2023-02-22T08:23:40.028Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n \"name\" : \"updated_seller\",\n \"email\" : \"apply@seller2.com\",\n \"mobile_no\" : \"98765438880\",\n \"description\" : \"want to sell saree\"\n}",
+      "form": []
+    },
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{token}}"
+    },
+    "tests": []
+  },
+  {
+    "_id": "d432f83b-920c-470c-b36a-5d92e8cb0313",
+    "colId": "80d178ef-5176-474a-8708-db78bd45faee",
+    "containerId": "6fd7e743-cc8b-4d37-bb40-e47d132e9276",
+    "name": "Delete Seller Applicant Form",
+    "url": "{{baseUrl}}/sellers-form/6",
+    "method": "DELETE",
+    "sortNum": 900000,
+    "created": "2023-02-22T07:24:41.782Z",
+    "modified": "2023-02-22T08:29:53.433Z",
     "headers": [],
     "params": [],
     "auth": {
