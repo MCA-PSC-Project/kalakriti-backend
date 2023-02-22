@@ -1,4 +1,5 @@
 from datetime import datetime
+from decimal import Decimal
 from flask import request, abort
 from flask_restful import Resource
 import psycopg2
@@ -104,16 +105,16 @@ class Products(Resource):
             cursor = app_globals.get_cursor()
             # app.logger.debug("cursor object: %s", cursor)
             GET_PRODUCT = '''SELECT p.id, p.product_name, p.product_description, 
-        ct.id, ct.name,
-        sct.id, sct.name, sct.parent_id, 
-        p.currency, p.product_status,
-        p.added_at, p.updated_at, 
-        u.id, u.first_name, u.last_name, u.email 
-        FROM products p 
-        JOIN categories ct ON p.category_id = ct.id
-        LEFT JOIN categories sct ON p.subcategory_id = sct.id
-        JOIN users u ON p.seller_user_id = u.id 
-        WHERE p.id= %s'''
+            ct.id, ct.name,
+            sct.id, sct.name, sct.parent_id, 
+            p.currency, p.product_status,
+            p.added_at, p.updated_at, 
+            u.id, u.first_name, u.last_name, u.email 
+            FROM products p 
+            JOIN categories ct ON p.category_id = ct.id
+            LEFT JOIN categories sct ON p.subcategory_id = sct.id
+            JOIN users u ON p.seller_user_id = u.id 
+            WHERE p.id= %s'''
 
             cursor.execute(GET_PRODUCT, (product_id,))
             row = cursor.fetchone()
@@ -136,10 +137,8 @@ class Products(Resource):
 
             product_dict['currency'] = row[8]
             product_dict['product_status'] = row[9]
-            # product_dict['added_at'] = row[9].isoformat()
             product_dict.update(json.loads(
                 json.dumps({'added_at': row[10]}, default=str)))
-            # product_dict['updated_at'] = row[10].isoformat()
             product_dict.update(json.loads(
                 json.dumps({'updated_at': row[11]}, default=str)))
 
@@ -150,16 +149,60 @@ class Products(Resource):
             seller_dict['email'] = row[15]
             product_dict.update({"seller": seller_dict})
 
-            product_items = []
+            GET_BASE_PRODUCT_ITEM_ID = '''SELECT product_item_id 
+            FROM product_base_item
+            WHERE product_id = %s'''
+
+            cursor.execute(GET_BASE_PRODUCT_ITEM_ID, (product_id,))
+            row = cursor.fetchone()
+            if row is None:
+                abort(400, 'Bad Request')
+            base_product_item_id = row[0]
+            app.logger.debug("base_product_item_id= %s",
+                             base_product_item_id)
+            product_dict['base_product_item_id'] = base_product_item_id
+
+            product_items_list = []
             GET_PRODUCT_ITEMS = '''SELECT pi.id, pi.product_id, pi.product_variant_name, pi."SKU", 
             pi.original_price, pi.offer_price, pi.quantity_in_stock, pi.added_at, pi.updated_at,
-            (SELECT v.variant FROM variants v WHERE v.id = 
+            (SELECT v.variant AS variant FROM variants v WHERE v.id = 
             (SELECT vv.variant_id FROM variant_values vv WHERE vv.id = piv.variant_value_id)),
-            (SELECT vv.variant_value FROM variant_values vv WHERE vv.id = piv.variant_value_id),
+            (SELECT vv.variant_value AS variant_value FROM variant_values vv WHERE vv.id = piv.variant_value_id)
             FROM product_items pi 
             JOIN product_item_values piv ON pi.id = piv.product_item_id
             WHERE pi.product_id=%s
+            ORDER BY pi.id
             '''
+
+            cursor.execute(GET_PRODUCT_ITEMS, (product_id,))
+            rows = cursor.fetchall()
+            if not rows:
+                app.logger.debug("No rows")
+                return product_dict
+            for row in rows:
+                product_item_dict = {}
+                product_item_dict['id'] = row[0]
+                product_item_dict['product_id'] = row[1]
+                product_item_dict['product_variant_name'] = row[2]
+                product_item_dict['SKU'] = row[3]
+
+                product_item_dict.update(json.loads(
+                    json.dumps({'original_price': row[4]}, default=str)))
+                product_item_dict.update(json.loads(
+                    json.dumps({'offer_price': row[5]}, default=str)))
+
+                product_item_dict['quantity_in_stock'] = row[6]
+                product_item_dict.update(json.loads(
+                    json.dumps({'added_at': row[7]}, default=str)))
+                product_item_dict.update(json.loads(
+                    json.dumps({'updated_at': row[8]}, default=str)))
+
+                product_item_dict['variant'] = row[9]
+                product_item_dict['variant_value'] = row[10]
+
+                product_items_list.append(product_item_dict)
+
+            product_dict.update({'product_items': product_items_list})
         except (Exception, psycopg2.Error) as err:
             app.logger.debug(err)
             abort(400, 'Bad Request')
