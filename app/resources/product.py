@@ -109,11 +109,13 @@ class Products(Resource):
             sct.id, sct.name, sct.parent_id, 
             p.currency, p.product_status,
             p.added_at, p.updated_at, 
-            u.id, u.first_name, u.last_name, u.email 
+            u.id, u.first_name, u.last_name, u.email,
+            pbi.product_item_id
             FROM products p 
             JOIN categories ct ON p.category_id = ct.id
             LEFT JOIN categories sct ON p.subcategory_id = sct.id
             JOIN users u ON p.seller_user_id = u.id 
+            JOIN product_base_item pbi ON p.id = pbi.product_id
             WHERE p.id= %s'''
 
             cursor.execute(GET_PRODUCT, (product_id,))
@@ -149,18 +151,7 @@ class Products(Resource):
             seller_dict['email'] = row[15]
             product_dict.update({"seller": seller_dict})
 
-            GET_BASE_PRODUCT_ITEM_ID = '''SELECT product_item_id 
-            FROM product_base_item
-            WHERE product_id = %s'''
-
-            cursor.execute(GET_BASE_PRODUCT_ITEM_ID, (product_id,))
-            row = cursor.fetchone()
-            if row is None:
-                abort(400, 'Bad Request')
-            base_product_item_id = row[0]
-            app.logger.debug("base_product_item_id= %s",
-                             base_product_item_id)
-            product_dict['base_product_item_id'] = base_product_item_id
+            product_dict['base_product_item_id'] = row[16]
 
             product_items_list = []
             GET_PRODUCT_ITEMS = '''SELECT pi.id, pi.product_id, pi.product_variant_name, pi."SKU", 
@@ -343,7 +334,7 @@ class Products(Resource):
 
 
 class SellersProducts(Resource):
-    @f_jwt.jwt_required
+    @f_jwt.jwt_required()
     def get(self):
         user_id = f_jwt.get_jwt_identity()
         app.logger.debug("user_id= %s", user_id)
@@ -383,7 +374,7 @@ class SellersProducts(Resource):
 
             cursor.execute(GET_PRODUCT, (seller_user_id,))
             rows = cursor.fetchall()
-            
+
             for row in rows:
                 product_dict = {}
 
@@ -417,52 +408,52 @@ class SellersProducts(Resource):
                 product_dict.update({"seller": seller_dict})
 
                 product_dict['base_product_item_id'] = row[16]
+                products_list.append(product_dict)
+            # product_items_list = []
+            # GET_PRODUCT_ITEMS = '''SELECT pi.id, pi.product_id, pi.product_variant_name, pi."SKU",
+            # pi.original_price, pi.offer_price, pi.quantity_in_stock, pi.added_at, pi.updated_at,
+            # (SELECT v.variant AS variant FROM variants v WHERE v.id =
+            # (SELECT vv.variant_id FROM variant_values vv WHERE vv.id = piv.variant_value_id)),
+            # (SELECT vv.variant_value AS variant_value FROM variant_values vv WHERE vv.id = piv.variant_value_id)
+            # FROM product_items pi
+            # JOIN product_item_values piv ON pi.id = piv.product_item_id
+            # WHERE pi.product_id=%s
+            # ORDER BY pi.id
+            # '''
 
-            product_items_list = []
-            GET_PRODUCT_ITEMS = '''SELECT pi.id, pi.product_id, pi.product_variant_name, pi."SKU", 
-            pi.original_price, pi.offer_price, pi.quantity_in_stock, pi.added_at, pi.updated_at,
-            (SELECT v.variant AS variant FROM variants v WHERE v.id = 
-            (SELECT vv.variant_id FROM variant_values vv WHERE vv.id = piv.variant_value_id)),
-            (SELECT vv.variant_value AS variant_value FROM variant_values vv WHERE vv.id = piv.variant_value_id)
-            FROM product_items pi 
-            JOIN product_item_values piv ON pi.id = piv.product_item_id
-            WHERE pi.product_id=%s
-            ORDER BY pi.id
-            '''
+            # cursor.execute(GET_PRODUCT_ITEMS, (product_id,))
+            # rows = cursor.fetchall()
+            # if not rows:
+            #     app.logger.debug("No rows")
+            #     return product_dict
+            # for row in rows:
+            #     product_item_dict = {}
+            #     product_item_dict['id'] = row[0]
+            #     product_item_dict['product_id'] = row[1]
+            #     product_item_dict['product_variant_name'] = row[2]
+            #     product_item_dict['SKU'] = row[3]
 
-            cursor.execute(GET_PRODUCT_ITEMS, (product_id,))
-            rows = cursor.fetchall()
-            if not rows:
-                app.logger.debug("No rows")
-                return product_dict
-            for row in rows:
-                product_item_dict = {}
-                product_item_dict['id'] = row[0]
-                product_item_dict['product_id'] = row[1]
-                product_item_dict['product_variant_name'] = row[2]
-                product_item_dict['SKU'] = row[3]
+            #     product_item_dict.update(json.loads(
+            #         json.dumps({'original_price': row[4]}, default=str)))
+            #     product_item_dict.update(json.loads(
+            #         json.dumps({'offer_price': row[5]}, default=str)))
 
-                product_item_dict.update(json.loads(
-                    json.dumps({'original_price': row[4]}, default=str)))
-                product_item_dict.update(json.loads(
-                    json.dumps({'offer_price': row[5]}, default=str)))
+            #     product_item_dict['quantity_in_stock'] = row[6]
+            #     product_item_dict.update(json.loads(
+            #         json.dumps({'added_at': row[7]}, default=str)))
+            #     product_item_dict.update(json.loads(
+            #         json.dumps({'updated_at': row[8]}, default=str)))
 
-                product_item_dict['quantity_in_stock'] = row[6]
-                product_item_dict.update(json.loads(
-                    json.dumps({'added_at': row[7]}, default=str)))
-                product_item_dict.update(json.loads(
-                    json.dumps({'updated_at': row[8]}, default=str)))
+            #     product_item_dict['variant'] = row[9]
+            #     product_item_dict['variant_value'] = row[10]
 
-                product_item_dict['variant'] = row[9]
-                product_item_dict['variant_value'] = row[10]
+            #     product_items_list.append(product_item_dict)
 
-                product_items_list.append(product_item_dict)
-
-            product_dict.update({'product_items': product_items_list})
+            # product_dict.update({'product_items': product_items_list})
         except (Exception, psycopg2.Error) as err:
             app.logger.debug(err)
             abort(400, 'Bad Request')
         finally:
             cursor.close()
         # app.logger.debug(product_dict)
-        return product_dict
+        return products_list

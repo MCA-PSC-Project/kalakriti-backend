@@ -31,12 +31,12 @@
     "method": "POST",
     "sortNum": 0,
     "created": "2023-02-22T17:11:30.418Z",
-    "modified": "2023-02-22T17:17:56.037Z",
+    "modified": "2023-02-22T18:16:15.116Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\r\n    \"email\": \"sheetal@gmail.com\",\r\n    \"password\": \"abcd@123\"\r\n}",
+      "raw": "{\r\n    \"email\": \"seller@gmail.com\",\r\n    \"password\": \"abcd@123\"\r\n}",
       "form": []
     },
     "tests": [],
@@ -58,6 +58,52 @@
       "type": "bearer",
       "bearer": "{{seller_token}}"
     },
+    "tests": []
+  },
+  {
+    "_id": "f80a0497-c370-422f-a491-f782f66d9740",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/sellers/products",
+    "url": "{{baseUrl}}/sellers/products",
+    "method": "GET",
+    "sortNum": 0,
+    "created": "2023-02-22T18:13:56.769Z",
+    "modified": "2023-02-22T18:13:56.769Z",
+    "headers": [],
+    "params": [],
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{seller_token}}"
+    },
+    "tests": []
+  },
+  {
+    "_id": "b4687af1-74b3-482a-9702-4a5dfb5fbb38",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/products/26",
+    "url": "{{baseUrl}}/products/26",
+    "method": "GET",
+    "sortNum": 0,
+    "created": "2023-02-22T18:22:23.782Z",
+    "modified": "2023-02-22T18:22:23.782Z",
+    "headers": [],
+    "params": [],
+    "tests": []
+  },
+  {
+    "_id": "b4de3e5d-e7df-4976-94fc-f74cf38ba989",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/products/23",
+    "url": "{{baseUrl}}/products/23",
+    "method": "GET",
+    "sortNum": 0,
+    "created": "2023-02-22T18:22:38.692Z",
+    "modified": "2023-02-22T18:22:38.692Z",
+    "headers": [],
+    "params": [],
     "tests": []
   }
 ]
