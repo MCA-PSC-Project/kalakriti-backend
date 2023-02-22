@@ -98,7 +98,12 @@ class Products(Resource):
     def get(self, product_id):
         product_dict = {}
 
-        GET_PRODUCT = '''SELECT p.id, p.product_name, p.product_description, 
+        # catch exception for invalid SQL statement
+        try:
+            # declare a cursor object from the connection
+            cursor = app_globals.get_cursor()
+            # app.logger.debug("cursor object: %s", cursor)
+            GET_PRODUCT = '''SELECT p.id, p.product_name, p.product_description, 
         ct.id, ct.name,
         sct.id, sct.name, sct.parent_id, 
         p.currency, p.product_status,
@@ -109,12 +114,6 @@ class Products(Resource):
         LEFT JOIN categories sct ON p.subcategory_id = sct.id
         JOIN users u ON p.seller_user_id = u.id 
         WHERE p.id= %s'''
-
-        # catch exception for invalid SQL statement
-        try:
-            # declare a cursor object from the connection
-            cursor = app_globals.get_cursor()
-            # app.logger.debug("cursor object: %s", cursor)
 
             cursor.execute(GET_PRODUCT, (product_id,))
             row = cursor.fetchone()
@@ -150,6 +149,13 @@ class Products(Resource):
             seller_dict['last_name'] = row[14]
             seller_dict['email'] = row[15]
             product_dict.update({"seller": seller_dict})
+
+            product_items=[]
+            GET_PRODUCT_ITEMS='''SELECT pi.id, pi.product_id, pi.product_variant_name, pi."SKU", 
+            pi.original_price, pi.offer_price, pi.quantity_in_stock, pi.added_at, pi.updated_at
+            FROM product_items pi 
+            WHERE pi.product_id=%s
+            '''
         except (Exception, psycopg2.Error) as err:
             app.logger.debug(err)
             abort(400, 'Bad Request')
