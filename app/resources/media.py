@@ -48,7 +48,7 @@ def delete_media_by_id(media_id):
     try:
         # declare a cursor object from the connection
         cursor = app_globals.get_cursor()
-        # app.logger.debug("cursor object: %s", cursor)
+        # # app.logger.debug("cursor object: %s", cursor)
 
         cursor.execute(GET_MEDIA_PATH, (media_id,))
         row = cursor.fetchone()
@@ -127,7 +127,7 @@ class UploadImage(Resource):
             try:
                 # declare a cursor object from the connection
                 cursor = app_globals.get_cursor()
-                # app.logger.debug("cursor object: %s", cursor)
+                # # app.logger.debug("cursor object: %s", cursor)
 
                 cursor.execute(INSERT_MEDIA, (source_filename,
                                path_name, 'image', current_time,))
@@ -187,7 +187,7 @@ class UploadAudio(Resource):
             try:
                 # declare a cursor object from the connection
                 cursor = app_globals.get_cursor()
-                # app.logger.debug("cursor object: %s", cursor)
+                # # app.logger.debug("cursor object: %s", cursor)
 
                 cursor.execute(INSERT_MEDIA, (source_filename,
                                path_name, 'audio', current_time,))
@@ -247,7 +247,7 @@ class UploadVideo(Resource):
             try:
                 # declare a cursor object from the connection
                 cursor = app_globals.get_cursor()
-                # app.logger.debug("cursor object: %s", cursor)
+                # # app.logger.debug("cursor object: %s", cursor)
 
                 cursor.execute(INSERT_MEDIA, (source_filename,
                                path_name, 'video', current_time,))
@@ -308,7 +308,7 @@ class UploadFile(Resource):
             try:
                 # declare a cursor object from the connection
                 cursor = app_globals.get_cursor()
-                # app.logger.debug("cursor object: %s", cursor)
+                # # app.logger.debug("cursor object: %s", cursor)
 
                 cursor.execute(INSERT_MEDIA, (source_filename,
                                path_name, 'file', current_time,))

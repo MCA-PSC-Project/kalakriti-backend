@@ -31,7 +31,7 @@ class Register(Resource):
         try:
             # declare a cursor object from the connection
             cursor = app_globals.get_cursor()
-            # app.logger.debug("cursor object: %s", cursor)
+            # # app.logger.debug("cursor object: %s", cursor)
 
             cursor.execute(CHECK_EMAIL, (email,))
             row = cursor.fetchone()
@@ -55,7 +55,7 @@ class Register(Resource):
         try:
             # declare a cursor object from the connection
             cursor = app_globals.get_cursor()
-            # app.logger.debug("cursor object: %s", cursor)
+            # # app.logger.debug("cursor object: %s", cursor)
 
             cursor.execute(REGISTER_USER, (first_name, last_name, email, phone,
                            hashed_password, dob, gender, current_time,))
@@ -107,7 +107,7 @@ class Login(Resource):
         try:
             # declare a cursor object from the connection
             cursor = app_globals.get_cursor()
-            # app.logger.debug("cursor object: %s", cursor)
+            # # app.logger.debug("cursor object: %s", cursor)
 
             cursor.execute(GET_USER, (email,))
             row = cursor.fetchone()
@@ -189,7 +189,7 @@ class VerifyEmail(Resource):
         try:
             # declare a cursor object from the connection
             cursor = app_globals.get_cursor()
-            # app.logger.debug("cursor object: %s", cursor)
+            # # app.logger.debug("cursor object: %s", cursor)
 
             cursor.execute(GET_USER, (email,))
             row = cursor.fetchone()
@@ -217,7 +217,7 @@ class VerifyEmail(Resource):
             try:
                 # declare a cursor object from the connection
                 cursor = app_globals.get_cursor()
-                # app.logger.debug("cursor object: %s", cursor)
+                # # app.logger.debug("cursor object: %s", cursor)
 
                 cursor.execute(UPDATE_CONFIRM_USER,
                                (is_verified, current_time, user_id,))

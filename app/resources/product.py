@@ -34,7 +34,7 @@ class Products(Resource):
         try:
             # declare a cursor object from the connection
             cursor = app_globals.get_cursor()
-            # app.logger.debug("cursor object: %s", cursor)
+            # # app.logger.debug("cursor object: %s", cursor)
 
             CREATE_PRODUCT = '''INSERT INTO products(product_name, product_description, category_id, subcategory_id, 
             currency, seller_user_id, added_at) 
@@ -103,7 +103,7 @@ class Products(Resource):
         try:
             # declare a cursor object from the connection
             cursor = app_globals.get_cursor()
-            # app.logger.debug("cursor object: %s", cursor)
+            # # app.logger.debug("cursor object: %s", cursor)
             GET_PRODUCT = '''SELECT p.id, p.product_name, p.product_description, 
             ct.id, ct.name,
             sct.id, sct.name, sct.parent_id, 
@@ -211,35 +211,40 @@ class Products(Resource):
         # app.logger.debug(product_dict)
         return product_dict
 
+    # update product only
     @ f_jwt.jwt_required()
-    def put(self, category_id):
+    def put(self, product_id):
         user_id = f_jwt.get_jwt_identity()
         app.logger.debug("user_id= %s", user_id)
         claims = f_jwt.get_jwt()
         user_type = claims['user_type']
         app.logger.debug("user_type= %s", user_type)
 
-        app.logger.debug("category_id= %s", category_id)
+        app.logger.debug("product_id= %s", product_id)
         data = request.get_json()
-        category_dict = json.loads(json.dumps(data))
-        app.logger.debug(category_dict)
+        product_dict = json.loads(json.dumps(data))
+        # app.logger.debug(product_dict)
 
         current_time = datetime.now()
 
-        if user_type != "admin" and user_type != "super_admin":
-            abort(400, "super-admins and admins can create categories only")
+        if user_type != "seller" and user_type != "admin" and user_type != "super_admin":
+            abort(400, "only seller, super-admins and admins can update product")
 
-        UPDATE_CATEGORY = 'UPDATE categories SET name= %s, parent_id= %s, cover_id=%s, updated_at= %s WHERE id= %s'
+        UPDATE_PRODUCT = '''UPDATE products SET product_name= %s, product_description= %s,
+        category_id= %s, subcategory_id= %s, currency= %s, updated_at= %s 
+        WHERE id= %s'''
 
         # catch exception for invalid SQL statement
         try:
             # declare a cursor object from the connection
             cursor = app_globals.get_cursor()
-            # app.logger.debug("cursor object: %s", cursor)
+            # # app.logger.debug("cursor object: %s", cursor)
 
             cursor.execute(
-                UPDATE_CATEGORY, (category_dict['name'], category_dict['parent_id'], category_dict['cover_id'],
-                                  current_time, category_id,))
+                UPDATE_PRODUCT, (product_dict.get('product_name'), product_dict.get('product_description'),
+                                 product_dict.get('category_id'), product_dict.get(
+                                     'subcategory_id'), product_dict.get('currency', 'INR'), current_time,
+                                 product_id,))
             # app.logger.debug("row_counts= %s", cursor.rowcount)
             if cursor.rowcount != 1:
                 abort(400, 'Bad Request: update row error')
@@ -248,10 +253,50 @@ class Products(Resource):
             abort(400, 'Bad Request')
         finally:
             cursor.close()
-        return {"message": f"category_id {category_id} modified."}, 200
+        return {"message": f"product_id {product_id} modified."}, 200
 
+    # mark/unmark product as trashed (partially delete)
     @ f_jwt.jwt_required()
-    def delete(self, category_id):
+    def patch(self, product_id):
+        user_id = f_jwt.get_jwt_identity()
+        app.logger.debug("user_id= %s", user_id)
+        claims = f_jwt.get_jwt()
+        user_type = claims['user_type']
+        app.logger.debug("user_type= %s", user_type)
+
+        app.logger.debug("product_id= %s", product_id)
+        data = request.get_json()
+        # app.logger.debug(data['trashed'])
+
+        current_time = datetime.now()
+
+        if user_type != "seller" and user_type != "admin" and user_type != "super_admin":
+            abort(400, "only seller, super-admins and admins can update product")
+
+        UPDATE_PRODUCT_TRASHED_STATUS = '''UPDATE products SET trashed= %s, updated_at= %s
+        WHERE id= %s'''
+
+        # catch exception for invalid SQL statement
+        try:
+            # declare a cursor object from the connection
+            cursor = app_globals.get_cursor()
+            # # app.logger.debug("cursor object: %s", cursor)
+
+            cursor.execute(
+                UPDATE_PRODUCT_TRASHED_STATUS, (data['trashed'], current_time, product_id,))
+            # app.logger.debug("row_counts= %s", cursor.rowcount)
+            if cursor.rowcount != 1:
+                abort(400, 'Bad Request: update row error')
+        except (Exception, psycopg2.Error) as err:
+            app.logger.debug(err)
+            abort(400, 'Bad Request')
+        finally:
+            cursor.close()
+        return {"message": f"product_id {product_id} modified."}, 200
+
+    # delete trashed product
+    @ f_jwt.jwt_required()
+    def delete(self, product_id):
         # user_id = f_jwt.get_jwt_identity()
         # user_id=20
         user_id = f_jwt.get_jwt_identity()
@@ -260,20 +305,20 @@ class Products(Resource):
         user_type = claims['user_type']
         app.logger.debug("user_type= %s", user_type)
 
-        app.logger.debug("category_id=%s", category_id)
+        app.logger.debug("product_id=%s", product_id)
 
         if user_type != "admin" and user_type != "super_admin":
-            abort(400, "super-admins and admins can create categories only")
+            abort(400, "only super-admins and admins can delete product")
 
-        DELETE_CATEGORY = 'DELETE FROM categories WHERE id= %s'
+        DELETE_TRASHED_PRODUCT = 'DELETE FROM products WHERE id= %s AND trashed= true'
 
         # catch exception for invalid SQL statement
         try:
             # declare a cursor object from the connection
             cursor = app_globals.get_cursor()
-            app.logger.debug("cursor object: %s", cursor, "\n")
+            # app.logger.debug("cursor object: %s", cursor)
 
-            cursor.execute(DELETE_CATEGORY, (category_id,))
+            cursor.execute(DELETE_TRASHED_PRODUCT, (product_id,))
             # app.logger.debug("row_counts= %s", cursor.rowcount)
             if cursor.rowcount != 1:
                 abort(400, 'Bad Request: delete row error')

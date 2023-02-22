@@ -32,7 +32,7 @@ class Categories(Resource):
         try:
             # declare a cursor object from the connection
             cursor = app_globals.get_cursor()
-            # app.logger.debug("cursor object: %s", cursor)
+            # # app.logger.debug("cursor object: %s", cursor)
 
             cursor.execute(CREATE_CATEGORY, (name, current_time,
                            cover_id, parent_id, user_id))
@@ -57,7 +57,7 @@ class Categories(Resource):
             # declare a cursor object from the connection
             # cursor = app_globals.get_cursor()
             cursor = app_globals.get_cursor()
-            app.logger.debug("cursor object: %s", cursor)
+            # app.logger.debug("cursor object: %s", cursor)
 
             cursor.execute(GET_CATEGORY)
             rows = cursor.fetchall()
@@ -91,7 +91,7 @@ class Categories(Resource):
                 try:
                     # declare a cursor object from the connection
                     cursor = app_globals.get_cursor()
-                    # app.logger.debug("cursor object: %s", cursor)
+                    # # app.logger.debug("cursor object: %s", cursor)
                     # app.logger.debug(categories_list[i]['id'])
                     cursor.execute(GET_SUBCATEGORIES,
                                    (str(categories_list[i]['id']),))
@@ -149,7 +149,7 @@ class Categories(Resource):
         current_time = datetime.now()
 
         if user_type != "admin" and user_type != "super_admin":
-            abort(400, "super-admins and admins can create categories only")
+            abort(400, "only super-admins and admins can update category")
 
         UPDATE_CATEGORY = 'UPDATE categories SET name= %s, parent_id= %s, cover_id=%s, updated_at= %s WHERE id= %s'
 
@@ -157,7 +157,7 @@ class Categories(Resource):
         try:
             # declare a cursor object from the connection
             cursor = app_globals.get_cursor()
-            # app.logger.debug("cursor object: %s", cursor)
+            # # app.logger.debug("cursor object: %s", cursor)
 
             cursor.execute(
                 UPDATE_CATEGORY, (category_dict['name'], category_dict['parent_id'], category_dict['cover_id'],
@@ -185,7 +185,7 @@ class Categories(Resource):
         app.logger.debug("category_id=%s", category_id)
 
         if user_type != "admin" and user_type != "super_admin":
-            abort(400, "super-admins and admins can create categories only")
+            abort(400, "only super-admins and admins can delete category")
 
         DELETE_CATEGORY = 'DELETE FROM categories WHERE id= %s'
 
@@ -193,7 +193,7 @@ class Categories(Resource):
         try:
             # declare a cursor object from the connection
             cursor = app_globals.get_cursor()
-            app.logger.debug("cursor object: %s", cursor, "\n")
+            # app.logger.debug("cursor object: %s", cursor)
 
             cursor.execute(DELETE_CATEGORY, (category_id,))
             # app.logger.debug("row_counts= %s", cursor.rowcount)

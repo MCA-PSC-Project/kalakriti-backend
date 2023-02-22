@@ -94,6 +94,7 @@ CREATE TABLE "products"(
 	"tags" text [],
 	"added_at" TIMESTAMPTZ NOT NULL,
 	"updated_at" TIMESTAMPTZ DEFAULT NULL,
+	"trashed" BOOLEAN DEFAULT FALSE,
 	FOREIGN KEY("category_id") REFERENCES "categories"("id") ON DELETE
 	SET NULL,
 		FOREIGN KEY("subcategory_id") REFERENCES "categories"("id") ON DELETE

@@ -35,7 +35,7 @@ class GetSeller(Resource):
         try:
             # declare a cursor object from the connection
             cursor = app_globals.get_cursor()
-            # app.logger.debug("cursor object: %s", cursor)
+            # # app.logger.debug("cursor object: %s", cursor)
 
             cursor.execute(GET_SELLERS_PROFILES, ('seller',))
             rows = cursor.fetchall()
@@ -96,7 +96,7 @@ class GetCustomer(Resource):
         try:
             # declare a cursor object from the connection
             cursor = app_globals.get_cursor()
-            # app.logger.debug("cursor object: %s", cursor)
+            # # app.logger.debug("cursor object: %s", cursor)
 
             cursor.execute(GET_CUSTOMERS_PROFILES, ('customer',))
             rows = cursor.fetchall()
@@ -159,7 +159,7 @@ class EnableDisableUser(Resource):
         try:
             # declare a cursor object from the connection
             cursor = app_globals.get_cursor()
-            # app.logger.debug("cursor object: %s", cursor)
+            # # app.logger.debug("cursor object: %s", cursor)
 
             cursor.execute(
                 UPDATE_USER_ENABLED_STATUS, (user_dict['enabled'], current_time, users_id,))
@@ -198,7 +198,7 @@ class PromoteToSeller(Resource):
         try:
             # declare a cursor object from the connection
             cursor = app_globals.get_cursor()
-            # app.logger.debug("cursor object: %s", cursor)
+            # # app.logger.debug("cursor object: %s", cursor)
 
             cursor.execute(PROMOTE_TO_SELLER, ('seller', current_time, email,))
             # app.logger.debug("row_counts= %s", cursor.rowcount)

@@ -29,7 +29,7 @@ class Banners(Resource):
         try:
             # declare a cursor object from the connection
             cursor = app_globals.get_cursor()
-            # app.logger.debug("cursor object: %s", cursor)
+            # # app.logger.debug("cursor object: %s", cursor)
 
             cursor.execute(
                 CREATE_BANNER, (media_id, redirect_type, redirect_url,))
@@ -53,7 +53,7 @@ class Banners(Resource):
         try:
             # declare a cursor object from the connection
             cursor = app_globals.get_cursor()
-            # app.logger.debug("cursor object: %s", cursor)
+            # # app.logger.debug("cursor object: %s", cursor)
 
             cursor.execute(GET_BANNERS)
             rows = cursor.fetchall()
@@ -70,10 +70,10 @@ class Banners(Resource):
                 banner_media_dict['name'] = row[4]
                 path = row[5]
                 if path is not None:
-                   banner_media_dict['path'] = "{}/{}".format(
-                     app.config["S3_LOCATION"], row[5])
+                    banner_media_dict['path'] = "{}/{}".format(
+                        app.config["S3_LOCATION"], row[5])
                 else:
-                   banner_media_dict['path'] = None
+                    banner_media_dict['path'] = None
                 banners_dict.update({"dp": banner_media_dict})
 
                 banners_list.append(banners_dict)
@@ -104,7 +104,7 @@ class Banners(Resource):
         try:
             # declare a cursor object from the connection
             cursor = app_globals.get_cursor()
-            # app.logger.debug("cursor object: %s", cursor)
+            # # app.logger.debug("cursor object: %s", cursor)
 
             cursor.execute(
                 UPDATE_BANNER, (banner_dict['redirect_type'], banner_dict['redirect_url'], banner_id,))
@@ -134,7 +134,7 @@ class Banners(Resource):
         try:
             # declare a cursor object from the connection
             cursor = app_globals.get_cursor()
-            app.logger.debug("cursor object: %s", cursor, "\n")
+            # app.logger.debug("cursor object: %s", cursor)
 
             cursor.execute(DELETE_BANNER, (banner_id,))
             # app.logger.debug("row_counts= %s", cursor.rowcount)

@@ -29,7 +29,7 @@ class Seller_Applicant_Form(Resource):
         try:
             # declare a cursor object from the connection
             cursor = app_globals.get_cursor()
-            # app.logger.debug("cursor object: %s", cursor)
+            # # app.logger.debug("cursor object: %s", cursor)
 
             cursor.execute(
                 APPLY_FOR_SELLER, (name, email, mobile_no, current_time, description))
@@ -51,7 +51,7 @@ class Seller_Applicant_Form(Resource):
         try:
             # declare a cursor object from the connection
             cursor = app_globals.get_cursor()
-            # app.logger.debug("cursor object: %s", cursor)
+            # # app.logger.debug("cursor object: %s", cursor)
 
             cursor.execute(GET_SELLERS_FORM)
             rows = cursor.fetchall()
@@ -78,11 +78,11 @@ class Seller_Applicant_Form(Resource):
         return sellers_list
 
     @ f_jwt.jwt_required()
-    def put(self,seller_id):
+    def put(self, seller_id):
         data = request.get_json()
         seller_form_dict = json.loads(json.dumps(data))
         app.logger.debug(seller_form_dict)
-         
+
         current_time = datetime.now()
 
         UPDATE_BANNER = '''UPDATE seller_applicant_forms SET name=%s, email=%s, mobile_no=%s, 
@@ -92,11 +92,11 @@ class Seller_Applicant_Form(Resource):
         try:
             # declare a cursor object from the connection
             cursor = app_globals.get_cursor()
-            # app.logger.debug("cursor object: %s", cursor)
+            # # app.logger.debug("cursor object: %s", cursor)
 
             cursor.execute(
                 UPDATE_BANNER, (seller_form_dict['name'], seller_form_dict['email'], seller_form_dict['mobile_no'],
-                                  seller_form_dict['description'], current_time, seller_id,))
+                                seller_form_dict['description'], current_time, seller_id,))
             # app.logger.debug("row_counts= %s", cursor.rowcount)
             if cursor.rowcount != 1:
                 abort(400, 'Bad Request: update row error')
@@ -123,7 +123,7 @@ class Seller_Applicant_Form(Resource):
         try:
             # declare a cursor object from the connection
             cursor = app_globals.get_cursor()
-            #app.logger.debug("cursor object: %s", cursor, "\n")
+            # # app.logger.debug("cursor object: %s", cursor)
 
             cursor.execute(DELETE_SELLER_FORM, (seller_id,))
             # app.logger.debug("row_counts= %s", cursor.rowcount)

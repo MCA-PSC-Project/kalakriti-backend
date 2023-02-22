@@ -31,7 +31,7 @@ class GetAllAdmins(Resource):
         try:
             # declare a cursor object from the connection
             cursor = app_globals.get_cursor()
-            # app.logger.debug("cursor object: %s", cursor)
+            # # app.logger.debug("cursor object: %s", cursor)
 
             cursor.execute(GET_ADMINS_PROFILES, ('admin',))
             rows = cursor.fetchall()
@@ -92,9 +92,10 @@ class PromoteToAdmin(Resource):
         try:
             # declare a cursor object from the connection
             cursor = app_globals.get_cursor()
-            # app.logger.debug("cursor object: %s", cursor)
+            # # app.logger.debug("cursor object: %s", cursor)
 
-            cursor.execute(UPDATE_USER_ENABLED_STATUS, ('admin', current_time, email,))
+            cursor.execute(UPDATE_USER_ENABLED_STATUS,
+                           ('admin', current_time, email,))
             # app.logger.debug("row_counts= %s", cursor.rowcount)
             if cursor.rowcount != 1:
                 abort(400, 'Bad Request: update row error')

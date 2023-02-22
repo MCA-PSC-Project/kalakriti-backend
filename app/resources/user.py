@@ -30,7 +30,7 @@ class UserProfile(Resource):
         try:
             # declare a cursor object from the connection
             cursor = app_globals.get_cursor()
-            # app.logger.debug("cursor object: %s", cursor)
+            # # app.logger.debug("cursor object: %s", cursor)
 
             cursor.execute(GET_PROFILE, (user_id,))
             row = cursor.fetchone()
@@ -81,7 +81,7 @@ class UserProfile(Resource):
         try:
             # declare a cursor object from the connection
             cursor = app_globals.get_cursor()
-            # app.logger.debug("cursor object: %s", cursor)
+            # # app.logger.debug("cursor object: %s", cursor)
 
             cursor.execute(
                 UPDATE_USER, (user_dict['first_name'], user_dict['last_name'], user_dict['dob'],
@@ -108,7 +108,7 @@ class UserProfile(Resource):
         try:
             # declare a cursor object from the connection
             cursor = app_globals.get_cursor()
-            app.logger.debug("cursor object: %s", cursor, "\n")
+            # app.logger.debug("cursor object: %s", cursor)
 
             cursor.execute(DELETE_USER, (user_id,))
             # app.logger.debug("row_counts= %s", cursor.rowcount)
@@ -142,7 +142,7 @@ class ResetEmail(Resource):
         try:
             # declare a cursor object from the connection
             cursor = app_globals.get_cursor()
-            # app.logger.debug("cursor object: %s", cursor)
+            # # app.logger.debug("cursor object: %s", cursor)
 
             cursor.execute(UPDATE_USER_EMAIL, (email, current_time, user_id,))
             # app.logger.debug("row_counts= %s", cursor.rowcount)
@@ -176,7 +176,7 @@ class ResetPhone(Resource):
         try:
             # declare a cursor object from the connection
             cursor = app_globals.get_cursor()
-            # app.logger.debug("cursor object: %s", cursor)
+            # # app.logger.debug("cursor object: %s", cursor)
 
             cursor.execute(UPDATE_USER_PHONE, (phone, current_time, user_id,))
             # app.logger.debug("row_counts= %s", cursor.rowcount)
@@ -211,7 +211,7 @@ class ResetPassword(Resource):
         try:
             # declare a cursor object from the connection
             cursor = app_globals.get_cursor()
-            # app.logger.debug("cursor object: %s", cursor)
+            # # app.logger.debug("cursor object: %s", cursor)
 
             cursor.execute(CHANGE_USER_PASSWORD,
                            (new_hashed_password, current_time, email,))

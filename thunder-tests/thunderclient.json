@@ -26,16 +26,16 @@
     "method": "POST",
     "sortNum": 20000,
     "created": "2023-02-20T16:38:51.029Z",
-    "modified": "2023-02-21T15:02:23.188Z",
+    "modified": "2023-02-22T14:14:03.673Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n    \"email\": \"updated_admin@gmail.com\",\n    \"password\": \"abcd@123\"\n}",
+      "raw": "{\r\n    \"email\": \"sheetal@gmail.com\",\r\n    \"password\": \"abcd@123\"\r\n}",
       "form": []
     },
     "tests": [],
-    "docs": "```json\n{\n\t\"email\": \"sheetal@gmail.com\",\n\t\"password\": \"abcd@123\"\n}\n```\n\n```json\n{\n\t\"email\": \"mywebnewslettersinbox123@gmail.com\",\n\t\"password\": \"abcd@123\"\n}\n```\n\n```json\n{\n\t\"email\": \"seller@gmail.com\",\n\t\"password\": \"abcd@123\"\n}\n```\n"
+    "docs": "```json\n{\n\t\"email\": \"sheetal@gmail.com\",\n\t\"password\": \"abcd@123\"\n}\n```\n\n```json\n{\n\t\"email\": \"mywebnewslettersinbox123@gmail.com\",\n\t\"password\": \"abcd@123\"\n}\n```\n\n```json\n{\n\t\"email\": \"seller@gmail.com\",\n\t\"password\": \"abcd@123\"\n}\n```\n\n```json\n{\n    \"email\": \"updated_admin@gmail.com\",\n    \"password\": \"abcd@123\"\n}\n```"
   },
   {
     "_id": "e4888b8e-9242-4be3-8747-c2cd265f5c50",
@@ -1096,9 +1096,9 @@
     "name": "Create Product",
     "url": "{{baseUrl}}/products",
     "method": "POST",
-    "sortNum": 550000,
+    "sortNum": 535000,
     "created": "2023-02-20T16:38:51.083Z",
-    "modified": "2023-02-21T07:30:46.881Z",
+    "modified": "2023-02-22T14:05:14.281Z",
     "headers": [],
     "params": [],
     "body": {
@@ -1117,22 +1117,23 @@
     "colId": "80d178ef-5176-474a-8708-db78bd45faee",
     "containerId": "d3f02f76-889e-4a8d-88e7-d026529d83a9",
     "name": "update product",
-    "url": "{{baseUrl}}/products/57",
+    "url": "{{baseUrl}}/products/26",
     "method": "PUT",
-    "sortNum": 560000,
+    "sortNum": 537500,
     "created": "2023-02-20T16:38:51.084Z",
-    "modified": "2023-02-20T16:38:51.084Z",
+    "modified": "2023-02-22T14:07:30.023Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n}\n"
+      "raw": "{\n  \"product_name\": \"madhubani painting\",\n  \"product_description\": \"dxvxk\",\n  \"category_id\": 5,\n  \"subcategory_id\": null,\n  \"currency\": \"INR\",\n  \"tags\": [\n    \"painting\",\n    \"madhubani\"\n  ]\n}\n",
+      "form": []
     },
     "auth": {
       "type": "bearer",
-      "bearer": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2NDIyNDY5MTUsImlkIjoyLCJ1c2VyX3R5cGUiOiJlZHVjYXRvciJ9.9S-vO3PAvjTlQp2WrGhOb7EUjVu4Z8zMkEcYFQ6Hv88"
+      "bearer": "{{seller_token}}"
     },
-    "docs": ""
+    "tests": []
   },
   {
     "_id": "9a2a4291-416f-4061-872f-5d13acac5dac",
@@ -1806,6 +1807,47 @@
     "auth": {
       "type": "bearer",
       "bearer": "{{token}}"
+    },
+    "tests": []
+  },
+  {
+    "_id": "78fc8b6e-f577-49cc-b5bc-7a81da181bd7",
+    "colId": "80d178ef-5176-474a-8708-db78bd45faee",
+    "containerId": "d3f02f76-889e-4a8d-88e7-d026529d83a9",
+    "name": "mark/unmark product as trashed",
+    "url": "{{baseUrl}}/products/21",
+    "method": "PATCH",
+    "sortNum": 910000,
+    "created": "2023-02-22T14:05:51.975Z",
+    "modified": "2023-02-22T14:13:08.954Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n  \"trashed\": true\n}",
+      "form": []
+    },
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{seller_token}}"
+    },
+    "tests": []
+  },
+  {
+    "_id": "19f9bf37-f916-421f-b1ed-8399fb42915b",
+    "colId": "80d178ef-5176-474a-8708-db78bd45faee",
+    "containerId": "d3f02f76-889e-4a8d-88e7-d026529d83a9",
+    "name": "delete a product",
+    "url": "{{baseUrl}}/products/21",
+    "method": "DELETE",
+    "sortNum": 920000,
+    "created": "2023-02-22T14:12:15.464Z",
+    "modified": "2023-02-22T14:18:42.825Z",
+    "headers": [],
+    "params": [],
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{admin_token}}"
     },
     "tests": []
   }
