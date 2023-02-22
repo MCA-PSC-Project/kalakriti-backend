@@ -243,7 +243,7 @@ CREATE TABLE "seller_applicant_forms"(
 	"mobile_no" VARCHAR NOT NULL,
 	"reviewed" BOOLEAN DEFAULT FALSE,
 	"added_at" TIMESTAMPTZ NOT NULL,
-	"updated_at" TIMESTAMPTZ NOT NULL,
+	"updated_at" TIMESTAMPTZ DEFAULT NULL,
 	"approval_status" approval__status DEFAULT 'pending',
 	"description" VARCHAR,
 	"path" VARCHAR DEFAULT ''

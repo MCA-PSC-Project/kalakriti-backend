@@ -17,6 +17,7 @@ from app.resources.categories import Categories
 from app.resources.admin import GetSeller, GetCustomer, EnableDisableUser, PromoteToSeller
 from app.resources.super_admin import GetAllAdmins, PromoteToAdmin
 from app.resources.banners import Banners
+from app.resources.seller_applicant_form import Seller_Applicant_Form
 
 import app.app_globals as app_globals
 
@@ -109,6 +110,11 @@ def create_app(config_name):
     # Products
     api.add_resource(Products, '/products',
                      '/products/<int:product_id>')
+
+    # Seller_Applicant_Form
+    api.add_resource(Seller_Applicant_Form, '/sellers-form',
+                     '/sellers-form/<int:seller_id>')
+
     # to be exceuted at app exit for cleanups
     @atexit.register
     def close_connection_pool():
