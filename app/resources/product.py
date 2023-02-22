@@ -372,11 +372,13 @@ class SellersProducts(Resource):
             sct.id, sct.name, sct.parent_id, 
             p.currency, p.product_status,
             p.added_at, p.updated_at, 
-            u.id, u.first_name, u.last_name, u.email 
+            u.id, u.first_name, u.last_name, u.email,
+            pbi.product_item_id
             FROM products p 
             JOIN categories ct ON p.category_id = ct.id
             LEFT JOIN categories sct ON p.subcategory_id = sct.id
             JOIN users u ON p.seller_user_id = u.id 
+            JOIN product_base_item pbi ON p.id = pbi.product_id
             WHERE p.seller_user_id= %s'''
 
             cursor.execute(GET_PRODUCT, (seller_user_id,))
@@ -414,18 +416,7 @@ class SellersProducts(Resource):
                 seller_dict['email'] = row[15]
                 product_dict.update({"seller": seller_dict})
 
-            GET_BASE_PRODUCT_ITEM_ID = '''SELECT product_item_id 
-            FROM product_base_item
-            WHERE product_id = %s'''
-
-            cursor.execute(GET_BASE_PRODUCT_ITEM_ID, (product_id,))
-            row = cursor.fetchone()
-            if row is None:
-                abort(400, 'Bad Request')
-            base_product_item_id = row[0]
-            app.logger.debug("base_product_item_id= %s",
-                             base_product_item_id)
-            product_dict['base_product_item_id'] = base_product_item_id
+                product_dict['base_product_item_id'] = row[16]
 
             product_items_list = []
             GET_PRODUCT_ITEMS = '''SELECT pi.id, pi.product_id, pi.product_variant_name, pi."SKU", 
