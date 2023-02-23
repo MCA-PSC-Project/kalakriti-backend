@@ -131,6 +131,7 @@ class SellersProductItems(Resource):
         app_globals.db_conn.autocommit = True
         return f"product_item_id = {product_item_id} created in product_id = {product_item_dict.get('product_id')} successfully", 201
 
+    # to be worked or discarded
     @f_jwt.jwt_required()
     def get(self):
         user_id = f_jwt.get_jwt_identity()
@@ -258,7 +259,6 @@ class SellersProductItems(Resource):
         # app.logger.debug(product_dict)
         return products_list
 
-    # update product only
     @ f_jwt.jwt_required()
     def put(self, product_item_id):
         user_id = f_jwt.get_jwt_identity()
@@ -277,30 +277,68 @@ class SellersProductItems(Resource):
         if user_type != "seller" and user_type != "admin" and user_type != "super_admin":
             abort(400, "only seller, super-admins and admins can update product-item")
 
-        UPDATE_PRODUCT = '''UPDATE product_items SET product_name= %s, product_description= %s,
-        category_id= %s, subcategory_id= %s, currency= %s, updated_at= %s 
-        WHERE id= %s'''
-
+        # before beginning transaction autocommit must be off
+        app_globals.db_conn.autocommit = False
         # catch exception for invalid SQL statement
         try:
             # declare a cursor object from the connection
             cursor = app_globals.get_cursor()
-            # # app.logger.debug("cursor object: %s", cursor)
+            # app.logger.debug("cursor object: %s", cursor)
 
+            GET_VARIANT_VALUE_ID = '''SELECT variant_value_id FROM product_item_values WHERE product_item_id= %s'''
             cursor.execute(
-                UPDATE_PRODUCT, (product_item_dict.get('product_name'), product_item_dict.get('product_description'),
-                                 product_item_dict.get('category_id'), product_item_dict.get(
-                                     'subcategory_id'), product_item_dict.get('currency', 'INR'), current_time,
-                                 product_item_id,))
+                GET_VARIANT_VALUE_ID, (str(product_item_id),))
+            row = cursor.fetchone()
+            if not row:
+                # app.logger.debug("variant_value_id not found!")
+                # abort(400, 'variant_value_id not found!')
+                raise Exception('variant_value_id not found!')
+            variant_value_id = row[0]
+
+            # check correct variant is passed from user
+            GET_VARIANT_ID = '''SELECT id FROM variants WHERE variant= %s'''
+            cursor.execute(
+                GET_VARIANT_ID, (product_item_dict.get('variant').upper(),))
+            row = cursor.fetchone()
+            if not row:
+                # app.logger.debug("variant_id not found!")
+                # abort(400, 'variant_id not found!')
+                raise Exception('variant_id not found!')
+            variant_id = row[0]
+
+            UPDATE_VARIANT_VALUE = '''UPDATE variant_values SET variant_id= %s, variant_value= %s
+            WHERE id= %s'''
+
+            cursor.execute(UPDATE_VARIANT_VALUE, (variant_id, product_item_dict.get(
+                'variant_value'), variant_value_id,))
             # app.logger.debug("row_counts= %s", cursor.rowcount)
             if cursor.rowcount != 1:
-                abort(400, 'Bad Request: update row error')
+                abort(400, 'Bad Request: update variant_values row error')
+
+            UPDATE_PRODUCT_ITEM = '''UPDATE product_items SET product_variant_name= %s, 
+            "SKU"= %s, original_price= %s, offer_price= %s, quantity_in_stock= %s, updated_at= %s 
+            WHERE id= %s'''
+
+            cursor.execute(
+                UPDATE_PRODUCT_ITEM, (product_item_dict.get('product_variant_name'), product_item_dict.get('SKU'),
+                                      product_item_dict.get(
+                                          'original_price'), product_item_dict.get('offer_price'),
+                                      product_item_dict.get('quantity_in_stock'), current_time, str(product_item_id),))
+            # app.logger.debug("row_counts= %s", cursor.rowcount)
+            if cursor.rowcount != 1:
+                abort(400, 'Bad Request: update product_items row error')
         except (Exception, psycopg2.Error) as err:
             app.logger.debug(err)
+            app_globals.db_conn.rollback()
+            app_globals.db_conn.autocommit = True
+            app.logger.debug("autocommit switched back from off to on")
             abort(400, 'Bad Request')
         finally:
             cursor.close()
-        return {"message": f"product_id {product_item_id} modified."}, 200
+        app_globals.db_conn.commit()
+        app_globals.db_conn.autocommit = True
+        app.logger.debug("autocommit switched back from off to on")
+        return {"message": f"product_item_id {product_item_id} modified."}, 200
 
     # mark/unmark product item as trashed (partially delete)
     # todo: check product_item_id is not base item

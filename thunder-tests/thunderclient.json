@@ -26,7 +26,7 @@
     "method": "POST",
     "sortNum": 20000,
     "created": "2023-02-20T16:38:51.029Z",
-    "modified": "2023-02-23T13:21:15.394Z",
+    "modified": "2023-02-23T14:29:35.800Z",
     "headers": [],
     "params": [],
     "body": {
@@ -1117,16 +1117,16 @@
     "colId": "80d178ef-5176-474a-8708-db78bd45faee",
     "containerId": "d3f02f76-889e-4a8d-88e7-d026529d83a9",
     "name": "update product",
-    "url": "{{baseUrl}}/products/26",
+    "url": "{{baseUrl}}/sellers/products/26",
     "method": "PUT",
     "sortNum": 537500,
     "created": "2023-02-20T16:38:51.084Z",
-    "modified": "2023-02-22T14:07:30.023Z",
+    "modified": "2023-02-23T14:31:47.528Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n  \"product_name\": \"madhubani painting\",\n  \"product_description\": \"dxvxk\",\n  \"category_id\": 5,\n  \"subcategory_id\": null,\n  \"currency\": \"INR\",\n  \"tags\": [\n    \"painting\",\n    \"madhubani\"\n  ]\n}\n",
+      "raw": "{\n  \"product_name\": \"madhubani painting\",\n  \"product_description\": \"paintings from madhubani\",\n  \"category_id\": 5,\n  \"subcategory_id\": null,\n  \"currency\": \"INR\",\n  \"tags\": [\n    \"painting\",\n    \"madhubani\"\n  ]\n}\n",
       "form": []
     },
     "auth": {
@@ -1926,11 +1926,11 @@
     "colId": "80d178ef-5176-474a-8708-db78bd45faee",
     "containerId": "9525375d-6d7f-486c-8969-7b49f2983b85",
     "name": "get product item by id",
-    "url": "{{baseUrl}}/product-items/14",
+    "url": "{{baseUrl}}/product-items/15",
     "method": "GET",
     "sortNum": 10000,
     "created": "2023-02-23T11:46:39.450Z",
-    "modified": "2023-02-23T13:08:53.925Z",
+    "modified": "2023-02-23T14:58:41.680Z",
     "headers": [],
     "params": [],
     "tests": []
@@ -1940,16 +1940,16 @@
     "colId": "80d178ef-5176-474a-8708-db78bd45faee",
     "containerId": "9525375d-6d7f-486c-8969-7b49f2983b85",
     "name": "update product item",
-    "url": "{{baseUrl}}/products/26",
+    "url": "{{baseUrl}}/sellers/product-items/15",
     "method": "PUT",
     "sortNum": 20000,
     "created": "2023-02-23T12:04:45.230Z",
-    "modified": "2023-02-23T13:09:00.526Z",
+    "modified": "2023-02-23T14:57:21.028Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n  \"product_name\": \"madhubani painting\",\n  \"product_description\": \"dxvxk\",\n  \"category_id\": 5,\n  \"subcategory_id\": null,\n  \"currency\": \"INR\",\n  \"tags\": [\n    \"painting\",\n    \"madhubani\"\n  ]\n}\n",
+      "raw": "{\n  \"variant\": \"MATERIAL\",\n  \"variant_value\": \"LIGHT_GREEN\",\n  \"product_variant_name\": \"LIGHT_GREEN_COLOR_VARIANT\",\n  \"SKU\": \"dgreen-colorf\",\n  \"original_price\": 5000,\n  \"offer_price\": 2000,\n  \"quantity_in_stock\": 25\n}",
       "form": []
     },
     "auth": {

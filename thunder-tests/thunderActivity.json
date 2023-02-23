@@ -31,7 +31,7 @@
     "method": "POST",
     "sortNum": 0,
     "created": "2023-02-22T17:11:30.418Z",
-    "modified": "2023-02-23T13:21:15.400Z",
+    "modified": "2023-02-23T14:29:35.807Z",
     "headers": [],
     "params": [],
     "body": {
@@ -322,6 +322,89 @@
       "type": "bearer",
       "bearer": "{{admin_token}}"
     },
+    "tests": []
+  },
+  {
+    "_id": "dbf96566-6515-4ff5-b783-d863e97ccd83",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/sellers/products/26",
+    "url": "{{baseUrl}}/sellers/products/26",
+    "method": "PUT",
+    "sortNum": 0,
+    "created": "2023-02-23T14:31:47.358Z",
+    "modified": "2023-02-23T14:31:47.358Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n  \"product_name\": \"madhubani painting\",\n  \"product_description\": \"paintings from madhubani\",\n  \"category_id\": 5,\n  \"subcategory_id\": null,\n  \"currency\": \"INR\",\n  \"tags\": [\n    \"painting\",\n    \"madhubani\"\n  ]\n}\n",
+      "form": []
+    },
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{seller_token}}"
+    },
+    "tests": []
+  },
+  {
+    "_id": "6637759e-78a5-411b-9ab4-0ad6265be347",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/sellers/product-items/26",
+    "url": "{{baseUrl}}/sellers/product-items/26",
+    "method": "PUT",
+    "sortNum": 0,
+    "created": "2023-02-23T14:37:33.682Z",
+    "modified": "2023-02-23T14:37:33.682Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n  \"variant\": \"COLORM\",\n  \"variant_value\": \"LIGHT_GREEN\",\n  \"product_variant_name\": \"DARK_GREEN_COLOR_VARIANT\",\n  \"SKU\": \"dgreen-colorf\",\n  \"original_price\": 1000,\n  \"offer_price\": 500,\n  \"quantity_in_stock\": 20\n}",
+      "form": []
+    },
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{seller_token}}"
+    },
+    "tests": []
+  },
+  {
+    "_id": "c8fc2f36-1a24-4b4a-b8ce-947319c8a41f",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/sellers/product-items/15",
+    "url": "{{baseUrl}}/sellers/product-items/15",
+    "method": "PUT",
+    "sortNum": 0,
+    "created": "2023-02-23T14:54:54.848Z",
+    "modified": "2023-02-23T14:57:21.053Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n  \"variant\": \"MATERIAL\",\n  \"variant_value\": \"LIGHT_GREEN\",\n  \"product_variant_name\": \"LIGHT_GREEN_COLOR_VARIANT\",\n  \"SKU\": \"dgreen-colorf\",\n  \"original_price\": 5000,\n  \"offer_price\": 2000,\n  \"quantity_in_stock\": 25\n}",
+      "form": []
+    },
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{seller_token}}"
+    },
+    "tests": []
+  },
+  {
+    "_id": "9ee5e89b-ad58-41b2-937a-fb7472bf9b76",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/product-items/15",
+    "url": "{{baseUrl}}/product-items/15",
+    "method": "GET",
+    "sortNum": 0,
+    "created": "2023-02-23T14:58:41.524Z",
+    "modified": "2023-02-23T14:58:41.524Z",
+    "headers": [],
+    "params": [],
     "tests": []
   }
 ]
