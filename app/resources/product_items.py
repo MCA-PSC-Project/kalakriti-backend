@@ -303,6 +303,7 @@ class SellersProductItems(Resource):
         return {"message": f"product_id {product_item_id} modified."}, 200
 
     # mark/unmark product item as trashed (partially delete)
+    # todo: check product_item_id is not base item
     @ f_jwt.jwt_required()
     def patch(self, product_item_id):
         user_id = f_jwt.get_jwt_identity()
@@ -317,7 +318,7 @@ class SellersProductItems(Resource):
         if 'product_item_status' in data.keys():
             if user_type != "admin" and user_type != "super_admin":
                 abort(
-                    400, "only super-admins and admins are allowed to update product-item status")
+                    400, "only super-admins and admins are allowed to update product_item status")
             value = data['product_item_status']
             # app.logger.debug("product_status= %s", value)
             UPDATE_PRODUCT_ITEM_STATUS = '''UPDATE product_items SET product_item_status= %s, updated_at= %s
@@ -326,7 +327,7 @@ class SellersProductItems(Resource):
         elif 'trashed' in data.keys():
             if user_type != "seller" and user_type != "admin" and user_type != "super_admin":
                 abort(
-                    400, "only seller, super-admins and admins can trash a product-item")
+                    400, "only seller, super-admins and admins can trash a product_item")
             value = data['trashed']
             # app.logger.debug("trashed= %s", value)
             UPDATE_PRODUCT_ITEM_TRASHED_VALUE = '''UPDATE product_items SET trashed= %s, updated_at= %s
@@ -354,9 +355,10 @@ class SellersProductItems(Resource):
             cursor.close()
         return {"message": f"product_item_id {product_item_id} modified."}, 200
 
-    # delete trashed product
+    # delete trashed product item
+    # todo: check product_item_id is not base item
     @ f_jwt.jwt_required()
-    def delete(self, product_id):
+    def delete(self, product_item_id):
         # user_id = f_jwt.get_jwt_identity()
         # user_id=20
         user_id = f_jwt.get_jwt_identity()
@@ -365,12 +367,12 @@ class SellersProductItems(Resource):
         user_type = claims['user_type']
         app.logger.debug("user_type= %s", user_type)
 
-        app.logger.debug("product_id=%s", product_id)
+        app.logger.debug("product_id=%s", product_item_id)
 
         if user_type != "admin" and user_type != "super_admin":
-            abort(400, "only super-admins and admins can delete product")
+            abort(400, "only super-admins and admins can delete product item")
 
-        DELETE_TRASHED_PRODUCT = 'DELETE FROM products WHERE id= %s AND trashed= true'
+        DELETE_TRASHED_PRODUCT_ITEM = 'DELETE FROM product_items WHERE id= %s AND trashed= true'
 
         # catch exception for invalid SQL statement
         try:
@@ -378,7 +380,7 @@ class SellersProductItems(Resource):
             cursor = app_globals.get_cursor()
             # app.logger.debug("cursor object: %s", cursor)
 
-            cursor.execute(DELETE_TRASHED_PRODUCT, (product_id,))
+            cursor.execute(DELETE_TRASHED_PRODUCT_ITEM, (product_item_id,))
             # app.logger.debug("row_counts= %s", cursor.rowcount)
             if cursor.rowcount != 1:
                 abort(400, 'Bad Request: delete row error')

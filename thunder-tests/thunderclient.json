@@ -1842,7 +1842,7 @@
     "method": "DELETE",
     "sortNum": 920000,
     "created": "2023-02-22T14:12:15.464Z",
-    "modified": "2023-02-23T13:17:27.741Z",
+    "modified": "2023-02-23T13:37:19.608Z",
     "headers": [],
     "params": [],
     "auth": {
@@ -1990,17 +1990,35 @@
     "method": "PATCH",
     "sortNum": 40000,
     "created": "2023-02-23T13:11:37.223Z",
-    "modified": "2023-02-23T13:22:08.701Z",
+    "modified": "2023-02-23T13:40:41.146Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n  \"trashed\": false\n}",
+      "raw": "{\n  \"trashed\": true\n}",
       "form": []
     },
     "auth": {
       "type": "bearer",
       "bearer": "{{seller_token}}"
+    },
+    "tests": []
+  },
+  {
+    "_id": "3d9bb735-9051-4b37-8ec0-c7487078f935",
+    "colId": "80d178ef-5176-474a-8708-db78bd45faee",
+    "containerId": "9525375d-6d7f-486c-8969-7b49f2983b85",
+    "name": "delete a product item",
+    "url": "{{baseUrl}}/sellers/product-items/16",
+    "method": "DELETE",
+    "sortNum": 50000,
+    "created": "2023-02-23T13:37:24.353Z",
+    "modified": "2023-02-23T13:40:51.068Z",
+    "headers": [],
+    "params": [],
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{admin_token}}"
     },
     "tests": []
   }
