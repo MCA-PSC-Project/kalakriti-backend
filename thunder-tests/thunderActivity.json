@@ -31,12 +31,12 @@
     "method": "POST",
     "sortNum": 0,
     "created": "2023-02-22T17:11:30.418Z",
-    "modified": "2023-02-22T18:16:15.116Z",
+    "modified": "2023-02-23T10:40:42.829Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\r\n    \"email\": \"seller@gmail.com\",\r\n    \"password\": \"abcd@123\"\r\n}",
+      "raw": "{\n    \"email\": \"seller@gmail.com\",\n    \"password\": \"abcd@123\"\n}",
       "form": []
     },
     "tests": [],
