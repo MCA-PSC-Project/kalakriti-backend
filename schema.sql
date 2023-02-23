@@ -121,6 +121,8 @@ CREATE TABLE "product_items"(
 	"quantity_in_stock" INT NOT NULL,
 	"added_at" TIMESTAMPTZ NOT NULL,
 	"updated_at" TIMESTAMPTZ DEFAULT NULL,
+	"product_item_status" product__status DEFAULT ('draft'),
+	"trashed" BOOLEAN DEFAULT FALSE,
 	-- "is_base" BOOLEAN NOT NULL DEFAULT TRUE,
 	FOREIGN KEY("product_id") REFERENCES "products"("id") ON DELETE CASCADE
 );
