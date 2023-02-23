@@ -1094,16 +1094,16 @@
     "colId": "80d178ef-5176-474a-8708-db78bd45faee",
     "containerId": "d3f02f76-889e-4a8d-88e7-d026529d83a9",
     "name": "Create Product",
-    "url": "{{baseUrl}}/products",
+    "url": "{{baseUrl}}/sellers/products",
     "method": "POST",
     "sortNum": 535000,
     "created": "2023-02-20T16:38:51.083Z",
-    "modified": "2023-02-22T14:05:14.281Z",
+    "modified": "2023-02-23T10:52:09.658Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n  \"product_name\": \"paitning\",\n  \"product_description\": \"dxvxk\",\n  \"category_id\": 5,\n  \"subcategory_id\": null,\n  \"currency\": \"INR\",\n  \"tags\": [\n    \"painting\",\n    \"madhubani\"\n  ],\n  \"product_items\": [\n    {\n      \"variant\": \"BASE\",\n      \"variant_value\": \"BASE\",\n      \"product_variant_name\": \"BASE\",\n      \"SKU\": \"abcde\",\n      \"original_price\": 1000,\n      \"offer_price\": 500,\n      \"quantity_in_stock\": 10\n    }\n  ]\n}",
+      "raw": "{\n  \"product_name\": \"designer saree\",\n  \"product_description\": \"dxvxk\",\n  \"category_id\": 5,\n  \"subcategory_id\": null,\n  \"currency\": \"INR\",\n  \"tags\": [\n    \"painting\",\n    \"madhubani\"\n  ],\n  \"product_items\": [\n    {\n      \"variant\": \"BASE\",\n      \"variant_value\": \"BASE\",\n      \"product_variant_name\": \"BASE\",\n      \"SKU\": \"abcdef\",\n      \"original_price\": 1000,\n      \"offer_price\": 500,\n      \"quantity_in_stock\": 10\n    }\n  ]\n}",
       "form": []
     },
     "auth": {
@@ -1871,6 +1871,30 @@
     "auth": {
       "type": "bearer",
       "bearer": "{{seller_token}}"
+    },
+    "tests": []
+  },
+  {
+    "_id": "367adb7d-8e52-43e9-9d90-f37b45d307fd",
+    "colId": "80d178ef-5176-474a-8708-db78bd45faee",
+    "containerId": "d3f02f76-889e-4a8d-88e7-d026529d83a9",
+    "name": "Admin GET seller products ",
+    "url": "{{baseUrl}}/sellers/products?seller_user_id=4",
+    "method": "GET",
+    "sortNum": 555000,
+    "created": "2023-02-23T10:56:47.972Z",
+    "modified": "2023-02-23T11:01:27.525Z",
+    "headers": [],
+    "params": [
+      {
+        "name": "seller_user_id",
+        "value": "4",
+        "isPath": false
+      }
+    ],
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{admin_token}}"
     },
     "tests": []
   }
