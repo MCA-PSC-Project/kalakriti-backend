@@ -1897,5 +1897,28 @@
       "bearer": "{{admin_token}}"
     },
     "tests": []
+  },
+  {
+    "_id": "c470e12d-9294-42d6-8727-72fdc59d76f7",
+    "colId": "80d178ef-5176-474a-8708-db78bd45faee",
+    "containerId": "d3f02f76-889e-4a8d-88e7-d026529d83a9",
+    "name": "Create item",
+    "url": "{{baseUrl}}/sellers/products/product-items",
+    "method": "POST",
+    "sortNum": 536250,
+    "created": "2023-02-23T11:07:04.114Z",
+    "modified": "2023-02-23T11:40:33.916Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n  \"product_id\": 26,\n  \"variant\": \"COLOR\",\n  \"variant_value\": \"DARK_GREEN\",\n  \"product_variant_name\": \"DARK_GREEN_COLOR_VARIANT\",\n  \"SKU\": \"dgreen-colorf\",\n  \"original_price\": 1000,\n  \"offer_price\": 500,\n  \"quantity_in_stock\": 20\n}",
+      "form": []
+    },
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{seller_token}}"
+    },
+    "tests": []
   }
 ]

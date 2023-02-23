@@ -31,12 +31,12 @@
     "method": "POST",
     "sortNum": 0,
     "created": "2023-02-22T17:11:30.418Z",
-    "modified": "2023-02-23T10:56:03.232Z",
+    "modified": "2023-02-23T11:43:03.542Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n    \"email\": \"sheetal@gmail.com\",\n    \"password\": \"abcd@123\"\n}",
+      "raw": "{\n    \"email\": \"seller@gmail.com\",\n    \"password\": \"abcd@123\"\n}",
       "form": []
     },
     "tests": [],
@@ -174,6 +174,29 @@
     "auth": {
       "type": "bearer",
       "bearer": "{{admin_token}}"
+    },
+    "tests": []
+  },
+  {
+    "_id": "0cb476ad-ae88-4ae2-85be-da17eb2b951e",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/sellers/products/product-items",
+    "url": "{{baseUrl}}/sellers/products/product-items",
+    "method": "POST",
+    "sortNum": 0,
+    "created": "2023-02-23T11:36:16.694Z",
+    "modified": "2023-02-23T11:40:33.926Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n  \"product_id\": 26,\n  \"variant\": \"COLOR\",\n  \"variant_value\": \"DARK_GREEN\",\n  \"product_variant_name\": \"DARK_GREEN_COLOR_VARIANT\",\n  \"SKU\": \"dgreen-colorf\",\n  \"original_price\": 1000,\n  \"offer_price\": 500,\n  \"quantity_in_stock\": 20\n}",
+      "form": []
+    },
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{seller_token}}"
     },
     "tests": []
   }

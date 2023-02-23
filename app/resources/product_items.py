@@ -8,114 +8,7 @@ import json
 from flask import current_app as app
 
 
-class Products(Resource):
-    def get(self, product_id):
-        product_dict = {}
-        # catch exception for invalid SQL statement
-        try:
-            # declare a cursor object from the connection
-            cursor = app_globals.get_cursor()
-            # # app.logger.debug("cursor object: %s", cursor)
-            GET_PRODUCT = '''SELECT p.id, p.product_name, p.product_description, 
-            ct.id, ct.name,
-            sct.id, sct.name, sct.parent_id, 
-            p.currency, p.product_status,
-            p.added_at, p.updated_at, 
-            u.id, u.first_name, u.last_name, u.email,
-            pbi.product_item_id
-            FROM products p 
-            JOIN categories ct ON p.category_id = ct.id
-            LEFT JOIN categories sct ON p.subcategory_id = sct.id
-            JOIN users u ON p.seller_user_id = u.id 
-            JOIN product_base_item pbi ON p.id = pbi.product_id
-            WHERE p.id= %s'''
-
-            cursor.execute(GET_PRODUCT, (product_id,))
-            row = cursor.fetchone()
-            if row is None:
-                abort(400, 'Bad Request')
-            product_dict['id'] = row[0]
-            product_dict['product_name'] = row[1]
-            product_dict['product_description'] = row[2]
-
-            category_dict = {}
-            category_dict['id'] = row[3]
-            category_dict['name'] = row[4]
-            product_dict.update({"category": category_dict})
-
-            subcategory_dict = {}
-            subcategory_dict['id'] = row[5]
-            subcategory_dict['name'] = row[6]
-            subcategory_dict['parent_id'] = row[7]
-            product_dict.update({"subcategory": subcategory_dict})
-
-            product_dict['currency'] = row[8]
-            product_dict['product_status'] = row[9]
-            product_dict.update(json.loads(
-                json.dumps({'added_at': row[10]}, default=str)))
-            product_dict.update(json.loads(
-                json.dumps({'updated_at': row[11]}, default=str)))
-
-            seller_dict = {}
-            seller_dict['id'] = row[12]
-            seller_dict['first_name'] = row[13]
-            seller_dict['last_name'] = row[14]
-            seller_dict['email'] = row[15]
-            product_dict.update({"seller": seller_dict})
-
-            product_dict['base_product_item_id'] = row[16]
-
-            product_items_list = []
-            GET_PRODUCT_ITEMS = '''SELECT pi.id, pi.product_id, pi.product_variant_name, pi."SKU", 
-            pi.original_price, pi.offer_price, pi.quantity_in_stock, pi.added_at, pi.updated_at,
-            (SELECT v.variant AS variant FROM variants v WHERE v.id = 
-            (SELECT vv.variant_id FROM variant_values vv WHERE vv.id = piv.variant_value_id)),
-            (SELECT vv.variant_value AS variant_value FROM variant_values vv WHERE vv.id = piv.variant_value_id)
-            FROM product_items pi 
-            JOIN product_item_values piv ON pi.id = piv.product_item_id
-            WHERE pi.product_id=%s
-            ORDER BY pi.id
-            '''
-
-            cursor.execute(GET_PRODUCT_ITEMS, (product_id,))
-            rows = cursor.fetchall()
-            if not rows:
-                app.logger.debug("No rows")
-                return product_dict
-            for row in rows:
-                product_item_dict = {}
-                product_item_dict['id'] = row[0]
-                product_item_dict['product_id'] = row[1]
-                product_item_dict['product_variant_name'] = row[2]
-                product_item_dict['SKU'] = row[3]
-
-                product_item_dict.update(json.loads(
-                    json.dumps({'original_price': row[4]}, default=str)))
-                product_item_dict.update(json.loads(
-                    json.dumps({'offer_price': row[5]}, default=str)))
-
-                product_item_dict['quantity_in_stock'] = row[6]
-                product_item_dict.update(json.loads(
-                    json.dumps({'added_at': row[7]}, default=str)))
-                product_item_dict.update(json.loads(
-                    json.dumps({'updated_at': row[8]}, default=str)))
-
-                product_item_dict['variant'] = row[9]
-                product_item_dict['variant_value'] = row[10]
-
-                product_items_list.append(product_item_dict)
-
-            product_dict.update({'product_items': product_items_list})
-        except (Exception, psycopg2.Error) as err:
-            app.logger.debug(err)
-            abort(400, 'Bad Request')
-        finally:
-            cursor.close()
-        # app.logger.debug(product_dict)
-        return product_dict
-
-
-class SellersProducts(Resource):
+class SellersProductItems(Resource):
     # todo: work on medias and tags
     @f_jwt.jwt_required()
     def post(self):
@@ -126,12 +19,11 @@ class SellersProducts(Resource):
         app.logger.debug("user_type= %s", user_type)
 
         data = request.get_json()
-        product_dict = json.loads(json.dumps(data))
-        product_item_dict = product_dict['product_items'][0]
+        product_item_dict = json.loads(json.dumps(data))
         current_time = datetime.now()
 
         if user_type != 'seller':
-            abort(400, "only sellers can create products")
+            abort(400, "only sellers can create product-items")
 
         # before beginning transaction autocommit must be off
         app_globals.db_conn.autocommit = False
@@ -141,18 +33,6 @@ class SellersProducts(Resource):
             # declare a cursor object from the connection
             cursor = app_globals.get_cursor()
             # # app.logger.debug("cursor object: %s", cursor)
-
-            CREATE_PRODUCT = '''INSERT INTO products(product_name, product_description, category_id, subcategory_id, 
-            currency, seller_user_id, added_at) 
-            VALUES(%s, %s, %s, %s, %s, %s, %s) RETURNING id'''
-            cursor.execute(CREATE_PRODUCT,
-                           (product_dict.get('product_name'), product_dict.get(
-                               'product_description'),
-                            product_dict.get('category_id'), product_dict.get(
-                               'subcategory_id'),
-                            product_dict.get('currency', 'INR'),
-                            user_id, current_time,))
-            product_id = cursor.fetchone()[0]
 
             GET_VARIANT_ID = '''SELECT id FROM variants WHERE variant= %s'''
             cursor.execute(
@@ -172,7 +52,8 @@ class SellersProducts(Resource):
             original_price, offer_price, quantity_in_stock, added_at)
             VALUES(%s, %s, %s, %s, %s, %s, %s) RETURNING id'''
             cursor.execute(CREATE_PRODUCT_ITEM,
-                           (product_id, product_item_dict.get('product_variant_name'), product_item_dict.get('SKU'),
+                           (product_item_dict.get('product_id'), product_item_dict.get('product_variant_name'),
+                            product_item_dict.get('SKU'),
                             product_item_dict.get('original_price'), product_item_dict.get(
                                'offer_price'),
                             product_item_dict.get('quantity_in_stock'), current_time))
@@ -184,12 +65,6 @@ class SellersProducts(Resource):
                            (product_item_id, variant_value_id,))
             # product_item_value_id = cursor.fetchone()[0]
 
-            ASSOCIATE_PRODUCT_WITH_BASE_ITEM = '''INSERT INTO product_base_item(product_id, product_item_id)
-            VALUES(%s, %s)'''
-            cursor.execute(ASSOCIATE_PRODUCT_WITH_BASE_ITEM,
-                           (product_id, product_item_id,))
-            # product_base_item_id = cursor.fetchone()[0]
-
         except (Exception, psycopg2.Error) as err:
             app.logger.debug(err)
             app_globals.db_conn.rollback()
@@ -200,7 +75,7 @@ class SellersProducts(Resource):
             cursor.close()
         app_globals.db_conn.commit()
         app_globals.db_conn.autocommit = True
-        return f"product_id = {product_id} with product_item_id= {product_item_id} created successfully", 201
+        return f"product_item_id = {product_item_id} created in product_id = {product_item_dict.get('product_id')} successfully", 201
 
     @f_jwt.jwt_required()
     def get(self):
