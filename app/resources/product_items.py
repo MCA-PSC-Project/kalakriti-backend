@@ -302,35 +302,36 @@ class SellersProductItems(Resource):
             cursor.close()
         return {"message": f"product_id {product_item_id} modified."}, 200
 
-    # mark/unmark product as trashed (partially delete)
+    # mark/unmark product item as trashed (partially delete)
     @ f_jwt.jwt_required()
-    def patch(self, product_id):
+    def patch(self, product_item_id):
         user_id = f_jwt.get_jwt_identity()
         app.logger.debug("user_id= %s", user_id)
         claims = f_jwt.get_jwt()
         user_type = claims['user_type']
         app.logger.debug("user_type= %s", user_type)
 
-        app.logger.debug("product_id= %s", product_id)
+        app.logger.debug("product_item_id= %s", product_item_id)
         data = request.get_json()
 
-        if 'product_status' in data.keys():
+        if 'product_item_status' in data.keys():
             if user_type != "admin" and user_type != "super_admin":
                 abort(
-                    400, "only super-admins and admins are allowed to update product status")
-            value = data['product_status']
+                    400, "only super-admins and admins are allowed to update product-item status")
+            value = data['product_item_status']
             # app.logger.debug("product_status= %s", value)
-            UPDATE_PRODUCT_STATUS = '''UPDATE products SET product_status= %s, updated_at= %s
+            UPDATE_PRODUCT_ITEM_STATUS = '''UPDATE product_items SET product_item_status= %s, updated_at= %s
             WHERE id= %s'''
-            PATCH_PRODUCT = UPDATE_PRODUCT_STATUS
+            PATCH_PRODUCT_ITEM = UPDATE_PRODUCT_ITEM_STATUS
         elif 'trashed' in data.keys():
             if user_type != "seller" and user_type != "admin" and user_type != "super_admin":
-                abort(400, "only seller, super-admins and admins can trash a product")
+                abort(
+                    400, "only seller, super-admins and admins can trash a product-item")
             value = data['trashed']
             # app.logger.debug("trashed= %s", value)
-            UPDATE_PRODUCT_TRASHED_VALUE = '''UPDATE products SET trashed= %s, updated_at= %s
+            UPDATE_PRODUCT_ITEM_TRASHED_VALUE = '''UPDATE product_items SET trashed= %s, updated_at= %s
             WHERE id= %s'''
-            PATCH_PRODUCT = UPDATE_PRODUCT_TRASHED_VALUE
+            PATCH_PRODUCT_ITEM = UPDATE_PRODUCT_ITEM_TRASHED_VALUE
         else:
             abort(400, "Bad Request")
         current_time = datetime.now()
@@ -342,7 +343,7 @@ class SellersProductItems(Resource):
             # # app.logger.debug("cursor object: %s", cursor)
 
             cursor.execute(
-                PATCH_PRODUCT, (value, current_time, product_id,))
+                PATCH_PRODUCT_ITEM, (value, current_time, product_item_id,))
             # app.logger.debug("row_counts= %s", cursor.rowcount)
             if cursor.rowcount != 1:
                 abort(400, 'Bad Request: update row error')
@@ -351,7 +352,7 @@ class SellersProductItems(Resource):
             abort(400, 'Bad Request')
         finally:
             cursor.close()
-        return {"message": f"product_id {product_id} modified."}, 200
+        return {"message": f"product_item_id {product_item_id} modified."}, 200
 
     # delete trashed product
     @ f_jwt.jwt_required()

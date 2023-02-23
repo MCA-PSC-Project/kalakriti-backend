@@ -31,12 +31,12 @@
     "method": "POST",
     "sortNum": 0,
     "created": "2023-02-22T17:11:30.418Z",
-    "modified": "2023-02-23T11:43:03.542Z",
+    "modified": "2023-02-23T13:21:15.400Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n    \"email\": \"seller@gmail.com\",\n    \"password\": \"abcd@123\"\n}",
+      "raw": "{\n    \"email\": \"sheetal@gmail.com\",\n    \"password\": \"abcd@123\"\n}",
       "form": []
     },
     "tests": [],
@@ -240,6 +240,29 @@
     "modified": "2023-02-23T12:03:24.620Z",
     "headers": [],
     "params": [],
+    "tests": []
+  },
+  {
+    "_id": "cb7e34fe-a5e3-4245-b2a8-63a1025fced8",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/sellers/product-items/16",
+    "url": "{{baseUrl}}/sellers/product-items/16",
+    "method": "PATCH",
+    "sortNum": 0,
+    "created": "2023-02-23T13:21:46.261Z",
+    "modified": "2023-02-23T13:26:51.295Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n  \"trashed\": false\n}",
+      "form": []
+    },
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{seller_token}}"
+    },
     "tests": []
   }
 ]

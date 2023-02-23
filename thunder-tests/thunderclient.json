@@ -26,12 +26,12 @@
     "method": "POST",
     "sortNum": 20000,
     "created": "2023-02-20T16:38:51.029Z",
-    "modified": "2023-02-22T18:16:15.110Z",
+    "modified": "2023-02-23T13:21:15.394Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\r\n    \"email\": \"seller@gmail.com\",\r\n    \"password\": \"abcd@123\"\r\n}",
+      "raw": "{\n    \"email\": \"sheetal@gmail.com\",\n    \"password\": \"abcd@123\"\n}",
       "form": []
     },
     "tests": [],
@@ -1815,11 +1815,11 @@
     "colId": "80d178ef-5176-474a-8708-db78bd45faee",
     "containerId": "d3f02f76-889e-4a8d-88e7-d026529d83a9",
     "name": "update product status",
-    "url": "{{baseUrl}}/products/26",
+    "url": "{{baseUrl}}/sellers/products/26",
     "method": "PATCH",
-    "sortNum": 910000,
+    "sortNum": 735000,
     "created": "2023-02-22T14:05:51.975Z",
-    "modified": "2023-02-22T17:18:37.503Z",
+    "modified": "2023-02-23T13:16:59.387Z",
     "headers": [],
     "params": [],
     "body": {
@@ -1838,11 +1838,11 @@
     "colId": "80d178ef-5176-474a-8708-db78bd45faee",
     "containerId": "d3f02f76-889e-4a8d-88e7-d026529d83a9",
     "name": "delete a product",
-    "url": "{{baseUrl}}/products/21",
+    "url": "{{baseUrl}}/sellers/products/21",
     "method": "DELETE",
     "sortNum": 920000,
     "created": "2023-02-22T14:12:15.464Z",
-    "modified": "2023-02-22T14:18:42.825Z",
+    "modified": "2023-02-23T13:17:27.741Z",
     "headers": [],
     "params": [],
     "auth": {
@@ -1855,7 +1855,7 @@
     "_id": "b6c476d4-f3bf-4e63-84fc-4d89be6343ea",
     "colId": "80d178ef-5176-474a-8708-db78bd45faee",
     "containerId": "d3f02f76-889e-4a8d-88e7-d026529d83a9",
-    "name": "mark/unmark product as trashed Copy",
+    "name": "mark/unmark product as trashed",
     "url": "{{baseUrl}}/products/26",
     "method": "PATCH",
     "sortNum": 915000,
@@ -1901,13 +1901,13 @@
   {
     "_id": "c470e12d-9294-42d6-8727-72fdc59d76f7",
     "colId": "80d178ef-5176-474a-8708-db78bd45faee",
-    "containerId": "d3f02f76-889e-4a8d-88e7-d026529d83a9",
+    "containerId": "9525375d-6d7f-486c-8969-7b49f2983b85",
     "name": "Create item",
     "url": "{{baseUrl}}/sellers/products/product-items",
     "method": "POST",
-    "sortNum": 536250,
+    "sortNum": 15000,
     "created": "2023-02-23T11:07:04.114Z",
-    "modified": "2023-02-23T11:40:33.916Z",
+    "modified": "2023-02-23T13:09:33.273Z",
     "headers": [],
     "params": [],
     "body": {
@@ -1924,13 +1924,13 @@
   {
     "_id": "1e30c7f9-143f-413b-bbfd-9198e3b8ba2f",
     "colId": "80d178ef-5176-474a-8708-db78bd45faee",
-    "containerId": "d3f02f76-889e-4a8d-88e7-d026529d83a9",
+    "containerId": "9525375d-6d7f-486c-8969-7b49f2983b85",
     "name": "get product item by id",
     "url": "{{baseUrl}}/product-items/14",
     "method": "GET",
-    "sortNum": 532500,
+    "sortNum": 10000,
     "created": "2023-02-23T11:46:39.450Z",
-    "modified": "2023-02-23T12:03:24.814Z",
+    "modified": "2023-02-23T13:08:53.925Z",
     "headers": [],
     "params": [],
     "tests": []
@@ -1938,18 +1938,64 @@
   {
     "_id": "e0191a32-f626-4449-b1d3-5f1b146eb04d",
     "colId": "80d178ef-5176-474a-8708-db78bd45faee",
-    "containerId": "d3f02f76-889e-4a8d-88e7-d026529d83a9",
+    "containerId": "9525375d-6d7f-486c-8969-7b49f2983b85",
     "name": "update product item",
     "url": "{{baseUrl}}/products/26",
     "method": "PUT",
-    "sortNum": 538750,
+    "sortNum": 20000,
     "created": "2023-02-23T12:04:45.230Z",
-    "modified": "2023-02-23T12:04:45.230Z",
+    "modified": "2023-02-23T13:09:00.526Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
       "raw": "{\n  \"product_name\": \"madhubani painting\",\n  \"product_description\": \"dxvxk\",\n  \"category_id\": 5,\n  \"subcategory_id\": null,\n  \"currency\": \"INR\",\n  \"tags\": [\n    \"painting\",\n    \"madhubani\"\n  ]\n}\n",
+      "form": []
+    },
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{seller_token}}"
+    },
+    "tests": []
+  },
+  {
+    "_id": "35168780-5c30-4d3d-aac7-68d9ede4f1c9",
+    "colId": "80d178ef-5176-474a-8708-db78bd45faee",
+    "containerId": "9525375d-6d7f-486c-8969-7b49f2983b85",
+    "name": "update product item status ",
+    "url": "{{baseUrl}}/sellers/product-items/16",
+    "method": "PATCH",
+    "sortNum": 30000,
+    "created": "2023-02-23T13:11:26.774Z",
+    "modified": "2023-02-23T13:26:24.904Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n  \"product_item_status\": \"published\"\n}",
+      "form": []
+    },
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{admin_token}}"
+    },
+    "tests": []
+  },
+  {
+    "_id": "f9bc97c9-0b56-43fd-a756-fcf10046d028",
+    "colId": "80d178ef-5176-474a-8708-db78bd45faee",
+    "containerId": "9525375d-6d7f-486c-8969-7b49f2983b85",
+    "name": "mark/unmark product item as trashed",
+    "url": "{{baseUrl}}/sellers/product-items/16",
+    "method": "PATCH",
+    "sortNum": 40000,
+    "created": "2023-02-23T13:11:37.223Z",
+    "modified": "2023-02-23T13:22:08.701Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n  \"trashed\": false\n}",
       "form": []
     },
     "auth": {
