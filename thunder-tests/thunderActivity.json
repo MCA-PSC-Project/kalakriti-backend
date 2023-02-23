@@ -199,5 +199,47 @@
       "bearer": "{{seller_token}}"
     },
     "tests": []
+  },
+  {
+    "_id": "410dcb6d-8694-452e-aec8-3b2c0c8066f9",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/products/26/product-items",
+    "url": "{{baseUrl}}/products/26/product-items",
+    "method": "GET",
+    "sortNum": 0,
+    "created": "2023-02-23T11:59:21.718Z",
+    "modified": "2023-02-23T11:59:21.718Z",
+    "headers": [],
+    "params": [],
+    "tests": []
+  },
+  {
+    "_id": "cb50d1ef-542d-4cff-8127-f645a6491dc0",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/product-items/10",
+    "url": "{{baseUrl}}/product-items/10",
+    "method": "GET",
+    "sortNum": 0,
+    "created": "2023-02-23T12:00:00.158Z",
+    "modified": "2023-02-23T12:00:00.158Z",
+    "headers": [],
+    "params": [],
+    "tests": []
+  },
+  {
+    "_id": "ec98a82b-9304-47b8-9968-4126cff357ea",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/product-items/14",
+    "url": "{{baseUrl}}/product-items/14",
+    "method": "GET",
+    "sortNum": 0,
+    "created": "2023-02-23T12:03:24.620Z",
+    "modified": "2023-02-23T12:03:24.620Z",
+    "headers": [],
+    "params": [],
+    "tests": []
   }
 ]

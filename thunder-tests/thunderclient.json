@@ -1920,5 +1920,19 @@
       "bearer": "{{seller_token}}"
     },
     "tests": []
+  },
+  {
+    "_id": "1e30c7f9-143f-413b-bbfd-9198e3b8ba2f",
+    "colId": "80d178ef-5176-474a-8708-db78bd45faee",
+    "containerId": "d3f02f76-889e-4a8d-88e7-d026529d83a9",
+    "name": "get product item by id",
+    "url": "{{baseUrl}}/product-items/14",
+    "method": "GET",
+    "sortNum": 532500,
+    "created": "2023-02-23T11:46:39.450Z",
+    "modified": "2023-02-23T12:03:24.814Z",
+    "headers": [],
+    "params": [],
+    "tests": []
   }
 ]
