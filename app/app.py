@@ -116,8 +116,8 @@ def create_app(config_name):
     api.add_resource(SellersProducts, '/sellers/products',
                      '/sellers/products/<int:product_id>')
 
-    api.add_resource(SellersProductItems, '/sellers/products/product-items',
-                     '/sellers/products/<int:product_id>/product-items')
+    api.add_resource(SellersProductItems, '/sellers/product-items',
+                     '/sellers/product-items/<int:product_item_id>')
 
     # Seller_Applicant_Form
     api.add_resource(Seller_Applicant_Form, '/sellers-form',

@@ -373,7 +373,7 @@ class SellersProducts(Resource):
             cursor.close()
         return {"message": f"product_id {product_id} modified."}, 200
 
-    # mark/unmark product as trashed (partially delete)
+    # update product_status or mark/unmark product as trashed (partially delete)
     @ f_jwt.jwt_required()
     def patch(self, product_id):
         user_id = f_jwt.get_jwt_identity()

@@ -1142,9 +1142,9 @@
     "name": "GET products",
     "url": "{{ baseUrl  }}/users/products",
     "method": "GET",
-    "sortNum": 570000,
+    "sortNum": 930000,
     "created": "2023-02-20T16:38:51.085Z",
-    "modified": "2023-02-20T16:38:51.085Z",
+    "modified": "2023-02-23T12:06:57.182Z",
     "headers": [],
     "params": [
       {
@@ -1166,9 +1166,9 @@
     "name": "GET products by category",
     "url": "{{ baseUrl  }}/users/products",
     "method": "GET",
-    "sortNum": 580000,
+    "sortNum": 925000,
     "created": "2023-02-20T16:38:51.086Z",
-    "modified": "2023-02-20T16:38:51.086Z",
+    "modified": "2023-02-23T12:07:00.869Z",
     "headers": [],
     "params": [
       {
@@ -1933,6 +1933,29 @@
     "modified": "2023-02-23T12:03:24.814Z",
     "headers": [],
     "params": [],
+    "tests": []
+  },
+  {
+    "_id": "e0191a32-f626-4449-b1d3-5f1b146eb04d",
+    "colId": "80d178ef-5176-474a-8708-db78bd45faee",
+    "containerId": "d3f02f76-889e-4a8d-88e7-d026529d83a9",
+    "name": "update product item",
+    "url": "{{baseUrl}}/products/26",
+    "method": "PUT",
+    "sortNum": 538750,
+    "created": "2023-02-23T12:04:45.230Z",
+    "modified": "2023-02-23T12:04:45.230Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n  \"product_name\": \"madhubani painting\",\n  \"product_description\": \"dxvxk\",\n  \"category_id\": 5,\n  \"subcategory_id\": null,\n  \"currency\": \"INR\",\n  \"tags\": [\n    \"painting\",\n    \"madhubani\"\n  ]\n}\n",
+      "form": []
+    },
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{seller_token}}"
+    },
     "tests": []
   }
 ]

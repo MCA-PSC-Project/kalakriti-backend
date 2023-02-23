@@ -260,24 +260,24 @@ class SellersProductItems(Resource):
 
     # update product only
     @ f_jwt.jwt_required()
-    def put(self, product_id):
+    def put(self, product_item_id):
         user_id = f_jwt.get_jwt_identity()
         app.logger.debug("user_id= %s", user_id)
         claims = f_jwt.get_jwt()
         user_type = claims['user_type']
         app.logger.debug("user_type= %s", user_type)
 
-        app.logger.debug("product_id= %s", product_id)
+        app.logger.debug("product_item_id= %s", product_item_id)
         data = request.get_json()
-        product_dict = json.loads(json.dumps(data))
+        product_item_dict = json.loads(json.dumps(data))
         # app.logger.debug(product_dict)
 
         current_time = datetime.now()
 
         if user_type != "seller" and user_type != "admin" and user_type != "super_admin":
-            abort(400, "only seller, super-admins and admins can update product")
+            abort(400, "only seller, super-admins and admins can update product-item")
 
-        UPDATE_PRODUCT = '''UPDATE products SET product_name= %s, product_description= %s,
+        UPDATE_PRODUCT = '''UPDATE product_items SET product_name= %s, product_description= %s,
         category_id= %s, subcategory_id= %s, currency= %s, updated_at= %s 
         WHERE id= %s'''
 
@@ -288,10 +288,10 @@ class SellersProductItems(Resource):
             # # app.logger.debug("cursor object: %s", cursor)
 
             cursor.execute(
-                UPDATE_PRODUCT, (product_dict.get('product_name'), product_dict.get('product_description'),
-                                 product_dict.get('category_id'), product_dict.get(
-                                     'subcategory_id'), product_dict.get('currency', 'INR'), current_time,
-                                 product_id,))
+                UPDATE_PRODUCT, (product_item_dict.get('product_name'), product_item_dict.get('product_description'),
+                                 product_item_dict.get('category_id'), product_item_dict.get(
+                                     'subcategory_id'), product_item_dict.get('currency', 'INR'), current_time,
+                                 product_item_id,))
             # app.logger.debug("row_counts= %s", cursor.rowcount)
             if cursor.rowcount != 1:
                 abort(400, 'Bad Request: update row error')
@@ -300,7 +300,7 @@ class SellersProductItems(Resource):
             abort(400, 'Bad Request')
         finally:
             cursor.close()
-        return {"message": f"product_id {product_id} modified."}, 200
+        return {"message": f"product_id {product_item_id} modified."}, 200
 
     # mark/unmark product as trashed (partially delete)
     @ f_jwt.jwt_required()
