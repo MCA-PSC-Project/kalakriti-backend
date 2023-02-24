@@ -256,6 +256,17 @@ CREATE TABLE "mobile_otp"(
 	"otp" VARCHAR(6) NOT NULL,
 	"expiry" INT
 );
+CREATE TABLE "top_searches"(
+  "rank" smallint,
+  "query" varchar,
+  PRIMARY KEY("rank")
+);
+CREATE TABLE "products_tsv_store"(
+	"product_id" integer,
+	"tsv" tsvector,
+	PRIMARY KEY("product_id"),
+	FOREIGN KEY ("product_id") REFERENCES "products"("id")
+);
 ----- Indexes -----
 CREATE INDEX ON "users" ("email");
 CREATE INDEX ON "users" ("phone");
@@ -270,4 +281,38 @@ INSERT INTO "variants"("variant")
 VALUES ('MATERIAL');
 INSERT INTO "variants"("variant")
 VALUES ('SIZE');
+
+----- tsv ----
+CREATE OR REPLACE FUNCTION products_tsv_trigger() RETURNS trigger AS $$  
+BEGIN  
+    --code for Insert
+    IF TG_OP = 'INSERT' THEN
+      INSERT INTO "products_tsv_store" (product_id, tsv) 
+      VALUES (
+      NEW.id, setweight(to_tsvector('english', COALESCE(NEW.product_name,'')), 'A') || 
+      setweight(to_tsvector('english', COALESCE(NEW.product_description,'')), 'B') || 
+      setweight(to_tsvector('english', COALESCE(array_to_string(NEW.tags, ' '),'')), 'C')
+      );
+
+    --code for Update
+    ELSIF TG_OP = 'UPDATE' THEN
+        IF NEW.product_name <> OLD.product_name or NEW.product_description <> OLD.product_description or NEW.tags IS NOT NULL THEN
+            UPDATE "products_tsv_store" SET tsv =
+            setweight(to_tsvector('english', COALESCE(NEW.product_name,'')), 'A') || 
+            setweight(to_tsvector('english', COALESCE(NEW.product_description,'')), 'B') || 
+            setweight(to_tsvector('english', COALESCE(array_to_string(NEW.tags, ' '),'')), 'C') 
+            WHERE product_id = NEW.id;
+        END IF;
+    END IF;
+  RETURN NEW;
+END  
+$$ LANGUAGE plpgsql;
+
+
+CREATE TRIGGER "insert_update_tsv_trigger" AFTER INSERT OR UPDATE  
+ON products 
+FOR EACH ROW EXECUTE PROCEDURE products_tsv_trigger(); 
+
+CREATE INDEX "tsv_index" ON "products_tsv_store" USING GIN ("tsv");
+
 END;

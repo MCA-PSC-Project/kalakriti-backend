@@ -12,6 +12,7 @@ from app.config import app_config
 from app.resources.auth import Register, Login, RefreshToken, VerifyEmail
 from app.resources.product_items import ProductItems, SellersProductItems
 from app.resources.products import Products, SellersProducts
+from app.resources.search import Search, TopSearches
 from app.resources.tags import Tags
 from app.resources.user import UserProfile, ResetEmail, ResetPhone, ResetPassword
 from app.resources.media import UploadImage, UploadAudio, UploadVideo, UploadFile, DeleteMedia
@@ -126,6 +127,10 @@ def create_app(config_name):
     # Seller_Applicant_Form
     api.add_resource(Seller_Applicant_Form, '/sellers-form',
                      '/sellers-form/<int:seller_id>')
+
+    # Search
+    api.add_resource(Search, '/search')
+    api.add_resource(TopSearches, '/top-searches')
 
     # to be exceuted at app exit for cleanups
     @atexit.register

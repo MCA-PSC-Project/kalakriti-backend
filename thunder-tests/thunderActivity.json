@@ -443,5 +443,85 @@
     "headers": [],
     "params": [],
     "tests": []
+  },
+  {
+    "_id": "e35603ba-99ec-49b8-8e40-23a19ae89bcc",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/search",
+    "url": "{{baseUrl}}/search",
+    "method": "GET",
+    "sortNum": 0,
+    "created": "2023-02-24T11:53:54.832Z",
+    "modified": "2023-02-24T11:53:54.832Z",
+    "headers": [],
+    "params": [
+      {
+        "name": "query",
+        "value": "test",
+        "isPath": false
+      }
+    ],
+    "tests": []
+  },
+  {
+    "_id": "129bd1a9-b165-4fac-a95a-2e7a0333aeb5",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/search?query=paint",
+    "url": "{{baseUrl}}/search?query=paint",
+    "method": "GET",
+    "sortNum": 0,
+    "created": "2023-02-24T11:55:35.292Z",
+    "modified": "2023-02-24T11:55:35.292Z",
+    "headers": [],
+    "params": [
+      {
+        "name": "query",
+        "value": "paint",
+        "isPath": false
+      }
+    ],
+    "tests": []
+  },
+  {
+    "_id": "e5f4d598-8e5a-4691-8a2b-5fc96103b169",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/search?query=ar",
+    "url": "{{baseUrl}}/search?query=ar",
+    "method": "GET",
+    "sortNum": 0,
+    "created": "2023-02-24T11:55:49.677Z",
+    "modified": "2023-02-24T11:55:49.677Z",
+    "headers": [],
+    "params": [
+      {
+        "name": "query",
+        "value": "ar",
+        "isPath": false
+      }
+    ],
+    "tests": []
+  },
+  {
+    "_id": "b4f9f121-3865-425b-9f11-5e03f28f925b",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/search?query=arts",
+    "url": "{{baseUrl}}/search?query=arts",
+    "method": "GET",
+    "sortNum": 0,
+    "created": "2023-02-24T11:55:56.095Z",
+    "modified": "2023-02-24T11:55:56.095Z",
+    "headers": [],
+    "params": [
+      {
+        "name": "query",
+        "value": "arts",
+        "isPath": false
+      }
+    ],
+    "tests": []
   }
 ]
