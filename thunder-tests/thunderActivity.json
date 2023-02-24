@@ -8,17 +8,17 @@
     "method": "PATCH",
     "sortNum": 0,
     "created": "2023-02-22T17:10:33.825Z",
-    "modified": "2023-02-22T17:18:37.507Z",
+    "modified": "2023-02-24T14:17:11.720Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n  \"product_status\": \"published\"\n}",
+      "raw": "{\n  \"trashed\": true\n}",
       "form": []
     },
     "auth": {
       "type": "bearer",
-      "bearer": "{{admin_token}}"
+      "bearer": "{{seller_token}}"
     },
     "tests": []
   },
@@ -31,12 +31,12 @@
     "method": "POST",
     "sortNum": 0,
     "created": "2023-02-22T17:11:30.418Z",
-    "modified": "2023-02-24T09:48:52.431Z",
+    "modified": "2023-02-24T13:27:12.272Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n    \"email\": \"seller@gmail.com\",\n    \"password\": \"abcd@123\"\n}",
+      "raw": "{\n    \"email\": \"sheetal@gmail.com\",\n    \"password\": \"abcd@123\"\n}",
       "form": []
     },
     "tests": [],
@@ -115,12 +115,12 @@
     "method": "POST",
     "sortNum": 0,
     "created": "2023-02-23T10:51:58.473Z",
-    "modified": "2023-02-23T10:52:09.677Z",
+    "modified": "2023-02-24T14:06:45.662Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n  \"product_name\": \"designer saree\",\n  \"product_description\": \"dxvxk\",\n  \"category_id\": 5,\n  \"subcategory_id\": null,\n  \"currency\": \"INR\",\n  \"tags\": [\n    \"painting\",\n    \"madhubani\"\n  ],\n  \"product_items\": [\n    {\n      \"variant\": \"BASE\",\n      \"variant_value\": \"BASE\",\n      \"product_variant_name\": \"BASE\",\n      \"SKU\": \"abcdef\",\n      \"original_price\": 1000,\n      \"offer_price\": 500,\n      \"quantity_in_stock\": 10\n    }\n  ]\n}",
+      "raw": "{\n  \"product_name\": \"pot\",\n  \"product_description\": \"dxvxk\",\n  \"category_id\": 5,\n  \"subcategory_id\": null,\n  \"currency\": \"INR\",\n  \"product_items\": [\n    {\n      \"variant\": \"BASE\",\n      \"variant_value\": \"BASE\",\n      \"product_variant_name\": \"BASE\",\n      \"SKU\": \"abcdefgh\",\n      \"original_price\": 1000,\n      \"offer_price\": 500,\n      \"quantity_in_stock\": 10\n    }\n  ]\n}",
       "form": []
     },
     "auth": {
@@ -186,12 +186,12 @@
     "method": "POST",
     "sortNum": 0,
     "created": "2023-02-23T11:36:16.694Z",
-    "modified": "2023-02-23T11:40:33.926Z",
+    "modified": "2023-02-24T14:34:25.609Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n  \"product_id\": 26,\n  \"variant\": \"COLOR\",\n  \"variant_value\": \"DARK_GREEN\",\n  \"product_variant_name\": \"DARK_GREEN_COLOR_VARIANT\",\n  \"SKU\": \"dgreen-colorf\",\n  \"original_price\": 1000,\n  \"offer_price\": 500,\n  \"quantity_in_stock\": 20\n}",
+      "raw": "{\n  \"product_id\": 26,\n  \"variant\": \"COLOR\",\n  \"variant_value\": \"BLACK\",\n  \"product_variant_name\": \"black_COLOR_VARIANT\",\n  \"SKU\": \"black-colorf\",\n  \"original_price\": 1000,\n  \"offer_price\": 500,\n  \"quantity_in_stock\": 20\n}",
       "form": []
     },
     "auth": {
@@ -333,12 +333,12 @@
     "method": "PUT",
     "sortNum": 0,
     "created": "2023-02-23T14:31:47.358Z",
-    "modified": "2023-02-23T14:31:47.358Z",
+    "modified": "2023-02-24T14:14:32.755Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n  \"product_name\": \"madhubani painting\",\n  \"product_description\": \"paintings from madhubani\",\n  \"category_id\": 5,\n  \"subcategory_id\": null,\n  \"currency\": \"INR\",\n  \"tags\": [\n    \"painting\",\n    \"madhubani\"\n  ]\n}\n",
+      "raw": "{\n  \"product_name\": \"famous madhubani painting\",\n  \"product_description\": \"paintings from madhubani\",\n  \"category_id\": 5,\n  \"subcategory_id\": null,\n  \"currency\": \"INR\"\n}",
       "form": []
     },
     "auth": {
@@ -416,12 +416,12 @@
     "method": "PUT",
     "sortNum": 0,
     "created": "2023-02-24T09:47:22.754Z",
-    "modified": "2023-02-24T10:29:00.201Z",
+    "modified": "2023-02-24T14:55:01.042Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "[\n\t\"art\",\n\t\"painting\",\n\t\"drawing\",\n\t\"beautiful art\"\n]",
+      "raw": "[\n\t\"art\",\n\t\"painting\",\n\t\"drawing\",\n\t\"beautiful art\",\n\t\"extraordinary\"\n]",
       "form": []
     },
     "auth": {
@@ -536,6 +536,234 @@
     "modified": "2023-02-24T12:12:34.150Z",
     "headers": [],
     "params": [],
+    "tests": []
+  },
+  {
+    "_id": "d243c5cf-6ae5-47eb-a953-a3909dd8d887",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/sellers/products/26",
+    "url": "{{baseUrl}}/sellers/products/26",
+    "method": "PATCH",
+    "sortNum": 0,
+    "created": "2023-02-24T14:16:05.080Z",
+    "modified": "2023-02-24T14:17:25.622Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n  \"trashed\": true\n}",
+      "form": []
+    },
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{seller_token}}"
+    },
+    "tests": []
+  },
+  {
+    "_id": "34a485ea-b3d6-4586-b53f-65103e221a22",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/sellers/products/26",
+    "url": "{{baseUrl}}/sellers/products/26",
+    "method": "DELETE",
+    "sortNum": 0,
+    "created": "2023-02-24T14:17:52.832Z",
+    "modified": "2023-02-24T14:17:52.832Z",
+    "headers": [],
+    "params": [],
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{admin_token}}"
+    },
+    "tests": []
+  },
+  {
+    "_id": "a8a60d2f-7a8d-4240-8ecb-85ef958e2d10",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/sellers/products/29",
+    "url": "{{baseUrl}}/sellers/products/29",
+    "method": "DELETE",
+    "sortNum": 0,
+    "created": "2023-02-24T14:18:20.989Z",
+    "modified": "2023-02-24T14:18:20.989Z",
+    "headers": [],
+    "params": [],
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{admin_token}}"
+    },
+    "tests": []
+  },
+  {
+    "_id": "76ff8c02-02a0-47b1-b61a-497a209d4740",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/sellers/products/29",
+    "url": "{{baseUrl}}/sellers/products/29",
+    "method": "PATCH",
+    "sortNum": 0,
+    "created": "2023-02-24T14:18:32.955Z",
+    "modified": "2023-02-24T14:18:32.955Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n  \"trashed\": true\n}",
+      "form": []
+    },
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{seller_token}}"
+    },
+    "tests": []
+  },
+  {
+    "_id": "2c78c73a-f11b-432b-b635-9ed84a4ebb88",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/sellers/product-items",
+    "url": "{{baseUrl}}/sellers/product-items",
+    "method": "POST",
+    "sortNum": 0,
+    "created": "2023-02-24T14:35:28.783Z",
+    "modified": "2023-02-24T14:35:28.783Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n  \"product_id\": 26,\n  \"variant\": \"COLOR\",\n  \"variant_value\": \"BLACK\",\n  \"product_variant_name\": \"black_COLOR_VARIANT\",\n  \"SKU\": \"black-colorf\",\n  \"original_price\": 1000,\n  \"offer_price\": 500,\n  \"quantity_in_stock\": 20\n}",
+      "form": []
+    },
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{seller_token}}"
+    },
+    "tests": []
+  },
+  {
+    "_id": "ae72e985-b8f2-49b8-bc9b-58a3e58c2e05",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/sellers/product-items/18",
+    "url": "{{baseUrl}}/sellers/product-items/18",
+    "method": "PUT",
+    "sortNum": 0,
+    "created": "2023-02-24T14:41:32.951Z",
+    "modified": "2023-02-24T14:42:06.948Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n  \"variant\": \"MATERIAL\",\n  \"variant_value\": \"LIGHT_GREEN\",\n  \"product_variant_name\": \"LIGHT_GREEN_COLOR_VARIANT\",\n  \"SKU\": \"dgreen-colorf6\",\n  \"original_price\": 5000,\n  \"offer_price\": 2000,\n  \"quantity_in_stock\": 25\n}",
+      "form": []
+    },
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{seller_token}}"
+    },
+    "tests": []
+  },
+  {
+    "_id": "111bb9da-e8d4-4a72-9c16-51e38d8e7d68",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/search?query=art",
+    "url": "{{baseUrl}}/search?query=art",
+    "method": "GET",
+    "sortNum": 0,
+    "created": "2023-02-24T14:58:01.421Z",
+    "modified": "2023-02-24T14:58:01.421Z",
+    "headers": [],
+    "params": [
+      {
+        "name": "query",
+        "value": "art",
+        "isPath": false
+      }
+    ],
+    "tests": []
+  },
+  {
+    "_id": "8cf1b2f6-22e7-42c0-9e20-9db4a40371ad",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/search?query=painting",
+    "url": "{{baseUrl}}/search?query=painting",
+    "method": "GET",
+    "sortNum": 0,
+    "created": "2023-02-24T14:58:09.142Z",
+    "modified": "2023-02-24T14:58:09.142Z",
+    "headers": [],
+    "params": [
+      {
+        "name": "query",
+        "value": "painting",
+        "isPath": false
+      }
+    ],
+    "tests": []
+  },
+  {
+    "_id": "7596842a-82b3-4f6f-b48d-7c8d94d129ee",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/search?query=artabcd",
+    "url": "{{baseUrl}}/search?query=artabcd",
+    "method": "GET",
+    "sortNum": 0,
+    "created": "2023-02-24T15:00:01.177Z",
+    "modified": "2023-02-24T15:00:01.177Z",
+    "headers": [],
+    "params": [
+      {
+        "name": "query",
+        "value": "artabcd",
+        "isPath": false
+      }
+    ],
+    "tests": []
+  },
+  {
+    "_id": "0e347e72-d955-4c8d-ab35-d674c5f52154",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/search?query=art abcd",
+    "url": "{{baseUrl}}/search?query=art abcd",
+    "method": "GET",
+    "sortNum": 0,
+    "created": "2023-02-24T15:00:06.492Z",
+    "modified": "2023-02-24T15:00:06.492Z",
+    "headers": [],
+    "params": [
+      {
+        "name": "query",
+        "value": "art abcd",
+        "isPath": false
+      }
+    ],
+    "tests": []
+  },
+  {
+    "_id": "217da65f-b8f6-4895-b012-2efbf027e5d1",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/search?query=atr",
+    "url": "{{baseUrl}}/search?query=atr",
+    "method": "GET",
+    "sortNum": 0,
+    "created": "2023-02-24T15:00:17.535Z",
+    "modified": "2023-02-24T15:00:17.535Z",
+    "headers": [],
+    "params": [
+      {
+        "name": "query",
+        "value": "atr",
+        "isPath": false
+      }
+    ],
     "tests": []
   }
 ]

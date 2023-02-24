@@ -265,7 +265,7 @@ CREATE TABLE "products_tsv_store"(
 	"product_id" integer,
 	"tsv" tsvector,
 	PRIMARY KEY("product_id"),
-	FOREIGN KEY ("product_id") REFERENCES "products"("id")
+	FOREIGN KEY ("product_id") REFERENCES "products"("id") ON DELETE CASCADE
 );
 ----- Indexes -----
 CREATE INDEX ON "users" ("email");

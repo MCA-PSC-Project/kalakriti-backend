@@ -4,7 +4,6 @@ from flask_restful import Resource
 import psycopg2
 import app.app_globals as app_globals
 import flask_jwt_extended as f_jwt
-import json
 from flask import current_app as app
 
 
