@@ -26,12 +26,12 @@
     "method": "POST",
     "sortNum": 20000,
     "created": "2023-02-20T16:38:51.029Z",
-    "modified": "2023-02-23T14:29:35.800Z",
+    "modified": "2023-02-24T09:48:52.424Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n    \"email\": \"sheetal@gmail.com\",\n    \"password\": \"abcd@123\"\n}",
+      "raw": "{\n    \"email\": \"seller@gmail.com\",\n    \"password\": \"abcd@123\"\n}",
       "form": []
     },
     "tests": [],
@@ -1269,148 +1269,41 @@
     "docs": ""
   },
   {
-    "_id": "3028c6e6-5edf-4e59-83eb-7563d5a23dc5",
-    "colId": "80d178ef-5176-474a-8708-db78bd45faee",
-    "containerId": "6a3dd339-4c71-4699-ab5f-1ddd8d8b39c4",
-    "name": "Create Tag",
-    "url": "{{baseUrl}}/tags",
-    "method": "POST",
-    "sortNum": 630000,
-    "created": "2023-02-20T16:38:51.091Z",
-    "modified": "2023-02-20T16:38:51.091Z",
-    "headers": [],
-    "params": [],
-    "body": {
-      "type": "json",
-      "raw": "{\n\t\"title\" : \"t1\",\n\t\"product_id\": 56\n}"
-    },
-    "auth": {
-      "type": "bearer",
-      "bearer": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2NDIyNTA2NzMsImlkIjoyLCJ1c2VyX3R5cGUiOiJlZHVjYXRvciJ9.blX7WIrDUdqBJFpEykFDqEqtgaMah6yTwy-N8buhnz0"
-    },
-    "docs": ""
-  },
-  {
-    "_id": "2974650d-bafa-4baf-bec9-0ac897eb2111",
-    "colId": "80d178ef-5176-474a-8708-db78bd45faee",
-    "containerId": "6a3dd339-4c71-4699-ab5f-1ddd8d8b39c4",
-    "name": "Get Tags",
-    "url": "{{baseUrl}}/tags",
-    "method": "GET",
-    "sortNum": 640000,
-    "created": "2023-02-20T16:38:51.092Z",
-    "modified": "2023-02-20T16:38:51.092Z",
-    "headers": [],
-    "params": [
-      {
-        "name": "product_id",
-        "value": "56",
-        "isDisabled": false
-      }
-    ],
-    "auth": {
-      "type": "bearer",
-      "bearer": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MjExODkyNjksImlkIjoyLCJ0eXBlIjoiMCJ9.B7zQghWnmH4M_sy8R81jmR6Jr97LWLBTlg2vJ5F3JMQ"
-    },
-    "docs": ""
-  },
-  {
-    "_id": "e3a82071-9542-495e-9553-3c8fd3215a30",
-    "colId": "80d178ef-5176-474a-8708-db78bd45faee",
-    "containerId": "6a3dd339-4c71-4699-ab5f-1ddd8d8b39c4",
-    "name": "Update Tag",
-    "url": "{{baseUrl}}/tags/39",
-    "method": "PUT",
-    "sortNum": 650000,
-    "created": "2023-02-20T16:38:51.093Z",
-    "modified": "2023-02-20T16:38:51.093Z",
-    "headers": [],
-    "params": [],
-    "body": {
-      "type": "json",
-      "raw": "{\n\t\"title\" : \"designer cup\"\n}"
-    },
-    "auth": {
-      "type": "bearer",
-      "bearer": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2NDIyNTA2NzMsImlkIjoyLCJ1c2VyX3R5cGUiOiJlZHVjYXRvciJ9.blX7WIrDUdqBJFpEykFDqEqtgaMah6yTwy-N8buhnz0"
-    },
-    "docs": ""
-  },
-  {
-    "_id": "54364467-cebb-4c81-81a6-27f941e5bede",
-    "colId": "80d178ef-5176-474a-8708-db78bd45faee",
-    "containerId": "6a3dd339-4c71-4699-ab5f-1ddd8d8b39c4",
-    "name": "Delete Tag",
-    "url": "{{baseUrl}}/tags/1",
-    "method": "DELETE",
-    "sortNum": 660000,
-    "created": "2023-02-20T16:38:51.094Z",
-    "modified": "2023-02-20T16:38:51.094Z",
-    "headers": [],
-    "params": [],
-    "auth": {
-      "type": "bearer",
-      "bearer": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2NDQwNzE5MDgsImlkIjoyLCJ1c2VyX3R5cGUiOiJlZHVjYXRvciJ9.bsHO8VjQCpacdAlSN1T9q0-hQeWGYIz0iFzk7b5CA0Q"
-    },
-    "docs": ""
-  },
-  {
     "_id": "7ad7a977-e6e2-48d5-9a3e-ff9f940c452e",
     "colId": "80d178ef-5176-474a-8708-db78bd45faee",
     "containerId": "425e5407-d0b4-4763-94d2-413ae5508d5b",
     "name": "Get Tags",
-    "url": "{{baseUrl}}/tags/13",
+    "url": "{{baseUrl}}/products/26/tags",
     "method": "GET",
     "sortNum": 670000,
     "created": "2023-02-20T16:38:51.095Z",
-    "modified": "2023-02-20T16:38:51.095Z",
+    "modified": "2023-02-24T10:29:16.328Z",
     "headers": [],
     "params": [],
-    "auth": {
-      "type": "bearer",
-      "bearer": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MjExODkyNjksImlkIjoyLCJ0eXBlIjoiMCJ9.B7zQghWnmH4M_sy8R81jmR6Jr97LWLBTlg2vJ5F3JMQ"
-    },
-    "docs": ""
+    "tests": []
   },
   {
     "_id": "f7154c8b-0834-4d75-bfe2-b8f8eff54721",
     "colId": "80d178ef-5176-474a-8708-db78bd45faee",
     "containerId": "425e5407-d0b4-4763-94d2-413ae5508d5b",
     "name": "Update Tags",
-    "url": "{{baseUrl}}/tags/13",
+    "url": "{{baseUrl}}/products/26/tags",
     "method": "PUT",
     "sortNum": 680000,
     "created": "2023-02-20T16:38:51.096Z",
-    "modified": "2023-02-20T16:38:51.096Z",
+    "modified": "2023-02-24T10:29:00.196Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "[\n\t\"\",\n\t\"\",\n\t\"\",\n\t\"\"\n]"
+      "raw": "[\n\t\"art\",\n\t\"painting\",\n\t\"drawing\",\n\t\"beautiful art\"\n]",
+      "form": []
     },
     "auth": {
       "type": "bearer",
-      "bearer": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2NDIyNTA2NzMsImlkIjoyLCJ1c2VyX3R5cGUiOiJlZHVjYXRvciJ9.blX7WIrDUdqBJFpEykFDqEqtgaMah6yTwy-N8buhnz0"
+      "bearer": "{{seller_token}}"
     },
-    "docs": ""
-  },
-  {
-    "_id": "9148d812-a793-40f7-8d6b-61e623ee7a9c",
-    "colId": "80d178ef-5176-474a-8708-db78bd45faee",
-    "containerId": "425e5407-d0b4-4763-94d2-413ae5508d5b",
-    "name": "Delete Tags",
-    "url": "{{baseUrl}}/tags/13",
-    "method": "DELETE",
-    "sortNum": 690000,
-    "created": "2023-02-20T16:38:51.097Z",
-    "modified": "2023-02-20T16:38:51.097Z",
-    "headers": [],
-    "params": [],
-    "auth": {
-      "type": "bearer",
-      "bearer": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2NDQwNzE5MDgsImlkIjoyLCJ1c2VyX3R5cGUiOiJlZHVjYXRvciJ9.bsHO8VjQCpacdAlSN1T9q0-hQeWGYIz0iFzk7b5CA0Q"
-    },
-    "docs": ""
+    "tests": []
   },
   {
     "_id": "3d339905-c70e-4af3-92bb-06fa2c872668",

@@ -94,7 +94,7 @@
         "name": "Products",
         "containerId": "",
         "created": "2023-02-20T16:38:51.040Z",
-        "sortNum": 55000
+        "sortNum": 51250
       },
       {
         "_id": "3c47a409-79a2-440c-b50c-c521a6ce6beb",
@@ -104,18 +104,11 @@
         "sortNum": 140000
       },
       {
-        "_id": "6a3dd339-4c71-4699-ab5f-1ddd8d8b39c4",
+        "_id": "425e5407-d0b4-4763-94d2-413ae5508d5b",
         "name": "Tags",
         "containerId": "",
-        "created": "2023-02-20T16:38:51.042Z",
-        "sortNum": 150000
-      },
-      {
-        "_id": "425e5407-d0b4-4763-94d2-413ae5508d5b",
-        "name": "Tags new",
-        "containerId": "",
         "created": "2023-02-20T16:38:51.043Z",
-        "sortNum": 160000
+        "sortNum": 56250
       },
       {
         "_id": "3e702aea-670a-4ca4-8b33-d039296af95a",
@@ -155,9 +148,9 @@
       {
         "_id": "9525375d-6d7f-486c-8969-7b49f2983b85",
         "name": "product_items",
-        "containerId": "d3f02f76-889e-4a8d-88e7-d026529d83a9",
+        "containerId": "",
         "created": "2023-02-23T13:08:50.714Z",
-        "sortNum": 210000
+        "sortNum": 52500
       }
     ]
   }

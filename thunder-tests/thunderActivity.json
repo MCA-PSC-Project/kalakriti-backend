@@ -31,12 +31,12 @@
     "method": "POST",
     "sortNum": 0,
     "created": "2023-02-22T17:11:30.418Z",
-    "modified": "2023-02-23T14:29:35.807Z",
+    "modified": "2023-02-24T09:48:52.431Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n    \"email\": \"sheetal@gmail.com\",\n    \"password\": \"abcd@123\"\n}",
+      "raw": "{\n    \"email\": \"seller@gmail.com\",\n    \"password\": \"abcd@123\"\n}",
       "form": []
     },
     "tests": [],
@@ -403,6 +403,43 @@
     "sortNum": 0,
     "created": "2023-02-23T14:58:41.524Z",
     "modified": "2023-02-23T14:58:41.524Z",
+    "headers": [],
+    "params": [],
+    "tests": []
+  },
+  {
+    "_id": "c19f27ca-d2fe-4a8a-9be7-75dcfdb7446b",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/products/26/tags",
+    "url": "{{baseUrl}}/products/26/tags",
+    "method": "PUT",
+    "sortNum": 0,
+    "created": "2023-02-24T09:47:22.754Z",
+    "modified": "2023-02-24T10:29:00.201Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "[\n\t\"art\",\n\t\"painting\",\n\t\"drawing\",\n\t\"beautiful art\"\n]",
+      "form": []
+    },
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{seller_token}}"
+    },
+    "tests": []
+  },
+  {
+    "_id": "b18988e7-e100-4f10-b914-9d8a66716ab0",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/products/26/tags",
+    "url": "{{baseUrl}}/products/26/tags",
+    "method": "GET",
+    "sortNum": 0,
+    "created": "2023-02-24T10:29:16.307Z",
+    "modified": "2023-02-24T10:29:16.307Z",
     "headers": [],
     "params": [],
     "tests": []
