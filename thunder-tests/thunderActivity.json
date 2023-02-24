@@ -523,5 +523,19 @@
       }
     ],
     "tests": []
+  },
+  {
+    "_id": "83847a5c-0045-45fc-a245-e8653d16ecf0",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/top-searches",
+    "url": "{{baseUrl}}/top-searches",
+    "method": "GET",
+    "sortNum": 0,
+    "created": "2023-02-24T12:12:34.150Z",
+    "modified": "2023-02-24T12:12:34.150Z",
+    "headers": [],
+    "params": [],
+    "tests": []
   }
 ]
