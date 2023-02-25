@@ -119,6 +119,18 @@ class SellersProductItems(Resource):
                            (product_item_id, variant_value_id,))
             # product_item_value_id = cursor.fetchone()[0]
 
+            
+            INSERT_MEDIAS = '''INSERT INTO product_item_medias(media_id, product_item_id, display_order)
+            VALUES(%s, %s, %s)'''
+
+            media_id_list=product_item_dict.get("media_ids")
+            values_tuple_list=[]
+            for media_id_dict in media_id_list:
+                values_tuple=(media_id_dict.get("media_id"), product_item_id, media_id_dict.get("display_order"))
+                values_tuple_list.append(values_tuple)
+            app.logger.debug("values_tuple_list= %s", values_tuple_list)
+            
+            psycopg2.extras.execute_batch(cursor, INSERT_MEDIAS, values_tuple_list)
         except (Exception, psycopg2.Error) as err:
             app.logger.debug(err)
             app_globals.db_conn.rollback()

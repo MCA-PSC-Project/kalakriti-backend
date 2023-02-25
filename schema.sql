@@ -139,7 +139,7 @@ CREATE TABLE "product_item_values"(
 	FOREIGN KEY("product_item_id") REFERENCES "product_items"("id") ON DELETE CASCADE,
 	FOREIGN KEY("variant_value_id") REFERENCES "variant_values"("id") ON DELETE CASCADE
 );
-CREATE TABLE "product_medias"(
+CREATE TABLE "product_item_medias"(
 	-- "id" SERIAL PRIMARY KEY,
 	"media_id" INT NOT NULL,
 	"product_item_id" INT NOT NULL,
