@@ -629,12 +629,12 @@
     "method": "POST",
     "sortNum": 0,
     "created": "2023-02-24T14:35:28.783Z",
-    "modified": "2023-02-25T17:49:27.921Z",
+    "modified": "2023-02-25T17:56:00.767Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n  \"product_id\": 26,\n  \"variant\": \"COLOR\",\n  \"variant_value\": \"BLACK\",\n  \"product_variant_name\": \"black_COLOR_VARIANT\",\n  \"SKU\": \"zy\",\n  \"original_price\": 1000,\n  \"offer_price\": 500,\n  \"quantity_in_stock\": 20,\n  \"media_ids\": [\n    {\n      \"media_id\": 2,\n      \"display_order\": 4\n    },\n    {\n      \"media_id\": 1,\n      \"display_order\": 3\n    }\n  ]\n}",
+      "raw": "{\n  \"product_id\": 26,\n  \"variant\": \"COLOR\",\n  \"variant_value\": \"BLACK\",\n  \"product_variant_name\": \"black_COLOR_VARIANT\",\n  \"SKU\": \"zyx\",\n  \"original_price\": 1000,\n  \"offer_price\": 500,\n  \"quantity_in_stock\": 20,\n  \"media_ids\": [\n    {\n      \"media_id\": 1,\n      \"display_order\": 1\n    },\n    {\n      \"media_id\": 2,\n      \"display_order\": 2\n    }\n  ]\n}",
       "form": []
     },
     "auth": {

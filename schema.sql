@@ -145,6 +145,7 @@ CREATE TABLE "product_item_medias"(
 	"product_item_id" INT NOT NULL,
 	"display_order" SMALLINT NOT NULL,
 	PRIMARY KEY("media_id", "product_item_id"),
+	UNIQUE("product_item_id", "display_order"),
 	FOREIGN KEY("media_id") REFERENCES "media"("id") ON DELETE
 	SET NULL,
 		FOREIGN KEY("product_item_id") REFERENCES "product_items"("id") ON DELETE CASCADE
