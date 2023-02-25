@@ -591,23 +591,24 @@
     "_id": "121966cf-522c-443c-8b03-8aa18a1a85dc",
     "colId": "80d178ef-5176-474a-8708-db78bd45faee",
     "containerId": "0cb331e2-2642-40c2-8bd3-b94f9e1586ca",
-    "name": "Create Wishlist",
+    "name": "Add To Wishlist",
     "url": "{{baseUrl}}/wishlists",
     "method": "POST",
     "sortNum": 290000,
     "created": "2023-02-20T16:38:51.056Z",
-    "modified": "2023-02-20T16:38:51.056Z",
+    "modified": "2023-02-25T11:34:26.702Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n\t\"product_id\":59\n}"
+      "raw": "{\n\t\"product_item_id\":14\n}",
+      "form": []
     },
     "auth": {
       "type": "bearer",
-      "bearer": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2NDQ5MTcwNzMsImlkIjoyNywidXNlcl90eXBlIjoibGVhcm5lciJ9.XSclgiML2Wun83LfHVHUHwTAXnz87t5xqlRoQx9d9ts"
+      "bearer": "{{token}}"
     },
-    "docs": ""
+    "tests": []
   },
   {
     "_id": "4ee1a831-d4a7-49e9-9c87-52c2e3aafaa2",
@@ -618,32 +619,32 @@
     "method": "GET",
     "sortNum": 300000,
     "created": "2023-02-20T16:38:51.057Z",
-    "modified": "2023-02-20T16:38:51.057Z",
+    "modified": "2023-02-25T11:08:29.567Z",
     "headers": [],
     "params": [],
     "auth": {
       "type": "bearer",
-      "bearer": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2NDQ5MTcwNzMsImlkIjoyNywidXNlcl90eXBlIjoibGVhcm5lciJ9.XSclgiML2Wun83LfHVHUHwTAXnz87t5xqlRoQx9d9ts"
+      "bearer": "{{token}}"
     },
-    "docs": ""
+    "tests": []
   },
   {
     "_id": "e4f5600c-989c-4971-a2ff-d711f179b5c4",
     "colId": "80d178ef-5176-474a-8708-db78bd45faee",
     "containerId": "0cb331e2-2642-40c2-8bd3-b94f9e1586ca",
-    "name": "Delete Wishlist",
-    "url": "{{baseUrl}}/wishlists/59",
+    "name": "Remove From Wishlist",
+    "url": "{{baseUrl}}/wishlists/10",
     "method": "DELETE",
     "sortNum": 310000,
     "created": "2023-02-20T16:38:51.058Z",
-    "modified": "2023-02-20T16:38:51.058Z",
+    "modified": "2023-02-25T11:38:21.963Z",
     "headers": [],
     "params": [],
     "auth": {
       "type": "bearer",
-      "bearer": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2NDQ5MTcwNzMsImlkIjoyNywidXNlcl90eXBlIjoibGVhcm5lciJ9.XSclgiML2Wun83LfHVHUHwTAXnz87t5xqlRoQx9d9ts"
+      "bearer": "{{token}}"
     },
-    "docs": ""
+    "tests": []
   },
   {
     "_id": "daa9df21-edd0-42e5-a622-89cfb4e7f8ab",

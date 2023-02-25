@@ -21,6 +21,7 @@ from app.resources.admin import GetSeller, GetCustomer, EnableDisableUser, Promo
 from app.resources.super_admin import GetAllAdmins, PromoteToAdmin
 from app.resources.banners import Banners
 from app.resources.seller_applicant_form import Seller_Applicant_Form
+from app.resources.wishlists import Wishlists
 
 import app.app_globals as app_globals
 
@@ -127,6 +128,10 @@ def create_app(config_name):
     # Seller_Applicant_Form
     api.add_resource(Seller_Applicant_Form, '/sellers-form',
                      '/sellers-form/<int:seller_id>')
+    
+    #Wishlists
+    api.add_resource(Wishlists, '/wishlists',
+                       '/wishlists/<int:product_item_id>')
 
     # Search
     api.add_resource(Search, '/search')
