@@ -216,7 +216,6 @@ CREATE TABLE "order_items"(
 CREATE TABLE "product_reviews"(
 	"user_id" INT,
 	"product_item_id" INT,
-	"SKU" VARCHAR,
 	"rating" NUMERIC(2, 1),
 	"review" VARCHAR,
 	"added_at" TIMESTAMPTZ NOT NULL,

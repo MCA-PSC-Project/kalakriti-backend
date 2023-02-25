@@ -46,9 +46,21 @@ def create_app(config_name):
 
     # app_globals.db_conn = psycopg2.connect(app.config['DATABASE_URI'])
 
+    keepalive_args = {
+        # Controls whether client-side TCP keepalives are used. The default value is 1, meaning on, but you can change this to 0, meaning off, if keepalives are not wanted.
+        "keepalives": 1,
+        # Controls the number of seconds of inactivity after which TCP should send a keepalive message to the server. A value of zero uses the system default.
+        "keepalives_idle": 25,
+        # Controls the number of seconds after which a TCP keepalive message that is not acknowledged by the server should be retransmitted. A value of zero uses the system default.
+        "keepalives_interval": 10,
+        # Controls the number of TCP keepalives that can be lost before the client's connection to the server is considered dead. A value of zero uses the system default.
+        "keepalives_count": 5
+    }
     # Connection pooling
     app_globals.db_conn_pool = SimpleConnectionPool(
-        minconn=1, maxconn=10, dsn=app.config['DATABASE_URI'])
+        minconn=1, maxconn=10, dsn=app.config['DATABASE_URI'],
+        **keepalive_args)
+
     app_globals.db_conn = app_globals.db_conn_pool.getconn()
     if app_globals.db_conn == None:
         app.logger.fatal('Database connection error')
