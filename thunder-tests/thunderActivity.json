@@ -765,5 +765,23 @@
       }
     ],
     "tests": []
+  },
+  {
+    "_id": "fdd586ab-4dca-4a04-8032-e3480f8c3202",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/wishlists",
+    "url": "{{baseUrl}}/wishlists",
+    "method": "GET",
+    "sortNum": 0,
+    "created": "2023-02-25T13:04:17.965Z",
+    "modified": "2023-02-25T13:04:17.965Z",
+    "headers": [],
+    "params": [],
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{token}}"
+    },
+    "tests": []
   }
 ]

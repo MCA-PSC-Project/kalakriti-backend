@@ -46,7 +46,9 @@ class Wishlists(Resource):
 
         wishlists_list = []
 
-        GET_WISHLISTS = '''SELECT product_id ,product_variant_name ,"SKU" ,original_price, offer_price FROM product_items WHERE id IN
+        GET_WISHLISTS = '''SELECT product_id ,product_variant_name ,"SKU" ,original_price, offer_price 
+        FROM product_items 
+        WHERE id IN
         (SELECT product_item_id FROM wishlists WHERE user_id =%s )'''
 
         # catch exception for invalid SQL statement
