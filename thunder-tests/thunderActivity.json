@@ -115,12 +115,12 @@
     "method": "POST",
     "sortNum": 0,
     "created": "2023-02-23T10:51:58.473Z",
-    "modified": "2023-02-24T14:06:45.662Z",
+    "modified": "2023-02-26T14:32:25.271Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n  \"product_name\": \"pot\",\n  \"product_description\": \"dxvxk\",\n  \"category_id\": 5,\n  \"subcategory_id\": null,\n  \"currency\": \"INR\",\n  \"product_items\": [\n    {\n      \"variant\": \"BASE\",\n      \"variant_value\": \"BASE\",\n      \"product_variant_name\": \"BASE\",\n      \"SKU\": \"abcdefgh\",\n      \"original_price\": 1000,\n      \"offer_price\": 500,\n      \"quantity_in_stock\": 10\n    }\n  ]\n}",
+      "raw": "{\n  \"product_name\": \"pot\",\n  \"product_description\": \"dxvxk\",\n  \"category_id\": 5,\n  \"subcategory_id\": null,\n  \"currency\": \"INR\",\n  \"min_order_quantity\": 2,\n  \"max_order_quantity\": 10,\n  \"product_items\": [\n    {\n      \"variant\": \"BASE\",\n      \"variant_value\": \"BASE\",\n      \"product_variant_name\": \"BASE\",\n      \"SKU\": \"abcdefgh\",\n      \"original_price\": 1000,\n      \"offer_price\": 500,\n      \"quantity_in_stock\": 10\n    }\n  ]\n}",
       "form": []
     },
     "auth": {
@@ -915,6 +915,43 @@
       "type": "bearer",
       "bearer": "{{token}}"
     },
+    "tests": []
+  },
+  {
+    "_id": "a4633d50-5555-4b72-8e46-6af3a34f2c97",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/sellers/products/31",
+    "url": "{{baseUrl}}/sellers/products/31",
+    "method": "PUT",
+    "sortNum": 0,
+    "created": "2023-02-26T14:36:30.573Z",
+    "modified": "2023-02-26T14:36:30.573Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n  \"product_name\": \"famous madhubani painting\",\n  \"product_description\": \"paintings from madhubani\",\n  \"category_id\": 5,\n  \"subcategory_id\": null,\n  \"currency\": \"INR\",\n  \"min_order_quantity\": 1,\n  \"max_order_quantity\": 5\n}",
+      "form": []
+    },
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{seller_token}}"
+    },
+    "tests": []
+  },
+  {
+    "_id": "40083658-d139-4d1a-b66c-f5f0de8fa8ec",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/products/31",
+    "url": "{{baseUrl}}/products/31",
+    "method": "GET",
+    "sortNum": 0,
+    "created": "2023-02-26T14:37:20.526Z",
+    "modified": "2023-02-26T14:37:20.526Z",
+    "headers": [],
+    "params": [],
     "tests": []
   }
 ]

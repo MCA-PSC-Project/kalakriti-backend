@@ -19,7 +19,7 @@ class Products(Resource):
             GET_PRODUCT = '''SELECT p.id, p.product_name, p.product_description, 
             ct.id, ct.name,
             sct.id, sct.name, sct.parent_id, 
-            p.currency, p.product_status,
+            p.currency, p.product_status, p.min_order_quantity, p.max_order_quantity,
             p.added_at, p.updated_at, 
             u.id, u.first_name, u.last_name, u.email,
             pbi.product_item_id
@@ -51,19 +51,22 @@ class Products(Resource):
 
             product_dict['currency'] = row[8]
             product_dict['product_status'] = row[9]
+            product_dict['min_order_quantity'] = row[10]
+            product_dict['max_order_quantity'] = row[11]
+
             product_dict.update(json.loads(
-                json.dumps({'added_at': row[10]}, default=str)))
+                json.dumps({'added_at': row[12]}, default=str)))
             product_dict.update(json.loads(
-                json.dumps({'updated_at': row[11]}, default=str)))
+                json.dumps({'updated_at': row[13]}, default=str)))
 
             seller_dict = {}
-            seller_dict['id'] = row[12]
-            seller_dict['first_name'] = row[13]
-            seller_dict['last_name'] = row[14]
-            seller_dict['email'] = row[15]
+            seller_dict['id'] = row[14]
+            seller_dict['first_name'] = row[15]
+            seller_dict['last_name'] = row[16]
+            seller_dict['email'] = row[17]
             product_dict.update({"seller": seller_dict})
 
-            product_dict['base_product_item_id'] = row[16]
+            product_dict['base_product_item_id'] = row[18]
 
             product_items_list = []
             GET_PRODUCT_ITEMS = '''SELECT pi.id, pi.product_id, pi.product_variant_name, pi."SKU", 
@@ -143,15 +146,16 @@ class SellersProducts(Resource):
             # # app.logger.debug("cursor object: %s", cursor)
 
             CREATE_PRODUCT = '''INSERT INTO products(product_name, product_description, category_id, subcategory_id, 
-            currency, seller_user_id, added_at) 
-            VALUES(%s, %s, %s, %s, %s, %s, %s) RETURNING id'''
+            currency, seller_user_id, min_order_quantity, max_order_quantity, added_at) 
+            VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s) RETURNING id'''
             cursor.execute(CREATE_PRODUCT,
-                           (product_dict.get('product_name'), product_dict.get(
-                               'product_description'),
+                           (product_dict.get('product_name'), product_dict.get('product_description'),
                             product_dict.get('category_id'), product_dict.get(
-                               'subcategory_id'),
-                            product_dict.get('currency', 'INR'),
-                            user_id, current_time,))
+                                'subcategory_id'),
+                            product_dict.get('currency', 'INR'), user_id,
+                            product_dict.get('min_order_quantity'), product_dict.get(
+                                'max_order_quantity'),
+                            current_time,))
             product_id = cursor.fetchone()[0]
 
             GET_VARIANT_ID = '''SELECT id FROM variants WHERE variant= %s'''
@@ -229,7 +233,7 @@ class SellersProducts(Resource):
             GET_PRODUCTS = '''SELECT p.id, p.product_name, p.product_description, 
             ct.id, ct.name,
             sct.id, sct.name, sct.parent_id, 
-            p.currency, p.product_status,
+            p.currency, p.product_status, p.min_order_quantity, p.max_order_quantity,
             p.added_at, p.updated_at, 
             u.id, u.first_name, u.last_name, u.email,
             pbi.product_item_id
@@ -264,19 +268,22 @@ class SellersProducts(Resource):
 
                 product_dict['currency'] = row[8]
                 product_dict['product_status'] = row[9]
+                product_dict['min_order_quantity'] = row[10]
+                product_dict['max_order_quantity'] = row[11]
+
                 product_dict.update(json.loads(
-                    json.dumps({'added_at': row[10]}, default=str)))
+                    json.dumps({'added_at': row[12]}, default=str)))
                 product_dict.update(json.loads(
-                    json.dumps({'updated_at': row[11]}, default=str)))
+                    json.dumps({'updated_at': row[13]}, default=str)))
 
                 seller_dict = {}
-                seller_dict['id'] = row[12]
-                seller_dict['first_name'] = row[13]
-                seller_dict['last_name'] = row[14]
-                seller_dict['email'] = row[15]
+                seller_dict['id'] = row[14]
+                seller_dict['first_name'] = row[15]
+                seller_dict['last_name'] = row[16]
+                seller_dict['email'] = row[17]
                 product_dict.update({"seller": seller_dict})
 
-                product_dict['base_product_item_id'] = row[16]
+                product_dict['base_product_item_id'] = row[18]
                 products_list.append(product_dict)
 
                 # for items list
@@ -349,7 +356,8 @@ class SellersProducts(Resource):
             abort(400, "only seller, super-admins and admins can update product")
 
         UPDATE_PRODUCT = '''UPDATE products SET product_name= %s, product_description= %s,
-        category_id= %s, subcategory_id= %s, currency= %s, updated_at= %s 
+        category_id= %s, subcategory_id= %s, currency= %s, min_order_quantity= %s, max_order_quantity= %s,
+        updated_at= %s 
         WHERE id= %s'''
 
         # catch exception for invalid SQL statement
@@ -361,8 +369,11 @@ class SellersProducts(Resource):
             cursor.execute(
                 UPDATE_PRODUCT, (product_dict.get('product_name'), product_dict.get('product_description'),
                                  product_dict.get('category_id'), product_dict.get(
-                                     'subcategory_id'), product_dict.get('currency', 'INR'), current_time,
-                                 product_id,))
+                                     'subcategory_id'),
+                                 product_dict.get('currency', 'INR'),
+                                 product_dict.get('min_order_quantity'), product_dict.get(
+                                     'max_order_quantity'),
+                                 current_time, product_id,))
             # app.logger.debug("row_counts= %s", cursor.rowcount)
             if cursor.rowcount != 1:
                 abort(400, 'Bad Request: update row error')
