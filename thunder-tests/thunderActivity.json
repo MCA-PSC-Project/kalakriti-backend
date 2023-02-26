@@ -834,5 +834,23 @@
       "bearer": "{{token}}"
     },
     "tests": []
+  },
+  {
+    "_id": "457cf9ed-7c5f-4ef9-a538-7f7ebcca17bd",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/carts",
+    "url": "{{baseUrl}}/carts",
+    "method": "GET",
+    "sortNum": 0,
+    "created": "2023-02-26T11:49:57.260Z",
+    "modified": "2023-02-26T11:49:57.260Z",
+    "headers": [],
+    "params": [],
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{token}}"
+    },
+    "tests": []
   }
 ]
