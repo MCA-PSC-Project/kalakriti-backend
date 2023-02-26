@@ -23,10 +23,12 @@ CREATE TYPE "order__status" AS ENUM (
 	'return_request',
 	'return_apporved',
 	'returned',
-	'sold'
+	'failure',
+	'success'
 );
 CREATE TYPE "payment__status" AS ENUM ('failure', 'success', 'pending');
 CREATE TYPE "approval__status" AS ENUM ('pending', 'approved', 'rejected');
+CREATE TYPE "payment__mode" AS ENUM ('upi', 'credit_card', 'debit_card', 'cash', 'net_banking', 'digital_wallet');
 -----------------------TABLES-------------------------------------------
 CREATE TABLE "media"(
 	"id" SERIAL PRIMARY KEY,
@@ -235,6 +237,7 @@ CREATE TABLE "payments"(
 	"provider" VARCHAR(50) NOT NULL,
 	"provider_order_id" VARCHAR NOT NULL,
 	"provider_payment_id" VARCHAR NOT NULL,
+	"payment_mode" payment__mode,
 	"payment_status" payment__status,
 	"added_at" TIMESTAMPTZ NOT NULL,
 	"updated_at" TIMESTAMPTZ NOT NULL,
@@ -263,7 +266,6 @@ CREATE TABLE "bank_details"(
   PRIMARY KEY("user_id"),
   FOREIGN KEY ("user_id") REFERENCES "users" ("id") ON DELETE SET NULL
 );
-
 CREATE TABLE "mobile_otp"(
 	"mobile_no" VARCHAR(15) PRIMARY KEY,
 	"otp" VARCHAR(6) NOT NULL,

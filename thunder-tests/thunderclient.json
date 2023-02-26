@@ -1062,11 +1062,11 @@
     "colId": "80d178ef-5176-474a-8708-db78bd45faee",
     "containerId": "d3f02f76-889e-4a8d-88e7-d026529d83a9",
     "name": "get product by id",
-    "url": "{{baseUrl}}/products/31",
+    "url": "{{baseUrl}}/products/26",
     "method": "GET",
     "sortNum": 530000,
     "created": "2023-02-20T16:38:51.081Z",
-    "modified": "2023-02-26T14:37:20.877Z",
+    "modified": "2023-02-26T16:54:51.085Z",
     "headers": [],
     "params": [],
     "tests": []

@@ -106,8 +106,39 @@ class Products(Resource):
                 product_item_dict['variant'] = row[9]
                 product_item_dict['variant_value'] = row[10]
 
-                product_items_list.append(product_item_dict)
+                GET_MEDIAS = '''SELECT m.id, m.name, m.path, pim.display_order, pim.media_id
+                FROM product_item_medias pim 
+                JOIN LATERAL
+                (SELECT m.id, m.name, m.path 
+                FROM media m 
+                WHERE m.id = pim.media_id
+                ) AS m ON TRUE
+                WHERE pim.product_item_id= %s
+                ORDER BY pim.display_order'''
 
+                media_list = []
+                cursor.execute(GET_MEDIAS, (product_item_dict['id'],))
+                rows = cursor.fetchall()
+                if not rows:
+                    # app.logger.debug("No media rows")
+                    pass
+                for row in rows:
+                    media_dict = {}
+                    media_dict['id'] = row[0]
+                    media_dict['name'] = row[1]
+                    # media_dict['path'] = row[2]
+                    path = row[2]
+                    if path is not None:
+                        media_dict['path'] = "{}/{}".format(
+                            app.config["S3_LOCATION"], row[2])
+                    else:
+                        media_dict['path'] = None
+                    media_dict['pim_display_order'] = row[3]
+                    media_dict['pim_media_id'] = row[4]
+                    media_list.append(media_dict)
+                product_item_dict.update({"medias": media_list})
+
+                product_items_list.append(product_item_dict)
             product_dict.update({'product_items': product_items_list})
         except (Exception, psycopg2.Error) as err:
             app.logger.debug(err)
@@ -324,6 +355,38 @@ class SellersProducts(Resource):
 
                     product_item_dict['variant'] = row[9]
                     product_item_dict['variant_value'] = row[10]
+
+                    GET_MEDIAS = '''SELECT m.id, m.name, m.path, pim.display_order, pim.media_id
+                    FROM product_item_medias pim 
+                    JOIN LATERAL
+                    (SELECT m.id, m.name, m.path 
+                    FROM media m 
+                    WHERE m.id = pim.media_id
+                    ) AS m ON TRUE
+                    WHERE pim.product_item_id= %s
+                    ORDER BY pim.display_order'''
+
+                    media_list = []
+                    cursor.execute(GET_MEDIAS, (product_item_dict['id'],))
+                    rows = cursor.fetchall()
+                    if not rows:
+                        # app.logger.debug("No media rows")
+                        pass
+                    for row in rows:
+                        media_dict = {}
+                        media_dict['id'] = row[0]
+                        media_dict['name'] = row[1]
+                        # media_dict['path'] = row[2]
+                        path = row[2]
+                        if path is not None:
+                            media_dict['path'] = "{}/{}".format(
+                                app.config["S3_LOCATION"], row[2])
+                        else:
+                            media_dict['path'] = None
+                        media_dict['pim_display_order'] = row[3]
+                        media_dict['pim_media_id'] = row[4]
+                        media_list.append(media_dict)
+                    product_item_dict.update({"medias": media_list})
 
                     product_items_list.append(product_item_dict)
 
