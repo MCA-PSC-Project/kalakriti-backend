@@ -4,8 +4,8 @@ from flask_restful import Resource
 import psycopg2
 import app.app_globals as app_globals
 import flask_jwt_extended as f_jwt
-import json
 from flask import current_app as app
+
 
 class Carts(Resource):
     @f_jwt.jwt_required()
@@ -21,14 +21,14 @@ class Carts(Resource):
         quantity = data.get("quantity", None)
 
         app_globals.db_conn.autocommit = False
-    # catch exception for invalid SQL statement
+        # catch exception for invalid SQL statement
         try:
             # declare a cursor object from the connection
             cursor = app_globals.get_cursor()
-                # # app.logger.debug("cursor object: %s", cursor)
+            # # app.logger.debug("cursor object: %s", cursor)
             GET_CART_ID = '''SELECT id from carts WHERE user_id = %s '''
             cursor.execute(
-                GET_CART_ID, (str(user_id),))
+                GET_CART_ID, (user_id,))
             row = cursor.fetchone()
             if not row:
                 app.logger.debug("cart_id not found!")
@@ -54,7 +54,7 @@ class Carts(Resource):
         app_globals.db_conn.commit()
         app_globals.db_conn.autocommit = True
         return f"Product_item_id = {product_item_id} added to cart for user_id {user_id}", 201
-    
+
     @f_jwt.jwt_required()
     def get(self):
         user_id = f_jwt.get_jwt_identity()
@@ -62,15 +62,15 @@ class Carts(Resource):
 
         carts_list = []
 
-        GET_CARTS = '''SELECT product_item_id, quantity FROM cart_items 
-        WHERE cart_id = (SELECT id FROM carts WHERE user_id =%s )'''
+        GET_ITEMS_IN_CART = '''SELECT product_item_id, quantity FROM cart_items 
+        WHERE cart_id = (SELECT id FROM carts WHERE user_id =%s)'''
         app_globals.db_conn.autocommit = False
         # catch exception for invalid SQL statement
         try:
             # declare a cursor object from the connection
             cursor = app_globals.get_cursor()
             # # app.logger.debug("cursor object: %s", cursor)
-            cursor.execute(GET_CARTS,str(user_id),)
+            cursor.execute(GET_ITEMS_IN_CART, (user_id,))
             rows = cursor.fetchall()
             if not rows:
                 return {}
@@ -79,7 +79,7 @@ class Carts(Resource):
                 # carts_dict['cart_id'] = row[0]
                 carts_dict['product_item_id'] = row[0]
                 # carts_dict['product_id'] = row[2]
-                # carts_dict['product_name'] = row[3] 
+                # carts_dict['product_name'] = row[3]
                 # carts_dict['product_variant_name'] = row[4]
                 # carts_dict['SKU'] = row[5]
                 # carts_dict.update(json.loads(
@@ -87,21 +87,20 @@ class Carts(Resource):
                 # carts_dict.update(json.loads(
                 #     json.dumps({'offer_price': row[7]}, default=str)))
                 carts_dict['quantity'] = row[1]
-                
+
                 carts_list.append(carts_dict)
         except (Exception, psycopg2.Error) as err:
-                app.logger.debug(err)
-                app_globals.db_conn.rollback()
-                app_globals.db_conn.autocommit = True
-                app.logger.debug("autocommit switched back from off to on")
-                abort(400, 'Bad Request')
+            app.logger.debug(err)
+            app_globals.db_conn.rollback()
+            app_globals.db_conn.autocommit = True
+            app.logger.debug("autocommit switched back from off to on")
+            abort(400, 'Bad Request')
         finally:
             cursor.close()
         app_globals.db_conn.commit()
         app_globals.db_conn.autocommit = True
         # app.logger.debug(banner_dict)
         return carts_list
-
 
     @ f_jwt.jwt_required()
     def delete(self, product_item_id):
@@ -112,10 +111,10 @@ class Carts(Resource):
         try:
             # declare a cursor object from the connection
             cursor = app_globals.get_cursor()
-                # # app.logger.debug("cursor object: %s", cursor)
-            GET_CART_ID = '''SELECT id from carts WHERE user_id = %s '''
+            # # app.logger.debug("cursor object: %s", cursor)
+            GET_CART_ID = '''SELECT id FROM carts WHERE user_id = %s '''
             cursor.execute(
-                GET_CART_ID, (str(user_id),))
+                GET_CART_ID, (user_id,))
             row = cursor.fetchone()
             if not row:
                 app.logger.debug("cart_id not found!")
@@ -134,4 +133,3 @@ class Carts(Resource):
         finally:
             cursor.close()
         return 200
-

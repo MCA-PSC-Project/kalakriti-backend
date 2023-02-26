@@ -7,6 +7,7 @@ import flask_jwt_extended as f_jwt
 import json
 from flask import current_app as app
 
+
 class Wishlists(Resource):
     @f_jwt.jwt_required()
     def post(self):
@@ -30,7 +31,7 @@ class Wishlists(Resource):
             # # app.logger.debug("cursor object: %s", cursor)
 
             cursor.execute(
-                ADD_TO_WISHLIST, (user_id,product_item_id, current_time,))
+                ADD_TO_WISHLIST, (user_id, product_item_id, current_time,))
            # id = cursor.fetchone()[0]
         except (Exception, psycopg2.Error) as err:
             app.logger.debug(err)
@@ -38,7 +39,7 @@ class Wishlists(Resource):
         finally:
             cursor.close()
         return f"Product_item_id = {product_item_id} added to wishilist for user_id {user_id}", 201
-    
+
     @f_jwt.jwt_required()
     def get(self):
         user_id = f_jwt.get_jwt_identity()
@@ -57,7 +58,7 @@ class Wishlists(Resource):
             # declare a cursor object from the connection
             cursor = app_globals.get_cursor()
             # # app.logger.debug("cursor object: %s", cursor)
-            cursor.execute(GET_WISHLISTS,str(user_id),)
+            cursor.execute(GET_WISHLISTS, (user_id,))
             rows = cursor.fetchall()
             if not rows:
                 return {}
@@ -67,12 +68,12 @@ class Wishlists(Resource):
                 wishlists_dict['product_name'] = row[1]
                 wishlists_dict['product_variant_name'] = row[2]
                 wishlists_dict['SKU'] = row[3]
-                
+
                 wishlists_dict.update(json.loads(
                     json.dumps({'original_price': row[4]}, default=str)))
                 wishlists_dict.update(json.loads(
                     json.dumps({'offer_price': row[5]}, default=str)))
-                
+
                 wishlists_list.append(wishlists_dict)
         except (Exception, psycopg2.Error) as err:
             app.logger.debug(err)
@@ -81,7 +82,6 @@ class Wishlists(Resource):
             cursor.close()
         # app.logger.debug(banner_dict)
         return wishlists_list
-
 
     @ f_jwt.jwt_required()
     def delete(self, product_item_id):
@@ -108,4 +108,3 @@ class Wishlists(Resource):
         finally:
             cursor.close()
         return 200
-
