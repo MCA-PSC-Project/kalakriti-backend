@@ -35,7 +35,7 @@ class Carts(Resource):
                 app.logger.debug("cart_id not found!")
                 # app_globals.db_conn.rollback()
                 # if there is no cart for the user_id
-                CREATE_CART='''INSERT INTO carts(user_id) RETURNING id'''
+                CREATE_CART = '''INSERT INTO carts(user_id) RETURNING id'''
                 cursor.execute(CREATE_CART, (user_id,))
                 row = cursor.fetchone()
             cart_id = row[0]
@@ -105,6 +105,49 @@ class Carts(Resource):
         # app.logger.debug(carts_list)
         return carts_list
 
+    @f_jwt.jwt_required()
+    def patch(self, product_item_id):
+        user_id = f_jwt.get_jwt_identity()
+        app.logger.debug("user_id= %s", user_id)
+        # claims = f_jwt.get_jwt()
+        # user_type = claims['user_type']
+        # app.logger.debug("user_type= %s", user_type)
+
+        data = request.get_json()
+        quantity = data.get("quantity", None)
+        if not quantity:
+            abort(400, 'Bad Request')
+        current_time = datetime.now()
+
+        GET_CART_ID = '''SELECT id from carts WHERE user_id = %s'''
+        # catch exception for invalid SQL statement
+        try:
+            # declare a cursor object from the connection
+            cursor = app_globals.get_cursor()
+            # # app.logger.debug("cursor object: %s", cursor)
+            cursor.execute(
+                GET_CART_ID, (user_id,))
+            row = cursor.fetchone()
+            if not row:
+                app.logger.debug("cart_id not found!")
+                abort(400, 'Bad Request')
+            cart_id= row[0]
+            
+            UPDATE_QUANTITY = '''UPDATE cart_items SET quantity=%s, updated_at= %s 
+            WHERE cart_id= %s AND product_item_id= %s'''
+
+            cursor.execute(
+                UPDATE_QUANTITY, (quantity, current_time, cart_id, product_item_id))
+            # app.logger.debug("row_counts= %s", cursor.rowcount)
+            if cursor.rowcount != 1:
+                abort(400, 'Bad Request: update row error')
+        except (Exception, psycopg2.Error) as err:
+            app.logger.debug(err)
+            abort(400, 'Bad Request')
+        finally:
+            cursor.close()
+        return {"message": f"Quantity modified for cart_id ={cart_id}."}, 200
+
     @ f_jwt.jwt_required()
     def delete(self, product_item_id):
         user_id = f_jwt.get_jwt_identity()
@@ -136,42 +179,3 @@ class Carts(Resource):
         finally:
             cursor.close()
         return 200
-
-    @ f_jwt.jwt_required()
-    def patch(self, product_item_id):
-        user_id = f_jwt.get_jwt_identity()
-        app.logger.debug("user_id= %s", user_id)
-        claims = f_jwt.get_jwt()
-        user_type = claims['user_type']
-        app.logger.debug("user_type= %s", user_type)
-
-        data = request.get_json()
-        cart_dict = json.loads(json.dumps(data))
-        app.logger.debug(cart_dict)
-
-        current_time = datetime.now()
-
-        GET_CART_ID = '''SELECT id from carts WHERE user_id = %s'''
-           # catch exception for invalid SQL statement
-        try:
-            # declare a cursor object from the connection
-            cursor = app_globals.get_cursor()
-            # # app.logger.debug("cursor object: %s", cursor)
-            cursor.execute(
-                GET_CART_ID, (user_id,))
-            cart_id = cursor.fetchone()
-
-
-            UPDATE_CATEGORY = 'UPDATE cart_items SET quantity=%s, updated_at= %s WHERE cart_id= %s and product_item_id= %s'
-
-            cursor.execute(
-                UPDATE_CATEGORY, (cart_dict['quantity'], current_time, cart_id, product_item_id))
-            # app.logger.debug("row_counts= %s", cursor.rowcount)
-            if cursor.rowcount != 1:
-                abort(400, 'Bad Request: update row error')
-        except (Exception, psycopg2.Error) as err:
-            app.logger.debug(err)
-            abort(400, 'Bad Request')
-        finally:
-            cursor.close()
-        return {"message": f"Quantity modified for cart_id ={cart_id}."}, 200
