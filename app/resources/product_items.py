@@ -66,7 +66,8 @@ class ProductItems(Resource):
             FROM media m 
             WHERE m.id = pim.media_id
             ) AS m ON TRUE
-            WHERE pim.product_item_id= %s'''
+            WHERE pim.product_item_id= %s
+            ORDER BY pim.display_order'''
 
             media_list = []
             cursor.execute(GET_MEDIAS, (product_item_id,))

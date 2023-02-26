@@ -119,6 +119,7 @@ CREATE TABLE "product_items"(
 	"original_price" NUMERIC NOT NULL,
 	"offer_price" NUMERIC NOT NULL,
 	"quantity_in_stock" INT NOT NULL,
+	"max_order_quantity" INT NOT NULL,
 	"added_at" TIMESTAMPTZ NOT NULL,
 	"updated_at" TIMESTAMPTZ DEFAULT NULL,
 	"product_item_status" product__status DEFAULT ('draft'),
