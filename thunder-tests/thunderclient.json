@@ -1921,11 +1921,11 @@
     "colId": "80d178ef-5176-474a-8708-db78bd45faee",
     "containerId": "6bd7e1f1-03c2-44e9-a246-827e2d8f4f7f",
     "name": "Update quantity",
-    "url": "{{baseUrl}}/carts/14",
+    "url": "{{baseUrl}}/carts/10",
     "method": "PATCH",
     "sortNum": 335000,
     "created": "2023-02-26T10:52:01.356Z",
-    "modified": "2023-02-26T11:47:13.931Z",
+    "modified": "2023-02-26T12:00:07.153Z",
     "headers": [],
     "params": [],
     "body": {

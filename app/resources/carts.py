@@ -33,10 +33,11 @@ class Carts(Resource):
                 GET_CART_ID, (user_id,))
             row = cursor.fetchone()
             if not row:
-                app.logger.debug("cart_id not found!")
+                app.logger.debug(
+                    "cart_id not found!..Creating a cart for user_id =%s", user_id)
                 # app_globals.db_conn.rollback()
                 # if there is no cart for the user_id
-                CREATE_CART = '''INSERT INTO carts(user_id) RETURNING id'''
+                CREATE_CART = '''INSERT INTO carts(user_id) VALUES(%s) RETURNING id'''
                 cursor.execute(CREATE_CART, (user_id,))
                 row = cursor.fetchone()
             cart_id = row[0]
@@ -147,8 +148,8 @@ class Carts(Resource):
             if not row:
                 app.logger.debug("cart_id not found!")
                 abort(400, 'Bad Request')
-            cart_id= row[0]
-            
+            cart_id = row[0]
+
             UPDATE_QUANTITY = '''UPDATE cart_items SET quantity=%s, updated_at= %s 
             WHERE cart_id= %s AND product_item_id= %s'''
 
