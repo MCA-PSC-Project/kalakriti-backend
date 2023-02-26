@@ -8,13 +8,15 @@
     "method": "POST",
     "sortNum": 10000,
     "created": "2023-02-20T16:38:51.028Z",
-    "modified": "2023-02-20T16:38:51.028Z",
+    "modified": "2023-02-26T08:09:02.467Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n\t\"email\": \"mywebnewslettersinbox123@gmail.com\",\n\t\"password\": \"abcd@123\",\n\t\"first_name\": \"bittu\",\n\t\"last_name\": \"kumar\",\n\t\"phone\": \"2222222222223\",\n\t\"dob\": \"10/3/1998\",\n\t\"gender\": \"male\"\n}"
+      "raw": "{\n\t\"email\": \"new_user123@gmail.com\",\n\t\"password\": \"abcd@123\",\n\t\"first_name\": \"bittu\",\n\t\"last_name\": \"kumar\",\n\t\"phone\": \"2222223\",\n\t\"dob\": \"10/3/1998\",\n\t\"gender\": \"male\"\n}",
+      "form": []
     },
+    "tests": [],
     "docs": "```json\n{\n\t\"email\": \"updated_admin@gmail.com\",\n\t\"password\": \"abcd@123\",\n\t\"user_type\" : \"customer\",\n\t\"first_name\": \"abcdddl\",\n\t\"last_name\": \"kumari\",\n\t\"phone\": \"987467887\",\n\t\"dob\": \"10/3/1998\",\n\t\"gender\": \"female\"\n}\n```"
   },
   {
@@ -60,19 +62,20 @@
     "colId": "80d178ef-5176-474a-8708-db78bd45faee",
     "containerId": "20dae99d-610b-4865-98e2-da1b674f86e0",
     "name": "verify email",
-    "url": "{{baseUrl}}/auth/verify-email",
+    "url": "{{baseUrl}}/auth/verify-email?token=Im5ld191c2VyMTIzQGdtYWlsLmNvbSI.Y_sTsA.NnhhlqcG2UZd_Sm3WEpnAVQ9olA",
     "method": "GET",
     "sortNum": 40000,
     "created": "2023-02-20T16:38:51.031Z",
-    "modified": "2023-02-20T16:38:51.031Z",
+    "modified": "2023-02-26T08:09:42.610Z",
     "headers": [],
     "params": [
       {
         "name": "token",
-        "value": "Im15d2VibmV3c2xldHRlcnNpbmJveDEyM0BnbWFpbC5jb20i.Y-5fgQ.Lk4YM4O0xiCwKDVJjpJQZ5QrOuo"
+        "value": "Im5ld191c2VyMTIzQGdtYWlsLmNvbSI.Y_sTsA.NnhhlqcG2UZd_Sm3WEpnAVQ9olA",
+        "isPath": false
       }
     ],
-    "docs": ""
+    "tests": []
   },
   {
     "_id": "605695b6-3a06-4729-868c-821e38a61d04",
@@ -651,63 +654,59 @@
     "colId": "80d178ef-5176-474a-8708-db78bd45faee",
     "containerId": "6bd7e1f1-03c2-44e9-a246-827e2d8f4f7f",
     "name": "Add item to cart",
-    "url": "{{baseUrl}}/cart",
+    "url": "{{baseUrl}}/carts",
     "method": "POST",
     "sortNum": 320000,
     "created": "2023-02-20T16:38:51.059Z",
-    "modified": "2023-02-20T16:38:51.059Z",
+    "modified": "2023-02-26T09:13:18.902Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n\t\"product_id\":10\n}"
+      "raw": "{\n\t\"product_item_id\":10,\n\t\"quantity\":2\n}",
+      "form": []
     },
     "auth": {
       "type": "bearer",
-      "bearer": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2NDQwNjc4ODksImlkIjoyNywidXNlcl90eXBlIjoibGVhcm5lciJ9.qhrF8uOmm-RoomQNlKzdHRSJQGM-k9Em38Y0tKLxwik"
+      "bearer": "{{token}}"
     },
-    "docs": ""
+    "tests": []
   },
   {
     "_id": "0a7c1014-469a-4b26-a9d5-822945db7fe5",
     "colId": "80d178ef-5176-474a-8708-db78bd45faee",
     "containerId": "6bd7e1f1-03c2-44e9-a246-827e2d8f4f7f",
     "name": "Get cart items",
-    "url": "{{baseUrl}}/cart",
+    "url": "{{baseUrl}}/carts",
     "method": "GET",
     "sortNum": 330000,
     "created": "2023-02-20T16:38:51.060Z",
-    "modified": "2023-02-20T16:38:51.060Z",
+    "modified": "2023-02-26T08:58:40.369Z",
     "headers": [],
-    "params": [
-      {
-        "name": "user_id",
-        "value": "1"
-      }
-    ],
+    "params": [],
     "auth": {
       "type": "bearer",
-      "bearer": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2NDQwNzA1MjgsImlkIjoyNywidXNlcl90eXBlIjoibGVhcm5lciJ9.rBjB3MLC0Ezx-nUBAcfpd4iLPSXiJ58aOFi72FZ6Daw"
+      "bearer": "{{token}}"
     },
-    "docs": ""
+    "tests": []
   },
   {
     "_id": "dabf0c34-41f0-40ac-b448-38fe13f94c1d",
     "colId": "80d178ef-5176-474a-8708-db78bd45faee",
     "containerId": "6bd7e1f1-03c2-44e9-a246-827e2d8f4f7f",
     "name": "Delete item from cart",
-    "url": "{{baseUrl}}/cart/10",
+    "url": "{{baseUrl}}/carts/10",
     "method": "DELETE",
     "sortNum": 340000,
     "created": "2023-02-20T16:38:51.061Z",
-    "modified": "2023-02-20T16:38:51.061Z",
+    "modified": "2023-02-26T09:14:47.403Z",
     "headers": [],
     "params": [],
     "auth": {
       "type": "bearer",
-      "bearer": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2NDQwNjc4ODksImlkIjoyNywidXNlcl90eXBlIjoibGVhcm5lciJ9.qhrF8uOmm-RoomQNlKzdHRSJQGM-k9Em38Y0tKLxwik"
+      "bearer": "{{token}}"
     },
-    "docs": ""
+    "tests": []
   },
   {
     "_id": "661d4e99-241b-444c-910b-a51bc6e59254",

@@ -159,7 +159,7 @@ CREATE TABLE "wishlists"(
 );
 CREATE TABLE "carts"(
 	"id" SERIAL PRIMARY KEY,
-	"user_id" INT NOT NULL,
+	"user_id" INT NOT NULL UNIQUE,
 	FOREIGN KEY("user_id") REFERENCES "users"("id") ON DELETE CASCADE
 );
 CREATE TABLE "cart_items"(
@@ -311,6 +311,18 @@ $$ LANGUAGE plpgsql;
 CREATE TRIGGER "insert_update_tsv_trigger" AFTER INSERT OR UPDATE  
 ON products 
 FOR EACH ROW EXECUTE PROCEDURE products_tsv_trigger(); 
+
+
+CREATE OR REPLACE FUNCTION user_to_cart_trigger() RETURNS trigger AS $$  
+BEGIN  
+      INSERT INTO "carts" (user_id) 
+      VALUES (new.id);
+	  RETURN NEW;
+END
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER "insert_into_carts" AFTER INSERT ON users 
+FOR EACH ROW EXECUTE PROCEDURE user_to_cart_trigger();
 
 CREATE INDEX "tsv_index" ON "products_tsv_store" USING GIN ("tsv");
 

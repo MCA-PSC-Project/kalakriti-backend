@@ -46,7 +46,8 @@ class Wishlists(Resource):
 
         wishlists_list = []
 
-        GET_WISHLISTS = '''SELECT product_id ,product_variant_name ,"SKU" ,original_price, offer_price 
+        GET_WISHLISTS = '''SELECT product_id ,(SELECT product_name FROM products WHERE id = product_items.product_id),
+        product_variant_name ,"SKU" ,original_price, offer_price 
         FROM product_items 
         WHERE id IN
         (SELECT product_item_id FROM wishlists WHERE user_id =%s )'''
@@ -63,13 +64,14 @@ class Wishlists(Resource):
             for row in rows:
                 wishlists_dict = {}
                 wishlists_dict['product_id'] = row[0]
-                wishlists_dict['product_variant_name'] = row[1]
-                wishlists_dict['SKU'] = row[2]
+                wishlists_dict['product_name'] = row[1]
+                wishlists_dict['product_variant_name'] = row[2]
+                wishlists_dict['SKU'] = row[3]
                 
                 wishlists_dict.update(json.loads(
-                    json.dumps({'original_price': row[3]}, default=str)))
+                    json.dumps({'original_price': row[4]}, default=str)))
                 wishlists_dict.update(json.loads(
-                    json.dumps({'offer_price': row[4]}, default=str)))
+                    json.dumps({'offer_price': row[5]}, default=str)))
                 
                 wishlists_list.append(wishlists_dict)
         except (Exception, psycopg2.Error) as err:
