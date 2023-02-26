@@ -811,5 +811,23 @@
     "headers": [],
     "params": [],
     "tests": []
+  },
+  {
+    "_id": "9771a693-81d4-4d90-8ec9-d4b0120a4a73",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/carts",
+    "url": "{{baseUrl}}/carts",
+    "method": "GET",
+    "sortNum": 0,
+    "created": "2023-02-26T11:35:34.149Z",
+    "modified": "2023-02-26T11:35:34.149Z",
+    "headers": [],
+    "params": [],
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{token}}"
+    },
+    "tests": []
   }
 ]
