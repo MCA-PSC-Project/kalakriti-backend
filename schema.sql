@@ -253,6 +253,17 @@ CREATE TABLE "seller_applicant_forms"(
 	"description" VARCHAR,
 	"path" VARCHAR DEFAULT ''
 );
+CREATE TABLE "bank_details"(
+  "user_id" integer, 
+  "account_holder_name" varchar NOT NULL, 
+  "account_no" varchar NOT NULL, 
+  "IFSC" varchar NOT NULL, 
+  "account_type" varchar NOT NULL DEFAULT '',
+  "PAN" varchar,
+  PRIMARY KEY("user_id"),
+  FOREIGN KEY ("user_id") REFERENCES "users" ("id") ON DELETE SET NULL
+);
+
 CREATE TABLE "mobile_otp"(
 	"mobile_no" VARCHAR(15) PRIMARY KEY,
 	"otp" VARCHAR(6) NOT NULL,
