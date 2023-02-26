@@ -26,13 +26,17 @@ class Carts(Resource):
             # declare a cursor object from the connection
             cursor = app_globals.get_cursor()
             # # app.logger.debug("cursor object: %s", cursor)
-            GET_CART_ID = '''SELECT id from carts WHERE user_id = %s '''
+            GET_CART_ID = '''SELECT id from carts WHERE user_id = %s'''
             cursor.execute(
                 GET_CART_ID, (user_id,))
             row = cursor.fetchone()
             if not row:
                 app.logger.debug("cart_id not found!")
-                app_globals.db_conn.rollback()
+                # app_globals.db_conn.rollback()
+                # if there is no cart for the user_id
+                CREATE_CART='''INSERT INTO carts(user_id) RETURNING id'''
+                cursor.execute(CREATE_CART, (user_id,))
+                row = cursor.fetchone()
             cart_id = row[0]
 
             current_time = datetime.now()
@@ -64,7 +68,7 @@ class Carts(Resource):
 
         GET_ITEMS_IN_CART = '''SELECT product_item_id, quantity FROM cart_items 
         WHERE cart_id = (SELECT id FROM carts WHERE user_id =%s)'''
-        app_globals.db_conn.autocommit = False
+
         # catch exception for invalid SQL statement
         try:
             # declare a cursor object from the connection
@@ -97,9 +101,7 @@ class Carts(Resource):
             abort(400, 'Bad Request')
         finally:
             cursor.close()
-        app_globals.db_conn.commit()
-        app_globals.db_conn.autocommit = True
-        # app.logger.debug(banner_dict)
+        # app.logger.debug(carts_list)
         return carts_list
 
     @ f_jwt.jwt_required()
