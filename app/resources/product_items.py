@@ -53,6 +53,44 @@ class ProductItems(Resource):
             product_item_dict['variant'] = row[9]
             product_item_dict['variant_value'] = row[10]
 
+            # GET_MEDIAS='''SELECT m.id, m.name, m.path, pim.display_order
+            # FROM media m WHERE m.id IN
+            # (SELECT pim.media_id, pim.display_order FROM product_item_medias pim
+            # WHERE pim.product_item_id= %s)
+            # '''
+
+            GET_MEDIAS = '''SELECT m.id, m.name, m.path, pim.display_order, pim.media_id
+            FROM product_item_medias pim 
+            JOIN LATERAL
+            (SELECT m.id, m.name, m.path 
+            FROM media m 
+            WHERE m.id = pim.media_id
+            ) AS m ON TRUE
+            WHERE pim.product_item_id= %s
+            ORDER BY pim.display_order'''
+
+            media_list = []
+            cursor.execute(GET_MEDIAS, (product_item_id,))
+            rows = cursor.fetchall()
+            if not rows:
+                # app.logger.debug("No media rows")
+                pass
+            for row in rows:
+                media_dict = {}
+                media_dict['id'] = row[0]
+                media_dict['name'] = row[1]
+                # media_dict['path'] = row[2]
+                path = row[2]
+                if path is not None:
+                    media_dict['path'] = "{}/{}".format(
+                        app.config["S3_LOCATION"], row[2])
+                else:
+                    media_dict['path'] = None
+                media_dict['pim_display_order'] = row[3]
+                media_dict['pim_media_id'] = row[4]
+                media_list.append(media_dict)
+            product_item_dict.update({"medias": media_list})
+
         except (Exception, psycopg2.Error) as err:
             app.logger.debug(err)
             abort(400, 'Bad Request')
@@ -119,6 +157,19 @@ class SellersProductItems(Resource):
                            (product_item_id, variant_value_id,))
             # product_item_value_id = cursor.fetchone()[0]
 
+            INSERT_MEDIAS = '''INSERT INTO product_item_medias(media_id, product_item_id, display_order)
+            VALUES(%s, %s, %s)'''
+
+            media_id_list = product_item_dict.get("media_ids")
+            values_tuple_list = []
+            for media_id_dict in media_id_list:
+                values_tuple = (media_id_dict.get(
+                    "media_id"), product_item_id, media_id_dict.get("display_order"))
+                values_tuple_list.append(values_tuple)
+            app.logger.debug("values_tuple_list= %s", values_tuple_list)
+
+            psycopg2.extras.execute_batch(
+                cursor, INSERT_MEDIAS, values_tuple_list)
         except (Exception, psycopg2.Error) as err:
             app.logger.debug(err)
             app_globals.db_conn.rollback()

@@ -91,6 +91,8 @@ CREATE TABLE "products"(
 	"seller_user_id" INT NOT NULL,
 	"currency" varchar(5) DEFAULT 'INR',
 	"product_status" product__status DEFAULT ('draft'),
+	"min_order_quantity" INT NOT NULL DEFAULT 1,
+	"max_order_quantity" INT NOT NULL,
 	"tags" text [],
 	"added_at" TIMESTAMPTZ NOT NULL,
 	"updated_at" TIMESTAMPTZ DEFAULT NULL,
@@ -139,12 +141,13 @@ CREATE TABLE "product_item_values"(
 	FOREIGN KEY("product_item_id") REFERENCES "product_items"("id") ON DELETE CASCADE,
 	FOREIGN KEY("variant_value_id") REFERENCES "variant_values"("id") ON DELETE CASCADE
 );
-CREATE TABLE "product_medias"(
+CREATE TABLE "product_item_medias"(
 	-- "id" SERIAL PRIMARY KEY,
 	"media_id" INT NOT NULL,
 	"product_item_id" INT NOT NULL,
 	"display_order" SMALLINT NOT NULL,
 	PRIMARY KEY("media_id", "product_item_id"),
+	UNIQUE("product_item_id", "display_order"),
 	FOREIGN KEY("media_id") REFERENCES "media"("id") ON DELETE
 	SET NULL,
 		FOREIGN KEY("product_item_id") REFERENCES "product_items"("id") ON DELETE CASCADE
