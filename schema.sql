@@ -41,16 +41,16 @@ CREATE TABLE "users"(
 	"last_name" VARCHAR NOT NULL,
 	"user_type" user__type NOT NULL DEFAULT 'customer',
 	"email" VARCHAR NOT NULL UNIQUE,
-	"phone" VARCHAR(15) UNIQUE DEFAULT NULL,
+	"phone" VARCHAR(15) UNIQUE,
 	"password" VARCHAR NOT NULL,
 	"dob" date NOT NULL,
 	"gender" gender__type NOT NULL,
 	"added_at" TIMESTAMPTZ NOT NULL,
-	"updated_at" TIMESTAMPTZ DEFAULT NULL,
-	"dp_id" INT DEFAULT NULL,
+	"updated_at" TIMESTAMPTZ,
+	"dp_id" INT,
 	"trash" boolean NOT NULL DEFAULT FALSE,
 	"is_verified" boolean NOT NULL DEFAULT FALSE,
-	"verified_at" TIMESTAMPTZ DEFAULT NULL,
+	"verified_at" TIMESTAMPTZ,
 	"enabled" BOOLEAN DEFAULT TRUE,
 	FOREIGN KEY("dp_id") REFERENCES "media"("id") ON DELETE
 	SET NULL
@@ -65,17 +65,17 @@ CREATE TABLE "user_address"(
 	"country" VARCHAR NOT NULL,
 	"pincode" VARCHAR NOT NULL,
 	"added_at" TIMESTAMPTZ NOT NULL,
-	"updated_at" TIMESTAMPTZ DEFAULT NULL,
+	"updated_at" TIMESTAMPTZ,
 	FOREIGN KEY("user_id") REFERENCES "users"("id") ON DELETE CASCADE
 );
 CREATE TABLE "categories"(
 	"id" SERIAL PRIMARY KEY,
 	"name" VARCHAR NOT NULL UNIQUE,
 	"added_at" TIMESTAMPTZ NOT NULL,
-	"updated_at" TIMESTAMPTZ DEFAULT NULL,
+	"updated_at" TIMESTAMPTZ,
 	"added_by" INT,
 	"cover_id" INT,
-	"parent_id" INT DEFAULT NULL,
+	"parent_id" INT,
 	FOREIGN KEY("added_by") REFERENCES "users"("id") ON DELETE
 	SET NULL,
 		FOREIGN KEY("parent_id") REFERENCES "categories"("id") ON DELETE CASCADE,
@@ -95,7 +95,7 @@ CREATE TABLE "products"(
 	"max_order_quantity" INT NOT NULL,
 	"tags" text [],
 	"added_at" TIMESTAMPTZ NOT NULL,
-	"updated_at" TIMESTAMPTZ DEFAULT NULL,
+	"updated_at" TIMESTAMPTZ,
 	"trashed" BOOLEAN DEFAULT FALSE,
 	FOREIGN KEY("category_id") REFERENCES "categories"("id") ON DELETE
 	SET NULL,
@@ -122,7 +122,7 @@ CREATE TABLE "product_items"(
 	"offer_price" NUMERIC NOT NULL,
 	"quantity_in_stock" INT NOT NULL,
 	"added_at" TIMESTAMPTZ NOT NULL,
-	"updated_at" TIMESTAMPTZ DEFAULT NULL,
+	"updated_at" TIMESTAMPTZ,
 	"product_item_status" product__status DEFAULT ('draft'),
 	"trashed" BOOLEAN DEFAULT FALSE,
 	-- "is_base" BOOLEAN NOT NULL DEFAULT TRUE,
@@ -168,9 +168,9 @@ CREATE TABLE "carts"(
 CREATE TABLE "cart_items"(
 	"cart_id" INT NOT NULL,
 	"product_item_id" INT NOT NULL,
-	"quantity" INT DEFAULT 1,
+	"quantity" INT NOT NULL DEFAULT 1,
 	"added_at" TIMESTAMPTZ NOT NULL,
-	"updated_at" TIMESTAMPTZ DEFAULT NULL,
+	"updated_at" TIMESTAMPTZ,
 	PRIMARY KEY("cart_id", "product_item_id"),
 	FOREIGN KEY("cart_id") REFERENCES "carts"("id") ON DELETE CASCADE,
 	FOREIGN KEY("product_item_id") REFERENCES "product_items"("id") ON DELETE CASCADE
@@ -185,27 +185,27 @@ CREATE TABLE "banners"(
 CREATE TABLE "orders"(
 	"id" SERIAL PRIMARY KEY,
 	"user_id" INT,
-	"address" VARCHAR NOT NULL,
+	"shipping_address" VARCHAR NOT NULL,
 	"city" VARCHAR NOT NULL,
 	"state" VARCHAR NOT NULL,
 	"district" VARCHAR NOT NULL,
 	"country" VARCHAR NOT NULL,
 	"pincode" VARCHAR NOT NULL,
 	"phone" VARCHAR NOT NULL,
-	"ordered_at" TIMESTAMPTZ NOT NULL,
 	"order_status" order__status,
-	"updated_at" TIMESTAMPTZ DEFAULT NULL,
+	"ordered_at" TIMESTAMPTZ NOT NULL,
 	"sub_total" NUMERIC NOT NULL,
 	"discount" NUMERIC NOT NULL DEFAULT 0,
 	"tax" NUMERIC NOT NULL DEFAULT 0,
 	"grand_total" NUMERIC NOT NULL,
+	"updated_at" TIMESTAMPTZ,
 	FOREIGN KEY("user_id") REFERENCES "users"("id") ON DELETE
 	SET NULL
 );
 CREATE TABLE "order_items"(
 	"order_id" INT,
 	"product_item_id" INT,
-	"quantity" NUMERIC DEFAULT 1,
+	"quantity" INT NOT NULL,
 	"original_price" NUMERIC NOT NULL,
 	"offer_price" NUMERIC NOT NULL,
 	"discount" NUMERIC NOT NULL,
@@ -248,7 +248,7 @@ CREATE TABLE "seller_applicant_forms"(
 	"mobile_no" VARCHAR NOT NULL,
 	"reviewed" BOOLEAN DEFAULT FALSE,
 	"added_at" TIMESTAMPTZ NOT NULL,
-	"updated_at" TIMESTAMPTZ DEFAULT NULL,
+	"updated_at" TIMESTAMPTZ,
 	"approval_status" approval__status DEFAULT 'pending',
 	"description" VARCHAR,
 	"path" VARCHAR DEFAULT ''
