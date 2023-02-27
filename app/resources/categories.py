@@ -46,8 +46,8 @@ class Categories(Resource):
 
     def get(self):
         categories_list = []
-        GET_CATEGORY = '''SELECT c.id, c.name, c.parent_id,
-        m.id, m.name, m.path
+        GET_CATEGORY = '''SELECT c.id AS category_id, c.name AS category_name, c.parent_id,
+        m.id AS media_id, m.name AS media_name, m.path
 		FROM categories c LEFT JOIN media m ON m.id= cover_id
 		WHERE c.parent_id IS NULL
 		ORDER BY c.id DESC'''
@@ -56,7 +56,7 @@ class Categories(Resource):
         try:
             # declare a cursor object from the connection
             # cursor = app_globals.get_cursor()
-            cursor = app_globals.get_cursor()
+            cursor = app_globals.get_named_tuple_cursor()
             # app.logger.debug("cursor object: %s", cursor)
 
             cursor.execute(GET_CATEGORY)
@@ -66,16 +66,17 @@ class Categories(Resource):
             for row in rows:
                 category_dict = {}
                 cover_media_dict = {}
-                category_dict['id'] = row[0]
-                category_dict['name'] = row[1]
-                category_dict['parent_id'] = row[2]
-                cover_media_dict['id'] = row[3]
-                cover_media_dict['name'] = row[4]
-                # media_dict['path'] = row[5]
-                path = row[5]
+                category_dict['id'] = row.category_id
+                category_dict['name'] = row.category_name
+                category_dict['parent_id'] = row.parent_id
+
+                cover_media_dict['id'] = row.media_id
+                cover_media_dict['name'] = row.media_name
+                # media_dict['path'] = row.path
+                path = row.path
                 if path is not None:
                     cover_media_dict['path'] = "{}/{}".format(
-                        app.config["S3_LOCATION"], row[5])
+                        app.config["S3_LOCATION"], path)
                 else:
                     cover_media_dict['path'] = None
                 category_dict.update({"cover": cover_media_dict})
@@ -83,8 +84,8 @@ class Categories(Resource):
 
             for i in range(0, len(categories_list)):
                 subcategories_list = []
-                GET_SUBCATEGORIES = '''SELECT c.id, c.name,c.parent_id,
-                m.id, m.name, m.path
+                GET_SUBCATEGORIES = '''SELECT c.id AS category_id, c.name AS category_name, c.parent_id,
+                m.id AS media_id, m.name AS media_name, m.path
                 FROM categories c LEFT JOIN media m on c.cover_id = m.id
                 WHERE c.parent_id = %s ORDER BY c.id'''
 
@@ -101,16 +102,17 @@ class Categories(Resource):
                     for row in rows:
                         subcategory_dict = {}
                         cover_media_dict = {}
-                        subcategory_dict['id'] = row[0]
-                        subcategory_dict['name'] = row[1]
-                        subcategory_dict['parent_id'] = row[2]
-                        cover_media_dict['id'] = row[3]
-                        cover_media_dict['name'] = row[4]
-                        # media_dict['path'] = row[5]
-                        path = row[5]
+                        subcategory_dict['id'] = row.category_id
+                        subcategory_dict['name'] = row.category_name
+                        subcategory_dict['parent_id'] = row.parent_id
+
+                        cover_media_dict['id'] = row.media_id
+                        cover_media_dict['name'] = row.media_name
+                        # media_dict['path'] = row.path
+                        path = row.path
                         if path is not None:
                             cover_media_dict['path'] = "{}/{}".format(
-                                app.config["S3_LOCATION"], row[5])
+                                app.config["S3_LOCATION"], path)
                         else:
                             cover_media_dict['path'] = None
                         subcategory_dict.update({"cover": cover_media_dict})
