@@ -985,5 +985,83 @@
     "headers": [],
     "params": [],
     "tests": []
+  },
+  {
+    "_id": "61465a52-327a-40d4-a713-2ca9e16ac961",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/sellers-form",
+    "url": "{{baseUrl}}/sellers-form",
+    "method": "POST",
+    "sortNum": 0,
+    "created": "2023-02-27T17:37:04.768Z",
+    "modified": "2023-02-27T17:40:41.775Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n \"name\" : \"apply_for_seller\",\n \"email\" : \"apply@seller3.com\",\n \"phone\" : \"98765438880\",\n \"description\" : \"want to sell saree\"\n}",
+      "form": []
+    },
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{token}}"
+    },
+    "tests": []
+  },
+  {
+    "_id": "59acc520-7abc-4b9b-b60d-98cd3dee30b6",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/sellers-form",
+    "url": "{{baseUrl}}/sellers-form",
+    "method": "GET",
+    "sortNum": 0,
+    "created": "2023-02-27T17:37:10.274Z",
+    "modified": "2023-02-27T17:37:10.274Z",
+    "headers": [],
+    "params": [],
+    "tests": []
+  },
+  {
+    "_id": "0203237a-ece7-4eea-a0a6-deeb88c066b1",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/sellers-form/1",
+    "url": "{{baseUrl}}/sellers-form/1",
+    "method": "PUT",
+    "sortNum": 0,
+    "created": "2023-02-27T17:37:21.540Z",
+    "modified": "2023-02-27T17:37:21.540Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n \"name\" : \"updated_seller\",\n \"email\" : \"apply@seller2.com\",\n \"phone\" : \"98765438880\",\n \"description\" : \"want to sell saree\"\n}",
+      "form": []
+    },
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{token}}"
+    },
+    "tests": []
+  },
+  {
+    "_id": "eb4eb376-0558-4f14-ba84-14b06b3232a2",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/sellers-form/1",
+    "url": "{{baseUrl}}/sellers-form/1",
+    "method": "DELETE",
+    "sortNum": 0,
+    "created": "2023-02-27T17:37:33.470Z",
+    "modified": "2023-02-27T17:37:33.470Z",
+    "headers": [],
+    "params": [],
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{token}}"
+    },
+    "tests": []
   }
 ]

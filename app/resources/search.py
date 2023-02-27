@@ -23,7 +23,7 @@ class Search(Resource):
 
         query = query.replace(" ", " or ")
 
-        GET_PRODUCTS = '''SELECT p.id, p.product_name
+        GET_PRODUCTS = '''SELECT p.id AS product_id, p.product_name
         FROM products p
         WHERE p.id IN (
             SELECT product_id FROM products_tsv_store 
@@ -34,7 +34,7 @@ class Search(Resource):
         # catch exception for invalid SQL statement
         try:
             # declare a cursor object from the connection
-            cursor = app_globals.get_cursor()
+            cursor = app_globals.get_named_tuple_cursor()
             # # app.logger.debug("cursor object: %s", cursor)
 
             cursor.execute(GET_PRODUCTS, (query,))
@@ -43,10 +43,8 @@ class Search(Resource):
                 return {}
             for row in rows:
                 product_dict = {}
-
-                product_dict['id'] = row[0]
-                product_dict['product_name'] = row[1]
-
+                product_dict['id'] = row.product_id
+                product_dict['product_name'] = row.product_name
                 products_list.append(product_dict)
         except (Exception, psycopg2.Error) as err:
             app.logger.debug(err)
@@ -65,7 +63,7 @@ class TopSearches(Resource):
         # catch exception for invalid SQL statement
         try:
             # declare a cursor object from the connection
-            cursor = app_globals.get_cursor()
+            cursor = app_globals.get_named_tuple_cursor()
             # # app.logger.debug("cursor object: %s", cursor)
 
             cursor.execute(GET_PRODUCTS)
@@ -73,7 +71,7 @@ class TopSearches(Resource):
             if not rows:
                 return {}
             for row in rows:
-                query = row[0]
+                query = row.query
                 queries_list.append(query)
         except (Exception, psycopg2.Error) as err:
             app.logger.debug(err)

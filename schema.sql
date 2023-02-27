@@ -247,13 +247,13 @@ CREATE TABLE "payments"(
 CREATE TABLE "seller_applicant_forms"(
 	"id" SERIAL PRIMARY KEY,
 	"name" VARCHAR NOT NULL,
-	"email" VARCHAR NOT NULL,
-	"mobile_no" VARCHAR NOT NULL,
+	"email" VARCHAR NOT NULL UNIQUE,
+	"phone" VARCHAR NOT NULL UNIQUE,
 	"reviewed" BOOLEAN DEFAULT FALSE,
-	"added_at" TIMESTAMPTZ NOT NULL,
-	"updated_at" TIMESTAMPTZ,
 	"approval_status" approval__status DEFAULT 'pending',
 	"description" VARCHAR,
+	"added_at" TIMESTAMPTZ NOT NULL,
+	"updated_at" TIMESTAMPTZ,
 	"path" VARCHAR DEFAULT ''
 );
 CREATE TABLE "bank_details"(

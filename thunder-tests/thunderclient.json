@@ -1635,12 +1635,12 @@
     "method": "POST",
     "sortNum": 850000,
     "created": "2023-02-22T07:21:17.396Z",
-    "modified": "2023-02-22T08:16:24.281Z",
+    "modified": "2023-02-27T17:40:41.764Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n \"name\" : \"apply_for_seller2\",\n \"email\" : \"apply@seller2.com\",\n \"mobile_no\" : \"98765438880\",\n \"description\" : \"want to sell saree\"\n}",
+      "raw": "{\n \"name\" : \"apply_for_seller\",\n \"email\" : \"apply@seller3.com\",\n \"phone\" : \"98765438880\",\n \"description\" : \"want to sell saree\"\n}",
       "form": []
     },
     "auth": {
@@ -1672,12 +1672,12 @@
     "method": "PUT",
     "sortNum": 870000,
     "created": "2023-02-22T07:22:40.579Z",
-    "modified": "2023-02-22T08:23:40.028Z",
+    "modified": "2023-02-27T17:37:21.734Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n \"name\" : \"updated_seller\",\n \"email\" : \"apply@seller2.com\",\n \"mobile_no\" : \"98765438880\",\n \"description\" : \"want to sell saree\"\n}",
+      "raw": "{\n \"name\" : \"updated_seller\",\n \"email\" : \"apply@seller2.com\",\n \"phone\" : \"98765438880\",\n \"description\" : \"want to sell saree\"\n}",
       "form": []
     },
     "auth": {
@@ -1691,11 +1691,11 @@
     "colId": "80d178ef-5176-474a-8708-db78bd45faee",
     "containerId": "6fd7e743-cc8b-4d37-bb40-e47d132e9276",
     "name": "Delete Seller Applicant Form",
-    "url": "{{baseUrl}}/sellers-form/6",
+    "url": "{{baseUrl}}/sellers-form/1",
     "method": "DELETE",
     "sortNum": 900000,
     "created": "2023-02-22T07:24:41.782Z",
-    "modified": "2023-02-22T08:29:53.433Z",
+    "modified": "2023-02-27T17:37:33.605Z",
     "headers": [],
     "params": [],
     "auth": {
