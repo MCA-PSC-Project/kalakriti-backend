@@ -14,15 +14,15 @@ class Products(Resource):
         # catch exception for invalid SQL statement
         try:
             # declare a cursor object from the connection
-            cursor = app_globals.get_cursor()
+            cursor = app_globals.get_named_tuple_cursor()
             # # app.logger.debug("cursor object: %s", cursor)
-            GET_PRODUCT = '''SELECT p.id, p.product_name, p.product_description, 
-            ct.id, ct.name,
-            sct.id, sct.name, sct.parent_id, 
+            GET_PRODUCT = '''SELECT p.id AS product_id, p.product_name, p.product_description, 
+            ct.id AS category_id, ct.name AS category_name,
+            sct.id AS subcategory_id, sct.name AS subcategory_name, sct.parent_id, 
             p.currency, p.product_status, p.min_order_quantity, p.max_order_quantity,
             p.added_at, p.updated_at, 
-            u.id, u.first_name, u.last_name, u.email,
-            pbi.product_item_id
+            u.id AS seller_user_id, u.first_name, u.last_name, u.email,
+            pbi.product_item_id AS base_product_item_id
             FROM products p 
             JOIN categories ct ON p.category_id = ct.id
             LEFT JOIN categories sct ON p.subcategory_id = sct.id
@@ -34,42 +34,42 @@ class Products(Resource):
             row = cursor.fetchone()
             if row is None:
                 abort(400, 'Bad Request')
-            product_dict['id'] = row[0]
-            product_dict['product_name'] = row[1]
-            product_dict['product_description'] = row[2]
+            product_dict['id'] = row.product_id
+            product_dict['product_name'] = row.product_name
+            product_dict['product_description'] = row.product_description
 
             category_dict = {}
-            category_dict['id'] = row[3]
-            category_dict['name'] = row[4]
+            category_dict['id'] = row.category_id
+            category_dict['name'] = row.category_name
             product_dict.update({"category": category_dict})
 
             subcategory_dict = {}
-            subcategory_dict['id'] = row[5]
-            subcategory_dict['name'] = row[6]
-            subcategory_dict['parent_id'] = row[7]
+            subcategory_dict['id'] = row.subcategory_id
+            subcategory_dict['name'] = row.subcategory_name
+            subcategory_dict['parent_id'] = row.parent_id
             product_dict.update({"subcategory": subcategory_dict})
 
-            product_dict['currency'] = row[8]
-            product_dict['product_status'] = row[9]
-            product_dict['min_order_quantity'] = row[10]
-            product_dict['max_order_quantity'] = row[11]
+            product_dict['currency'] = row.currency
+            product_dict['product_status'] = row.product_status
+            product_dict['min_order_quantity'] = row.min_order_quantity
+            product_dict['max_order_quantity'] = row.max_order_quantity
 
             product_dict.update(json.loads(
-                json.dumps({'added_at': row[12]}, default=str)))
+                json.dumps({'added_at': row.added_at}, default=str)))
             product_dict.update(json.loads(
-                json.dumps({'updated_at': row[13]}, default=str)))
+                json.dumps({'updated_at': row.updated_at}, default=str)))
 
             seller_dict = {}
-            seller_dict['id'] = row[14]
-            seller_dict['first_name'] = row[15]
-            seller_dict['last_name'] = row[16]
-            seller_dict['email'] = row[17]
+            seller_dict['id'] = row.seller_user_id
+            seller_dict['first_name'] = row.first_name
+            seller_dict['last_name'] = row.last_name
+            seller_dict['email'] = row.email
             product_dict.update({"seller": seller_dict})
 
-            product_dict['base_product_item_id'] = row[18]
+            product_dict['base_product_item_id'] = row.base_product_item_id
 
             product_items_list = []
-            GET_PRODUCT_ITEMS = '''SELECT pi.id, pi.product_id, pi.product_variant_name, pi."SKU", 
+            GET_PRODUCT_ITEMS = '''SELECT pi.id AS product_item_id, pi.product_id, pi.product_variant_name, pi."SKU", 
             pi.original_price, pi.offer_price, pi.quantity_in_stock, pi.added_at, pi.updated_at,
             (SELECT v.variant AS variant FROM variants v WHERE v.id = 
             (SELECT vv.variant_id FROM variant_values vv WHERE vv.id = piv.variant_value_id)),
@@ -87,26 +87,26 @@ class Products(Resource):
                 return product_dict
             for row in rows:
                 product_item_dict = {}
-                product_item_dict['id'] = row[0]
-                product_item_dict['product_id'] = row[1]
-                product_item_dict['product_variant_name'] = row[2]
-                product_item_dict['SKU'] = row[3]
+                product_item_dict['id'] = row.product_item_id
+                product_item_dict['product_id'] = row.product_id
+                product_item_dict['product_variant_name'] = row.product_variant_name
+                product_item_dict['SKU'] = row.SKU
 
                 product_item_dict.update(json.loads(
-                    json.dumps({'original_price': row[4]}, default=str)))
+                    json.dumps({'original_price': row.original_price}, default=str)))
                 product_item_dict.update(json.loads(
-                    json.dumps({'offer_price': row[5]}, default=str)))
+                    json.dumps({'offer_price': row.offer_price}, default=str)))
 
-                product_item_dict['quantity_in_stock'] = row[6]
+                product_item_dict['quantity_in_stock'] = row.quantity_in_stock
                 product_item_dict.update(json.loads(
-                    json.dumps({'added_at': row[7]}, default=str)))
+                    json.dumps({'added_at': row.added_at}, default=str)))
                 product_item_dict.update(json.loads(
-                    json.dumps({'updated_at': row[8]}, default=str)))
+                    json.dumps({'updated_at': row.updated_at}, default=str)))
 
-                product_item_dict['variant'] = row[9]
-                product_item_dict['variant_value'] = row[10]
+                product_item_dict['variant'] = row.variant
+                product_item_dict['variant_value'] = row.variant_value
 
-                GET_MEDIAS = '''SELECT m.id, m.name, m.path, pim.display_order, pim.media_id
+                GET_MEDIAS = '''SELECT m.id AS media_id, m.name, m.path, pim.display_order, pim.media_id AS pim_media_id
                 FROM product_item_medias pim 
                 JOIN LATERAL
                 (SELECT m.id, m.name, m.path 
@@ -124,17 +124,17 @@ class Products(Resource):
                     pass
                 for row in rows:
                     media_dict = {}
-                    media_dict['id'] = row[0]
-                    media_dict['name'] = row[1]
+                    media_dict['id'] = row.media_id
+                    media_dict['name'] = row.name
                     # media_dict['path'] = row[2]
-                    path = row[2]
+                    path = row.path
                     if path is not None:
                         media_dict['path'] = "{}/{}".format(
-                            app.config["S3_LOCATION"], row[2])
+                            app.config["S3_LOCATION"], path)
                     else:
                         media_dict['path'] = None
-                    media_dict['pim_display_order'] = row[3]
-                    media_dict['pim_media_id'] = row[4]
+                    media_dict['display_order'] = row.display_order
+                    media_dict['pim_media_id'] = row.pim_media_id
                     media_list.append(media_dict)
                 product_item_dict.update({"medias": media_list})
 
