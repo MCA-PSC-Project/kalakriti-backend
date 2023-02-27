@@ -28,13 +28,13 @@ class GetSeller(Resource):
 
         GET_SELLERS_PROFILES = '''SELECT u.first_name, u.last_name, u.user_type, u.email, u.phone, 
         TO_CHAR(u.dob, 'YYYY-MM-DD'), u.gender , u.enabled,
-        m.id, m.name, m.path
+        m.id AS media_id, m.name AS media_name, m.path
         FROM users u LEFT JOIN media m on u.dp_id = m.id WHERE user_type= %s'''
 
         # catch exception for invalid SQL statement
         try:
             # declare a cursor object from the connection
-            cursor = app_globals.get_cursor()
+            cursor = app_globals.get_named_tuple_cursor()
             # # app.logger.debug("cursor object: %s", cursor)
 
             cursor.execute(GET_SELLERS_PROFILES, ('seller',))
@@ -43,23 +43,23 @@ class GetSeller(Resource):
                 return {}
             for row in rows:
                 seller_profile_dict = {}
-                seller_profile_dict['first_name'] = row[0]
-                seller_profile_dict['last_name'] = row[1]
-                seller_profile_dict['user_type'] = row[2]
-                seller_profile_dict['email'] = row[3]
-                seller_profile_dict['phone'] = row[4]
-                seller_profile_dict['dob'] = row[5]
-                seller_profile_dict['gender'] = row[6]
-                seller_profile_dict['enabled'] = row[7]
+                seller_profile_dict['first_name'] = row.first_name
+                seller_profile_dict['last_name'] = row.last_name
+                seller_profile_dict['user_type'] = row.user_type
+                seller_profile_dict['email'] = row.email
+                seller_profile_dict['phone'] = row.phone
+                seller_profile_dict['dob'] = row.dob
+                seller_profile_dict['gender'] = row.gender
+                seller_profile_dict['enabled'] = row.enabled
 
                 dp_media_dict = {}
-                dp_media_dict['id'] = row[8]
-                dp_media_dict['name'] = row[9]
-                # media_dict['path'] = row[10]
-                path = row[10]
+                dp_media_dict['id'] = row.media_id
+                dp_media_dict['name'] = row.media_name
+                # media_dict['path'] = row.path
+                path = row.path
                 if path is not None:
                     dp_media_dict['path'] = "{}/{}".format(
-                        app.config["S3_LOCATION"], row[10])
+                        app.config["S3_LOCATION"], path)
                 else:
                     dp_media_dict['path'] = None
                 seller_profile_dict.update({"dp": dp_media_dict})
@@ -89,13 +89,15 @@ class GetCustomer(Resource):
 
         GET_CUSTOMERS_PROFILES = '''SELECT u.first_name, u.last_name, u.user_type, u.email, u.phone, 
         TO_CHAR(u.dob, 'YYYY-MM-DD'), u.gender , u.enabled,
-        m.id, m.name, m.path
-        FROM users u LEFT JOIN media m on u.dp_id = m.id WHERE user_type= %s'''
+        m.id AS media_id, m.name AS media_name, m.path
+        FROM users u 
+        LEFT JOIN media m ON u.dp_id = m.id 
+        WHERE user_type= %s'''
 
         # catch exception for invalid SQL statement
         try:
             # declare a cursor object from the connection
-            cursor = app_globals.get_cursor()
+            cursor = app_globals.get_named_tuple_cursor()
             # # app.logger.debug("cursor object: %s", cursor)
 
             cursor.execute(GET_CUSTOMERS_PROFILES, ('customer',))
@@ -104,23 +106,23 @@ class GetCustomer(Resource):
                 return {}
             for row in rows:
                 customer_profile_dict = {}
-                customer_profile_dict['first_name'] = row[0]
-                customer_profile_dict['last_name'] = row[1]
-                customer_profile_dict['user_type'] = row[2]
-                customer_profile_dict['email'] = row[3]
-                customer_profile_dict['phone'] = row[4]
-                customer_profile_dict['dob'] = row[5]
-                customer_profile_dict['gender'] = row[6]
-                customer_profile_dict['enabled'] = row[7]
+                customer_profile_dict['first_name'] = row.first_name
+                customer_profile_dict['last_name'] = row.last_name
+                customer_profile_dict['user_type'] = row.user_type
+                customer_profile_dict['email'] = row.email
+                customer_profile_dict['phone'] = row.phone
+                customer_profile_dict['dob'] = row.dob
+                customer_profile_dict['gender'] = row.gender
+                customer_profile_dict['enabled'] = row.enabled
 
                 dp_media_dict = {}
-                dp_media_dict['id'] = row[8]
-                dp_media_dict['name'] = row[9]
-                # media_dict['path'] = row[10]
-                path = row[10]
+                dp_media_dict['id'] = row.media_id
+                dp_media_dict['name'] = row.media_name
+                # media_dict['path'] = row.path
+                path = row.path
                 if path is not None:
                     dp_media_dict['path'] = "{}/{}".format(
-                        app.config["S3_LOCATION"], row[10])
+                        app.config["S3_LOCATION"], path)
                 else:
                     dp_media_dict['path'] = None
                 customer_profile_dict.update({"dp": dp_media_dict})

@@ -28,12 +28,12 @@
     "method": "POST",
     "sortNum": 20000,
     "created": "2023-02-20T16:38:51.029Z",
-    "modified": "2023-02-24T13:27:12.267Z",
+    "modified": "2023-02-27T15:14:47.890Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n    \"email\": \"sheetal@gmail.com\",\n    \"password\": \"abcd@123\"\n}",
+      "raw": "{\n    \"email\": \"seller@gmail.com\",\n    \"password\": \"abcd@123\"\n}",
       "form": []
     },
     "tests": [],
