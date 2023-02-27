@@ -22,15 +22,17 @@ class GetAllAdmins(Resource):
 
         admin_list = []
 
-        GET_ADMINS_PROFILES = '''SELECT u.first_name, u.last_name, u.user_type, u.email, u.phone, 
-        TO_CHAR(u.dob, 'YYYY-MM-DD'), u.gender , u.enabled,
-        m.id, m.name, m.path
-        FROM users u LEFT JOIN media m on u.dp_id = m.id WHERE user_type= %s'''
+        GET_ADMINS_PROFILES = '''SELECT u.id AS user_id, u.first_name, u.last_name, u.user_type, u.email, u.phone, 
+        TO_CHAR(u.dob, 'YYYY-MM-DD') AS dob, u.gender , u.enabled,
+        m.id AS media_id, m.name AS media_name, m.path
+        FROM users u 
+        LEFT JOIN media m ON u.dp_id = m.id 
+        WHERE user_type= %s'''
 
         # catch exception for invalid SQL statement
         try:
             # declare a cursor object from the connection
-            cursor = app_globals.get_cursor()
+            cursor = app_globals.get_named_tuple_cursor()
             # # app.logger.debug("cursor object: %s", cursor)
 
             cursor.execute(GET_ADMINS_PROFILES, ('admin',))
@@ -39,23 +41,24 @@ class GetAllAdmins(Resource):
                 return {}
             for row in rows:
                 admin_profile_dict = {}
-                admin_profile_dict['first_name'] = row[0]
-                admin_profile_dict['last_name'] = row[1]
-                admin_profile_dict['user_type'] = row[2]
-                admin_profile_dict['email'] = row[3]
-                admin_profile_dict['phone'] = row[4]
-                admin_profile_dict['dob'] = row[5]
-                admin_profile_dict['gender'] = row[6]
-                admin_profile_dict['enabled'] = row[7]
+                admin_profile_dict['user_id'] = row.user_id
+                admin_profile_dict['first_name'] = row.first_name
+                admin_profile_dict['last_name'] = row.last_name
+                admin_profile_dict['user_type'] = row.user_type
+                admin_profile_dict['email'] = row.email
+                admin_profile_dict['phone'] = row.phone
+                admin_profile_dict['dob'] = row.dob
+                admin_profile_dict['gender'] = row.gender
+                admin_profile_dict['enabled'] = row.enabled
 
                 dp_media_dict = {}
-                dp_media_dict['id'] = row[8]
-                dp_media_dict['name'] = row[9]
-                # media_dict['path'] = row[10]
-                path = row[10]
+                dp_media_dict['id'] = row.media_id
+                dp_media_dict['name'] = row.media_name
+                # media_dict['path'] = row.path
+                path = row.path
                 if path is not None:
                     dp_media_dict['path'] = "{}/{}".format(
-                        app.config["S3_LOCATION"], row[10])
+                        app.config["S3_LOCATION"], path)
                 else:
                     dp_media_dict['path'] = None
                 admin_profile_dict.update({"dp": dp_media_dict})

@@ -64,7 +64,7 @@
       },
       {
         "name": "super_admin_token",
-        "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6dHJ1ZSwiaWF0IjoxNjc3MDU0MjI2LCJqdGkiOiIyZjlhNzU4Ni05MmIyLTRiNDQtODZmMi1lMjJiOWM0ZmZiYzAiLCJ0eXBlIjoiYWNjZXNzIiwic3ViIjo1LCJuYmYiOjE2NzcwNTQyMjYsImV4cCI6MTY3NzA1NzgyNiwidXNlcl90eXBlIjoic3VwZXJfYWRtaW4ifQ.9oPITusb71hg6oGXBfXaMaJXav1OEVKENefzHWZnrqs"
+        "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6dHJ1ZSwiaWF0IjoxNjc3NTIwMjA0LCJqdGkiOiJmMjg5MTlmMC05NjA0LTQ3N2UtYWE0NC1iZDllZWIxNTdmODYiLCJ0eXBlIjoiYWNjZXNzIiwic3ViIjo1LCJuYmYiOjE2Nzc1MjAyMDQsImV4cCI6MTY3NzUzMTAwNCwidXNlcl90eXBlIjoic3VwZXJfYWRtaW4ifQ.9B1kjRR0BtVcRSVwyjNPCzAqyE6l_cbkRxxzou6H93A"
       }
     ]
   }
