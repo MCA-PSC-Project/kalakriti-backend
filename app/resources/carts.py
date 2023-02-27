@@ -69,9 +69,9 @@ class Carts(Resource):
 
         carts_list = []
 
-        GET_ITEMS_IN_CART = '''SELECT ci.cart_id, ci.product_item_id, ci.quantity, 
-        p.id, p.product_name, p.currency, p.min_order_quantity, p.max_order_quantity,
-        pi.id, pi.product_id, pi.product_variant_name, pi.original_price, pi.offer_price, pi.quantity_in_stock 
+        GET_ITEMS_IN_CART = '''SELECT ci.cart_id AS cart_id, ci.quantity, 
+        p.id AS product_id, p.product_name, p.currency, p.min_order_quantity, p.max_order_quantity,
+        pi.id AS product_item_id, pi.product_variant_name, pi.original_price, pi.offer_price, pi.quantity_in_stock 
         FROM cart_items ci
         JOIN product_items pi ON pi.id = ci.product_item_id
         JOIN products p ON p.id= (SELECT product_id FROM product_items WHERE id= ci.product_item_id)
@@ -80,7 +80,7 @@ class Carts(Resource):
         # catch exception for invalid SQL statement
         try:
             # declare a cursor object from the connection
-            cursor = app_globals.get_cursor()
+            cursor = app_globals.get_named_tuple_cursor()
             # # app.logger.debug("cursor object: %s", cursor)
             cursor.execute(GET_ITEMS_IN_CART, (user_id,))
             rows = cursor.fetchall()
@@ -88,25 +88,23 @@ class Carts(Resource):
                 return {}
             for row in rows:
                 carts_dict = {}
-                carts_dict['cart_id'] = row[0]
-                carts_dict['product_item_id'] = row[1]
-                carts_dict['quantity'] = row[2]
-                carts_dict['product_id'] = row[3]
-                carts_dict['product_name'] = row[4]
-                carts_dict['currency'] = row[5]
-                carts_dict['min_order_quantity'] = row[6]
-                carts_dict['max_order_quantity'] = row[7]
+                carts_dict['cart_id'] = row.cart_id
+                carts_dict['quantity'] = row.quantity
+                carts_dict['product_id'] = row.product_id
+                carts_dict['product_name'] = row.product_name
+                carts_dict['currency'] = row.currency
+                carts_dict['min_order_quantity'] = row.min_order_quantity
+                carts_dict['max_order_quantity'] = row.max_order_quantity
 
                 product_item_dict = {}
-                product_item_dict['id'] = row[8]
-                product_item_dict['product_id'] = row[9]
-                product_item_dict['product_variant_name'] = row[10]
+                product_item_dict['id'] = row.product_item_id
+                product_item_dict['product_variant_name'] = row.product_variant_name
 
                 product_item_dict.update(json.loads(
-                    json.dumps({'original_price': row[11]}, default=str)))
+                    json.dumps({'original_price': row.original_price}, default=str)))
                 product_item_dict.update(json.loads(
-                    json.dumps({'offer_price': row[12]}, default=str)))
-                product_item_dict['quantity_in_stock'] = row[13]
+                    json.dumps({'offer_price': row.offer_price}, default=str)))
+                product_item_dict['quantity_in_stock'] = row.quantity_in_stock
 
                 carts_dict.update({"product_item": product_item_dict})
 

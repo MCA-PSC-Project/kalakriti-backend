@@ -44,15 +44,15 @@ class Banners(Resource):
     def get(self):
         banners_list = []
 
-        GET_BANNERS = '''SELECT b.id, b.redirect_type, b.redirect_url,
-                        m.id, m.name, m.path 
+        GET_BANNERS = '''SELECT b.id AS banner_id, b.redirect_type, b.redirect_url,
+                        m.id as media_id, m.name, m.path 
                         FROM banners b LEFT JOIN media m on b.media_id = m.id
                         '''
 
         # catch exception for invalid SQL statement
         try:
             # declare a cursor object from the connection
-            cursor = app_globals.get_cursor()
+            cursor = app_globals.get_named_tuple_cursor()
             # # app.logger.debug("cursor object: %s", cursor)
 
             cursor.execute(GET_BANNERS)
@@ -61,17 +61,17 @@ class Banners(Resource):
                 return {}
             for row in rows:
                 banners_dict = {}
-                banners_dict['id'] = row[0]
-                banners_dict['redirect_type'] = row[1]
-                banners_dict['redirect_url'] = row[2]
+                banners_dict['id'] = row.banner_id
+                banners_dict['redirect_type'] = row.redirect_type
+                banners_dict['redirect_url'] = row.redirect_url
 
                 banner_media_dict = {}
-                banner_media_dict['id'] = row[3]
-                banner_media_dict['name'] = row[4]
-                path = row[5]
+                banner_media_dict['id'] = row.media_id
+                banner_media_dict['name'] = row.name
+                path = row.path
                 if path is not None:
                     banner_media_dict['path'] = "{}/{}".format(
-                        app.config["S3_LOCATION"], row[5])
+                        app.config["S3_LOCATION"], path)
                 else:
                     banner_media_dict['path'] = None
                 banners_dict.update({"dp": banner_media_dict})
