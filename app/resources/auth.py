@@ -106,7 +106,7 @@ class Login(Resource):
         GET_USER = 'SELECT id, password, user_type, is_verified FROM users WHERE email= %s'
         try:
             # declare a cursor object from the connection
-            cursor = app_globals.get_cursor()
+            cursor = app_globals.get_named_tuple_cursor()
             # # app.logger.debug("cursor object: %s", cursor)
 
             cursor.execute(GET_USER, (email,))
@@ -114,10 +114,10 @@ class Login(Resource):
             if row is None:
                 abort(400, 'Bad Request: User not found')
             else:
-                user_id = row[0]
-                hashed_password = row[1]
-                user_type = row[2]
-                is_verified = row[3]
+                user_id = row.id
+                hashed_password = row.password
+                user_type = row.user_type
+                is_verified = row.is_verified
         except (Exception, psycopg2.Error) as err:
             app.logger.debug(err)
             abort(400, 'Bad Request')
@@ -188,7 +188,7 @@ class VerifyEmail(Resource):
         GET_USER = 'SELECT id, is_verified FROM users WHERE email= %s'
         try:
             # declare a cursor object from the connection
-            cursor = app_globals.get_cursor()
+            cursor = app_globals.get_named_tuple_cursor()
             # # app.logger.debug("cursor object: %s", cursor)
 
             cursor.execute(GET_USER, (email,))
@@ -196,8 +196,8 @@ class VerifyEmail(Resource):
             if row is None:
                 abort(400, 'Bad Request: User not found')
             else:
-                user_id = row[0]
-                is_verified = row[1]
+                user_id = row.id
+                is_verified = row.is_verified
         except (Exception, psycopg2.Error) as err:
             app.logger.debug(err)
             abort(400, 'Bad Request')
