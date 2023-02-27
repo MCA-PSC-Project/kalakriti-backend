@@ -19,14 +19,14 @@ class Tags(Resource):
         # catch exception for invalid SQL statement
         try:
             # declare a cursor object from the connection
-            cursor = app_globals.get_cursor()
+            cursor = app_globals.get_named_tuple_cursor()
             # # app.logger.debug("cursor object: %s", cursor)
 
             cursor.execute(GET_TAGS, (product_id,))
             row = cursor.fetchone()
             if not row:
                 return []
-            tags_list = row[0]
+            tags_list = row.tags
         except (Exception, psycopg2.Error) as err:
             app.logger.debug(err)
             abort(400, 'Bad Request')

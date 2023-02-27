@@ -10,14 +10,14 @@
         "name": "Auth",
         "containerId": "",
         "created": "2023-02-20T16:38:51.027Z",
-        "sortNum": 10000
+        "sortNum": 2500
       },
       {
         "_id": "6b5b2313-953f-4b9e-8fc5-6e7c215c1a9e",
         "name": "User Profile",
         "containerId": "",
         "created": "2023-02-20T16:38:51.028Z",
-        "sortNum": 20000
+        "sortNum": 5000
       },
       {
         "_id": "4a61adc3-63f1-4474-872a-a902ad27e1a1",
