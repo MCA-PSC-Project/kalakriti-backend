@@ -106,8 +106,33 @@ class Carts(Resource):
                     json.dumps({'offer_price': row.offer_price}, default=str)))
                 product_item_dict['quantity_in_stock'] = row.quantity_in_stock
 
+                media_dict = {}
+                GET_BASE_MEDIA = '''SELECT m.id AS media_id, m.name, m.path
+                FROM media m
+                WHERE m.id = (SELECT pim.media_id From product_item_medias pim
+                WHERE pim.product_item_id = %s 
+                ORDER BY pim.display_order LIMIT 1) 
+                '''
+                cursor.execute(
+                    GET_BASE_MEDIA, (product_item_dict['id'],))
+                row = cursor.fetchone()
+                if row is None:
+                    app.logger.debug("No media rows")
+                    product_item_dict.update({"media": media_dict})
+                    carts_dict.update({"product_item": product_item_dict})
+                    carts_list.append(carts_dict)
+                    continue
+                media_dict['id'] = row.media_id
+                media_dict['name'] = row.name
+                # media_dict['path'] = row.path
+                path = row.path
+                if path is not None:
+                    media_dict['path'] = "{}/{}".format(
+                        app.config["S3_LOCATION"], path)
+                else:
+                    media_dict['path'] = None
+                product_item_dict.update({"media": media_dict})
                 carts_dict.update({"product_item": product_item_dict})
-
                 carts_list.append(carts_dict)
         except (Exception, psycopg2.Error) as err:
             app.logger.debug(err)
