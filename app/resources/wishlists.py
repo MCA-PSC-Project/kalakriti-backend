@@ -68,18 +68,44 @@ class Wishlists(Resource):
             if not rows:
                 return {}
             for row in rows:
-                wishlists_dict = {}
-                wishlists_dict['product_id'] = row.product_id
-                wishlists_dict['product_item_id'] = row.product_item_id
-                wishlists_dict['product_name'] = row.product_name
-                wishlists_dict['product_variant_name'] = row.product_variant_name                
-                wishlists_dict.update(json.loads(
+                wishlist_dict = {}
+                wishlist_dict['product_id'] = row.product_id
+                wishlist_dict['product_item_id'] = row.product_item_id
+                wishlist_dict['product_name'] = row.product_name
+                wishlist_dict['product_variant_name'] = row.product_variant_name
+                wishlist_dict.update(json.loads(
                     json.dumps({'original_price': row.original_price}, default=str)))
-                wishlists_dict.update(json.loads(
+                wishlist_dict.update(json.loads(
                     json.dumps({'offer_price': row.offer_price}, default=str)))
-                wishlists_dict['variant'] = row.variant
-                wishlists_dict['variant_value'] = row.variant_value
-                wishlists_list.append(wishlists_dict)
+                wishlist_dict['variant'] = row.variant
+                wishlist_dict['variant_value'] = row.variant_value
+
+                media_dict = {}
+                GET_BASE_MEDIA = '''SELECT m.id AS media_id, m.name, m.path
+                FROM media m
+                WHERE m.id = (SELECT pim.media_id From product_item_medias pim
+                WHERE pim.product_item_id = %s 
+                ORDER BY pim.display_order LIMIT 1) 
+                '''
+                cursor.execute(
+                    GET_BASE_MEDIA, (wishlist_dict['product_item_id'],))
+                row = cursor.fetchone()
+                if row is None:
+                    app.logger.debug("No media rows")
+                    wishlist_dict.update({"media": media_dict})
+                    wishlists_list.append(wishlist_dict)
+                    continue
+                media_dict['id'] = row.media_id
+                media_dict['name'] = row.name
+                # media_dict['path'] = row.path
+                path = row.path
+                if path is not None:
+                    media_dict['path'] = "{}/{}".format(
+                        app.config["S3_LOCATION"], path)
+                else:
+                    media_dict['path'] = None
+                wishlist_dict.update({"media": media_dict})
+                wishlists_list.append(wishlist_dict)
         except (Exception, psycopg2.Error) as err:
             app.logger.debug(err)
             abort(400, 'Bad Request')
