@@ -70,15 +70,16 @@ class Wishlists(Resource):
             for row in rows:
                 wishlist_dict = {}
                 wishlist_dict['product_id'] = row.product_id
-                wishlist_dict['product_item_id'] = row.product_item_id
                 wishlist_dict['product_name'] = row.product_name
-                wishlist_dict['product_variant_name'] = row.product_variant_name
-                wishlist_dict.update(json.loads(
+                product_item_dict={}
+                product_item_dict['id'] = row.product_item_id
+                product_item_dict['product_variant_name'] = row.product_variant_name
+                product_item_dict.update(json.loads(
                     json.dumps({'original_price': row.original_price}, default=str)))
-                wishlist_dict.update(json.loads(
+                product_item_dict.update(json.loads(
                     json.dumps({'offer_price': row.offer_price}, default=str)))
-                wishlist_dict['variant'] = row.variant
-                wishlist_dict['variant_value'] = row.variant_value
+                product_item_dict['variant'] = row.variant
+                product_item_dict['variant_value'] = row.variant_value
 
                 media_dict = {}
                 GET_BASE_MEDIA = '''SELECT m.id AS media_id, m.name, m.path
@@ -88,11 +89,12 @@ class Wishlists(Resource):
                 ORDER BY pim.display_order LIMIT 1) 
                 '''
                 cursor.execute(
-                    GET_BASE_MEDIA, (wishlist_dict['product_item_id'],))
+                    GET_BASE_MEDIA, (product_item_dict['id'],))
                 row = cursor.fetchone()
                 if row is None:
                     app.logger.debug("No media rows")
-                    wishlist_dict.update({"media": media_dict})
+                    product_item_dict.update({"media": media_dict})
+                    wishlist_dict.update({"product_item": product_item_dict})
                     wishlists_list.append(wishlist_dict)
                     continue
                 media_dict['id'] = row.media_id
@@ -104,7 +106,8 @@ class Wishlists(Resource):
                         app.config["S3_LOCATION"], path)
                 else:
                     media_dict['path'] = None
-                wishlist_dict.update({"media": media_dict})
+                product_item_dict.update({"media": media_dict})
+                wishlist_dict.update({"product_item": product_item_dict})
                 wishlists_list.append(wishlist_dict)
         except (Exception, psycopg2.Error) as err:
             app.logger.debug(err)
