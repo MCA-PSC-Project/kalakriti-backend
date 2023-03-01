@@ -1942,5 +1942,19 @@
       }
     ],
     "tests": []
+  },
+  {
+    "_id": "61a444e8-015c-44fc-9754-2a0a4a46ae80",
+    "colId": "80d178ef-5176-474a-8708-db78bd45faee",
+    "containerId": "d3f02f76-889e-4a8d-88e7-d026529d83a9",
+    "name": "GET all details of a product",
+    "url": "{{baseUrl}}/products/26/all-details",
+    "method": "GET",
+    "sortNum": 925000,
+    "created": "2023-03-01T06:55:05.728Z",
+    "modified": "2023-03-01T06:57:16.903Z",
+    "headers": [],
+    "params": [],
+    "tests": []
   }
 ]

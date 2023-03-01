@@ -1273,5 +1273,33 @@
       }
     ],
     "tests": []
+  },
+  {
+    "_id": "0491116d-e021-4e9b-a48c-a1d1e23bc12e",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/products/all-details",
+    "url": "{{baseUrl}}/products/all-details",
+    "method": "GET",
+    "sortNum": 0,
+    "created": "2023-03-01T06:56:27.623Z",
+    "modified": "2023-03-01T06:56:27.623Z",
+    "headers": [],
+    "params": [],
+    "tests": []
+  },
+  {
+    "_id": "e55c2983-ed04-4239-b3c3-659f571a4da8",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/products/26/all-details",
+    "url": "{{baseUrl}}/products/26/all-details",
+    "method": "GET",
+    "sortNum": 0,
+    "created": "2023-03-01T06:57:15.711Z",
+    "modified": "2023-03-01T06:57:15.711Z",
+    "headers": [],
+    "params": [],
+    "tests": []
   }
 ]

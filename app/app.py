@@ -11,7 +11,7 @@ import atexit
 from app.config import app_config
 from app.resources.auth import Register, Login, RefreshToken, VerifyEmail
 from app.resources.product_items import ProductItems, SellersProductItems
-from app.resources.products import Products, ProductsByCategory, SellersProducts
+from app.resources.products import Products, ProductsAllDetails, ProductsByCategory, SellersProducts
 from app.resources.search import Search, TopSearches
 from app.resources.tags import Tags
 from app.resources.users import UserProfile, ResetEmail, ResetPhone, ResetPassword
@@ -132,6 +132,8 @@ def create_app(config_name):
                      '/sellers/products/<int:product_id>')
     api.add_resource(SellersProductItems, '/sellers/product-items',
                      '/sellers/product-items/<int:product_item_id>')
+    api.add_resource(ProductsAllDetails,
+                     '/products/<int:product_id>/all-details')
 
     # Tags
     api.add_resource(Tags, '/products/<int:product_id>/tags')
