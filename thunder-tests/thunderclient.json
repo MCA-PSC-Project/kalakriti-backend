@@ -28,12 +28,12 @@
     "method": "POST",
     "sortNum": 20000,
     "created": "2023-02-20T16:38:51.029Z",
-    "modified": "2023-03-01T07:51:03.614Z",
+    "modified": "2023-03-01T17:55:51.342Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n    \"email\": \"seller@gmail.com\",\n    \"password\": \"abcd@123\"\n}",
+      "raw": "{\n    \"email\": \"customer@gmail.com\",\n    \"password\": \"abcd@123\"\n}",
       "form": []
     },
     "tests": [],
@@ -1032,18 +1032,19 @@
     "method": "POST",
     "sortNum": 520000,
     "created": "2023-02-20T16:38:51.080Z",
-    "modified": "2023-02-20T16:38:51.080Z",
+    "modified": "2023-03-01T17:58:28.759Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n\t\"to_pay\" : 50,\n\t\"order_total\": 1500,\n\t\"items\": [35]\n}"
+      "raw": "{\n  \"address\": \"my address\",\n  \"city\": \"Patna\",\n  \"district\": \"Patna\",\n  \"state\": \"Bihar\",\n  \"country\": \"India\",\n  \"pincode\": \"801105\",\n  \"phone\": \"9876543210\",\n  \"order_items\": [\n    {\n      \"product_item_id\": 24,\n      \"quantity\": 1,\n      \"original_price\": 1000,\n      \"offer_price\": 500,\n      \"discount_percent\": 50,\n      \"discount\": 500,\n      \"tax\": 20\n    },\n    {\n      \"product_item_id\": 25,\n      \"quantity\": 1,\n      \"original_price\": 2000,\n      \"offer_price\": 1000,\n      \"discount_percent\": 50,\n      \"discount\": 1000,\n      \"tax\": 20\n    }\n  ]\n}",
+      "form": []
     },
     "auth": {
       "type": "bearer",
-      "bearer": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MjUzOTQ0NDgsImlkIjo4NSwidHlwZSI6IjIifQ.5Y4lT0KMXqtus6rqfOomnAecNHy3za3W97XtcsuO2Mg"
+      "bearer": "{{token}}"
     },
-    "docs": ""
+    "tests": []
   },
   {
     "_id": "0fd4e4ce-346c-45f3-a57f-90a23fd6a3bd",

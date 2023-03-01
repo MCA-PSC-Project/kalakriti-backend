@@ -10,6 +10,7 @@ import atexit
 # local imports
 from app.config import app_config
 from app.resources.auth import Register, Login, RefreshToken, VerifyEmail
+from app.resources.orders import Orders
 from app.resources.product_items import ProductItems, SellersProductItems
 from app.resources.products import Products, ProductsAllDetails, ProductsByCategory, SellersProducts
 from app.resources.search import Search, TopSearches
@@ -153,6 +154,9 @@ def create_app(config_name):
     # Search
     api.add_resource(Search, '/search')
     api.add_resource(TopSearches, '/top-searches')
+
+    # Orders
+    api.add_resource(Orders, '/orders')
 
     # to be exceuted at app exit for cleanups
     @atexit.register
