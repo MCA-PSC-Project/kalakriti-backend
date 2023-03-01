@@ -447,8 +447,6 @@ class SellersProductItems(Resource):
     # todo: check product_item_id is not base item
     @ f_jwt.jwt_required()
     def delete(self, product_item_id):
-        # user_id = f_jwt.get_jwt_identity()
-        # user_id=20
         user_id = f_jwt.get_jwt_identity()
         app.logger.debug("user_id= %s", user_id)
         claims = f_jwt.get_jwt()
@@ -460,21 +458,38 @@ class SellersProductItems(Resource):
         if user_type != "admin" and user_type != "super_admin":
             abort(400, "only super-admins and admins can delete product item")
 
-        DELETE_TRASHED_PRODUCT_ITEM = 'DELETE FROM product_items WHERE id= %s AND trashed= true'
-
+        # before beginning transaction autocommit must be off
+        app_globals.db_conn.autocommit = False
         # catch exception for invalid SQL statement
         try:
             # declare a cursor object from the connection
             cursor = app_globals.get_cursor()
             # app.logger.debug("cursor object: %s", cursor)
 
+            DELETE_VARIANT_VALUE = '''DELETE FROM variant_values vv WHERE vv.id = 
+            (SELECT piv.variant_value_id FROM product_item_values piv 
+            WHERE piv.product_item_id = %s)'''
+
+            cursor.execute(DELETE_VARIANT_VALUE, (product_item_id,))
+            # app.logger.debug("row_counts= %s", cursor.rowcount)
+            if cursor.rowcount != 1:
+                abort(400, 'Bad Request: delete variant value row error')
+
+            DELETE_TRASHED_PRODUCT_ITEM = 'DELETE FROM product_items WHERE id= %s AND trashed= true'
+
             cursor.execute(DELETE_TRASHED_PRODUCT_ITEM, (product_item_id,))
             # app.logger.debug("row_counts= %s", cursor.rowcount)
             if cursor.rowcount != 1:
-                abort(400, 'Bad Request: delete row error')
+                abort(400, 'Bad Request: delete trashed product item row error')
         except (Exception, psycopg2.Error) as err:
             app.logger.debug(err)
+            app_globals.db_conn.rollback()
+            app_globals.db_conn.autocommit = True
+            app.logger.debug("autocommit switched back from off to on")
             abort(400, 'Bad Request')
         finally:
             cursor.close()
+        app_globals.db_conn.commit()
+        app_globals.db_conn.autocommit = True
+        app.logger.debug("autocommit switched back from off to on")
         return 200
