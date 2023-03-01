@@ -121,9 +121,9 @@
                 <tr class="top_rw">
                     <td colspan="2">
                         <h2 style="margin-bottom: 0px;"> Invoice</h2>
-                        <span> Invoice Number: {{ InvoiceNumber }} </span>
+                        <span> Invoice Number: {{ invoice_number }} </span>
                     </td>
-                    <td style="width:78%; margin-right: 10px;">Date: {{ Date }}</td>
+                    <td style="width:78%; margin-right: 10px;">Date: {{ date }}</td>
                 </tr>
                 <tr class="top">
                     <td colspan="3">
@@ -158,13 +158,36 @@
                                         <br>
                                         {{ seller_country }}
                                         <br>
+                                    </td>
+                                    <td> <b> Billing Address </b>
+                                        <br>
+                                        {{ customer_name }}
+                                        <br>
+                                        {{ customer_address }}
+                                        <br>
+                                        {{ customer_city }}
+                                        <br>
+                                        {{ customer_district }}
+                                        <br>
+                                        {{ customer_state }}
+                                        <br>
+                                        {{ customer_pincode }}
+                                        <br>
+                                        {{ customer_country }}
+                                        <br>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">
                                         <br>
                                         <b>PAN No:</b>{{ seller_pan_no }}
                                         <br>
                                         <b>GST Registration No:</b>{{ seller_gst_reg_no }}
                                         <br>
                                     </td>
-                                    <td> <b> Billing Address </b>
+                                    <td>
+                                        <br>
+                                        <b> Shipping Address </b>
                                         <br>
                                         {{ customer_name }}
                                         <br>
@@ -191,56 +214,56 @@
                         <table cellspacing="2px" cellpadding="2px " style="border: solid 2px #333" rules="all">
                             <tbody>
                                 <tr class="heading">
-                                    <td style="width:25%;">
-                                        Item
+                                    <td style="width:2%;">
+                                        S.No
                                     </td>
-
+                                    <td style="width:23%; text-align:center;">
+                                        ITEM
+                                    </td>
                                     <td style="width:10%; text-align:center;">
-                                        ORIGINAL PRICE
+                                        UNIT PRICE
                                     </td>
-                                    <td style="width:10%; text-align:right;">
-                                        DISCOUNT(%)
+                                    <td style="width:5%; text-align:right;">
+                                        Quantity
                                     </td>
                                     <td style="width:10%; text-align:right;">
                                         DISCOUNT
                                     </td>
-
-                                    <td style="width:15%; text-align:right;">
-                                        TAX AMOUNT (INR)
+                                    <td style="width:5%; text-align:right;">
+                                        TAX TYPE
                                     </td>
-                                    <td style="width:15%; text-align:right;">
-                                        TOTAL AMOUNT (INR)
+                                    <td style="width:10%; text-align:right;">
+                                        TAX AMOUNT
+                                    </td>
+                                    <td style="width:20%; text-align:right;">
+                                        TOTAL AMOUNT
                                     </td>
                                 </tr>
                                 <tr class="item">
-                                    <td style="width:25%;">{{ Item }}</td>
+                                    <td style="width:2%">1</td>
+                                    <td style="width:23%;">{{ item }}</td>
 
                                     <td style="width:10%; text-align:right;">
-                                        {{ OriginalPrice }}
+                                        {{ original_price }}
                                     </td>
 
-                                    <td style="width:10%; text-align:right;">
-                                        {{ DiscountPercent }}%
+                                    <td style="width:5%; text-align:right;">
+                                        {{ quantity }}%
                                     </td>
                                     <td style="width:10%; text-align:right;">
-                                        {{ Discount }}
+                                        {{ discount }}
                                     </td>
-                                    <td style="width:15%; text-align:right;">{{ TaxAmount }}</td>
-                                    <td style="width:15%; text-align:right;">
-                                        {{ TotalAmount }}
+                                    <td style="width:5%; text-align:right;">{{ tax_type }}</td>
+                                    <td style="width:10%; text-align:right;">{{ tax_amount }}</td>
+                                    <td style="width:20%; text-align:right;">
+                                        {{ total_amount }}
                                     </td>
                                 </tr>
                                 <tr class="item">
-                                    <td style="width:25%;"> <b> Grand Total </b> </td>
-
-                                    <td style="width:10%; text-align:right;"></td>
-                                    <td style="width:10%; text-align:right;">
-                                    </td>
-
-                                    <td style="width:10%; text-align:right;"></td>
-                                    <td style="width:15%; text-align:right;"></td>
-                                    <td style="width:15%; text-align:right; font-weight:bold ">
-                                        {{ GrandTotal }}
+                                    <td style="width:23%;" colspan="6"> <b> Grand Total </b> </td>
+                                    <td style="width:15%; text-align:right;">{{ tax_total }}</td>
+                                    <td style="width:20%; text-align:right; font-weight:bold ">
+                                        {{ grand_total }}
                                     </td>
                                 </tr>
 
@@ -249,7 +272,7 @@
                     </td>
                 </tr>
                 <tr class="total">
-                    <td colspan="3" align="right"> Mode of Payment: <b>{{ PaymentMode }}</b>
+                    <td colspan="3" align="right"> Mode of Payment: <b>{{ payment_mode }}</b>
                     </td>
                 </tr>
                 <tr>
