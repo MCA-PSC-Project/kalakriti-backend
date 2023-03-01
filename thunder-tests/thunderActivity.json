@@ -31,16 +31,16 @@
     "method": "POST",
     "sortNum": 0,
     "created": "2023-02-22T17:11:30.418Z",
-    "modified": "2023-02-28T07:04:19.808Z",
+    "modified": "2023-03-01T04:10:03.121Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n    \"email\": \"customer@gmail.com\",\n    \"password\": \"abcd@123\"\n}",
+      "raw": "{\n    \"email\": \"seller@gmail.com\",\n    \"password\": \"abcd@123\"\n}",
       "form": []
     },
     "tests": [],
-    "docs": "```json\n{\n\t\"email\": \"sheetal@gmail.com\",\n\t\"password\": \"abcd@123\"\n}\n```\n\n```json\n{\n\t\"email\": \"mywebnewslettersinbox123@gmail.com\",\n\t\"password\": \"abcd@123\"\n}\n```\n\n```json\n{\n\t\"email\": \"seller@gmail.com\",\n\t\"password\": \"abcd@123\"\n}\n```\n\n```json\n{\n    \"email\": \"updated_admin@gmail.com\",\n    \"password\": \"abcd@123\"\n}\n```"
+    "docs": "```json\n{\n    \"email\": \"customer@gmail.com\",\n    \"password\": \"abcd@123\"\n}\n```\n```json\n{\n\t\"email\": \"seller@gmail.com\",\n\t\"password\": \"abcd@123\"\n}\n```\n\n```json\n{\n\t\"email\": \"admin@gmail.com\",\n\t\"password\": \"abcd@123\"\n}\n```\n\n```json\n{\n    \"email\": \"updated_admin@gmail.com\",\n    \"password\": \"abcd@123\"\n}\n```\n\n```json\n{\n\t\"email\": \"mywebnewslettersinbox123@gmail.com\",\n\t\"password\": \"abcd@123\"\n}\n```"
   },
   {
     "_id": "ad8e6ade-3f63-462c-a246-c755ea87bcc7",
@@ -926,12 +926,12 @@
     "method": "PUT",
     "sortNum": 0,
     "created": "2023-02-26T14:36:30.573Z",
-    "modified": "2023-02-26T14:36:30.573Z",
+    "modified": "2023-03-01T04:09:26.450Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n  \"product_name\": \"famous madhubani painting\",\n  \"product_description\": \"paintings from madhubani\",\n  \"category_id\": 5,\n  \"subcategory_id\": null,\n  \"currency\": \"INR\",\n  \"min_order_quantity\": 1,\n  \"max_order_quantity\": 5\n}",
+      "raw": "{\n  \"product_name\": \"famous madhubani painting\",\n  \"product_description\": \"paintings from madhubani\",\n  \"category_id\": 5,\n  \"subcategory_id\": 7,\n  \"currency\": \"INR\",\n  \"min_order_quantity\": 1,\n  \"max_order_quantity\": 5\n}",
       "form": []
     },
     "auth": {
@@ -1121,6 +1121,157 @@
       "type": "bearer",
       "bearer": "{{token}}"
     },
+    "tests": []
+  },
+  {
+    "_id": "90e8cd37-0ef0-4d13-a4c7-465d7bf84195",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/categories/products?category_id=4",
+    "url": "{{baseUrl}}/categories/products?category_id=4",
+    "method": "GET",
+    "sortNum": 0,
+    "created": "2023-03-01T03:45:06.815Z",
+    "modified": "2023-03-01T03:45:06.815Z",
+    "headers": [],
+    "params": [
+      {
+        "name": "category_id",
+        "value": "4",
+        "isPath": false
+      }
+    ],
+    "tests": []
+  },
+  {
+    "_id": "54e752e4-8d9f-4c24-aebe-70d31168f36a",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/categories/products?category_id=5",
+    "url": "{{baseUrl}}/categories/products?category_id=5",
+    "method": "GET",
+    "sortNum": 0,
+    "created": "2023-03-01T03:48:12.951Z",
+    "modified": "2023-03-01T03:48:12.951Z",
+    "headers": [],
+    "params": [
+      {
+        "name": "category_id",
+        "value": "5",
+        "isPath": false
+      }
+    ],
+    "tests": []
+  },
+  {
+    "_id": "86905e38-b506-4350-8e6b-ec7ac39fa0f9",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/categories",
+    "url": "{{baseUrl}}/categories",
+    "method": "POST",
+    "sortNum": 0,
+    "created": "2023-03-01T03:53:59.643Z",
+    "modified": "2023-03-01T03:55:18.285Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n\t\"name\": \"s1\",\n\t\"parent_id\" : 5 ,\n\t\"cover_id\" : 1\n}",
+      "form": []
+    },
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{admin_token}}"
+    },
+    "tests": []
+  },
+  {
+    "_id": "bd78ea73-b2f6-4fbb-b25f-0c025b4bccdc",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/categories/7",
+    "url": "{{baseUrl}}/categories/7",
+    "method": "PUT",
+    "sortNum": 0,
+    "created": "2023-03-01T03:57:09.859Z",
+    "modified": "2023-03-01T03:58:02.333Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n\t\"name\": \"s1c5\",\n\t\"parent_id\" : 5,\n\t\"cover_id\" : 1\n}",
+      "form": []
+    },
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{admin_token}}"
+    },
+    "tests": []
+  },
+  {
+    "_id": "e76a47a9-1768-4c6d-8c75-90fda934b395",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/categories/products?subcategory_id=5",
+    "url": "{{baseUrl}}/categories/products?subcategory_id=5",
+    "method": "GET",
+    "sortNum": 0,
+    "created": "2023-03-01T04:04:25.493Z",
+    "modified": "2023-03-01T04:04:25.493Z",
+    "headers": [],
+    "params": [
+      {
+        "name": "subcategory_id",
+        "value": "5",
+        "isPath": false
+      }
+    ],
+    "tests": []
+  },
+  {
+    "_id": "b6584816-d473-4cf9-9997-1623e4406c72",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/categories/products?subcategory_id=7",
+    "url": "{{baseUrl}}/categories/products?subcategory_id=7",
+    "method": "GET",
+    "sortNum": 0,
+    "created": "2023-03-01T04:04:32.608Z",
+    "modified": "2023-03-01T04:04:32.608Z",
+    "headers": [],
+    "params": [
+      {
+        "name": "subcategory_id",
+        "value": "7",
+        "isPath": false
+      }
+    ],
+    "tests": []
+  },
+  {
+    "_id": "a9719b8f-6f4c-4259-a9fe-19278ea70737",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/categories/products?category_id=5&subcategory_id=7",
+    "url": "{{baseUrl}}/categories/products?category_id=5&subcategory_id=7",
+    "method": "GET",
+    "sortNum": 0,
+    "created": "2023-03-01T04:16:51.164Z",
+    "modified": "2023-03-01T04:16:51.164Z",
+    "headers": [],
+    "params": [
+      {
+        "name": "category_id",
+        "value": "5",
+        "isPath": false
+      },
+      {
+        "name": "subcategory_id",
+        "value": "7",
+        "isPath": false
+      }
+    ],
     "tests": []
   }
 ]

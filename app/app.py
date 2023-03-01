@@ -11,7 +11,7 @@ import atexit
 from app.config import app_config
 from app.resources.auth import Register, Login, RefreshToken, VerifyEmail
 from app.resources.product_items import ProductItems, SellersProductItems
-from app.resources.products import Products, SellersProducts
+from app.resources.products import Products, ProductsByCategory, SellersProducts
 from app.resources.search import Search, TopSearches
 from app.resources.tags import Tags
 from app.resources.users import UserProfile, ResetEmail, ResetPhone, ResetPassword
@@ -125,13 +125,11 @@ def create_app(config_name):
                      '/banners/<int:banner_id>')
 
     # Products
+    api.add_resource(ProductsByCategory, '/categories/products')
     api.add_resource(Products, '/products/<int:product_id>')
-
     api.add_resource(ProductItems, '/product-items/<int:product_item_id>')
-
     api.add_resource(SellersProducts, '/sellers/products',
                      '/sellers/products/<int:product_id>')
-
     api.add_resource(SellersProductItems, '/sellers/product-items',
                      '/sellers/product-items/<int:product_item_id>')
 
@@ -141,12 +139,12 @@ def create_app(config_name):
     # Seller_Applicant_Form
     api.add_resource(Seller_Applicant_Form, '/sellers-form',
                      '/sellers-form/<int:seller_id>')
-    
-    #Wishlists
+
+    # Wishlists
     api.add_resource(Wishlists, '/wishlists',
-                       '/wishlists/<int:product_item_id>')
-    
-    #Carts
+                     '/wishlists/<int:product_item_id>')
+
+    # Carts
     api.add_resource(Carts, '/carts',
                      '/carts/<int:product_item_id>')
 

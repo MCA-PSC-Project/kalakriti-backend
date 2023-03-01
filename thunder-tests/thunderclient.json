@@ -28,12 +28,12 @@
     "method": "POST",
     "sortNum": 20000,
     "created": "2023-02-20T16:38:51.029Z",
-    "modified": "2023-02-28T07:07:12.895Z",
+    "modified": "2023-03-01T04:10:03.101Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n    \"email\": \"customer@gmail.com\",\n    \"password\": \"abcd@123\"\n}",
+      "raw": "{\n    \"email\": \"seller@gmail.com\",\n    \"password\": \"abcd@123\"\n}",
       "form": []
     },
     "tests": [],
@@ -523,54 +523,42 @@
     "method": "POST",
     "sortNum": 250000,
     "created": "2023-02-20T16:38:51.052Z",
-    "modified": "2023-02-20T16:38:51.052Z",
+    "modified": "2023-03-01T03:55:18.278Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n\t\"title\": \"c3\",\n\t\"parent_id\" : 0 ,\n\t\"cover_id\" : 230\n}"
+      "raw": "{\n\t\"name\": \"s1\",\n\t\"parent_id\" : 5 ,\n\t\"cover_id\" : 1\n}",
+      "form": []
     },
     "auth": {
       "type": "bearer",
       "bearer": "{{admin_token}}"
     },
-    "docs": ""
-  },
-  {
-    "_id": "138a070b-1261-421b-adff-830c14576305",
-    "colId": "80d178ef-5176-474a-8708-db78bd45faee",
-    "containerId": "67bd2609-a1c1-41da-ab7e-1e5b9002ee51",
-    "name": "get categories",
-    "url": "{{baseUrl}}/categories",
-    "method": "GET",
-    "sortNum": 260000,
-    "created": "2023-02-20T16:38:51.053Z",
-    "modified": "2023-02-20T16:38:51.053Z",
-    "headers": [],
-    "params": [],
-    "docs": ""
+    "tests": []
   },
   {
     "_id": "80968645-393f-4567-ac4e-e846cb65801a",
     "colId": "80d178ef-5176-474a-8708-db78bd45faee",
     "containerId": "67bd2609-a1c1-41da-ab7e-1e5b9002ee51",
     "name": "Update category",
-    "url": "{{baseUrl}}/categories/13",
+    "url": "{{baseUrl}}/categories/7",
     "method": "PUT",
     "sortNum": 270000,
     "created": "2023-02-20T16:38:51.054Z",
-    "modified": "2023-02-20T16:38:51.054Z",
+    "modified": "2023-03-01T03:58:02.325Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n\t\"title\": \"inside c3 now \",\n\t\"parent_id\" : 14,\n\t\"cover_id\" : 230\n}"
+      "raw": "{\n\t\"name\": \"s1c5\",\n\t\"parent_id\" : 5,\n\t\"cover_id\" : 1\n}",
+      "form": []
     },
     "auth": {
       "type": "bearer",
-      "bearer": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2NDI0Mjg3OTAsImlkIjoyNSwidXNlcl90eXBlIjoiYWRtaW4ifQ.gbGE8jDHPqRKnI0UAEzcqUOinyhwBQ2AZ5VXqqx9Rio"
+      "bearer": "{{admin_token}}"
     },
-    "docs": ""
+    "tests": []
   },
   {
     "_id": "0de846c6-fa24-4625-8dc9-ba904935c2f6",
@@ -1121,12 +1109,12 @@
     "method": "PUT",
     "sortNum": 537500,
     "created": "2023-02-20T16:38:51.084Z",
-    "modified": "2023-02-26T14:36:30.829Z",
+    "modified": "2023-03-01T04:09:26.443Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n  \"product_name\": \"famous madhubani painting\",\n  \"product_description\": \"paintings from madhubani\",\n  \"category_id\": 5,\n  \"subcategory_id\": null,\n  \"currency\": \"INR\",\n  \"min_order_quantity\": 1,\n  \"max_order_quantity\": 5\n}",
+      "raw": "{\n  \"product_name\": \"famous madhubani painting\",\n  \"product_description\": \"paintings from madhubani\",\n  \"category_id\": 5,\n  \"subcategory_id\": 7,\n  \"currency\": \"INR\",\n  \"min_order_quantity\": 1,\n  \"max_order_quantity\": 5\n}",
       "form": []
     },
     "auth": {
@@ -1163,25 +1151,21 @@
     "_id": "97188d8c-2ed5-4fe2-b392-aef811e9bfd3",
     "colId": "80d178ef-5176-474a-8708-db78bd45faee",
     "containerId": "d3f02f76-889e-4a8d-88e7-d026529d83a9",
-    "name": "GET products by category",
-    "url": "{{ baseUrl  }}/users/products",
+    "name": "GET products by subcategory",
+    "url": "{{baseUrl}}/categories/products?subcategory_id=7",
     "method": "GET",
-    "sortNum": 925000,
+    "sortNum": 265000,
     "created": "2023-02-20T16:38:51.086Z",
-    "modified": "2023-02-23T12:07:00.869Z",
+    "modified": "2023-03-01T04:04:32.756Z",
     "headers": [],
     "params": [
       {
-        "name": "category_id",
-        "value": "1",
-        "isDisabled": false
+        "name": "subcategory_id",
+        "value": "7",
+        "isPath": false
       }
     ],
-    "auth": {
-      "type": "bearer",
-      "bearer": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2NDQ5MTM3MDYsImlkIjoyNywidXNlcl90eXBlIjoibGVhcm5lciJ9.ch2FChaQniyZQIw7TEuUx5DEdgANdf1Tr6ATWZPphHw"
-    },
-    "docs": ""
+    "tests": []
   },
   {
     "_id": "98af30c5-35fd-4891-9d12-559dcf6de49e",
@@ -1937,6 +1921,26 @@
       "type": "bearer",
       "bearer": "{{token}}"
     },
+    "tests": []
+  },
+  {
+    "_id": "515faf07-dff7-495e-bf5e-8aecf5694159",
+    "colId": "80d178ef-5176-474a-8708-db78bd45faee",
+    "containerId": "d3f02f76-889e-4a8d-88e7-d026529d83a9",
+    "name": "GET products by category",
+    "url": "{{baseUrl}}/categories/products?category_id=5",
+    "method": "GET",
+    "sortNum": 132500,
+    "created": "2023-03-01T04:15:52.734Z",
+    "modified": "2023-03-01T04:18:11.632Z",
+    "headers": [],
+    "params": [
+      {
+        "name": "category_id",
+        "value": "5",
+        "isPath": false
+      }
+    ],
     "tests": []
   }
 ]

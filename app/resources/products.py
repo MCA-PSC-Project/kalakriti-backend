@@ -7,6 +7,147 @@ import flask_jwt_extended as f_jwt
 import json
 from flask import current_app as app
 
+class ProductsByCategory(Resource):
+    def get(self):
+        args = request.args  # retrieve args from query string
+        category_id = args.get('category_id', None)
+        subcategory_id = args.get('subcategory_id', None)
+
+        if not category_id and not subcategory_id:
+            abort(400, 'Bad Request.Provide either category_id or subcategory_id')
+        elif not category_id:
+            app.logger.debug("?subcategory_id=%s", subcategory_id)
+            category_id = subcategory_id
+            column_name = 'p.subcategory_id'
+        elif not subcategory_id:
+            app.logger.debug("?category_id=%s", category_id)
+            column_name = 'p.category_id'
+        else:
+            abort(400, 'Bad Request')
+
+        product_dict = {}
+        # catch exception for invalid SQL statement
+        try:
+            # declare a cursor object from the connection
+            cursor = app_globals.get_named_tuple_cursor()
+            # # app.logger.debug("cursor object: %s", cursor)
+            GET_PRODUCTS_BY_CATEGORY = '''SELECT p.id AS product_id, p.product_name, p.product_description, 
+            p.currency, p.product_status, p.min_order_quantity, p.max_order_quantity,
+            p.added_at, p.updated_at, 
+            u.id AS seller_user_id, u.first_name, u.last_name, u.email,
+            pbi.product_item_id AS base_product_item_id
+            FROM products p 
+            JOIN users u ON p.seller_user_id = u.id 
+            JOIN product_base_item pbi ON p.id = pbi.product_id
+            WHERE {} IN (SELECT id FROM categories ct WHERE ct.id = %s)
+            ORDER BY p.id DESC'''.format(column_name)
+
+            cursor.execute(GET_PRODUCTS_BY_CATEGORY, (category_id,))
+            rows = cursor.fetchall()
+            if not rows:
+                return {}
+            products_list = []
+            for row in rows:
+                product_dict = {}
+                product_dict['id'] = row.product_id
+                product_dict['product_name'] = row.product_name
+                product_dict['product_description'] = row.product_description
+                product_dict['currency'] = row.currency
+                product_dict['product_status'] = row.product_status
+                product_dict['min_order_quantity'] = row.min_order_quantity
+                product_dict['max_order_quantity'] = row.max_order_quantity
+                product_dict.update(json.loads(
+                    json.dumps({'added_at': row.added_at}, default=str)))
+                product_dict.update(json.loads(
+                    json.dumps({'updated_at': row.updated_at}, default=str)))
+
+                seller_dict = {}
+                seller_dict['id'] = row.seller_user_id
+                seller_dict['first_name'] = row.first_name
+                seller_dict['last_name'] = row.last_name
+                seller_dict['email'] = row.email
+                product_dict.update({"seller": seller_dict})
+
+                product_dict['base_product_item_id'] = row.base_product_item_id
+
+                GET_PRODUCT_BASE_ITEM = '''SELECT pi.id AS product_item_id, pi.product_id, pi.product_variant_name, pi."SKU",
+                pi.original_price, pi.offer_price, pi.quantity_in_stock, pi.added_at, pi.updated_at,
+                (SELECT v.variant AS variant FROM variants v WHERE v.id = 
+                (SELECT vv.variant_id FROM variant_values vv WHERE vv.id = piv.variant_value_id)),
+                (SELECT vv.variant_value AS variant_value FROM variant_values vv WHERE vv.id = piv.variant_value_id)
+                FROM product_items pi 
+                JOIN product_item_values piv ON pi.id = piv.product_item_id
+                WHERE pi.id= %s
+                '''
+
+                base_product_item_dict = {}
+                cursor.execute(GET_PRODUCT_BASE_ITEM,
+                               (product_dict['base_product_item_id'],))
+                row = cursor.fetchone()
+                if not row:
+                    app.logger.debug("No base product item row")
+                    product_dict.update(
+                        {"base_product_item": base_product_item_dict})
+                    products_list.append(product_dict)
+                    continue
+                base_product_item_dict['id'] = row.product_item_id
+                base_product_item_dict['product_id'] = row.product_id
+                base_product_item_dict['product_variant_name'] = row.product_variant_name
+                base_product_item_dict['SKU'] = row.SKU
+
+                base_product_item_dict.update(json.loads(
+                    json.dumps({'original_price': row.original_price}, default=str)))
+                base_product_item_dict.update(json.loads(
+                    json.dumps({'offer_price': row.offer_price}, default=str)))
+
+                base_product_item_dict['quantity_in_stock'] = row.quantity_in_stock
+                base_product_item_dict.update(json.loads(
+                    json.dumps({'added_at': row.added_at}, default=str)))
+                base_product_item_dict.update(json.loads(
+                    json.dumps({'updated_at': row.updated_at}, default=str)))
+
+                base_product_item_dict['variant'] = row.variant
+                base_product_item_dict['variant_value'] = row.variant_value
+
+                media_dict = {}
+                GET_BASE_MEDIA = '''SELECT m.id AS media_id, m.name, m.path
+                FROM media m
+                WHERE m.id = (SELECT pim.media_id From product_item_medias pim
+                WHERE pim.product_item_id = %s 
+                ORDER BY pim.display_order LIMIT 1) 
+                '''
+                cursor.execute(
+                    GET_BASE_MEDIA, (product_dict['base_product_item_id'],))
+                row = cursor.fetchone()
+                if row is None:
+                    app.logger.debug("No media rows")
+                    base_product_item_dict.update({"media": media_dict})
+                    product_dict.update(
+                        {"base_product_item": base_product_item_dict})
+                    products_list.append(product_dict)
+                    continue
+                media_dict['id'] = row.media_id
+                media_dict['name'] = row.name
+                # media_dict['path'] = row.path
+                path = row.path
+                if path is not None:
+                    media_dict['path'] = "{}/{}".format(
+                        app.config["S3_LOCATION"], path)
+                else:
+                    media_dict['path'] = None
+                base_product_item_dict.update({"media": media_dict})
+                product_dict.update(
+                    {"base_product_item": base_product_item_dict})
+                products_list.append(product_dict)
+
+        except (Exception, psycopg2.Error) as err:
+            app.logger.debug(err)
+            abort(400, 'Bad Request')
+        finally:
+            cursor.close()
+        # app.logger.debug(products_list)
+        return products_list
+
 
 class Products(Resource):
     def get(self, product_id):
@@ -148,141 +289,6 @@ class Products(Resource):
             cursor.close()
         # app.logger.debug(product_dict)
         return product_dict
-
-
-class ProductsByCategory(Resource):
-    def get(self, category_id):
-        product_dict = {}
-        # catch exception for invalid SQL statement
-        try:
-            # declare a cursor object from the connection
-            cursor = app_globals.get_named_tuple_cursor()
-            # # app.logger.debug("cursor object: %s", cursor)
-            GET_PRODUCTS_BY_CATEGORY = '''SELECT p.id AS product_id, p.product_name, p.product_description, 
-            ct.id AS category_id, ct.name AS category_name,
-            sct.id AS subcategory_id, sct.name AS subcategory_name, sct.parent_id, 
-            p.currency, p.product_status, p.min_order_quantity, p.max_order_quantity,
-            p.added_at, p.updated_at, 
-            u.id AS seller_user_id, u.first_name, u.last_name, u.email,
-            pbi.product_item_id AS base_product_item_id
-            FROM products p 
-            JOIN categories ct ON p.category_id = ct.id
-            LEFT JOIN categories sct ON p.subcategory_id = sct.id
-            JOIN users u ON p.seller_user_id = u.id 
-            JOIN product_base_item pbi ON p.id = pbi.product_id
-            WHERE p.id= %s'''
-
-            cursor.execute(GET_PRODUCTS_BY_CATEGORY, (product_id,))
-            row = cursor.fetchone()
-            if row is None:
-                abort(400, 'Bad Request')
-            product_dict['id'] = row.product_id
-            product_dict['product_name'] = row.product_name
-            product_dict['product_description'] = row.product_description
-
-            category_dict = {}
-            category_dict['id'] = row.category_id
-            category_dict['name'] = row.category_name
-            product_dict.update({"category": category_dict})
-
-            subcategory_dict = {}
-            subcategory_dict['id'] = row.subcategory_id
-            subcategory_dict['name'] = row.subcategory_name
-            subcategory_dict['parent_id'] = row.parent_id
-            product_dict.update({"subcategory": subcategory_dict})
-
-            product_dict['currency'] = row.currency
-            product_dict['product_status'] = row.product_status
-            product_dict['min_order_quantity'] = row.min_order_quantity
-            product_dict['max_order_quantity'] = row.max_order_quantity
-
-            product_dict.update(json.loads(
-                json.dumps({'added_at': row.added_at}, default=str)))
-            product_dict.update(json.loads(
-                json.dumps({'updated_at': row.updated_at}, default=str)))
-
-            seller_dict = {}
-            seller_dict['id'] = row.seller_user_id
-            seller_dict['first_name'] = row.first_name
-            seller_dict['last_name'] = row.last_name
-            seller_dict['email'] = row.email
-            product_dict.update({"seller": seller_dict})
-
-            product_dict['base_product_item_id'] = row.base_product_item_id
-
-            product_items_list = []
-            GET_PRODUCT_ITEMS = '''SELECT pi.id AS product_item_id, pi.product_id, pi.product_variant_name, pi."SKU", 
-            pi.original_price, pi.offer_price, pi.quantity_in_stock, pi.added_at, pi.updated_at,
-            (SELECT v.variant AS variant FROM variants v WHERE v.id = 
-            (SELECT vv.variant_id FROM variant_values vv WHERE vv.id = piv.variant_value_id)),
-            (SELECT vv.variant_value AS variant_value FROM variant_values vv WHERE vv.id = piv.variant_value_id)
-            FROM product_items pi 
-            JOIN product_item_values piv ON pi.id = piv.product_item_id
-            WHERE pi.product_id=%s
-            ORDER BY pi.id
-            '''
-
-            cursor.execute(GET_PRODUCT_ITEMS, (product_id,))
-            rows = cursor.fetchall()
-            if not rows:
-                app.logger.debug("No rows")
-                return product_dict
-            for row in rows:
-                product_item_dict = {}
-                product_item_dict['id'] = row.product_item_id
-                product_item_dict['product_id'] = row.product_id
-                product_item_dict['product_variant_name'] = row.product_variant_name
-                product_item_dict['SKU'] = row.SKU
-
-                product_item_dict.update(json.loads(
-                    json.dumps({'original_price': row.original_price}, default=str)))
-                product_item_dict.update(json.loads(
-                    json.dumps({'offer_price': row.offer_price}, default=str)))
-
-                product_item_dict['quantity_in_stock'] = row.quantity_in_stock
-                product_item_dict.update(json.loads(
-                    json.dumps({'added_at': row.added_at}, default=str)))
-                product_item_dict.update(json.loads(
-                    json.dumps({'updated_at': row.updated_at}, default=str)))
-
-                product_item_dict['variant'] = row.variant
-                product_item_dict['variant_value'] = row.variant_value
-
-                if product_item_dict['id'] == product_dict['base_product_item_id']:
-                    media_dict = {}
-                    GET_BASE_MEDIA = '''SELECT m.id AS media_id, m.name, m.path
-                    FROM media m
-                    WHERE m.id = (SELECT pim.media_id From product_item_medias pim
-                    WHERE pim.product_item_id = %s 
-                    ORDER BY pim.display_order LIMIT 1) 
-                    '''
-                    cursor.execute(
-                        GET_BASE_MEDIA, (product_dict['base_product_item_id'],))
-                    row = cursor.fetchone()
-                    if row is None:
-                        app.logger.debug("No media rows")
-                        product_item_dict.update({"media": media_dict})
-                        continue
-                    media_dict['id'] = row.media_id
-                    media_dict['name'] = row.name
-                    # media_dict['path'] = row.path
-                    path = row.path
-                    if path is not None:
-                        media_dict['path'] = "{}/{}".format(
-                            app.config["S3_LOCATION"], path)
-                    else:
-                        media_dict['path'] = None
-                    product_item_dict.update({"media": media_dict})
-                product_items_list.append(product_item_dict)
-            product_dict.update({'product_items': product_items_list})
-        except (Exception, psycopg2.Error) as err:
-            app.logger.debug(err)
-            abort(400, 'Bad Request')
-        finally:
-            cursor.close()
-        # app.logger.debug(product_dict)
-        return product_dict
-
 
 class SellersProducts(Resource):
     # todo: work on medias and tags

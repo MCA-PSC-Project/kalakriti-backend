@@ -46,7 +46,7 @@ class Categories(Resource):
 
     def get(self):
         categories_list = []
-        GET_CATEGORY = '''SELECT c.id AS category_id, c.name AS category_name, c.parent_id,
+        GET_CATEGORIES = '''SELECT c.id AS category_id, c.name AS category_name, c.parent_id,
         m.id AS media_id, m.name AS media_name, m.path
 		FROM categories c LEFT JOIN media m ON m.id= cover_id
 		WHERE c.parent_id IS NULL
@@ -59,17 +59,17 @@ class Categories(Resource):
             cursor = app_globals.get_named_tuple_cursor()
             # app.logger.debug("cursor object: %s", cursor)
 
-            cursor.execute(GET_CATEGORY)
+            cursor.execute(GET_CATEGORIES)
             rows = cursor.fetchall()
             if not rows:
                 return {}
             for row in rows:
                 category_dict = {}
-                cover_media_dict = {}
                 category_dict['id'] = row.category_id
                 category_dict['name'] = row.category_name
                 category_dict['parent_id'] = row.parent_id
 
+                cover_media_dict = {}
                 cover_media_dict['id'] = row.media_id
                 cover_media_dict['name'] = row.media_name
                 # media_dict['path'] = row.path
@@ -91,7 +91,7 @@ class Categories(Resource):
 
                 try:
                     # declare a cursor object from the connection
-                    cursor = app_globals.get_cursor()
+                    cursor = app_globals.get_named_tuple_cursor()
                     # # app.logger.debug("cursor object: %s", cursor)
                     # app.logger.debug(categories_list[i]['id'])
                     cursor.execute(GET_SUBCATEGORIES,
