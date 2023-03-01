@@ -466,9 +466,10 @@ class SellersProductItems(Resource):
             cursor = app_globals.get_cursor()
             # app.logger.debug("cursor object: %s", cursor)
 
-            DELETE_VARIANT_VALUE = '''DELETE FROM variant_values vv WHERE vv.id = 
-            (SELECT piv.variant_value_id FROM product_item_values piv 
-            WHERE piv.product_item_id = %s)'''
+            DELETE_VARIANT_VALUE = '''DELETE FROM variant_values vv WHERE vv.id = (
+                SELECT piv.variant_value_id FROM product_item_values piv 
+                WHERE piv.product_item_id = %s
+            )'''
 
             cursor.execute(DELETE_VARIANT_VALUE, (product_item_id,))
             # app.logger.debug("row_counts= %s", cursor.rowcount)

@@ -7,6 +7,7 @@ import flask_jwt_extended as f_jwt
 import json
 from flask import current_app as app
 
+
 class ProductsByCategory(Resource):
     def get(self):
         args = request.args  # retrieve args from query string
@@ -146,6 +147,7 @@ class ProductsByCategory(Resource):
             cursor.close()
         # app.logger.debug(products_list)
         return products_list
+
 
 class Products(Resource):
     def get(self, product_id):
@@ -287,6 +289,7 @@ class Products(Resource):
             cursor.close()
         # app.logger.debug(product_dict)
         return product_dict
+
 
 class SellersProducts(Resource):
     # todo: work on medias and tags
@@ -630,24 +633,44 @@ class SellersProducts(Resource):
         if user_type != "admin" and user_type != "super_admin":
             abort(400, "only super-admins and admins can delete product")
 
-        DELETE_TRASHED_PRODUCT = 'DELETE FROM products WHERE id= %s AND trashed= true'
-
+        # before beginning transaction autocommit must be off
+        app_globals.db_conn.autocommit = False
         # catch exception for invalid SQL statement
         try:
             # declare a cursor object from the connection
             cursor = app_globals.get_cursor()
             # app.logger.debug("cursor object: %s", cursor)
 
+            DELETE_VARIANT_VALUE = '''DELETE FROM variant_values vv WHERE vv.id IN (
+                SELECT piv.variant_value_id FROM product_item_values piv 
+                WHERE piv.product_item_id IN (
+                    SELECT pi.id FROM product_items pi WHERE pi.product_id = %s
+                )
+            )'''
+
+            cursor.execute(DELETE_VARIANT_VALUE, (product_id,))
+            # app.logger.debug("row_counts= %s", cursor.rowcount)
+            if not cursor.rowcount > 0:
+                abort(400, 'Bad Request: delete variant values row error')
+
+            DELETE_TRASHED_PRODUCT = 'DELETE FROM products WHERE id= %s AND trashed= true'
             cursor.execute(DELETE_TRASHED_PRODUCT, (product_id,))
             # app.logger.debug("row_counts= %s", cursor.rowcount)
             if cursor.rowcount != 1:
                 abort(400, 'Bad Request: delete row error')
         except (Exception, psycopg2.Error) as err:
             app.logger.debug(err)
+            app_globals.db_conn.rollback()
+            app_globals.db_conn.autocommit = True
+            app.logger.debug("autocommit switched back from off to on")
             abort(400, 'Bad Request')
         finally:
             cursor.close()
+        app_globals.db_conn.commit()
+        app_globals.db_conn.autocommit = True
+        app.logger.debug("autocommit switched back from off to on")
         return 200
+
 
 class ProductsAllDetails(Resource):
     def get(self, product_id):
