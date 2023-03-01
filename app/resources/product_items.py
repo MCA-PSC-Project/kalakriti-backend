@@ -14,10 +14,10 @@ class ProductItems(Resource):
         # catch exception for invalid SQL statement
         try:
             # declare a cursor object from the connection
-            cursor = app_globals.get_cursor()
-            # # app.logger.debug("cursor object: %s", cursor)
+            cursor = app_globals.get_named_tuple_cursor()
+            # app.logger.debug("cursor object: %s", cursor)
 
-            GET_PRODUCT_ITEM = '''SELECT pi.id, pi.product_id, pi.product_variant_name, pi."SKU", 
+            GET_PRODUCT_ITEM = '''SELECT pi.id AS product_item_id, pi.product_id, pi.product_variant_name, pi."SKU", 
             pi.original_price, pi.offer_price, pi.quantity_in_stock, pi.added_at, pi.updated_at,
             (SELECT v.variant AS variant FROM variants v WHERE v.id = 
             (SELECT vv.variant_id FROM variant_values vv WHERE vv.id = piv.variant_value_id)),
@@ -34,24 +34,24 @@ class ProductItems(Resource):
                 return {}
 
             product_item_dict = {}
-            product_item_dict['id'] = row[0]
-            product_item_dict['product_id'] = row[1]
-            product_item_dict['product_variant_name'] = row[2]
-            product_item_dict['SKU'] = row[3]
+            product_item_dict['id'] = row.product_item_id
+            product_item_dict['product_id'] = row.product_id
+            product_item_dict['product_variant_name'] = row.product_variant_name
+            product_item_dict['SKU'] = row.SKU
 
             product_item_dict.update(json.loads(
-                json.dumps({'original_price': row[4]}, default=str)))
+                json.dumps({'original_price': row.original_price}, default=str)))
             product_item_dict.update(json.loads(
-                json.dumps({'offer_price': row[5]}, default=str)))
+                json.dumps({'offer_price': row.offer_price}, default=str)))
 
-            product_item_dict['quantity_in_stock'] = row[6]
+            product_item_dict['quantity_in_stock'] = row.quantity_in_stock
             product_item_dict.update(json.loads(
-                json.dumps({'added_at': row[7]}, default=str)))
+                json.dumps({'added_at': row.added_at}, default=str)))
             product_item_dict.update(json.loads(
-                json.dumps({'updated_at': row[8]}, default=str)))
+                json.dumps({'updated_at': row.updated_at}, default=str)))
 
-            product_item_dict['variant'] = row[9]
-            product_item_dict['variant_value'] = row[10]
+            product_item_dict['variant'] = row.variant
+            product_item_dict['variant_value'] = row.variant_value
 
             # GET_MEDIAS='''SELECT m.id, m.name, m.path, pim.display_order
             # FROM media m WHERE m.id IN
@@ -59,7 +59,7 @@ class ProductItems(Resource):
             # WHERE pim.product_item_id= %s)
             # '''
 
-            GET_MEDIAS = '''SELECT m.id, m.name, m.path, pim.display_order, pim.media_id
+            GET_MEDIAS = '''SELECT m.id AS media_id, m.name, m.path, pim.display_order
             FROM product_item_medias pim 
             JOIN LATERAL
             (SELECT m.id, m.name, m.path 
@@ -77,17 +77,16 @@ class ProductItems(Resource):
                 pass
             for row in rows:
                 media_dict = {}
-                media_dict['id'] = row[0]
-                media_dict['name'] = row[1]
-                # media_dict['path'] = row[2]
-                path = row[2]
+                media_dict['id'] = row.media_id
+                media_dict['name'] = row.name
+                # media_dict['path'] = row.path
+                path = row.path
                 if path is not None:
                     media_dict['path'] = "{}/{}".format(
-                        app.config["S3_LOCATION"], row[2])
+                        app.config["S3_LOCATION"], path)
                 else:
                     media_dict['path'] = None
-                media_dict['pim_display_order'] = row[3]
-                media_dict['pim_media_id'] = row[4]
+                media_dict['display_order'] = row.display_order
                 media_list.append(media_dict)
             product_item_dict.update({"medias": media_list})
 
@@ -96,7 +95,7 @@ class ProductItems(Resource):
             abort(400, 'Bad Request')
         finally:
             cursor.close()
-        # app.logger.debug(product_dict)
+        # app.logger.debug(product_item_dict)
         return product_item_dict
 
 
