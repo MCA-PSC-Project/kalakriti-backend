@@ -28,7 +28,14 @@ CREATE TYPE "order__status" AS ENUM (
 );
 CREATE TYPE "payment__status" AS ENUM ('failure', 'success', 'pending');
 CREATE TYPE "approval__status" AS ENUM ('pending', 'approved', 'rejected');
-CREATE TYPE "payment__mode" AS ENUM ('upi', 'credit_card', 'debit_card', 'cash', 'net_banking', 'digital_wallet');
+CREATE TYPE "payment__mode" AS ENUM (
+	'upi',
+	'credit_card',
+	'debit_card',
+	'cash',
+	'net_banking',
+	'digital_wallet'
+);
 -----------------------TABLES-------------------------------------------
 CREATE TABLE "media"(
 	"id" SERIAL PRIMARY KEY,
@@ -205,6 +212,7 @@ CREATE TABLE "orders"(
 	SET NULL
 );
 CREATE TABLE "order_items"(
+	"id" SERIAL PRIMARY KEY,
 	"order_id" INT,
 	"product_item_id" INT,
 	"quantity" INT NOT NULL,
@@ -213,21 +221,8 @@ CREATE TABLE "order_items"(
 	"discount_percent" NUMERIC NOT NULL,
 	"discount" NUMERIC NOT NULL,
 	"tax" NUMERIC NOT NULL,
-	PRIMARY KEY("order_id", "product_item_id"),
+	UNIQUE("order_id", "product_item_id"),
 	FOREIGN KEY("order_id") REFERENCES "orders"("id") ON DELETE
-	SET NULL,
-		FOREIGN KEY("product_item_id") REFERENCES "product_items"("id") ON DELETE
-	SET NULL
-);
-CREATE TABLE "product_reviews"(
-	"user_id" INT,
-	"product_item_id" INT,
-	"rating" NUMERIC(2, 1),
-	"review" VARCHAR,
-	"added_at" TIMESTAMPTZ NOT NULL,
-	"updated_at" TIMESTAMPTZ NOT NULL,
-	PRIMARY KEY("user_id", "product_item_id"),
-	FOREIGN KEY("user_id") REFERENCES "users"("id") ON DELETE
 	SET NULL,
 		FOREIGN KEY("product_item_id") REFERENCES "product_items"("id") ON DELETE
 	SET NULL
@@ -245,6 +240,20 @@ CREATE TABLE "payments"(
 	FOREIGN KEY("order_id") REFERENCES "orders"("id") ON DELETE
 	SET NULL
 );
+CREATE TABLE "product_reviews"(
+	"id" SERIAL PRIMARY KEY,
+	"user_id" INT,
+	"order_item_id" INT,
+	"rating" NUMERIC(2, 1),
+	"review" VARCHAR(500),
+	"added_at" TIMESTAMPTZ NOT NULL,
+	"updated_at" TIMESTAMPTZ NOT NULL,
+	UNIQUE("user_id", "order_item_id"),
+	FOREIGN KEY("user_id") REFERENCES "users"("id") ON DELETE
+	SET NULL,
+		FOREIGN KEY("order_item_id") REFERENCES "order_items"("id") ON DELETE
+	SET NULL
+);
 CREATE TABLE "seller_applicant_forms"(
 	"id" SERIAL PRIMARY KEY,
 	"name" VARCHAR NOT NULL,
@@ -258,14 +267,15 @@ CREATE TABLE "seller_applicant_forms"(
 	"path" VARCHAR DEFAULT ''
 );
 CREATE TABLE "bank_details"(
-  "user_id" integer, 
-  "account_holder_name" varchar NOT NULL, 
-  "account_no" varchar NOT NULL, 
-  "IFSC" varchar NOT NULL, 
-  "account_type" varchar NOT NULL DEFAULT '',
-  "PAN" varchar,
-  PRIMARY KEY("user_id"),
-  FOREIGN KEY ("user_id") REFERENCES "users" ("id") ON DELETE SET NULL
+	"user_id" integer,
+	"account_holder_name" varchar NOT NULL,
+	"account_no" varchar NOT NULL,
+	"IFSC" varchar NOT NULL,
+	"account_type" varchar NOT NULL DEFAULT '',
+	"PAN" varchar,
+	PRIMARY KEY("user_id"),
+	FOREIGN KEY ("user_id") REFERENCES "users" ("id") ON DELETE
+	SET NULL
 );
 CREATE TABLE "mobile_otp"(
 	"mobile_no" VARCHAR(15) PRIMARY KEY,
@@ -273,9 +283,9 @@ CREATE TABLE "mobile_otp"(
 	"expiry" INT
 );
 CREATE TABLE "top_searches"(
-  "rank" smallint,
-  "query" varchar,
-  PRIMARY KEY("rank")
+	"rank" smallint,
+	"query" varchar,
+	PRIMARY KEY("rank")
 );
 CREATE TABLE "products_tsv_store"(
 	"product_id" integer,
@@ -297,50 +307,61 @@ INSERT INTO "variants"("variant")
 VALUES ('MATERIAL');
 INSERT INTO "variants"("variant")
 VALUES ('SIZE');
-
 ----- tsv ----
-CREATE OR REPLACE FUNCTION products_tsv_trigger() RETURNS trigger AS $$  
-BEGIN  
-    --code for Insert
-    IF TG_OP = 'INSERT' THEN
-      INSERT INTO "products_tsv_store" (product_id, tsv) 
-      VALUES (
-      NEW.id, setweight(to_tsvector('english', COALESCE(NEW.product_name,'')), 'A') || 
-      setweight(to_tsvector('english', COALESCE(NEW.product_description,'')), 'B') || 
-      setweight(to_tsvector('english', COALESCE(array_to_string(NEW.tags, ' '),'')), 'C')
-      );
-
-    --code for Update
-    ELSIF TG_OP = 'UPDATE' THEN
-        IF NEW.product_name <> OLD.product_name or NEW.product_description <> OLD.product_description or NEW.tags IS NOT NULL THEN
-            UPDATE "products_tsv_store" SET tsv =
-            setweight(to_tsvector('english', COALESCE(NEW.product_name,'')), 'A') || 
-            setweight(to_tsvector('english', COALESCE(NEW.product_description,'')), 'B') || 
-            setweight(to_tsvector('english', COALESCE(array_to_string(NEW.tags, ' '),'')), 'C') 
-            WHERE product_id = NEW.id;
-        END IF;
-    END IF;
-  RETURN NEW;
-END  
-$$ LANGUAGE plpgsql;
-
-
-CREATE TRIGGER "insert_update_tsv_trigger" AFTER INSERT OR UPDATE  
-ON products 
-FOR EACH ROW EXECUTE PROCEDURE products_tsv_trigger(); 
-
-
-CREATE OR REPLACE FUNCTION user_to_cart_trigger() RETURNS trigger AS $$  
-BEGIN  
-      INSERT INTO "carts" (user_id) 
-      VALUES (new.id);
-	  RETURN NEW;
-END
-$$ LANGUAGE plpgsql;
-
-CREATE TRIGGER "insert_into_carts" AFTER INSERT ON users 
-FOR EACH ROW EXECUTE PROCEDURE user_to_cart_trigger();
-
+CREATE OR REPLACE FUNCTION products_tsv_trigger() RETURNS trigger AS $$ BEGIN --code for Insert
+	IF TG_OP = 'INSERT' THEN
+INSERT INTO "products_tsv_store" (product_id, tsv)
+VALUES (
+		NEW.id,
+		setweight(
+			to_tsvector('english', COALESCE(NEW.product_name, '')),
+			'A'
+		) || setweight(
+			to_tsvector('english', COALESCE(NEW.product_description, '')),
+			'B'
+		) || setweight(
+			to_tsvector(
+				'english',
+				COALESCE(array_to_string(NEW.tags, ' '), '')
+			),
+			'C'
+		)
+	);
+--code for Update
+ELSIF TG_OP = 'UPDATE' THEN IF NEW.product_name <> OLD.product_name
+or NEW.product_description <> OLD.product_description
+or NEW.tags IS NOT NULL THEN
+UPDATE "products_tsv_store"
+SET tsv = setweight(
+		to_tsvector('english', COALESCE(NEW.product_name, '')),
+		'A'
+	) || setweight(
+		to_tsvector('english', COALESCE(NEW.product_description, '')),
+		'B'
+	) || setweight(
+		to_tsvector(
+			'english',
+			COALESCE(array_to_string(NEW.tags, ' '), '')
+		),
+		'C'
+	)
+WHERE product_id = NEW.id;
+END IF;
+END IF;
+RETURN NEW;
+END $$ LANGUAGE plpgsql;
+CREATE TRIGGER "insert_update_tsv_trigger"
+AFTER
+INSERT
+	OR
+UPDATE ON products FOR EACH ROW EXECUTE PROCEDURE products_tsv_trigger();
+CREATE OR REPLACE FUNCTION user_to_cart_trigger() RETURNS trigger AS $$ BEGIN
+INSERT INTO "carts" (user_id)
+VALUES (new.id);
+RETURN NEW;
+END $$ LANGUAGE plpgsql;
+CREATE TRIGGER "insert_into_carts"
+AFTER
+INSERT ON users FOR EACH ROW EXECUTE PROCEDURE user_to_cart_trigger();
 CREATE INDEX "tsv_index" ON "products_tsv_store" USING GIN ("tsv");
-
 END;
