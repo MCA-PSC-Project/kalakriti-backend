@@ -1461,5 +1461,25 @@
       "bearer": "{{token}}"
     },
     "tests": []
+  },
+  {
+    "_id": "be1c2af0-d9cd-49c7-85fe-746db490db83",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/auth/register",
+    "url": "{{baseUrl}}/auth/register",
+    "method": "POST",
+    "sortNum": 0,
+    "created": "2023-03-02T14:04:29.534Z",
+    "modified": "2023-03-02T14:04:29.534Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n\t\"email\": \"customer1@gmail.com\",\n\t\"password\": \"abcd@123\",\n\t\"first_name\": \"bittu\",\n\t\"last_name\": \"kumar\",\n\t\"phone\": \"12345\",\n\t\"dob\": \"10/3/1998\",\n\t\"gender\": \"male\"\n}",
+      "form": []
+    },
+    "tests": [],
+    "docs": "```json\n{\n\t\"email\": \"updated_admin@gmail.com\",\n\t\"password\": \"abcd@123\",\n\t\"user_type\" : \"customer\",\n\t\"first_name\": \"abcdddl\",\n\t\"last_name\": \"kumari\",\n\t\"phone\": \"987467887\",\n\t\"dob\": \"10/3/1998\",\n\t\"gender\": \"female\"\n}\n```"
   }
 ]
