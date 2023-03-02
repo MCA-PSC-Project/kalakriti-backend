@@ -29,7 +29,9 @@ class Orders(Resource):
             order_dict['total_discount'] += order_item_dict.get('discount')
             order_dict['total_tax'] += order_item_dict.get('tax')
         order_dict['grand_total'] = (
-            order_dict['sub_total'] - order_dict['total_discount'] + order_dict['total_tax'])
+            order_dict['sub_total'] -
+            order_dict['total_discount'] + order_dict['total_tax']
+        )
         app.logger.debug("order_dict= %s", order_dict)
 
         # before beginning transaction autocommit must be off
@@ -44,6 +46,7 @@ class Orders(Resource):
             CREATE_ORDER = '''INSERT INTO orders(user_id, shipping_address, city, district, state, country, pincode,
             phone, sub_total, total_discount, total_tax, grand_total, ordered_at) 
             VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s) RETURNING id'''
+
             cursor.execute(CREATE_ORDER,
                            (user_id, order_dict.get('address'),
                             order_dict.get('city'), order_dict.get('district'),
@@ -56,6 +59,7 @@ class Orders(Resource):
                             current_time,))
             order_id = cursor.fetchone()[0]
 
+            # add order items
             INSERT_ORDER_ITEMS = '''INSERT INTO order_items(order_id, product_item_id, quantity, 
             original_price, offer_price, discount_percent, discount, tax)
             VALUES(%s, %s, %s, %s, %s, %s, %s, %s)'''
@@ -75,6 +79,16 @@ class Orders(Resource):
 
             psycopg2.extras.execute_batch(
                 cursor, INSERT_ORDER_ITEMS, values_tuple_list)
+
+            # add payment info
+            # INSERT_PAYMENT_INFO = '''INSERT INTO payments 
+		    # (order_id, provider, provider_order_id, provider_payment_id, payment_mode, payment_status, added_at)
+		    # VALUES(%s, %s, %s, %s, %s, %s, %s) RETURNING id'''
+
+            # cursor.execute(INSERT_PAYMENT_INFO,
+            #                (order_id, current_time,))
+            # payment_id = cursor.fetchone()[0]
+
         except (Exception, psycopg2.Error) as err:
             app.logger.debug(err)
             app_globals.db_conn.rollback()
