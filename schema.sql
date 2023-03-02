@@ -344,7 +344,7 @@ ON products
 FOR EACH ROW EXECUTE PROCEDURE products_tsv_trigger(); 
 
 
-CREATE OR REPLACE FUNCTION user_to_cart_trigger() RETURNS trigger AS $$  
+CREATE OR REPLACE FUNCTION create_cart() RETURNS trigger AS $$  
 BEGIN  
       INSERT INTO "carts" (user_id) 
       VALUES (new.id);
@@ -352,8 +352,8 @@ BEGIN
 END
 $$ LANGUAGE plpgsql;
 
-CREATE TRIGGER "insert_into_carts" AFTER INSERT ON users 
-FOR EACH ROW EXECUTE PROCEDURE user_to_cart_trigger();
+CREATE TRIGGER "create_cart_trigger" AFTER INSERT ON users 
+FOR EACH ROW EXECUTE PROCEDURE create_cart();
 
 CREATE INDEX "tsv_index" ON "products_tsv_store" USING GIN ("tsv");
 
