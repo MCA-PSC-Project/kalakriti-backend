@@ -240,7 +240,7 @@ CREATE TABLE "payments"(
 	FOREIGN KEY("order_id") REFERENCES "orders"("id") ON DELETE
 	SET NULL
 );
-CREATE TABLE "product_reviews"(
+CREATE TABLE "product_item_reviews"(
 	"id" SERIAL PRIMARY KEY,
 	"user_id" INT,
 	"order_item_id" INT,
