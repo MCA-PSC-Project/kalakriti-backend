@@ -200,7 +200,7 @@ CREATE TABLE "banners"(
 CREATE TABLE "orders"(
 	"id" SERIAL PRIMARY KEY,
 	"user_id" INT,
-	"shipping_address_id" INT NOT NULL,
+	"shipping_address_id" INT,
 	"phone" VARCHAR NOT NULL,
 	"order_status" order__status DEFAULT 'initiated',
 	"total_original_price" NUMERIC NOT NULL,

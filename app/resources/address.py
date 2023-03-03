@@ -31,7 +31,7 @@ class UserAddress(Resource):
             cursor = app_globals.get_cursor()
             # # app.logger.debug("cursor object: %s", cursor)
 
-            ADD_ADDRESS = '''INSERT INTO addresses(address, district, city, state, country, pincode, landmark, added_at) 
+            ADD_ADDRESS = '''INSERT INTO addresses(address, district, city, state, country, pincode, landmark, added_at)
             VALUES(%s, %s, %s, %s, %s, %s, %s, %s) RETURNING id'''
 
             cursor.execute(ADD_ADDRESS, (address_dict.get('address'), address_dict.get('district'),
@@ -65,7 +65,7 @@ class UserAddress(Resource):
 
         addresses_list = []
 
-        GET_ADDRESSES = '''SELECT id AS address_id, address, district, city, state, country, pincode, landmark, added_at, updated_at 
+        GET_ADDRESSES = '''SELECT id AS address_id, address, district, city, state, country, pincode, landmark, added_at, updated_at
         FROM addresses WHERE id IN (
             SELECT address_id FROM user_addresses WHERE user_id = %s
         )'''
@@ -106,24 +106,19 @@ class UserAddress(Resource):
         return addresses_list
 
     @ f_jwt.jwt_required()
-    def put(self, category_id):
+    def put(self, address_id):
         user_id = f_jwt.get_jwt_identity()
         app.logger.debug("user_id= %s", user_id)
-        claims = f_jwt.get_jwt()
-        user_type = claims['user_type']
-        app.logger.debug("user_type= %s", user_type)
 
-        app.logger.debug("category_id= %s", category_id)
+        app.logger.debug("address_id= %s", address_id)
         data = request.get_json()
-        category_dict = json.loads(json.dumps(data))
-        app.logger.debug(category_dict)
+        address_dict = json.loads(json.dumps(data))
+        # app.logger.debug(address_dict)
 
         current_time = datetime.now()
 
-        if user_type != "admin" and user_type != "super_admin":
-            abort(400, "only super-admins and admins can update category")
-
-        UPDATE_CATEGORY = 'UPDATE categories SET name= %s, parent_id= %s, cover_id=%s, updated_at= %s WHERE id= %s'
+        UPDATE_ADDRESS = '''UPDATE addresses SET address= %s, district= %s, city= %s, state= %s, country= %s, pincode= %s,
+        landmark= %s, updated_at= %s WHERE id= %s'''
 
         # catch exception for invalid SQL statement
         try:
@@ -132,34 +127,29 @@ class UserAddress(Resource):
             # # app.logger.debug("cursor object: %s", cursor)
 
             cursor.execute(
-                UPDATE_CATEGORY, (category_dict['name'], category_dict['parent_id'], category_dict['cover_id'],
-                                  current_time, category_id,))
+                UPDATE_ADDRESS, (address_dict.get('address'), address_dict.get('district'),
+                                 address_dict.get(
+                    'city'), address_dict.get('state'),
+                    address_dict.get(
+                    'country'), address_dict.get('pincode'),
+                    address_dict.get('landmark'), current_time, address_id,))
             # app.logger.debug("row_counts= %s", cursor.rowcount)
             if cursor.rowcount != 1:
-                abort(400, 'Bad Request: update row error')
+                abort(400, 'Bad Request: update addresses row error')
         except (Exception, psycopg2.Error) as err:
             app.logger.debug(err)
             abort(400, 'Bad Request')
         finally:
             cursor.close()
-        return {"message": f"category_id {category_id} modified."}, 200
+        return {"message": f"address_id {address_id} modified."}, 200
 
-    @ f_jwt.jwt_required()
-    def delete(self, category_id):
-        # user_id = f_jwt.get_jwt_identity()
-        # user_id=20
+    @f_jwt.jwt_required()
+    def delete(self, address_id):
         user_id = f_jwt.get_jwt_identity()
         app.logger.debug("user_id= %s", user_id)
-        claims = f_jwt.get_jwt()
-        user_type = claims['user_type']
-        app.logger.debug("user_type= %s", user_type)
+        app.logger.debug("address_id=%s", address_id)
 
-        app.logger.debug("category_id=%s", category_id)
-
-        if user_type != "admin" and user_type != "super_admin":
-            abort(400, "only super-admins and admins can delete category")
-
-        DELETE_CATEGORY = 'DELETE FROM categories WHERE id= %s'
+        DELETE_ADDRESS = 'DELETE FROM addresses WHERE id= %s'
 
         # catch exception for invalid SQL statement
         try:
@@ -167,10 +157,10 @@ class UserAddress(Resource):
             cursor = app_globals.get_cursor()
             # app.logger.debug("cursor object: %s", cursor)
 
-            cursor.execute(DELETE_CATEGORY, (category_id,))
+            cursor.execute(DELETE_ADDRESS, (address_id,))
             # app.logger.debug("row_counts= %s", cursor.rowcount)
             if cursor.rowcount != 1:
-                abort(400, 'Bad Request: delete row error')
+                abort(400, 'Bad Request: delete addresses row error')
         except (Exception, psycopg2.Error) as err:
             app.logger.debug(err)
             abort(400, 'Bad Request')
