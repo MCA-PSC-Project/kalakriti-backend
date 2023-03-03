@@ -1172,7 +1172,7 @@
     "_id": "98af30c5-35fd-4891-9d12-559dcf6de49e",
     "colId": "80d178ef-5176-474a-8708-db78bd45faee",
     "containerId": "3c47a409-79a2-440c-b50c-c521a6ce6beb",
-    "name": "create product rating",
+    "name": "create product review",
     "url": "{{baseUrl}}/product-ratings",
     "method": "POST",
     "sortNum": 590000,
@@ -1194,30 +1194,21 @@
     "_id": "a9e5c863-dd2a-4311-a10f-4884de389cbf",
     "colId": "80d178ef-5176-474a-8708-db78bd45faee",
     "containerId": "3c47a409-79a2-440c-b50c-c521a6ce6beb",
-    "name": "get product ratings",
-    "url": "{{baseUrl}}/product-ratings",
+    "name": "get product reviews",
+    "url": "{{baseUrl}}/product-reviews",
     "method": "GET",
     "sortNum": 600000,
     "created": "2023-02-20T16:38:51.088Z",
-    "modified": "2023-02-20T16:38:51.088Z",
+    "modified": "2023-03-03T10:46:31.953Z",
     "headers": [],
-    "params": [
-      {
-        "name": "product_id",
-        "value": "9"
-      }
-    ],
-    "auth": {
-      "type": "bearer",
-      "bearer": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2NDQ5MTM3MDYsImlkIjoyNywidXNlcl90eXBlIjoibGVhcm5lciJ9.ch2FChaQniyZQIw7TEuUx5DEdgANdf1Tr6ATWZPphHw"
-    },
-    "docs": ""
+    "params": [],
+    "tests": []
   },
   {
     "_id": "5f486821-a145-4c02-8362-308baf78f165",
     "colId": "80d178ef-5176-474a-8708-db78bd45faee",
     "containerId": "3c47a409-79a2-440c-b50c-c521a6ce6beb",
-    "name": "get  user product ratings by product id",
+    "name": "get  user product reviews by product item id",
     "url": "{{baseUrl}}/product-ratings/59",
     "method": "GET",
     "sortNum": 610000,
@@ -1235,7 +1226,7 @@
     "_id": "30bb03a6-8ea1-4174-9fbf-a0e5cb97cc35",
     "colId": "80d178ef-5176-474a-8708-db78bd45faee",
     "containerId": "3c47a409-79a2-440c-b50c-c521a6ce6beb",
-    "name": "update course ratings",
+    "name": "update product item reviews",
     "url": "{{baseUrl}}/product-ratings",
     "method": "PUT",
     "sortNum": 620000,
@@ -2010,6 +2001,29 @@
     "modified": "2023-03-03T10:23:56.202Z",
     "headers": [],
     "params": [],
+    "tests": []
+  },
+  {
+    "_id": "8d975d34-33ae-4e34-b736-13f1fc23ea8b",
+    "colId": "80d178ef-5176-474a-8708-db78bd45faee",
+    "containerId": "3c47a409-79a2-440c-b50c-c521a6ce6beb",
+    "name": "delete product item reviews",
+    "url": "{{baseUrl}}/product-ratings",
+    "method": "DELETE",
+    "sortNum": 630000,
+    "created": "2023-03-03T10:54:00.645Z",
+    "modified": "2023-03-03T10:54:07.180Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n\t\"product_id\" : 9,\n\t\"rating\" : 5,\n\t\"review\": \"really awesome\"\n}",
+      "form": []
+    },
+    "auth": {
+      "type": "bearer",
+      "bearer": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2NDQ5MTcwNzMsImlkIjoyNywidXNlcl90eXBlIjoibGVhcm5lciJ9.XSclgiML2Wun83LfHVHUHwTAXnz87t5xqlRoQx9d9ts"
+    },
     "tests": []
   }
 ]
