@@ -1555,9 +1555,13 @@
     "method": "DELETE",
     "sortNum": 0,
     "created": "2023-03-03T13:03:13.333Z",
-    "modified": "2023-03-03T13:03:13.333Z",
+    "modified": "2023-03-03T13:03:25.298Z",
     "headers": [],
     "params": [],
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{token}}"
+    },
     "tests": []
   }
 ]

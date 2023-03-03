@@ -46,15 +46,12 @@ class Orders(Resource):
             cursor = app_globals.get_cursor()
             # # app.logger.debug("cursor object: %s", cursor)
 
-            CREATE_ORDER = '''INSERT INTO orders(user_id, shipping_address, city, district, state, country, pincode,
-            phone, total_original_price, sub_total, total_discount, total_tax, grand_total, ordered_at) 
-            VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s) RETURNING id'''
+            CREATE_ORDER = '''INSERT INTO orders(user_id, shipping_address_id, phone, 
+            total_original_price, sub_total, total_discount, total_tax, grand_total, added_at) 
+            VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s) RETURNING id'''
 
             cursor.execute(CREATE_ORDER,
-                           (user_id, order_dict.get('address'),
-                            order_dict.get('city'), order_dict.get('district'),
-                            order_dict.get('state'), order_dict.get('country'),
-                            order_dict.get('pincode'), order_dict.get('phone'),
+                           (user_id, order_dict.get('shipping_address_id'), order_dict.get('phone'),
                             order_dict.get('total_original_price'),
                             order_dict.get('sub_total'), order_dict.get(
                                 'total_discount'),
