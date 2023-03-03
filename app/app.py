@@ -9,6 +9,7 @@ import atexit
 
 # local imports
 from app.config import app_config
+from app.resources.address import UserAddress
 from app.resources.auth import Register, Login, RefreshToken, VerifyEmail
 from app.resources.orders import Orders
 from app.resources.product_items import ProductItems, SellersProductItems
@@ -106,6 +107,9 @@ def create_app(config_name):
 
     # User Profile
     api.add_resource(UserProfile, '/users/profile')
+    
+    # Address
+    api.add_resource(UserAddress, '/addresses', '/addresses/<int:address_id>')
 
     # Category & Subcategory
     api.add_resource(Categories, '/categories',

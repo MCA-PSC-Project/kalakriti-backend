@@ -1953,26 +1953,41 @@
     "_id": "9cb1ad75-11ac-4092-a19f-0fff175c50e4",
     "colId": "80d178ef-5176-474a-8708-db78bd45faee",
     "containerId": "a30a8ca7-aed2-44b8-9743-cb6771a99005",
-    "name": "Get address by id",
-    "url": "",
+    "name": "Get addresses of user",
+    "url": "{{baseUrl}}/addresses",
     "method": "GET",
     "sortNum": 940000,
     "created": "2023-03-03T10:22:57.012Z",
-    "modified": "2023-03-03T10:22:57.012Z",
-    "headers": []
+    "modified": "2023-03-03T12:45:52.989Z",
+    "headers": [],
+    "params": [],
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{token}}"
+    },
+    "tests": []
   },
   {
     "_id": "357f6699-3710-4be4-8115-715704eb6176",
     "colId": "80d178ef-5176-474a-8708-db78bd45faee",
     "containerId": "a30a8ca7-aed2-44b8-9743-cb6771a99005",
     "name": "add address",
-    "url": "",
+    "url": "{{baseUrl}}/addresses",
     "method": "POST",
     "sortNum": 950000,
     "created": "2023-03-03T10:23:13.876Z",
-    "modified": "2023-03-03T10:23:21.884Z",
+    "modified": "2023-03-03T12:40:48.076Z",
     "headers": [],
     "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n  \"address\": \"lapataganj\",\n  \"city\": \"Patna\",\n  \"district\": \"Patna\",\n  \"state\": \"Bihar\",\n  \"country\": \"India\",\n  \"pincode\": \"801105\",\n  \"landmark\": \"ghanta nhi pta\"\n}",
+      "form": []
+    },
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{token}}"
+    },
     "tests": []
   },
   {

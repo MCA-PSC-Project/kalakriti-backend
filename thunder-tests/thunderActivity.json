@@ -1481,5 +1481,46 @@
     },
     "tests": [],
     "docs": "```json\n{\n\t\"email\": \"updated_admin@gmail.com\",\n\t\"password\": \"abcd@123\",\n\t\"user_type\" : \"customer\",\n\t\"first_name\": \"abcdddl\",\n\t\"last_name\": \"kumari\",\n\t\"phone\": \"987467887\",\n\t\"dob\": \"10/3/1998\",\n\t\"gender\": \"female\"\n}\n```"
+  },
+  {
+    "_id": "0bdf8e00-f07c-4dfe-b415-433161070333",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/addresses",
+    "url": "{{baseUrl}}/addresses",
+    "method": "POST",
+    "sortNum": 0,
+    "created": "2023-03-03T12:40:25.505Z",
+    "modified": "2023-03-03T12:40:50.312Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n  \"address\": \"lapataganj\",\n  \"city\": \"Patna\",\n  \"district\": \"Patna\",\n  \"state\": \"Bihar\",\n  \"country\": \"India\",\n  \"pincode\": \"801105\",\n  \"landmark\": \"ghanta nhi pta\"\n}",
+      "form": []
+    },
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{token}}"
+    },
+    "tests": []
+  },
+  {
+    "_id": "e16f4e32-c03a-4cd6-9ce8-5185f069ae15",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/addresses",
+    "url": "{{baseUrl}}/addresses",
+    "method": "GET",
+    "sortNum": 0,
+    "created": "2023-03-03T12:45:01.697Z",
+    "modified": "2023-03-03T12:45:52.998Z",
+    "headers": [],
+    "params": [],
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{token}}"
+    },
+    "tests": []
   }
 ]
