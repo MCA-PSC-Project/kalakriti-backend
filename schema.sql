@@ -72,12 +72,14 @@ CREATE TABLE "addresses"(
 	"state" VARCHAR NOT NULL,
 	"country" VARCHAR NOT NULL,
 	"pincode" VARCHAR NOT NULL,
+	"landmark" VARCHAR(50),
 	"added_at" TIMESTAMPTZ NOT NULL,
 	"updated_at" TIMESTAMPTZ
 );
 CREATE TABLE "user_addresses"(
 	"user_id" INT,
 	"address_id" INT,
+	PRIMARY KEY("user_id", "address_id"),
 	FOREIGN KEY("user_id") REFERENCES "users"("id") ON DELETE CASCADE,
 	FOREIGN KEY("address_id") REFERENCES "addresses"("id") ON DELETE CASCADE
 );
