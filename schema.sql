@@ -252,7 +252,7 @@ CREATE TABLE "product_item_reviews"(
 	"rating" NUMERIC(2, 1),
 	"review" VARCHAR(500),
 	"added_at" TIMESTAMPTZ NOT NULL,
-	"updated_at" TIMESTAMPTZ NOT NULL,
+	"updated_at" TIMESTAMPTZ,
 	UNIQUE("user_id", "order_item_id"),
 	UNIQUE("user_id", "product_item_id"),
 	FOREIGN KEY("user_id") REFERENCES "users"("id") ON DELETE

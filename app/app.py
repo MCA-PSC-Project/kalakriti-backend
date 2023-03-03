@@ -25,6 +25,7 @@ from app.resources.banners import Banners
 from app.resources.seller_applicant_form import Seller_Applicant_Form
 from app.resources.wishlists import Wishlists
 from app.resources.carts import Carts
+from app.resources.product_item_review import Product_item_review
 
 import app.app_globals as app_globals
 
@@ -154,7 +155,11 @@ def create_app(config_name):
     # Carts
     api.add_resource(Carts, '/carts',
                      '/carts/<int:product_item_id>')
-
+    
+    # Reviews
+    api.add_resource(Product_item_review, '/product-reviews',
+                     '/product-reviews/<int:id>/product-id')  #products table id 
+    
     # Search
     api.add_resource(Search, '/search')
     api.add_resource(TopSearches, '/top-searches')
