@@ -64,18 +64,22 @@ CREATE TABLE "users"(
 	FOREIGN KEY("dp_id") REFERENCES "media"("id") ON DELETE
 	SET NULL
 );
-CREATE TABLE "user_address"(
+CREATE TABLE "addresses"(
 	"id" SERIAL PRIMARY KEY,
-	"user_id" INT,
 	"address" VARCHAR NOT NULL,
+	"district" VARCHAR NOT NULL,
 	"city" VARCHAR NOT NULL,
 	"state" VARCHAR NOT NULL,
-	"district" VARCHAR NOT NULL,
 	"country" VARCHAR NOT NULL,
 	"pincode" VARCHAR NOT NULL,
 	"added_at" TIMESTAMPTZ NOT NULL,
-	"updated_at" TIMESTAMPTZ,
-	FOREIGN KEY("user_id") REFERENCES "users"("id") ON DELETE CASCADE
+	"updated_at" TIMESTAMPTZ
+);
+CREATE TABLE "user_addresses"(
+	"user_id" INT,
+	"address_id" INT,
+	FOREIGN KEY("user_id") REFERENCES "users"("id") ON DELETE CASCADE,
+	FOREIGN KEY("address_id") REFERENCES "addresses"("id") ON DELETE CASCADE
 );
 CREATE TABLE "categories"(
 	"id" SERIAL PRIMARY KEY,
@@ -194,22 +198,19 @@ CREATE TABLE "banners"(
 CREATE TABLE "orders"(
 	"id" SERIAL PRIMARY KEY,
 	"user_id" INT,
-	"shipping_address" VARCHAR NOT NULL,
-	"city" VARCHAR NOT NULL,
-	"district" VARCHAR NOT NULL,
-	"state" VARCHAR NOT NULL,
-	"country" VARCHAR NOT NULL,
-	"pincode" VARCHAR NOT NULL,
+	"shipping_address_id" INT NOT NULL,
 	"phone" VARCHAR NOT NULL,
 	"order_status" order__status DEFAULT 'initiated',
-	"ordered_at" TIMESTAMPTZ NOT NULL,
 	"total_original_price" NUMERIC NOT NULL,
 	"sub_total" NUMERIC NOT NULL,
 	"total_discount" NUMERIC NOT NULL DEFAULT 0,
 	"total_tax" NUMERIC NOT NULL DEFAULT 0,
 	"grand_total" NUMERIC NOT NULL,
+	"added_at" TIMESTAMPTZ NOT NULL,
 	"updated_at" TIMESTAMPTZ,
 	FOREIGN KEY("user_id") REFERENCES "users"("id") ON DELETE
+	SET NULL,
+	FOREIGN KEY("shipping_address_id") REFERENCES "addresses"("id") ON DELETE
 	SET NULL
 );
 CREATE TABLE "order_items"(
