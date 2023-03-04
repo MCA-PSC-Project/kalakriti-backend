@@ -2054,5 +2054,23 @@
       "bearer": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2NDQ5MTcwNzMsImlkIjoyNywidXNlcl90eXBlIjoibGVhcm5lciJ9.XSclgiML2Wun83LfHVHUHwTAXnz87t5xqlRoQx9d9ts"
     },
     "tests": []
+  },
+  {
+    "_id": "876caf27-109d-4dd7-9bd7-242bad77adf1",
+    "colId": "80d178ef-5176-474a-8708-db78bd45faee",
+    "containerId": "2ffd39e9-6675-40b7-abd0-296aaf9564ad",
+    "name": "get orders of a user",
+    "url": "{{baseUrl}}/orders",
+    "method": "GET",
+    "sortNum": 530000,
+    "created": "2023-03-04T13:37:50.603Z",
+    "modified": "2023-03-04T13:38:39.531Z",
+    "headers": [],
+    "params": [],
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{token}}"
+    },
+    "tests": []
   }
 ]

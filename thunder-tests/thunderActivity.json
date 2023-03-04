@@ -1559,5 +1559,23 @@
     "headers": [],
     "params": [],
     "tests": []
+  },
+  {
+    "_id": "004ecb93-ee4f-4666-b4a2-0f9e224c399d",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/orders",
+    "url": "{{baseUrl}}/orders",
+    "method": "GET",
+    "sortNum": 0,
+    "created": "2023-03-04T13:38:42.626Z",
+    "modified": "2023-03-04T13:38:42.626Z",
+    "headers": [],
+    "params": [],
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{token}}"
+    },
+    "tests": []
   }
 ]

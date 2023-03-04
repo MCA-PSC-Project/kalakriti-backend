@@ -114,7 +114,7 @@ class Wishlists(Resource):
             abort(400, 'Bad Request')
         finally:
             cursor.close()
-        # app.logger.debug(banner_dict)
+        # app.logger.debug(wishlists_list)
         return wishlists_list
 
     @ f_jwt.jwt_required()
