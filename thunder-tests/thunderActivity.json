@@ -1577,5 +1577,51 @@
       "bearer": "{{token}}"
     },
     "tests": []
+  },
+  {
+    "_id": "1f048528-4d24-4f46-911f-21a77f70a5cf",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/orders/1",
+    "url": "{{baseUrl}}/orders/1",
+    "method": "PATCH",
+    "sortNum": 0,
+    "created": "2023-03-04T14:44:26.779Z",
+    "modified": "2023-03-04T14:44:26.779Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n  \"order_status\": \"dispatched\"\n}",
+      "form": []
+    },
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{token}}"
+    },
+    "tests": []
+  },
+  {
+    "_id": "b0da85ac-3c99-4ba0-9e76-21c04bf80800",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/orders/2",
+    "url": "{{baseUrl}}/orders/2",
+    "method": "PATCH",
+    "sortNum": 0,
+    "created": "2023-03-04T14:45:44.835Z",
+    "modified": "2023-03-04T14:45:44.835Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n  \"order_status\": \"dispatched\"\n}",
+      "form": []
+    },
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{token}}"
+    },
+    "tests": []
   }
 ]

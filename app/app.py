@@ -108,7 +108,7 @@ def create_app(config_name):
 
     # User Profile
     api.add_resource(UserProfile, '/users/profile')
-    
+
     # Address
     api.add_resource(UserAddress, '/addresses', '/addresses/<int:address_id>')
 
@@ -155,17 +155,17 @@ def create_app(config_name):
     # Carts
     api.add_resource(Carts, '/carts',
                      '/carts/<int:product_item_id>')
-    
+
     # Reviews
     api.add_resource(Product_item_review, '/product-reviews',
-                     '/product-reviews/<int:id>/product-id')  #products table id 
-    
+                     '/product-reviews/<int:id>/product-id')  # products table id
+
     # Search
     api.add_resource(Search, '/search')
     api.add_resource(TopSearches, '/top-searches')
 
     # Orders
-    api.add_resource(Orders, '/orders')
+    api.add_resource(Orders, '/orders', '/orders/<int:order_id>')
 
     # to be exceuted at app exit for cleanups
     @atexit.register

@@ -203,3 +203,37 @@ class Orders(Resource):
             cursor.close()
         # app.logger.debug(orders_list)
         return orders_list
+
+    @f_jwt.jwt_required()
+    def patch(self, order_id):
+        user_id = f_jwt.get_jwt_identity()
+        app.logger.debug("user_id= %s", user_id)
+        claims = f_jwt.get_jwt()
+        user_type = claims['user_type']
+        app.logger.debug("user_type= %s", user_type)
+
+        data = request.get_json()
+        order_status = data.get("order_status", None)
+        if not order_status:
+            abort(400, 'Bad Request')
+        current_time = datetime.now()
+
+        # catch exception for invalid SQL statement
+        try:
+            # declare a cursor object from the connection
+            cursor = app_globals.get_cursor()
+            # app.logger.debug("cursor object: %s", cursor)
+
+            UPDATE_ORDER_STATUS = '''UPDATE orders SET order_status= %s, updated_at= %s WHERE id= %s'''
+
+            cursor.execute(
+                UPDATE_ORDER_STATUS, (order_status, current_time, order_id,))
+            # app.logger.debug("row_counts= %s", cursor.rowcount)
+            if cursor.rowcount != 1:
+                abort(400, 'Bad Request: update orders row error')
+        except (Exception, psycopg2.Error) as err:
+            app.logger.debug(err)
+            abort(400, 'Bad Request')
+        finally:
+            cursor.close()
+        return {"message": f"Order id = {order_id} modified."}, 200

@@ -2072,5 +2072,28 @@
       "bearer": "{{token}}"
     },
     "tests": []
+  },
+  {
+    "_id": "2c3ac572-6467-4069-b8d8-0ae0609d99a0",
+    "colId": "80d178ef-5176-474a-8708-db78bd45faee",
+    "containerId": "2ffd39e9-6675-40b7-abd0-296aaf9564ad",
+    "name": "Update order's status",
+    "url": "{{baseUrl}}/orders/2",
+    "method": "PATCH",
+    "sortNum": 540000,
+    "created": "2023-03-04T14:42:16.324Z",
+    "modified": "2023-03-04T14:45:45.004Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n  \"order_status\": \"dispatched\"\n}",
+      "form": []
+    },
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{token}}"
+    },
+    "tests": []
   }
 ]
