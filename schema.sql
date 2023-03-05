@@ -74,7 +74,8 @@ CREATE TABLE "addresses"(
 	"pincode" VARCHAR NOT NULL,
 	"landmark" VARCHAR(50),
 	"added_at" TIMESTAMPTZ NOT NULL,
-	"updated_at" TIMESTAMPTZ
+	"updated_at" TIMESTAMPTZ,
+	"trashed" BOOLEAN DEFAULT FALSE
 );
 CREATE TABLE "user_addresses"(
 	"user_id" INT,

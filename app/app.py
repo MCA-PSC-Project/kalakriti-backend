@@ -11,7 +11,7 @@ import atexit
 from app.config import app_config
 from app.resources.address import UserAddress
 from app.resources.auth import Register, Login, RefreshToken, VerifyEmail
-from app.resources.orders import Orders
+from app.resources.orders import Orders, UserOrders
 from app.resources.product_items import ProductItems, SellersProductItems
 from app.resources.products import Products, ProductsAllDetails, ProductsByCategory, SellersProducts
 from app.resources.search import Search, TopSearches
@@ -166,6 +166,7 @@ def create_app(config_name):
 
     # Orders
     api.add_resource(Orders, '/orders', '/orders/<int:order_id>')
+    api.add_resource(UserOrders, '/user-orders')
 
     # to be exceuted at app exit for cleanups
     @atexit.register

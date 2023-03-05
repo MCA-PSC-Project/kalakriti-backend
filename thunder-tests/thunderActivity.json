@@ -31,12 +31,12 @@
     "method": "POST",
     "sortNum": 0,
     "created": "2023-02-22T17:11:30.418Z",
-    "modified": "2023-03-01T17:55:51.354Z",
+    "modified": "2023-03-05T08:37:09.320Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n    \"email\": \"customer@gmail.com\",\n    \"password\": \"abcd@123\"\n}",
+      "raw": "{\n    \"email\": \"admin@gmail.com\",\n    \"password\": \"abcd@123\"\n}",
       "form": []
     },
     "tests": [],
@@ -1555,9 +1555,13 @@
     "method": "DELETE",
     "sortNum": 0,
     "created": "2023-03-03T13:03:13.333Z",
-    "modified": "2023-03-03T13:03:13.333Z",
+    "modified": "2023-03-05T08:36:42.688Z",
     "headers": [],
     "params": [],
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{token}}"
+    },
     "tests": []
   },
   {
@@ -1616,6 +1620,140 @@
     "body": {
       "type": "json",
       "raw": "{\n  \"order_status\": \"dispatched\"\n}",
+      "form": []
+    },
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{token}}"
+    },
+    "tests": []
+  },
+  {
+    "_id": "8edb01f6-8317-488a-8c91-46c9a543bb7b",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/uploads/image",
+    "url": "{{baseUrl}}/uploads/image",
+    "method": "POST",
+    "sortNum": 0,
+    "created": "2023-03-05T07:18:12.265Z",
+    "modified": "2023-03-05T07:18:12.265Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "formdata",
+      "raw": "",
+      "form": [],
+      "files": [
+        {
+          "name": "file",
+          "value": "C:\\Users\\prash\\OneDrive\\Pictures\\98-984378_linux-tux-ubuntu-debian-fedora-logos-hd-wallpaper.png"
+        }
+      ]
+    },
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{token}}"
+    },
+    "tests": []
+  },
+  {
+    "_id": "e6c4d927-0bc8-4bf0-b940-8f28628f349a",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/user-orders",
+    "url": "{{baseUrl}}/user-orders",
+    "method": "GET",
+    "sortNum": 0,
+    "created": "2023-03-05T07:34:17.295Z",
+    "modified": "2023-03-05T07:34:17.295Z",
+    "headers": [],
+    "params": [],
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{token}}"
+    },
+    "tests": []
+  },
+  {
+    "_id": "9c493e32-71e7-4cfc-91bd-7bded6110d25",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/addresses/2",
+    "url": "{{baseUrl}}/addresses/2",
+    "method": "PATCH",
+    "sortNum": 0,
+    "created": "2023-03-05T08:20:37.745Z",
+    "modified": "2023-03-05T08:20:37.745Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n  \"trashed\": true\n}",
+      "form": []
+    },
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{token}}"
+    },
+    "tests": []
+  },
+  {
+    "_id": "e16d9f5d-10f1-4626-b719-13a0fb7fb364",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/addresses/3",
+    "url": "{{baseUrl}}/addresses/3",
+    "method": "PATCH",
+    "sortNum": 0,
+    "created": "2023-03-05T08:20:47.109Z",
+    "modified": "2023-03-05T08:38:39.243Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n  \"trashed\": true\n}",
+      "form": []
+    },
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{token}}"
+    },
+    "tests": []
+  },
+  {
+    "_id": "15adf8dc-4d0f-44da-b89f-f69c324526d4",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/addresses/3",
+    "url": "{{baseUrl}}/addresses/3",
+    "method": "DELETE",
+    "sortNum": 0,
+    "created": "2023-03-05T08:38:29.619Z",
+    "modified": "2023-03-05T08:38:29.619Z",
+    "headers": [],
+    "params": [],
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{admin_token}}"
+    },
+    "tests": []
+  },
+  {
+    "_id": "ea5907ac-07ea-4493-860e-d587856b7ed1",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/addresses/5",
+    "url": "{{baseUrl}}/addresses/5",
+    "method": "PUT",
+    "sortNum": 0,
+    "created": "2023-03-05T08:40:08.130Z",
+    "modified": "2023-03-05T08:40:08.130Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n  \"address\": \"psc\",\n  \"city\": \"patna\",\n  \"district\": \"Patna\",\n  \"state\": \"Bihar\",\n  \"country\": \"India\",\n  \"pincode\": \"800001\",\n  \"landmark\": \"ghanta nhi pta\"\n}",
       "form": []
     },
     "auth": {

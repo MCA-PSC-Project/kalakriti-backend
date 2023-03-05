@@ -65,10 +65,11 @@ class UserAddress(Resource):
 
         addresses_list = []
 
-        GET_ADDRESSES = '''SELECT id AS address_id, address, district, city, state, country, pincode, landmark, added_at, updated_at
+        GET_ADDRESSES = '''SELECT id AS address_id, address, district, city, state, country, pincode, landmark, 
+        added_at, updated_at
         FROM addresses WHERE id IN (
             SELECT address_id FROM user_addresses WHERE user_id = %s
-        )'''
+        ) AND trashed = False'''
 
         # catch exception for invalid SQL statement
         try:
@@ -144,12 +145,15 @@ class UserAddress(Resource):
         return {"message": f"address_id {address_id} modified."}, 200
 
     @f_jwt.jwt_required()
-    def delete(self, address_id):
+    def patch(self, address_id):
         user_id = f_jwt.get_jwt_identity()
         app.logger.debug("user_id= %s", user_id)
-        app.logger.debug("address_id=%s", address_id)
 
-        DELETE_ADDRESS = 'DELETE FROM addresses WHERE id= %s'
+        data = request.get_json()
+        if 'trashed' not in data.keys():
+            abort(400, 'Bad Request')
+        trashed= data.get('trashed')
+        current_time = datetime.now()
 
         # catch exception for invalid SQL statement
         try:
@@ -157,7 +161,41 @@ class UserAddress(Resource):
             cursor = app_globals.get_cursor()
             # app.logger.debug("cursor object: %s", cursor)
 
-            cursor.execute(DELETE_ADDRESS, (address_id,))
+            UPDATE_ADDRESS_TRASHED_VALUE = '''UPDATE addresses SET trashed= %s, updated_at= %s WHERE id= %s'''
+
+            cursor.execute(
+                UPDATE_ADDRESS_TRASHED_VALUE, (trashed, current_time, address_id,))
+            # app.logger.debug("row_counts= %s", cursor.rowcount)
+            if cursor.rowcount != 1:
+                abort(400, 'Bad Request: update adddresses row error')
+        except (Exception, psycopg2.Error) as err:
+            app.logger.debug(err)
+            abort(400, 'Bad Request')
+        finally:
+            cursor.close()
+        return {"message": f"Address id = {address_id} modified."}, 200
+    
+    @f_jwt.jwt_required()
+    def delete(self, address_id):
+        user_id = f_jwt.get_jwt_identity()
+        app.logger.debug("user_id= %s", user_id)
+        claims = f_jwt.get_jwt()
+        user_type = claims['user_type']
+        app.logger.debug("user_type= %s", user_type)
+        # app.logger.debug("address_id=%s", address_id)
+
+        if user_type != "admin" and user_type != "super_admin":
+            abort(400, "only super-admins and admins can delete address")
+
+        # catch exception for invalid SQL statement
+        try:
+            # declare a cursor object from the connection
+            cursor = app_globals.get_cursor()
+            # app.logger.debug("cursor object: %s", cursor)
+
+            DELETE_TRASHED_ADDRESS = 'DELETE FROM addresses WHERE id= %s AND trashed = True'
+
+            cursor.execute(DELETE_TRASHED_ADDRESS, (address_id,))
             # app.logger.debug("row_counts= %s", cursor.rowcount)
             if cursor.rowcount != 1:
                 abort(400, 'Bad Request: delete addresses row error')
