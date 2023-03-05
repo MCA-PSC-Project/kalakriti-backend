@@ -1032,12 +1032,12 @@
     "method": "POST",
     "sortNum": 520000,
     "created": "2023-02-20T16:38:51.080Z",
-    "modified": "2023-03-03T15:05:57.862Z",
+    "modified": "2023-03-05T17:16:22.780Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n  \"shipping_address_id\": 3 ,\n  \"phone\": \"9876543210\",\n  \"order_items\": [\n    {\n      \"product_item_id\": 23,\n      \"quantity\": 1,\n      \"original_price\": 1000,\n      \"offer_price\": 500,\n      \"discount_percent\": 50,\n      \"discount\": 500,\n      \"tax\": 20\n    },\n    {\n      \"product_item_id\": 24,\n      \"quantity\": 1,\n      \"original_price\": 2000,\n      \"offer_price\": 1000,\n      \"discount_percent\": 50,\n      \"discount\": 1000,\n      \"tax\": 20\n    }\n  ]\n}",
+      "raw": "{\n  \"shipping_address_id\": 5 ,\n  \"phone\": \"9876543210\",\n  \"order_items\": [\n    {\n      \"product_item_id\": 23,\n      \"quantity\": 2,\n      \"original_price\": 1000,\n      \"offer_price\": 500,\n      \"discount_percent\": 50,\n      \"discount\": 500,\n      \"tax\": 20\n    },\n    {\n      \"product_item_id\": 24,\n      \"quantity\": 2,\n      \"original_price\": 2000,\n      \"offer_price\": 1000,\n      \"discount_percent\": 50,\n      \"discount\": 1000,\n      \"tax\": 20\n    }\n  ]\n}",
       "form": []
     },
     "auth": {
@@ -2078,11 +2078,11 @@
     "colId": "80d178ef-5176-474a-8708-db78bd45faee",
     "containerId": "2ffd39e9-6675-40b7-abd0-296aaf9564ad",
     "name": "Update order's status",
-    "url": "{{baseUrl}}/orders/2",
+    "url": "{{baseUrl}}/orders/6",
     "method": "PATCH",
     "sortNum": 527500,
     "created": "2023-03-04T14:42:16.324Z",
-    "modified": "2023-03-05T07:30:13.199Z",
+    "modified": "2023-03-05T17:18:08.892Z",
     "headers": [],
     "params": [],
     "body": {
@@ -2101,11 +2101,11 @@
     "colId": "80d178ef-5176-474a-8708-db78bd45faee",
     "containerId": "2ffd39e9-6675-40b7-abd0-296aaf9564ad",
     "name": "get order information by order id",
-    "url": "{{baseUrl}}/orders/4",
+    "url": "{{baseUrl}}/orders/5",
     "method": "GET",
     "sortNum": 525000,
     "created": "2023-03-05T07:29:39.649Z",
-    "modified": "2023-03-05T10:41:39.290Z",
+    "modified": "2023-03-05T14:24:07.647Z",
     "headers": [],
     "params": [],
     "auth": {

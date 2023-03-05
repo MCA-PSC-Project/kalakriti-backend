@@ -13,9 +13,9 @@ class Orders(Resource):
     def post(self):
         user_id = f_jwt.get_jwt_identity()
         app.logger.debug("user_id= %s", user_id)
-        claims = f_jwt.get_jwt()
-        user_type = claims['user_type']
-        app.logger.debug("user_type= %s", user_type)
+        # claims = f_jwt.get_jwt()
+        # user_type = claims['user_type']
+        # app.logger.debug("user_type= %s", user_type)
 
         data = request.get_json()
         order_dict = json.loads(json.dumps(data))
