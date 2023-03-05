@@ -28,12 +28,12 @@
     "method": "POST",
     "sortNum": 20000,
     "created": "2023-02-20T16:38:51.029Z",
-    "modified": "2023-03-05T08:37:09.313Z",
+    "modified": "2023-03-05T10:23:17.775Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n    \"email\": \"admin@gmail.com\",\n    \"password\": \"abcd@123\"\n}",
+      "raw": "{\n    \"email\": \"customer@gmail.com\",\n    \"password\": \"abcd@123\"\n}",
       "form": []
     },
     "tests": [],
@@ -62,16 +62,16 @@
     "colId": "80d178ef-5176-474a-8708-db78bd45faee",
     "containerId": "20dae99d-610b-4865-98e2-da1b674f86e0",
     "name": "verify email",
-    "url": "{{baseUrl}}/auth/verify-email?token=Im5ld191c2VyMTIzQGdtYWlsLmNvbSI.Y_sTsA.NnhhlqcG2UZd_Sm3WEpnAVQ9olA",
+    "url": "{{baseUrl}}/auth/verify-email?token=ImN1c3RvbWVyMUBnbWFpbC5jb20i.ZARtjg.f5g-35WMmuGOgqjMIt4DQHy3tQ8",
     "method": "GET",
     "sortNum": 40000,
     "created": "2023-02-20T16:38:51.031Z",
-    "modified": "2023-02-26T08:09:42.610Z",
+    "modified": "2023-03-05T10:23:50.433Z",
     "headers": [],
     "params": [
       {
         "name": "token",
-        "value": "Im5ld191c2VyMTIzQGdtYWlsLmNvbSI.Y_sTsA.NnhhlqcG2UZd_Sm3WEpnAVQ9olA",
+        "value": "ImN1c3RvbWVyMUBnbWFpbC5jb20i.ZARtjg.f5g-35WMmuGOgqjMIt4DQHy3tQ8",
         "isPath": false
       }
     ],
@@ -2101,11 +2101,11 @@
     "colId": "80d178ef-5176-474a-8708-db78bd45faee",
     "containerId": "2ffd39e9-6675-40b7-abd0-296aaf9564ad",
     "name": "get order information by order id",
-    "url": "{{baseUrl}}/orders",
+    "url": "{{baseUrl}}/orders/4",
     "method": "GET",
     "sortNum": 525000,
     "created": "2023-03-05T07:29:39.649Z",
-    "modified": "2023-03-05T07:30:07.335Z",
+    "modified": "2023-03-05T10:41:39.290Z",
     "headers": [],
     "params": [],
     "auth": {

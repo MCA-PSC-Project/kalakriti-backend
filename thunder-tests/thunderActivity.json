@@ -31,12 +31,12 @@
     "method": "POST",
     "sortNum": 0,
     "created": "2023-02-22T17:11:30.418Z",
-    "modified": "2023-03-05T08:37:09.320Z",
+    "modified": "2023-03-05T10:23:17.782Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n    \"email\": \"admin@gmail.com\",\n    \"password\": \"abcd@123\"\n}",
+      "raw": "{\n    \"email\": \"customer@gmail.com\",\n    \"password\": \"abcd@123\"\n}",
       "form": []
     },
     "tests": [],
@@ -1756,6 +1756,62 @@
       "raw": "{\n  \"address\": \"psc\",\n  \"city\": \"patna\",\n  \"district\": \"Patna\",\n  \"state\": \"Bihar\",\n  \"country\": \"India\",\n  \"pincode\": \"800001\",\n  \"landmark\": \"ghanta nhi pta\"\n}",
       "form": []
     },
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{token}}"
+    },
+    "tests": []
+  },
+  {
+    "_id": "847b04cf-a186-4b4f-8708-2c807c618bac",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/auth/verify-email?token=ImN1c3RvbWVyMUBnbWFpbC5jb20i.ZARtjg.f5g-35WMmuGOgqjMIt4DQHy3tQ8",
+    "url": "{{baseUrl}}/auth/verify-email?token=ImN1c3RvbWVyMUBnbWFpbC5jb20i.ZARtjg.f5g-35WMmuGOgqjMIt4DQHy3tQ8",
+    "method": "GET",
+    "sortNum": 0,
+    "created": "2023-03-05T10:23:50.168Z",
+    "modified": "2023-03-05T10:23:50.168Z",
+    "headers": [],
+    "params": [
+      {
+        "name": "token",
+        "value": "ImN1c3RvbWVyMUBnbWFpbC5jb20i.ZARtjg.f5g-35WMmuGOgqjMIt4DQHy3tQ8",
+        "isPath": false
+      }
+    ],
+    "tests": []
+  },
+  {
+    "_id": "128d3151-5490-488a-abbd-669b9821e96b",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/orders/2",
+    "url": "{{baseUrl}}/orders/2",
+    "method": "GET",
+    "sortNum": 0,
+    "created": "2023-03-05T10:26:00.827Z",
+    "modified": "2023-03-05T10:26:00.827Z",
+    "headers": [],
+    "params": [],
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{token}}"
+    },
+    "tests": []
+  },
+  {
+    "_id": "8af8d8cb-667c-4065-9a44-36131e446d46",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/orders/4",
+    "url": "{{baseUrl}}/orders/4",
+    "method": "GET",
+    "sortNum": 0,
+    "created": "2023-03-05T10:41:38.722Z",
+    "modified": "2023-03-05T10:41:38.722Z",
+    "headers": [],
+    "params": [],
     "auth": {
       "type": "bearer",
       "bearer": "{{token}}"
