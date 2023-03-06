@@ -45,8 +45,15 @@ CREATE TABLE "media"(
 	"media_type" media__type NOT NULL,
 	"added_at" TIMESTAMPTZ NOT NULL
 );
-CREATE TABLE "customers"(
+CREATE TABLE "users"(
 	"id" SERIAL PRIMARY KEY,
+	"user_type" user__type NOT NULL DEFAULT 'customer',
+	"is_verified" boolean NOT NULL DEFAULT FALSE,
+	"verified_at" TIMESTAMPTZ,
+	"trashed" boolean NOT NULL DEFAULT FALSE,
+);
+CREATE TABLE "customers"(
+	"user_id" INT PRIMARY KEY,
 	"first_name" VARCHAR NOT NULL,
 	"last_name" VARCHAR NOT NULL,
 	"email" VARCHAR NOT NULL UNIQUE,
@@ -57,15 +64,11 @@ CREATE TABLE "customers"(
 	"added_at" TIMESTAMPTZ NOT NULL,
 	"updated_at" TIMESTAMPTZ,
 	"dp_id" INT,
-	"is_verified" boolean NOT NULL DEFAULT FALSE,
-	"verified_at" TIMESTAMPTZ,
-	"enabled" BOOLEAN DEFAULT TRUE,
-	"trashed" boolean NOT NULL DEFAULT FALSE,
-	FOREIGN KEY("dp_id") REFERENCES "media"("id") ON DELETE
-	SET NULL
+	FOREIGN KEY("user_id") REFERENCES "users"("id") ON DELETE SET NULL,
+	FOREIGN KEY("dp_id") REFERENCES "media"("id") ON DELETE SET NULL
 );
 CREATE TABLE "sellers"(
-	"id" SERIAL PRIMARY KEY;
+	"user_id" INT PRIMARY KEY,
 	"name" VARCHAR NOT NULL,
 	"email" VARCHAR NOT NULL UNIQUE,
 	"phone" VARCHAR(15) UNIQUE,
@@ -76,9 +79,7 @@ CREATE TABLE "sellers"(
 	"updated_at" TIMESTAMPTZ,
 	"dp_id" INT,
 	"sign_id" INT,
-	"is_verified" boolean NOT NULL DEFAULT FALSE,
-	"verified_at" TIMESTAMPTZ,
-	"trashed" boolean NOT NULL DEFAULT FALSE,
+	FOREIGN KEY("user_id") REFERENCES "users"("id") ON DELETE SET NULL,
 	FOREIGN KEY("dp_id") REFERENCES "media"("id") ON DELETE SET NULL
 	FOREIGN KEY("sign_id") REFERENCES "media"("id") ON DELETE SET NULL
 );
