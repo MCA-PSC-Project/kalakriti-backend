@@ -17,7 +17,7 @@ class CustomerProfile(Resource):
         user_type = claims['user_type']
         app.logger.debug("user_type= %s", user_type)
 
-        if user_type == 'seller':
+        if user_type != 'customer':
             abort(403, 'Forbidden')
 
         user_profile_dict = {}
@@ -76,7 +76,7 @@ class CustomerProfile(Resource):
         user_type = claims['user_type']
         app.logger.debug("user_type= %s", user_type)
 
-        if user_type == 'seller':
+        if user_type != 'customer':
             abort(403, 'Forbidden')
 
         data = request.get_json()
@@ -122,7 +122,6 @@ class CustomerProfile(Resource):
     @f_jwt.jwt_required()
     def delete(self):
         user_id = f_jwt.get_jwt_identity()
-        # user_id=20
         app.logger.debug("user_id=%s", user_id)
 
         DELETE_USER = 'DELETE FROM users WHERE id= %s AND trashed= True'
@@ -143,7 +142,6 @@ class CustomerProfile(Resource):
         finally:
             cursor.close()
         return 200
-
 
 class SellerProfile(Resource):
     @f_jwt.jwt_required()
@@ -218,30 +216,6 @@ class SellerProfile(Resource):
         # app.logger.debug(seller_profile_dict)
         return seller_profile_dict
 
- 
-        user_id = f_jwt.get_jwt_identity()
-        # user_id=20
-        app.logger.debug("user_id=%s", user_id)
-
-        DELETE_USER = 'DELETE FROM users WHERE id= %s'
-
-        # catch exception for invalid SQL statement
-        try:
-            # declare a cursor object from the connection
-            cursor = app_globals.get_cursor()
-            # app.logger.debug("cursor object: %s", cursor)
-
-            cursor.execute(DELETE_USER, (user_id,))
-            # app.logger.debug("row_counts= %s", cursor.rowcount)
-            if cursor.rowcount != 1:
-                abort(400, 'Bad Request: delete row error')
-        except (Exception, psycopg2.Error) as err:
-            app.logger.debug(err)
-            abort(400, 'Bad Request')
-        finally:
-            cursor.close()
-        return 200
-
     @f_jwt.jwt_required()
     def put(self):
         user_id = f_jwt.get_jwt_identity()
@@ -307,6 +281,147 @@ class SellerProfile(Resource):
             # app.logger.debug("cursor object: %s", cursor)
 
             cursor.execute(DELETE_SELLER, (user_id,))
+            # app.logger.debug("row_counts= %s", cursor.rowcount)
+            if cursor.rowcount != 1:
+                abort(400, 'Bad Request: delete row error')
+        except (Exception, psycopg2.Error) as err:
+            app.logger.debug(err)
+            abort(400, 'Bad Request')
+        finally:
+            cursor.close()
+        return 200
+
+class AdminProfile(Resource):
+    @f_jwt.jwt_required()
+    def get(self):
+        user_id = f_jwt.get_jwt_identity()
+        app.logger.debug("user_id= %s", user_id)
+        claims = f_jwt.get_jwt()
+        user_type = claims['user_type']
+        app.logger.debug("user_type= %s", user_type)
+
+        if user_type != 'admin' and user_type != 'super_admin':
+            abort(403, 'Forbidden')
+
+        admin_profile_dict = {}
+
+        GET_PROFILE = '''SELECT a.first_name, a.last_name, u.user_type, u.email, u.phone, 
+        TO_CHAR(a.dob, 'YYYY-MM-DD') AS dob, a.gender , u.enabled,
+        m.id AS media_id, m.name, m.path
+        FROM users u 
+        JOIN admins a ON u.id = a.user_id
+        LEFT JOIN media m ON u.dp_id = m.id 
+        WHERE u.id= %s'''
+
+        # catch exception for invalid SQL statement
+        try:
+            # declare a cursor object from the connection
+            cursor = app_globals.get_named_tuple_cursor()
+            # app.logger.debug("cursor object: %s", cursor)
+
+            cursor.execute(GET_PROFILE, (user_id,))
+            row = cursor.fetchone()
+            if row is None:
+                abort(400, 'Bad Request')
+            admin_profile_dict['first_name'] = row.first_name
+            admin_profile_dict['last_name'] = row.last_name
+            admin_profile_dict['user_type'] = row.user_type
+            admin_profile_dict['email'] = row.email
+            admin_profile_dict['phone'] = row.phone
+            admin_profile_dict['dob'] = row.dob
+            admin_profile_dict['gender'] = row.gender
+            admin_profile_dict['enabled'] = row.enabled
+
+            dp_media_dict = {}
+            dp_media_dict['id'] = row.media_id
+            dp_media_dict['name'] = row.name
+            # media_dict['path'] = row.path
+            path = row.path
+            if path is not None:
+                dp_media_dict['path'] = "{}/{}".format(
+                    app.config["S3_LOCATION"], path)
+            else:
+                dp_media_dict['path'] = None
+            admin_profile_dict.update({"dp": dp_media_dict})
+        except (Exception, psycopg2.Error) as err:
+            app.logger.debug(err)
+            abort(400, 'Bad Request')
+        finally:
+            cursor.close()
+        # app.logger.debug(admin_profile_dict)
+        return admin_profile_dict
+
+    @f_jwt.jwt_required()
+    def put(self):
+        user_id = f_jwt.get_jwt_identity()
+        app.logger.debug("user_id= %s", user_id)
+        claims = f_jwt.get_jwt()
+        user_type = claims['user_type']
+        app.logger.debug("user_type= %s", user_type)
+        
+        if user_type != 'admin' and user_type != 'super_admin':
+            abort(403, 'Forbidden')
+
+        data = request.get_json()
+        admin_dict = json.loads(json.dumps(data))
+        # app.logger.debug(user_dict)
+        current_time = datetime.now()
+
+        # before beginning transaction autocommit must be off
+        app_globals.db_conn.autocommit = False
+        # catch exception for invalid SQL statement
+        try:
+            # declare a cursor object from the connection
+            cursor = app_globals.get_cursor()
+            # # app.logger.debug("cursor object: %s", cursor)
+
+            UPDATE_ADMIM = '''UPDATE admins SET first_name= %s, last_name= %s, dob= %s, 
+            gender= %s WHERE user_id= %s'''
+            cursor.execute(
+                UPDATE_ADMIM, (admin_dict['first_name'], admin_dict['last_name'], admin_dict['dob'],
+                                  admin_dict['gender'], user_id,))
+            # app.logger.debug("row_counts= %s", cursor.rowcount)
+            if cursor.rowcount != 1:
+                abort(400, 'Bad Request: update customers row error')
+
+            UPDATE_USER = '''UPDATE users SET dp_id= %s, updated_at= %s WHERE id= %s'''
+            cursor.execute(UPDATE_USER, (admin_dict['dp_id'], current_time, user_id,))
+            # app.logger.debug("row_counts= %s", cursor.rowcount)
+            if cursor.rowcount != 1:
+                abort(400, 'Bad Request: update users row error')
+
+        except (Exception, psycopg2.Error) as err:
+            app.logger.debug(err)
+            app_globals.db_conn.rollback()
+            app_globals.db_conn.autocommit = True
+            app.logger.debug("autocommit switched back from off to on")
+            abort(400, 'Bad Request')
+        finally:
+            cursor.close()
+        app_globals.db_conn.commit()
+        app_globals.db_conn.autocommit = True
+        return {"message": f"user_id {user_id} modified."}, 200
+
+    @f_jwt.jwt_required()
+    def delete(self):
+        user_id = f_jwt.get_jwt_identity()
+        app.logger.debug("user_id=%s", user_id)
+        claims = f_jwt.get_jwt()
+        user_type = claims['user_type']
+        app.logger.debug("user_type= %s", user_type)
+
+        if user_type != 'admin' and user_type != 'super_admin':
+            abort(403, 'Forbidden')
+
+        DELETE_USER = 'DELETE FROM users WHERE id= %s AND trashed= True'
+
+        # catch exception for invalid SQL statement
+        try:
+            # declare a cursor object from the connection
+            cursor = app_globals.get_cursor()
+            # app.logger.debug("cursor object: %s", cursor)
+
+            cursor.execute(DELETE_USER, (user_id,))
             # app.logger.debug("row_counts= %s", cursor.rowcount)
             if cursor.rowcount != 1:
                 abort(400, 'Bad Request: delete row error')
