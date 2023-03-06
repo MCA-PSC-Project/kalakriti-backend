@@ -48,49 +48,42 @@ CREATE TABLE "media"(
 CREATE TABLE "users"(
 	"id" SERIAL PRIMARY KEY,
 	"user_type" user__type NOT NULL DEFAULT 'customer',
+	"email" VARCHAR NOT NULL UNIQUE,
+	"phone" VARCHAR(15) UNIQUE,
+	"password" VARCHAR NOT NULL,
 	"is_verified" boolean NOT NULL DEFAULT FALSE,
 	"verified_at" TIMESTAMPTZ,
+	"dp_id" INT,
+	"added_at" TIMESTAMPTZ NOT NULL,
+	"updated_at" TIMESTAMPTZ,
 	"trashed" boolean NOT NULL DEFAULT FALSE,
+	FOREIGN KEY("dp_id") REFERENCES "media"("id") ON DELETE SET NULL
 );
 CREATE TABLE "customers"(
 	"user_id" INT PRIMARY KEY,
 	"first_name" VARCHAR NOT NULL,
 	"last_name" VARCHAR NOT NULL,
-	"email" VARCHAR NOT NULL UNIQUE,
-	"phone" VARCHAR(15) UNIQUE,
-	"password" VARCHAR NOT NULL,
 	"dob" date NOT NULL,
 	"gender" gender__type NOT NULL,
-	"added_at" TIMESTAMPTZ NOT NULL,
-	"updated_at" TIMESTAMPTZ,
-	"dp_id" INT,
-	FOREIGN KEY("user_id") REFERENCES "users"("id") ON DELETE SET NULL,
-	FOREIGN KEY("dp_id") REFERENCES "media"("id") ON DELETE SET NULL
+	FOREIGN KEY("user_id") REFERENCES "users"("id")
 );
 CREATE TABLE "sellers"(
 	"user_id" INT PRIMARY KEY,
-	"name" VARCHAR NOT NULL,
-	"email" VARCHAR NOT NULL UNIQUE,
-	"phone" VARCHAR(15) UNIQUE,
-	"password" VARCHAR NOT NULL,
+	"seller_name" VARCHAR NOT NULL,
 	"GSTIN" VARCHAR(15) NOT NULL UNIQUE,
 	"PAN" VARCHAR(10) NOT NULL UNIQUE,
-	"added_at" TIMESTAMPTZ NOT NULL,
-	"updated_at" TIMESTAMPTZ,
-	"dp_id" INT,
 	"sign_id" INT,
-	FOREIGN KEY("user_id") REFERENCES "users"("id") ON DELETE SET NULL,
-	FOREIGN KEY("dp_id") REFERENCES "media"("id") ON DELETE SET NULL
+	FOREIGN KEY("user_id") REFERENCES "users"("id"),
 	FOREIGN KEY("sign_id") REFERENCES "media"("id") ON DELETE SET NULL
 );
 CREATE TABLE "seller_bank_details"(
 	"id" INT PRIMARY KEY,
-	"seller_id" INT,
+	"seller_user_id" INT,
 	"account_holder_name" varchar NOT NULL,
 	"account_no" varchar NOT NULL,
 	"IFSC" varchar NOT NULL,
 	"account_type" account__type NOT NULL,
-	FOREIGN KEY ("seller_id") REFERENCES "sellers" ("id") ON DELETE
+	FOREIGN KEY ("seller_user_id") REFERENCES "users" ("id") ON DELETE
 	SET NULL
 );
 CREATE TABLE "addresses"(
@@ -170,7 +163,6 @@ CREATE TABLE "product_items"(
 	"updated_at" TIMESTAMPTZ,
 	"product_item_status" product__status DEFAULT ('draft'),
 	"trashed" BOOLEAN DEFAULT FALSE,
-	-- "is_base" BOOLEAN NOT NULL DEFAULT TRUE,
 	FOREIGN KEY("product_id") REFERENCES "products"("id") ON DELETE CASCADE
 );
 CREATE TABLE "product_base_item"(
