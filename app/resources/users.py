@@ -8,7 +8,6 @@ import flask_jwt_extended as f_jwt
 import json
 from flask import current_app as app
 
-
 class CustomerProfile(Resource):
     @f_jwt.jwt_required()
     def get(self):
@@ -265,7 +264,7 @@ class SellerProfile(Resource):
         try:
             # declare a cursor object from the connection
             cursor = app_globals.get_cursor()
-            # # app.logger.debug("cursor object: %s", cursor)
+            # app.logger.debug("cursor object: %s", cursor)
 
             UPDATE_SELLER = '''UPDATE sellers SET seller_name= %s, "GSTIN"= %s, "PAN"= %s, 
             sign_id= %s WHERE user_id= %s'''
