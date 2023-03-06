@@ -36,6 +36,7 @@ CREATE TYPE "payment__mode" AS ENUM (
 	'net_banking',
 	'digital_wallet'
 );
+CREATE TYPE "account__type" AS ENUM ('savings', 'current', 'overdraft');
 -----------------------TABLES-------------------------------------------
 CREATE TABLE "media"(
 	"id" SERIAL PRIMARY KEY,
@@ -44,11 +45,10 @@ CREATE TABLE "media"(
 	"media_type" media__type NOT NULL,
 	"added_at" TIMESTAMPTZ NOT NULL
 );
-CREATE TABLE "users"(
+CREATE TABLE "customers"(
 	"id" SERIAL PRIMARY KEY,
 	"first_name" VARCHAR NOT NULL,
 	"last_name" VARCHAR NOT NULL,
-	"user_type" user__type NOT NULL DEFAULT 'customer',
 	"email" VARCHAR NOT NULL UNIQUE,
 	"phone" VARCHAR(15) UNIQUE,
 	"password" VARCHAR NOT NULL,
@@ -57,11 +57,39 @@ CREATE TABLE "users"(
 	"added_at" TIMESTAMPTZ NOT NULL,
 	"updated_at" TIMESTAMPTZ,
 	"dp_id" INT,
-	"trash" boolean NOT NULL DEFAULT FALSE,
 	"is_verified" boolean NOT NULL DEFAULT FALSE,
 	"verified_at" TIMESTAMPTZ,
 	"enabled" BOOLEAN DEFAULT TRUE,
+	"trashed" boolean NOT NULL DEFAULT FALSE,
 	FOREIGN KEY("dp_id") REFERENCES "media"("id") ON DELETE
+	SET NULL
+);
+CREATE TABLE "sellers"(
+	"id" SERIAL PRIMARY KEY;
+	"name" VARCHAR NOT NULL,
+	"email" VARCHAR NOT NULL UNIQUE,
+	"phone" VARCHAR(15) UNIQUE,
+	"password" VARCHAR NOT NULL,
+	"GSTIN" VARCHAR(15) NOT NULL UNIQUE,
+	"PAN" VARCHAR(10) NOT NULL UNIQUE,
+	"added_at" TIMESTAMPTZ NOT NULL,
+	"updated_at" TIMESTAMPTZ,
+	"dp_id" INT,
+	"sign_id" INT,
+	"is_verified" boolean NOT NULL DEFAULT FALSE,
+	"verified_at" TIMESTAMPTZ,
+	"trashed" boolean NOT NULL DEFAULT FALSE,
+	FOREIGN KEY("dp_id") REFERENCES "media"("id") ON DELETE SET NULL
+	FOREIGN KEY("sign_id") REFERENCES "media"("id") ON DELETE SET NULL
+);
+CREATE TABLE "seller_bank_details"(
+	"id" INT PRIMARY KEY,
+	"seller_id" INT,
+	"account_holder_name" varchar NOT NULL,
+	"account_no" varchar NOT NULL,
+	"IFSC" varchar NOT NULL,
+	"account_type" account__type NOT NULL,
+	FOREIGN KEY ("seller_id") REFERENCES "sellers" ("id") ON DELETE
 	SET NULL
 );
 CREATE TABLE "addresses"(
@@ -274,17 +302,6 @@ CREATE TABLE "seller_applicant_forms"(
 	"added_at" TIMESTAMPTZ NOT NULL,
 	"updated_at" TIMESTAMPTZ,
 	"path" VARCHAR DEFAULT ''
-);
-CREATE TABLE "bank_details"(
-	"user_id" integer,
-	"account_holder_name" varchar NOT NULL,
-	"account_no" varchar NOT NULL,
-	"IFSC" varchar NOT NULL,
-	"account_type" varchar NOT NULL DEFAULT '',
-	"PAN" varchar,
-	PRIMARY KEY("user_id"),
-	FOREIGN KEY ("user_id") REFERENCES "users" ("id") ON DELETE
-	SET NULL
 );
 CREATE TABLE "mobile_otp"(
 	"mobile_no" VARCHAR(15) PRIMARY KEY,
