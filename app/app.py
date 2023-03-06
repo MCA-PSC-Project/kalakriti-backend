@@ -10,7 +10,7 @@ import atexit
 # local imports
 from app.config import app_config
 from app.resources.address import UserAddress
-from app.resources.auth import Register, Login, RefreshToken, VerifyEmail
+from app.resources.auth import Register, Login, RefreshToken, RegisterSeller, VerifyEmail
 from app.resources.orders import Orders, UserOrders
 from app.resources.product_items import ProductItems, SellersProductItems
 from app.resources.products import Products, ProductsAllDetails, ProductsByCategory, SellersProducts
@@ -84,7 +84,7 @@ def create_app(config_name):
     response = app_globals.s3.list_buckets()
     print('Existing buckets:')
     for bucket in response['Buckets']:
-        print(f'  {bucket["Name"]}')
+        print(f'{bucket["Name"]}')
     # Endpoints
 
     # Media
@@ -97,6 +97,7 @@ def create_app(config_name):
 
     # Auth
     api.add_resource(Register, '/auth/register')
+    api.add_resource(RegisterSeller, '/auth/register/seller')
     api.add_resource(Login, '/auth/login')
     api.add_resource(RefreshToken, '/auth/refresh')
     api.add_resource(VerifyEmail, '/auth/verify-email')

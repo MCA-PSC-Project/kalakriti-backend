@@ -81,7 +81,7 @@ CREATE TABLE "seller_bank_details"(
 	"seller_user_id" INT,
 	"account_holder_name" varchar NOT NULL,
 	"account_no" varchar NOT NULL,
-	"IFSC" varchar NOT NULL,
+	"IFSC" varchar(11) NOT NULL,
 	"account_type" account__type NOT NULL,
 	FOREIGN KEY ("seller_user_id") REFERENCES "users" ("id") ON DELETE
 	SET NULL
@@ -139,7 +139,7 @@ CREATE TABLE "products"(
 	SET NULL,
 		FOREIGN KEY("subcategory_id") REFERENCES "categories"("id") ON DELETE
 	SET NULL,
-		FOREIGN KEY("seller_user_id") REFERENCES "users"("id") ON DELETE
+		FOREIGN KEY("seller_user_id") REFERENCES "users"("id")
 );
 CREATE TABLE "variants" (
 	"id" SERIAL PRIMARY KEY,

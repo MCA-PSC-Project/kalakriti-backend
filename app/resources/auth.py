@@ -18,7 +18,6 @@ class Register(Resource):
         email = data.get("email", None)
         password = data.get("password", None)
         phone = data.get("phone", None)
-        password = data.get("password", None)
         dob = data.get("dob", None)
         gender = data.get("gender", None)
         current_time = datetime.now()
@@ -48,25 +47,39 @@ class Register(Resource):
             password.encode('utf-8'), bcrypt.gensalt())
         hashed_password = hashed_password.decode('utf-8')
 
-        REGISTER_USER = '''INSERT INTO users(first_name, last_name, email, phone, password, dob, gender, added_at)
-        VALUES(%s, %s, %s, %s, %s, %s, %s, %s) RETURNING id'''
+        # before beginning transaction autocommit must be off
+        app_globals.db_conn.autocommit = False
 
         # catch exception for invalid SQL statement
         try:
             # declare a cursor object from the connection
             cursor = app_globals.get_cursor()
-            # # app.logger.debug("cursor object: %s", cursor)
+            # app.logger.debug("cursor object: %s", cursor)
 
-            cursor.execute(REGISTER_USER, (first_name, last_name, email, phone,
-                           hashed_password, dob, gender, current_time,))
+            REGISTER_USER = '''INSERT INTO users(email, phone, password, added_at)
+            VALUES(%s, %s, %s, %s) RETURNING id'''
+            cursor.execute(REGISTER_USER, (email, phone,
+                           hashed_password, current_time,))
             user_id = cursor.fetchone()[0]
+
+            REGISTER_AS_CUSTOMER = '''INSERT INTO customers(user_id, first_name, last_name, dob, gender)
+            VALUES(%s, %s, %s, %s, %s)'''
+            cursor.execute(REGISTER_AS_CUSTOMER,
+                           (user_id, first_name, last_name, dob, gender,))
         except (Exception, psycopg2.Error) as err:
             app.logger.debug(err)
+            app_globals.db_conn.rollback()
+            app_globals.db_conn.autocommit = True
+            app.logger.debug("autocommit switched back from off to on")
             abort(400, 'Bad Request')
         finally:
             cursor.close()
+        app_globals.db_conn.commit()
+        app_globals.db_conn.autocommit = True
+        app.logger.debug(
+            "user with id {user_id} and type = customer created successfully")
 
-        # generate for sending token in email for email verification
+        # generate token for sending in email for email verification
         generated_email_token = generate_email_token(email)
         app.logger.debug("Generated email token= %s", generated_email_token)
 
@@ -78,7 +91,102 @@ class Register(Resource):
         verify_email_html_page = render_template(
             "verify_email.html", verify_url=verify_url)
         subject = "Please verify your email"
-      # send_email(email, subject, verify_email_html_page)-------------------------------------------------------------------==============
+        # send_email(email, subject, verify_email_html_page)-------------------------------------------------------------------==============
+        app.logger.debug("Email sent successfully!")
+
+        # when authenticated, return a fresh access token and a refresh token
+        # app.logger.debug(f_jwt)
+
+        # access_token = f_jwt.create_access_token(identity=user_id, fresh=True)
+        # refresh_token = f_jwt.create_refresh_token(user_id)
+        # return {
+        #     'access_token': access_token,
+        #     'refresh_token': refresh_token
+        # }, 201
+        return f"verification Email sent to {email} successfully!", 201
+
+
+class RegisterSeller(Resource):
+    def post(self):
+        data = request.get_json()
+        seller_name = data.get("seller_name", None)
+        email = data.get("email", None)
+        password = data.get("password", None)
+        phone = data.get("phone", None)
+        GSTIN = data.get("GSTIN", None)
+        PAN = data.get("PAN", None)
+        current_time = datetime.now()
+        # app.logger.debug("cur time : %s", current_time)
+
+        if not email or not password:
+            abort(400, 'Bad Request')
+        # check if user of given email already exists
+        CHECK_EMAIL = 'SELECT id FROM users WHERE email= %s'
+        try:
+            # declare a cursor object from the connection
+            cursor = app_globals.get_cursor()
+            # # app.logger.debug("cursor object: %s", cursor)
+
+            cursor.execute(CHECK_EMAIL, (email,))
+            row = cursor.fetchone()
+            if row is not None:
+                abort(400, 'Bad Request')
+        except (Exception, psycopg2.Error) as err:
+            app.logger.debug(err)
+            abort(400, 'Bad Request')
+        finally:
+            cursor.close()
+
+        # user doesn't exists..now create user with hashed password
+        hashed_password = bcrypt.hashpw(
+            password.encode('utf-8'), bcrypt.gensalt())
+        hashed_password = hashed_password.decode('utf-8')
+
+        # before beginning transaction autocommit must be off
+        app_globals.db_conn.autocommit = False
+
+        # catch exception for invalid SQL statement
+        try:
+            # declare a cursor object from the connection
+            cursor = app_globals.get_cursor()
+            # app.logger.debug("cursor object: %s", cursor)
+
+            REGISTER_USER = '''INSERT INTO users(user_type, email, phone, password, added_at)
+            VALUES(%s, %s, %s, %s, %s) RETURNING id'''
+            cursor.execute(REGISTER_USER, ('seller', email,
+                           phone, hashed_password, current_time,))
+            user_id = cursor.fetchone()[0]
+
+            REGISTER_AS_SELLER = '''INSERT INTO sellers(user_id, seller_name, "GSTIN", "PAN")
+            VALUES(%s, %s, %s, %s)'''
+            cursor.execute(REGISTER_AS_SELLER,
+                           (user_id, seller_name, GSTIN, PAN,))
+        except (Exception, psycopg2.Error) as err:
+            app.logger.debug(err)
+            app_globals.db_conn.rollback()
+            app_globals.db_conn.autocommit = True
+            app.logger.debug("autocommit switched back from off to on")
+            abort(400, 'Bad Request')
+        finally:
+            cursor.close()
+        app_globals.db_conn.commit()
+        app_globals.db_conn.autocommit = True
+        app.logger.debug(
+            "user with id {user_id} and type = seller created successfully")
+
+        # generate token for sending in email for email verification
+        generated_email_token = generate_email_token(email)
+        app.logger.debug("Generated email token= %s", generated_email_token)
+
+        # send email
+        # verify_url = url_for("accounts.verify_email", token=generate_email_token, _external=True)
+        verify_url = url_for(
+            "verifyemail", token=generated_email_token, _external=True)
+        app.logger.debug("verify url= %s", verify_url)
+        verify_email_html_page = render_template(
+            "verify_email.html", verify_url=verify_url)
+        subject = "Please verify your email"
+        # send_email(email, subject, verify_email_html_page)-------------------------------------------------------------------==============
         app.logger.debug("Email sent successfully!")
 
         # when authenticated, return a fresh access token and a refresh token
