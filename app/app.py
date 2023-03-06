@@ -16,7 +16,7 @@ from app.resources.product_items import ProductItems, SellersProductItems
 from app.resources.products import Products, ProductsAllDetails, ProductsByCategory, SellersProducts
 from app.resources.search import Search, TopSearches
 from app.resources.tags import Tags
-from app.resources.users import UserProfile, ResetEmail, ResetPhone, ResetPassword
+from app.resources.users import SellerProfile, UserProfile, ResetEmail, ResetPhone, ResetPassword
 from app.resources.media import UploadImage, UploadAudio, UploadVideo, UploadFile, DeleteMedia
 from app.resources.categories import Categories
 from app.resources.admin import GetSeller, GetCustomer, EnableDisableUser, PromoteToSeller
@@ -109,6 +109,7 @@ def create_app(config_name):
 
     # User Profile
     api.add_resource(UserProfile, '/users/profile')
+    api.add_resource(SellerProfile, '/sellers/profile')
 
     # Address
     api.add_resource(UserAddress, '/addresses', '/addresses/<int:address_id>')

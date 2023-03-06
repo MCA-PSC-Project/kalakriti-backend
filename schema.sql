@@ -56,6 +56,7 @@ CREATE TABLE "users"(
 	"dp_id" INT,
 	"added_at" TIMESTAMPTZ NOT NULL,
 	"updated_at" TIMESTAMPTZ,
+	"enabled" BOOLEAN NOT NULL DEFAULT TRUE,
 	"trashed" boolean NOT NULL DEFAULT FALSE,
 	FOREIGN KEY("dp_id") REFERENCES "media"("id") ON DELETE SET NULL
 );

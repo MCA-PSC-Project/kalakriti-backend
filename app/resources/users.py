@@ -18,12 +18,17 @@ class UserProfile(Resource):
         user_type = claims['user_type']
         app.logger.debug("user_type= %s", user_type)
 
+        if user_type == 'seller':
+            abort(403, 'Forbidden')
+
         user_profile_dict = {}
 
-        GET_PROFILE = '''SELECT u.first_name, u.last_name, u.user_type, u.email, u.phone, 
-        TO_CHAR(u.dob, 'YYYY-MM-DD') AS dob, u.gender , u.enabled,
+        GET_PROFILE = '''SELECT c.first_name, c.last_name, u.user_type, u.email, u.phone, 
+        TO_CHAR(c.dob, 'YYYY-MM-DD') AS dob, c.gender , u.enabled,
         m.id AS media_id, m.name, m.path
-        FROM users u LEFT JOIN media m on u.dp_id = m.id 
+        FROM users u 
+        JOIN customers c ON u.id = c.user_id
+        LEFT JOIN media m ON u.dp_id = m.id 
         WHERE u.id= %s'''
 
         # catch exception for invalid SQL statement
@@ -63,6 +68,137 @@ class UserProfile(Resource):
             cursor.close()
         # app.logger.debug(user_profile_dict)
         return user_profile_dict
+
+    @f_jwt.jwt_required()
+    def put(self):
+        user_id = f_jwt.get_jwt_identity()
+        # user_id=20
+        app.logger.debug("user_id= %s", user_id)
+        data = request.get_json()
+        user_dict = json.loads(json.dumps(data))
+        app.logger.debug(user_dict)
+
+        current_time = datetime.now()
+        # app.logger.debug("cur time : %s", current_time)
+        UPDATE_USER = 'UPDATE users SET first_name= %s, last_name= %s, dob=%s, gender=%s, updated_at= %s WHERE id= %s'
+
+        # catch exception for invalid SQL statement
+        try:
+            # declare a cursor object from the connection
+            cursor = app_globals.get_cursor()
+            # # app.logger.debug("cursor object: %s", cursor)
+
+            cursor.execute(
+                UPDATE_USER, (user_dict['first_name'], user_dict['last_name'], user_dict['dob'],
+                              user_dict['gender'], current_time, user_id,))
+            # app.logger.debug("row_counts= %s", cursor.rowcount)
+            if cursor.rowcount != 1:
+                abort(400, 'Bad Request: update row error')
+        except (Exception, psycopg2.Error) as err:
+            app.logger.debug(err)
+            abort(400, 'Bad Request')
+        finally:
+            cursor.close()
+        return {"message": f"user_id {user_id} modified."}, 200
+
+    @f_jwt.jwt_required()
+    def delete(self):
+        user_id = f_jwt.get_jwt_identity()
+        # user_id=20
+        app.logger.debug("user_id=%s", user_id)
+
+        DELETE_USER = 'DELETE FROM users WHERE id= %s'
+
+        # catch exception for invalid SQL statement
+        try:
+            # declare a cursor object from the connection
+            cursor = app_globals.get_cursor()
+            # app.logger.debug("cursor object: %s", cursor)
+
+            cursor.execute(DELETE_USER, (user_id,))
+            # app.logger.debug("row_counts= %s", cursor.rowcount)
+            if cursor.rowcount != 1:
+                abort(400, 'Bad Request: delete row error')
+        except (Exception, psycopg2.Error) as err:
+            app.logger.debug(err)
+            abort(400, 'Bad Request')
+        finally:
+            cursor.close()
+        return 200
+
+
+class SellerProfile(Resource):
+    @f_jwt.jwt_required()
+    def get(self):
+        user_id = f_jwt.get_jwt_identity()
+        app.logger.debug("user_id= %s", user_id)
+        claims = f_jwt.get_jwt()
+        user_type = claims['user_type']
+        app.logger.debug("user_type= %s", user_type)
+
+        if user_type != 'seller':
+            abort(403, 'Forbidden')
+
+        seller_profile_dict = {}
+
+        GET_SELLER_PROFILE = '''SELECT s.seller_name, u.user_type, u.email, u.phone, 
+        s."GSTIN", s."PAN", u.enabled,
+        dm.id AS dp_media_id, dm.name AS dp_media_name, dm.path AS dp_media_path,
+        sm.id AS sign_media_id, sm.name AS sign_media_name, sm.path AS sign_media_path 
+        FROM users u 
+        JOIN sellers s ON u.id = s.user_id
+        LEFT JOIN media dm ON u.dp_id = dm.id
+        LEFT JOIN media sm ON s.sign_id = sm.id
+        WHERE u.id= %s'''
+
+        # catch exception for invalid SQL statement
+        try:
+            # declare a cursor object from the connection
+            cursor = app_globals.get_named_tuple_cursor()
+            # # app.logger.debug("cursor object: %s", cursor)
+
+            cursor.execute(GET_SELLER_PROFILE, (user_id,))
+            row = cursor.fetchone()
+            if row is None:
+                abort(400, 'Bad Request')
+            seller_profile_dict['seller_name'] = row.seller_name
+            seller_profile_dict['user_type'] = row.user_type
+            seller_profile_dict['email'] = row.email
+            seller_profile_dict['phone'] = row.phone
+            seller_profile_dict['GSTIN'] = row.GSTIN
+            seller_profile_dict['PAN'] = row.PAN
+            seller_profile_dict['enabled'] = row.enabled
+
+            dp_media_dict = {}
+            dp_media_dict['id'] = row.dp_media_id
+            dp_media_dict['name'] = row.dp_media_name
+            # media_dict['path'] = row.dp_media_path
+            path = row.dp_media_path
+            if path is not None:
+                dp_media_dict['path'] = "{}/{}".format(
+                    app.config["S3_LOCATION"], path)
+            else:
+                dp_media_dict['path'] = None
+            seller_profile_dict.update({"dp": dp_media_dict})
+
+            sign_media_dict = {}
+            sign_media_dict['id'] = row.sign_media_id
+            sign_media_dict['name'] = row.sign_media_name
+            # media_dict['path'] = row.sign_media_path
+            path = row.sign_media_path
+            if path is not None:
+                sign_media_dict['path'] = "{}/{}".format(
+                    app.config["S3_LOCATION"], path)
+            else:
+                sign_media_dict['path'] = None
+            seller_profile_dict.update({"signature": sign_media_dict})
+        except (Exception, psycopg2.Error) as err:
+            app.logger.debug(err)
+            abort(400, 'Bad Request')
+        finally:
+            cursor.close()
+        # app.logger.debug(seller_profile_dict)
+        return seller_profile_dict
 
     @f_jwt.jwt_required()
     def put(self):
