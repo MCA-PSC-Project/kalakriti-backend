@@ -66,15 +66,23 @@ CREATE TABLE "customers"(
 	"last_name" VARCHAR NOT NULL,
 	"dob" date NOT NULL,
 	"gender" gender__type NOT NULL,
-	FOREIGN KEY("user_id") REFERENCES "users"("id")
+	FOREIGN KEY("user_id") REFERENCES "users"("id") ON DELETE CASCADE
+);
+CREATE TABLE "admins"(
+	"user_id" INT PRIMARY KEY,
+	"first_name" VARCHAR NOT NULL,
+	"last_name" VARCHAR NOT NULL,
+	"dob" date NOT NULL,
+	"gender" gender__type NOT NULL,
+	FOREIGN KEY("user_id") REFERENCES "users"("id") ON DELETE CASCADE
 );
 CREATE TABLE "sellers"(
 	"user_id" INT PRIMARY KEY,
 	"seller_name" VARCHAR NOT NULL,
-	"GSTIN" VARCHAR(15) NOT NULL UNIQUE,
+	"GSTIN" VARCHAR(15) UNIQUE,
 	"PAN" VARCHAR(10) NOT NULL UNIQUE,
 	"sign_id" INT,
-	FOREIGN KEY("user_id") REFERENCES "users"("id"),
+	FOREIGN KEY("user_id") REFERENCES "users"("id") ON DELETE CASCADE,
 	FOREIGN KEY("sign_id") REFERENCES "media"("id") ON DELETE SET NULL
 );
 CREATE TABLE "seller_bank_details"(

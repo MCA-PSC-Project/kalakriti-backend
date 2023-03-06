@@ -1959,5 +1959,92 @@
       "bearer": "{{seller_token}}"
     },
     "tests": []
+  },
+  {
+    "_id": "ab398add-5bb8-4bc5-9f6d-1aad5f627f32",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/users/profile",
+    "url": "{{baseUrl}}/users/profile",
+    "method": "PUT",
+    "sortNum": 0,
+    "created": "2023-03-06T11:52:43.939Z",
+    "modified": "2023-03-06T12:07:00.798Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n  \"first_name\": \"Prashant\",\n  \"last_name\": \"Kumar\",\n  \"dob\": \"3/10/2000\",\n  \"gender\": \"male\",\n  \"dp_id\": null\n}",
+      "form": []
+    },
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{token}}"
+    },
+    "tests": []
+  },
+  {
+    "_id": "f994845a-b2d6-4853-9613-2882b5e9e714",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/customers/profile",
+    "url": "{{baseUrl}}/customers/profile",
+    "method": "PUT",
+    "sortNum": 0,
+    "created": "2023-03-06T12:10:18.757Z",
+    "modified": "2023-03-06T12:10:18.757Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n  \"first_name\": \"Prashant\",\n  \"last_name\": \"Kumar\",\n  \"dob\": \"3/10/2000\",\n  \"gender\": \"male\",\n  \"dp_id\": null\n}",
+      "form": []
+    },
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{token}}"
+    },
+    "tests": []
+  },
+  {
+    "_id": "5de49b53-c43a-40a1-b28a-0788681d584a",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/customers/profile",
+    "url": "{{baseUrl}}/customers/profile",
+    "method": "GET",
+    "sortNum": 0,
+    "created": "2023-03-06T12:10:33.621Z",
+    "modified": "2023-03-06T12:10:33.621Z",
+    "headers": [],
+    "params": [],
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{token}}"
+    },
+    "tests": []
+  },
+  {
+    "_id": "cd17589e-cdc0-4cff-abbc-65c96c94132c",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/sellers/profile",
+    "url": "{{baseUrl}}/sellers/profile",
+    "method": "PUT",
+    "sortNum": 0,
+    "created": "2023-03-06T12:31:35.717Z",
+    "modified": "2023-03-06T12:31:35.717Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n  \"seller_name\": \"Prashant\",\n  \"GSTIN\": \"abcde\",\n  \"PAN\": \"3102000\",\n  \"dp_id\": null,\n  \"sign_id\": null\n}",
+      "form": []
+    },
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{seller_token}}"
+    },
+    "tests": []
   }
 ]

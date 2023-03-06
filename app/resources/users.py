@@ -9,7 +9,7 @@ import json
 from flask import current_app as app
 
 
-class UserProfile(Resource):
+class CustomerProfile(Resource):
     @f_jwt.jwt_required()
     def get(self):
         user_id = f_jwt.get_jwt_identity()
@@ -35,7 +35,7 @@ class UserProfile(Resource):
         try:
             # declare a cursor object from the connection
             cursor = app_globals.get_named_tuple_cursor()
-            # # app.logger.debug("cursor object: %s", cursor)
+            # app.logger.debug("cursor object: %s", cursor)
 
             cursor.execute(GET_PROFILE, (user_id,))
             row = cursor.fetchone()
@@ -72,33 +72,52 @@ class UserProfile(Resource):
     @f_jwt.jwt_required()
     def put(self):
         user_id = f_jwt.get_jwt_identity()
-        # user_id=20
         app.logger.debug("user_id= %s", user_id)
+        claims = f_jwt.get_jwt()
+        user_type = claims['user_type']
+        app.logger.debug("user_type= %s", user_type)
+
+        if user_type == 'seller':
+            abort(403, 'Forbidden')
+
         data = request.get_json()
         user_dict = json.loads(json.dumps(data))
-        app.logger.debug(user_dict)
-
+        # app.logger.debug(user_dict)
         current_time = datetime.now()
-        # app.logger.debug("cur time : %s", current_time)
-        UPDATE_USER = 'UPDATE users SET first_name= %s, last_name= %s, dob=%s, gender=%s, updated_at= %s WHERE id= %s'
 
+        # before beginning transaction autocommit must be off
+        app_globals.db_conn.autocommit = False
         # catch exception for invalid SQL statement
         try:
             # declare a cursor object from the connection
             cursor = app_globals.get_cursor()
             # # app.logger.debug("cursor object: %s", cursor)
 
+            UPDATE_CUSTOMER = '''UPDATE customers SET first_name= %s, last_name= %s, dob= %s, 
+            gender= %s WHERE user_id= %s'''
             cursor.execute(
-                UPDATE_USER, (user_dict['first_name'], user_dict['last_name'], user_dict['dob'],
-                              user_dict['gender'], current_time, user_id,))
+                UPDATE_CUSTOMER, (user_dict['first_name'], user_dict['last_name'], user_dict['dob'],
+                                  user_dict['gender'], user_id,))
             # app.logger.debug("row_counts= %s", cursor.rowcount)
             if cursor.rowcount != 1:
-                abort(400, 'Bad Request: update row error')
+                abort(400, 'Bad Request: update customers row error')
+
+            UPDATE_USER = '''UPDATE users SET dp_id= %s, updated_at= %s WHERE id= %s'''
+            cursor.execute(UPDATE_USER, (user_dict['dp_id'], current_time, user_id,))
+            # app.logger.debug("row_counts= %s", cursor.rowcount)
+            if cursor.rowcount != 1:
+                abort(400, 'Bad Request: update users row error')
+
         except (Exception, psycopg2.Error) as err:
             app.logger.debug(err)
+            app_globals.db_conn.rollback()
+            app_globals.db_conn.autocommit = True
+            app.logger.debug("autocommit switched back from off to on")
             abort(400, 'Bad Request')
         finally:
             cursor.close()
+        app_globals.db_conn.commit()
+        app_globals.db_conn.autocommit = True
         return {"message": f"user_id {user_id} modified."}, 200
 
     @f_jwt.jwt_required()
@@ -107,7 +126,7 @@ class UserProfile(Resource):
         # user_id=20
         app.logger.debug("user_id=%s", user_id)
 
-        DELETE_USER = 'DELETE FROM users WHERE id= %s'
+        DELETE_USER = 'DELETE FROM users WHERE id= %s AND trashed= True'
 
         # catch exception for invalid SQL statement
         try:
@@ -200,40 +219,7 @@ class SellerProfile(Resource):
         # app.logger.debug(seller_profile_dict)
         return seller_profile_dict
 
-    @f_jwt.jwt_required()
-    def put(self):
-        user_id = f_jwt.get_jwt_identity()
-        # user_id=20
-        app.logger.debug("user_id= %s", user_id)
-        data = request.get_json()
-        user_dict = json.loads(json.dumps(data))
-        app.logger.debug(user_dict)
-
-        current_time = datetime.now()
-        # app.logger.debug("cur time : %s", current_time)
-        UPDATE_USER = 'UPDATE users SET first_name= %s, last_name= %s, dob=%s, gender=%s, updated_at= %s WHERE id= %s'
-
-        # catch exception for invalid SQL statement
-        try:
-            # declare a cursor object from the connection
-            cursor = app_globals.get_cursor()
-            # # app.logger.debug("cursor object: %s", cursor)
-
-            cursor.execute(
-                UPDATE_USER, (user_dict['first_name'], user_dict['last_name'], user_dict['dob'],
-                              user_dict['gender'], current_time, user_id,))
-            # app.logger.debug("row_counts= %s", cursor.rowcount)
-            if cursor.rowcount != 1:
-                abort(400, 'Bad Request: update row error')
-        except (Exception, psycopg2.Error) as err:
-            app.logger.debug(err)
-            abort(400, 'Bad Request')
-        finally:
-            cursor.close()
-        return {"message": f"user_id {user_id} modified."}, 200
-
-    @f_jwt.jwt_required()
-    def delete(self):
+ 
         user_id = f_jwt.get_jwt_identity()
         # user_id=20
         app.logger.debug("user_id=%s", user_id)
@@ -247,6 +233,81 @@ class SellerProfile(Resource):
             # app.logger.debug("cursor object: %s", cursor)
 
             cursor.execute(DELETE_USER, (user_id,))
+            # app.logger.debug("row_counts= %s", cursor.rowcount)
+            if cursor.rowcount != 1:
+                abort(400, 'Bad Request: delete row error')
+        except (Exception, psycopg2.Error) as err:
+            app.logger.debug(err)
+            abort(400, 'Bad Request')
+        finally:
+            cursor.close()
+        return 200
+
+    @f_jwt.jwt_required()
+    def put(self):
+        user_id = f_jwt.get_jwt_identity()
+        app.logger.debug("user_id= %s", user_id)
+        claims = f_jwt.get_jwt()
+        user_type = claims['user_type']
+        app.logger.debug("user_type= %s", user_type)
+
+        if user_type != 'seller':
+            abort(403, 'Forbidden')
+
+        data = request.get_json()
+        user_dict = json.loads(json.dumps(data))
+        # app.logger.debug(user_dict)
+        current_time = datetime.now()
+
+        # before beginning transaction autocommit must be off
+        app_globals.db_conn.autocommit = False
+        # catch exception for invalid SQL statement
+        try:
+            # declare a cursor object from the connection
+            cursor = app_globals.get_cursor()
+            # # app.logger.debug("cursor object: %s", cursor)
+
+            UPDATE_SELLER = '''UPDATE sellers SET seller_name= %s, "GSTIN"= %s, "PAN"= %s, 
+            sign_id= %s WHERE user_id= %s'''
+            cursor.execute(
+                UPDATE_SELLER, (user_dict['seller_name'], user_dict['GSTIN'], user_dict['PAN'],
+                                  user_dict['sign_id'], user_id,))
+            # app.logger.debug("row_counts= %s", cursor.rowcount)
+            if cursor.rowcount != 1:
+                abort(400, 'Bad Request: update sellers row error')
+
+            UPDATE_USER = '''UPDATE users SET dp_id= %s, updated_at= %s WHERE id= %s'''
+            cursor.execute(UPDATE_USER, (user_dict['dp_id'], current_time, user_id,))
+            # app.logger.debug("row_counts= %s", cursor.rowcount)
+            if cursor.rowcount != 1:
+                abort(400, 'Bad Request: update users row error')
+
+        except (Exception, psycopg2.Error) as err:
+            app.logger.debug(err)
+            app_globals.db_conn.rollback()
+            app_globals.db_conn.autocommit = True
+            app.logger.debug("autocommit switched back from off to on")
+            abort(400, 'Bad Request')
+        finally:
+            cursor.close()
+        app_globals.db_conn.commit()
+        app_globals.db_conn.autocommit = True
+        return {"message": f"user_id {user_id} modified."}, 200
+
+    @f_jwt.jwt_required()
+    def delete(self):
+        user_id = f_jwt.get_jwt_identity()
+        app.logger.debug("user_id=%s", user_id)
+
+        DELETE_SELLER = 'DELETE FROM users WHERE id= %s AND trashed= True'
+
+        # catch exception for invalid SQL statement
+        try:
+            # declare a cursor object from the connection
+            cursor = app_globals.get_cursor()
+            # app.logger.debug("cursor object: %s", cursor)
+
+            cursor.execute(DELETE_SELLER, (user_id,))
             # app.logger.debug("row_counts= %s", cursor.rowcount)
             if cursor.rowcount != 1:
                 abort(400, 'Bad Request: delete row error')

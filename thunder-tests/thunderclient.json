@@ -175,12 +175,12 @@
     "_id": "ddf3bab6-020a-42ab-9713-fe4c59e532eb",
     "colId": "80d178ef-5176-474a-8708-db78bd45faee",
     "containerId": "6b5b2313-953f-4b9e-8fc5-6e7c215c1a9e",
-    "name": "Get Profile",
-    "url": "{{baseUrl}}/users/profile",
+    "name": "Get Customer Profile",
+    "url": "{{baseUrl}}/customers/profile",
     "method": "GET",
     "sortNum": 100000,
     "created": "2023-02-20T16:38:51.037Z",
-    "modified": "2023-02-20T16:53:59.213Z",
+    "modified": "2023-03-06T12:10:33.648Z",
     "headers": [],
     "params": [],
     "auth": {
@@ -193,23 +193,24 @@
     "_id": "d499a8e1-9a58-4907-8955-a455423bb15a",
     "colId": "80d178ef-5176-474a-8708-db78bd45faee",
     "containerId": "6b5b2313-953f-4b9e-8fc5-6e7c215c1a9e",
-    "name": "update profile",
-    "url": "{{baseUrl}}/users/profile",
+    "name": "update Customer profile",
+    "url": "{{baseUrl}}/customers/profile",
     "method": "PUT",
     "sortNum": 110000,
     "created": "2023-02-20T16:38:51.038Z",
-    "modified": "2023-02-20T16:38:51.038Z",
+    "modified": "2023-03-06T12:10:18.782Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n\t\"first_name\": \"Prashant\",\n\t\"last_name\": \"Kumar\",\n\t\"mobile_no\": \"9876543210\",\n\t\"bio\": \"this is my bio\",\n\t\"dp_id\": 307\n}"
+      "raw": "{\n  \"first_name\": \"Prashant\",\n  \"last_name\": \"Kumar\",\n  \"dob\": \"3/10/2000\",\n  \"gender\": \"male\",\n  \"dp_id\": null\n}",
+      "form": []
     },
     "auth": {
       "type": "bearer",
       "bearer": "{{token}}"
     },
-    "docs": ""
+    "tests": []
   },
   {
     "_id": "b5819d53-8ed3-43f8-a21f-be00db25db42",
@@ -2169,6 +2170,29 @@
     "modified": "2023-03-06T10:51:20.865Z",
     "headers": [],
     "params": [],
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{seller_token}}"
+    },
+    "tests": []
+  },
+  {
+    "_id": "78eb8107-fcab-445a-9337-98869212269e",
+    "colId": "80d178ef-5176-474a-8708-db78bd45faee",
+    "containerId": "6b5b2313-953f-4b9e-8fc5-6e7c215c1a9e",
+    "name": "update Seller profile",
+    "url": "{{baseUrl}}/sellers/profile",
+    "method": "PUT",
+    "sortNum": 120000,
+    "created": "2023-03-06T10:58:45.861Z",
+    "modified": "2023-03-06T12:31:35.761Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n  \"seller_name\": \"Prashant\",\n  \"GSTIN\": \"abcde\",\n  \"PAN\": \"3102000\",\n  \"dp_id\": null,\n  \"sign_id\": null\n}",
+      "form": []
+    },
     "auth": {
       "type": "bearer",
       "bearer": "{{seller_token}}"

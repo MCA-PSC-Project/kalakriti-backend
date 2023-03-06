@@ -171,8 +171,7 @@ class RegisterSeller(Resource):
             cursor.close()
         app_globals.db_conn.commit()
         app_globals.db_conn.autocommit = True
-        app.logger.debug(
-            "user with id {user_id} and type = seller created successfully")
+        app.logger.debug("user with id {user_id} and type = seller created successfully")
 
         # generate token for sending in email for email verification
         generated_email_token = generate_email_token(email)
