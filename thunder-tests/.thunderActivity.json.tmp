@@ -2128,5 +2128,30 @@
       }
     ],
     "tests": []
+  },
+  {
+    "_id": "e2db9087-3c2e-4aac-99ee-773b05b16e28",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/auth/verify-email?user_type=admin&token=ImFkbWluQGdtYWlsLmNvbSI.ZAbXPA.y8abBR-H_cL-DzTavyu3QGQBlpE",
+    "url": "{{baseUrl}}/auth/verify-email?user_type=admin&token=ImFkbWluQGdtYWlsLmNvbSI.ZAbXPA.y8abBR-H_cL-DzTavyu3QGQBlpE",
+    "method": "GET",
+    "sortNum": 0,
+    "created": "2023-03-07T06:37:11.643Z",
+    "modified": "2023-03-07T06:37:11.643Z",
+    "headers": [],
+    "params": [
+      {
+        "name": "user_type",
+        "value": "admin",
+        "isPath": false
+      },
+      {
+        "name": "token",
+        "value": "ImFkbWluQGdtYWlsLmNvbSI.ZAbXPA.y8abBR-H_cL-DzTavyu3QGQBlpE",
+        "isPath": false
+      }
+    ],
+    "tests": []
   }
 ]

@@ -10,28 +10,22 @@ from app.email_token import generate_email_token, verify_email_token
 from app.mail import send_email
 
 
-class Register(Resource):
+class RegisterCustomer(Resource):
     def post(self):
         data = request.get_json()
         first_name = data.get("first_name", None)
         last_name = data.get("last_name", None)
         email = data.get("email", None)
         password = data.get("password", None)
-        phone = data.get("phone", None)
         dob = data.get("dob", None)
         gender = data.get("gender", None)
-        current_time = datetime.now()
-        # app.logger.debug("cur time : %s", current_time)
 
         if not email or not password:
             abort(400, 'Bad Request')
-        # check if user of given email already exists
-        CHECK_EMAIL = 'SELECT id FROM users WHERE email= %s'
+        # check if customer of given email already exists
+        CHECK_EMAIL = 'SELECT id FROM customers WHERE email= %s'
         try:
-            # declare a cursor object from the connection
             cursor = app_globals.get_cursor()
-            # # app.logger.debug("cursor object: %s", cursor)
-
             cursor.execute(CHECK_EMAIL, (email,))
             row = cursor.fetchone()
             if row is not None:
@@ -47,37 +41,21 @@ class Register(Resource):
             password.encode('utf-8'), bcrypt.gensalt())
         hashed_password = hashed_password.decode('utf-8')
 
-        # before beginning transaction autocommit must be off
-        app_globals.db_conn.autocommit = False
+        REGISTER_CUSTOMER = '''INSERT INTO customers(first_name, last_name, email, phone, hashed_password, dob, gender, added_at)
+        VALUES(%s, %s, %s, %s, %s, %s, %s, %s) RETURNING id'''
 
-        # catch exception for invalid SQL statement
         try:
-            # declare a cursor object from the connection
             cursor = app_globals.get_cursor()
-            # app.logger.debug("cursor object: %s", cursor)
-
-            REGISTER_USER = '''INSERT INTO users(email, phone, password, added_at)
-            VALUES(%s, %s, %s, %s) RETURNING id'''
-            cursor.execute(REGISTER_USER, (email, phone,
-                           hashed_password, current_time,))
-            user_id = cursor.fetchone()[0]
-
-            REGISTER_AS_CUSTOMER = '''INSERT INTO customers(user_id, first_name, last_name, dob, gender)
-            VALUES(%s, %s, %s, %s, %s)'''
-            cursor.execute(REGISTER_AS_CUSTOMER,
-                           (user_id, first_name, last_name, dob, gender,))
+            cursor.execute(REGISTER_CUSTOMER, (first_name, last_name,
+                           email, '', hashed_password, dob, gender, datetime.now(),))
+            customer_id = cursor.fetchone()[0]
         except (Exception, psycopg2.Error) as err:
             app.logger.debug(err)
-            app_globals.db_conn.rollback()
-            app_globals.db_conn.autocommit = True
-            app.logger.debug("autocommit switched back from off to on")
             abort(400, 'Bad Request')
         finally:
             cursor.close()
-        app_globals.db_conn.commit()
-        app_globals.db_conn.autocommit = True
         app.logger.debug(
-            "user with id {user_id} and type = customer created successfully")
+            "customer with id %s and type = customer created successfully", customer_id)
 
         # generate token for sending in email for email verification
         generated_email_token = generate_email_token(email)
@@ -112,21 +90,15 @@ class RegisterSeller(Resource):
         seller_name = data.get("seller_name", None)
         email = data.get("email", None)
         password = data.get("password", None)
-        phone = data.get("phone", None)
         GSTIN = data.get("GSTIN", None)
         PAN = data.get("PAN", None)
-        current_time = datetime.now()
-        # app.logger.debug("cur time : %s", current_time)
 
         if not email or not password:
             abort(400, 'Bad Request')
-        # check if user of given email already exists
-        CHECK_EMAIL = 'SELECT id FROM users WHERE email= %s'
+        # check if seller of given email already exists
+        CHECK_EMAIL = 'SELECT id FROM sellers WHERE email= %s'
         try:
-            # declare a cursor object from the connection
             cursor = app_globals.get_cursor()
-            # # app.logger.debug("cursor object: %s", cursor)
-
             cursor.execute(CHECK_EMAIL, (email,))
             row = cursor.fetchone()
             if row is not None:
@@ -142,37 +114,20 @@ class RegisterSeller(Resource):
             password.encode('utf-8'), bcrypt.gensalt())
         hashed_password = hashed_password.decode('utf-8')
 
-        # before beginning transaction autocommit must be off
-        app_globals.db_conn.autocommit = False
+        REGISTER_SELLER = '''INSERT INTO sellers(seller_name, email, phone, hashed_password, "GSTIN", "PAN" , added_at)
+        VALUES(%s, %s, %s, %s, %s, %s, %s) RETURNING id'''
 
-        # catch exception for invalid SQL statement
         try:
-            # declare a cursor object from the connection
             cursor = app_globals.get_cursor()
-            # app.logger.debug("cursor object: %s", cursor)
-
-            REGISTER_USER = '''INSERT INTO users(user_type, email, phone, password, added_at)
-            VALUES(%s, %s, %s, %s, %s) RETURNING id'''
-            cursor.execute(REGISTER_USER, ('seller', email,
-                           phone, hashed_password, current_time,))
-            user_id = cursor.fetchone()[0]
-
-            REGISTER_AS_SELLER = '''INSERT INTO sellers(user_id, seller_name, "GSTIN", "PAN")
-            VALUES(%s, %s, %s, %s)'''
-            cursor.execute(REGISTER_AS_SELLER,
-                           (user_id, seller_name, GSTIN, PAN,))
+            cursor.execute(REGISTER_SELLER, (seller_name, email, '', hashed_password, GSTIN, PAN, datetime.now(),))
+            seller_id = cursor.fetchone()[0]
         except (Exception, psycopg2.Error) as err:
             app.logger.debug(err)
-            app_globals.db_conn.rollback()
-            app_globals.db_conn.autocommit = True
-            app.logger.debug("autocommit switched back from off to on")
             abort(400, 'Bad Request')
         finally:
             cursor.close()
-        app_globals.db_conn.commit()
-        app_globals.db_conn.autocommit = True
         app.logger.debug(
-            "user with id {user_id} and type = seller created successfully")
+            "seller with id %s and type = seller created successfully", seller_id)
 
         # generate token for sending in email for email verification
         generated_email_token = generate_email_token(email)
@@ -208,21 +163,15 @@ class RegisterAdmin(Resource):
         last_name = data.get("last_name", None)
         email = data.get("email", None)
         password = data.get("password", None)
-        phone = data.get("phone", None)
         dob = data.get("dob", None)
         gender = data.get("gender", None)
-        current_time = datetime.now()
-        # app.logger.debug("cur time : %s", current_time)
 
         if not email or not password:
             abort(400, 'Bad Request')
         # check if user of given email already exists
-        CHECK_EMAIL = 'SELECT id FROM users WHERE email= %s'
+        CHECK_EMAIL = 'SELECT id FROM admins WHERE email= %s'
         try:
-            # declare a cursor object from the connection
             cursor = app_globals.get_cursor()
-            # app.logger.debug("cursor object: %s", cursor)
-
             cursor.execute(CHECK_EMAIL, (email,))
             row = cursor.fetchone()
             if row is not None:
@@ -238,37 +187,21 @@ class RegisterAdmin(Resource):
             password.encode('utf-8'), bcrypt.gensalt())
         hashed_password = hashed_password.decode('utf-8')
 
-        # before beginning transaction autocommit must be off
-        app_globals.db_conn.autocommit = False
+        REGISTER_CUSTOMER = '''INSERT INTO admins(first_name, last_name, email, phone, hashed_password, dob, gender, added_at)
+        VALUES(%s, %s, %s, %s, %s, %s, %s, %s) RETURNING id'''
 
-        # catch exception for invalid SQL statement
         try:
-            # declare a cursor object from the connection
             cursor = app_globals.get_cursor()
-            # app.logger.debug("cursor object: %s", cursor)
-
-            REGISTER_USER = '''INSERT INTO users(user_type, email, phone, password, added_at)
-            VALUES(%s, %s, %s, %s, %s) RETURNING id'''
-            cursor.execute(REGISTER_USER, ('admin', email, phone,
-                           hashed_password, current_time,))
-            user_id = cursor.fetchone()[0]
-
-            REGISTER_AS_ADMIN = '''INSERT INTO admins(user_id, first_name, last_name, dob, gender)
-            VALUES(%s, %s, %s, %s, %s)'''
-            cursor.execute(REGISTER_AS_ADMIN,
-                           (user_id, first_name, last_name, dob, gender,))
+            cursor.execute(REGISTER_CUSTOMER, (first_name, last_name,
+                           email, '', hashed_password, dob, gender, datetime.now(),))
+            admin_id = cursor.fetchone()[0]
         except (Exception, psycopg2.Error) as err:
             app.logger.debug(err)
-            app_globals.db_conn.rollback()
-            app_globals.db_conn.autocommit = True
-            app.logger.debug("autocommit switched back from off to on")
             abort(400, 'Bad Request')
         finally:
             cursor.close()
-        app_globals.db_conn.commit()
-        app_globals.db_conn.autocommit = True
         app.logger.debug(
-            "user with id {user_id} and type = admin created successfully")
+            "admin with id %s and type = admin created successfully", admin_id)
 
         # generate token for sending in email for email verification
         generated_email_token = generate_email_token(email)
@@ -295,7 +228,6 @@ class RegisterAdmin(Resource):
         #     'refresh_token': refresh_token
         # }, 201
         return f"verification Email sent to {email} successfully!", 201
-
 
 class Login(Resource):
     def post(self):
@@ -378,9 +310,13 @@ class VerifyEmail(Resource):
     def get(self):
         # app.logger.debug("verify email called")
         args = request.args  # retrieve args from query string
+        user_type= args.get('user_type', None)
         token = args.get('token', None)
+        app.logger.debug("?user_type=%s", user_type)
         app.logger.debug("?token=%s", token)
-        if not token:
+        if not (user_type and token):
+            abort(400, 'Bad Request')
+        if user_type not in ['customer', 'seller', 'admin']:
             abort(400, 'Bad Request')
 
         try:
@@ -389,12 +325,9 @@ class VerifyEmail(Resource):
             flash('The verification link is invalid or has expired.', 'danger')
 
         # check if user of given email is verified or not
-        GET_USER = 'SELECT id, is_verified FROM users WHERE email= %s'
+        GET_USER = 'SELECT id, is_verified FROM {} WHERE email= %s'.format(user_type+'s')
         try:
-            # declare a cursor object from the connection
             cursor = app_globals.get_named_tuple_cursor()
-            # # app.logger.debug("cursor object: %s", cursor)
-
             cursor.execute(GET_USER, (email,))
             row = cursor.fetchone()
             if row is None:
@@ -411,21 +344,11 @@ class VerifyEmail(Resource):
         if is_verified:
             flash('Account already verified. Please login.', 'success')
         else:
-            is_verified = True
-            current_time = datetime.now()
-            # app.logger.debug("cur time : %s", current_time)
-
-            UPDATE_CONFIRM_USER = 'UPDATE users SET is_verified= %s, verified_at= %s WHERE id= %s'
-
-            # catch exception for invalid SQL statement
+            UPDATE_CONFIRM_USER = 'UPDATE {} SET is_verified= %s, verified_at= %s WHERE id= %s'.format(user_type+'s')
             try:
-                # declare a cursor object from the connection
                 cursor = app_globals.get_cursor()
-                # # app.logger.debug("cursor object: %s", cursor)
-
                 cursor.execute(UPDATE_CONFIRM_USER,
-                               (is_verified, current_time, user_id,))
-                # app.logger.debug("row_counts= %s", cursor.rowcount)
+                               (True, datetime.now(), user_id,))
                 if cursor.rowcount != 1:
                     abort(400, 'Bad Request: update row error')
             except (Exception, psycopg2.Error) as err:
@@ -436,7 +359,7 @@ class VerifyEmail(Resource):
 
             flash('You have verified your account. Thanks!', 'success')
         # return redirect(url_for('main.home'))
-        # todo : pass here homepage url for task tracker frontend
-        redirect_url = "homepage url for kalakriti frontend"
+        # todo : pass here homepage url for KalaKriti frontend
+        redirect_url = "homepage url for KalaKriti frontend"
         # return redirect(redirect_url)
         return f"redirect url= {redirect_url}", 200

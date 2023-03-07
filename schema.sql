@@ -49,7 +49,7 @@ CREATE TABLE "customers"(
 	"first_name" VARCHAR NOT NULL,
 	"last_name" VARCHAR NOT NULL,
 	"email" VARCHAR NOT NULL UNIQUE,
-	"password" VARCHAR NOT NULL,
+	"hashed_password" VARCHAR NOT NULL,
 	"phone" VARCHAR(15) UNIQUE,
 	"dob" date NOT NULL,
 	"gender" gender__type NOT NULL,
@@ -67,7 +67,7 @@ CREATE TABLE "admins"(
 	"first_name" VARCHAR NOT NULL,
 	"last_name" VARCHAR NOT NULL,
 	"email" VARCHAR NOT NULL UNIQUE,
-	"password" VARCHAR NOT NULL,
+	"hashed_password" VARCHAR NOT NULL,
 	"phone" VARCHAR(15) UNIQUE,
 	"dob" date NOT NULL,
 	"gender" gender__type NOT NULL,
@@ -85,12 +85,10 @@ CREATE TABLE "sellers"(
 	"id" SERIAL PRIMARY KEY,
 	"seller_name" VARCHAR NOT NULL,
 	"email" VARCHAR NOT NULL UNIQUE,
-	"password" VARCHAR NOT NULL,
+	"hashed_password" VARCHAR NOT NULL,
 	"phone" VARCHAR(15) UNIQUE,
 	"GSTIN" VARCHAR(15) UNIQUE,
 	"PAN" VARCHAR(10) NOT NULL UNIQUE,
-	"dob" date NOT NULL,
-	"gender" gender__type NOT NULL,
 	"is_verified" boolean NOT NULL DEFAULT FALSE,
 	"verified_at" TIMESTAMPTZ,
 	"dp_id" INT,
@@ -167,7 +165,7 @@ CREATE TABLE "products"(
 	"trashed" BOOLEAN DEFAULT FALSE,
 	FOREIGN KEY("category_id") REFERENCES "categories"("id") ON DELETE SET NULL,
 	FOREIGN KEY("subcategory_id") REFERENCES "categories"("id") ON DELETE SET NULL,
-	FOREIGN KEY("seller_id") REFERENCES "sellers"("id") ON DELETE CASCADE;
+	FOREIGN KEY("seller_id") REFERENCES "sellers"("id") ON DELETE CASCADE
 );
 CREATE TABLE "variants" (
 	"id" SERIAL PRIMARY KEY,
@@ -339,7 +337,7 @@ CREATE INDEX ON "admins" ("email");
 
 CREATE INDEX ON "customers" ("phone");
 CREATE INDEX ON "sellers" ("phone");
-CREATE INDEX ON "adminss" ("phone");
+CREATE INDEX ON "admins" ("phone");
 
 CREATE INDEX ON "categories" ("name");
 CREATE INDEX ON "product_items" ("SKU");
