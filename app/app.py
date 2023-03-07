@@ -10,16 +10,16 @@ import atexit
 # local imports
 from app.config import app_config
 from app.resources.address import UserAddress
-from app.resources.auth import Register, Login, RefreshToken, VerifyEmail
+from app.resources.auth import LoginAdmin, LoginCustomer, LoginSeller, RefreshToken, RegisterAdmin, RegisterCustomer, RegisterSeller, VerifyEmail
 from app.resources.orders import Orders, UserOrders
 from app.resources.product_items import ProductItems, SellersProductItems
 from app.resources.products import Products, ProductsAllDetails, ProductsByCategory, SellersProducts
 from app.resources.search import Search, TopSearches
 from app.resources.tags import Tags
-from app.resources.users import UserProfile, ResetEmail, ResetPhone, ResetPassword
+from app.resources.users import CustomerProfile, SellerProfile, ResetEmail, ResetPhone, ResetPassword
 from app.resources.media import UploadImage, UploadAudio, UploadVideo, UploadFile, DeleteMedia
 from app.resources.categories import Categories
-from app.resources.admin import GetSeller, GetCustomer, EnableDisableUser, PromoteToSeller
+from app.resources.admin import GetCustomers, EnableDisableUser, GetSellers, PromoteToSeller
 from app.resources.super_admin import GetAllAdmins, PromoteToAdmin
 from app.resources.banners import Banners
 from app.resources.seller_applicant_form import Seller_Applicant_Form
@@ -84,7 +84,7 @@ def create_app(config_name):
     response = app_globals.s3.list_buckets()
     print('Existing buckets:')
     for bucket in response['Buckets']:
-        print(f'  {bucket["Name"]}')
+        print(f'{bucket["Name"]}')
     # Endpoints
 
     # Media
@@ -96,8 +96,14 @@ def create_app(config_name):
     api.add_resource(DeleteMedia, '/uploads/media/<int:media_id>')
 
     # Auth
-    api.add_resource(Register, '/auth/register')
-    api.add_resource(Login, '/auth/login')
+    api.add_resource(RegisterCustomer, '/auth/register/customer')
+    api.add_resource(RegisterSeller, '/auth/register/seller')
+    api.add_resource(RegisterAdmin, '/auth/register/admin')
+
+    api.add_resource(LoginCustomer, '/auth/login/customer')
+    api.add_resource(LoginSeller, '/auth/login/seller')
+    api.add_resource(LoginAdmin, '/auth/login/admin')
+
     api.add_resource(RefreshToken, '/auth/refresh')
     api.add_resource(VerifyEmail, '/auth/verify-email')
 
@@ -107,7 +113,8 @@ def create_app(config_name):
     api.add_resource(ResetPassword, '/reset-password')
 
     # User Profile
-    api.add_resource(UserProfile, '/users/profile')
+    api.add_resource(CustomerProfile, '/customers/profile')
+    api.add_resource(SellerProfile, '/sellers/profile')
 
     # Address
     api.add_resource(UserAddress, '/addresses', '/addresses/<int:address_id>')
@@ -117,8 +124,8 @@ def create_app(config_name):
                      '/categories/<int:category_id>')
 
     # Admin related endpoints
-    api.add_resource(GetSeller, '/sellers')
-    api.add_resource(GetCustomer, '/customers')
+    api.add_resource(GetSellers, '/sellers')
+    api.add_resource(GetCustomers, '/customers')
     api.add_resource(EnableDisableUser, '/users/<int:users_id>/status')
     api.add_resource(PromoteToSeller, '/admin/sellers/promote')
 
