@@ -154,7 +154,7 @@ class SellerProfile(Resource):
 
         if user_type != 'seller':
             abort(403, 'Forbidden')
-
+        
         seller_profile_dict = {}
 
         GET_SELLER_PROFILE = '''SELECT s.seller_name, u.user_type, u.email, u.phone, 

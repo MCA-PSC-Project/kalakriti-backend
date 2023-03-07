@@ -8,12 +8,12 @@
     "method": "POST",
     "sortNum": 10000,
     "created": "2023-02-20T16:38:51.028Z",
-    "modified": "2023-03-02T14:04:30.325Z",
+    "modified": "2023-03-06T17:55:17.340Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n\t\"email\": \"customer1@gmail.com\",\n\t\"password\": \"abcd@123\",\n\t\"first_name\": \"bittu\",\n\t\"last_name\": \"kumar\",\n\t\"phone\": \"12345\",\n\t\"dob\": \"10/3/1998\",\n\t\"gender\": \"male\"\n}",
+      "raw": "{\n\t\"email\": \"customer@gmail.com\",\n\t\"password\": \"abcd@123\",\n\t\"first_name\": \"bittu\",\n\t\"last_name\": \"kumar\",\n\t\"phone\": \"12345678\",\n\t\"dob\": \"10/3/1998\",\n\t\"gender\": \"male\"\n}",
       "form": []
     },
     "tests": [],
@@ -28,12 +28,12 @@
     "method": "POST",
     "sortNum": 5000,
     "created": "2023-02-20T16:38:51.029Z",
-    "modified": "2023-03-06T10:28:35.740Z",
+    "modified": "2023-03-07T03:10:58.869Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n    \"email\": \"customer1@gmail.com\",\n    \"password\": \"abcd@123\"\n}",
+      "raw": "{\n    \"email\": \"admin@gmail.com\",\n    \"password\": \"abcd@123\"\n}",
       "form": []
     },
     "tests": [],
@@ -62,16 +62,16 @@
     "colId": "80d178ef-5176-474a-8708-db78bd45faee",
     "containerId": "20dae99d-610b-4865-98e2-da1b674f86e0",
     "name": "verify email",
-    "url": "{{baseUrl}}/auth/verify-email?token=InNlbGxlcjFAZ21haWwuY29tIg.ZAWvtQ.U3GUj0FM1auggxLYgpzmn1phu1A",
+    "url": "{{baseUrl}}/auth/verify-email?token=ImFkbWluQGdtYWlsLmNvbSI.ZAaqmw.RjQ421b3JH8Wb-zCfkumA_vQIgc",
     "method": "GET",
     "sortNum": 40000,
     "created": "2023-02-20T16:38:51.031Z",
-    "modified": "2023-03-06T09:19:28.473Z",
+    "modified": "2023-03-07T03:10:45.199Z",
     "headers": [],
     "params": [
       {
         "name": "token",
-        "value": "InNlbGxlcjFAZ21haWwuY29tIg.ZAWvtQ.U3GUj0FM1auggxLYgpzmn1phu1A",
+        "value": "ImFkbWluQGdtYWlsLmNvbSI.ZAaqmw.RjQ421b3JH8Wb-zCfkumA_vQIgc",
         "isPath": false
       }
     ],
@@ -2147,12 +2147,12 @@
     "method": "POST",
     "sortNum": 15000,
     "created": "2023-03-06T07:31:03.558Z",
-    "modified": "2023-03-06T09:17:35.962Z",
+    "modified": "2023-03-06T17:56:31.540Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n\t\"email\": \"seller1@gmail.com\",\n\t\"password\": \"abcd@123\",\n\t\"seller_name\": \"seller1\",\n\t\"phone\": \"123456\",\n\t\"GSTIN\": \"12345abcdefghij\",\n\t\"PAN\":\"PKABC12345\"\n}",
+      "raw": "{\n\t\"email\": \"seller@gmail.com\",\n\t\"password\": \"abcd@123\",\n\t\"seller_name\": \"seller1\",\n\t\"phone\": \"123456\",\n\t\"GSTIN\": \"12345abcdefghij\",\n\t\"PAN\":\"PKABC12345\"\n}",
       "form": []
     },
     "tests": [],
@@ -2198,5 +2198,25 @@
       "bearer": "{{seller_token}}"
     },
     "tests": []
+  },
+  {
+    "_id": "7cb4606f-634e-42df-ad27-735a4a2dfd1f",
+    "colId": "80d178ef-5176-474a-8708-db78bd45faee",
+    "containerId": "20dae99d-610b-4865-98e2-da1b674f86e0",
+    "name": "Register Admin",
+    "url": "{{baseUrl}}/auth/register/admin",
+    "method": "POST",
+    "sortNum": 22500,
+    "created": "2023-03-06T18:01:40.993Z",
+    "modified": "2023-03-06T18:09:44.543Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n\t\"email\": \"admin@gmail.com\",\n\t\"password\": \"abcd@123\",\n\t\"first_name\": \"bittu\",\n\t\"last_name\": \"kumar\",\n\t\"phone\": \"1234567\",\n\t\"dob\": \"10/3/1998\",\n\t\"gender\": \"male\"\n}",
+      "form": []
+    },
+    "tests": [],
+    "docs": "```json\n{\n\t\"email\": \"updated_admin@gmail.com\",\n\t\"password\": \"abcd@123\",\n\t\"user_type\" : \"customer\",\n\t\"first_name\": \"abcdddl\",\n\t\"last_name\": \"kumari\",\n\t\"phone\": \"987467887\",\n\t\"dob\": \"10/3/1998\",\n\t\"gender\": \"female\"\n}\n```"
   }
 ]

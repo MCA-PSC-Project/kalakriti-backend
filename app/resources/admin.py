@@ -8,7 +8,7 @@ import json
 from flask import current_app as app
 
 
-class GetSeller(Resource):
+class GetSellers(Resource):
     @f_jwt.jwt_required()
     def get(self):
         user_id = f_jwt.get_jwt_identity()
@@ -22,14 +22,16 @@ class GetSeller(Resource):
         # app.logger.debug("?user=%s", user)
 
         if user_type != "admin" and user_type != "super_admin":
-            abort(400, "super-admins and admins can create categories only")
+            abort(400, "only super-admins and admins can view all sellers")
 
         seller_list = []
 
-        GET_SELLERS_PROFILES = '''SELECT u.first_name, u.last_name, u.user_type, u.email, u.phone, 
-        TO_CHAR(u.dob, 'YYYY-MM-DD'), u.gender , u.enabled,
+        GET_SELLERS_PROFILES = '''SELECT s.seller_name, u.user_type, u.email, u.phone, 
+        s."GSTIN", s."PAN", u.enabled,
         m.id AS media_id, m.name AS media_name, m.path
-        FROM users u LEFT JOIN media m on u.dp_id = m.id WHERE user_type= %s'''
+        FROM users u
+        JOIN sellers s ON u.id = s.user_id
+        LEFT JOIN media m on u.dp_id = m.id WHERE u.user_type= %s'''
 
         # catch exception for invalid SQL statement
         try:
@@ -43,13 +45,12 @@ class GetSeller(Resource):
                 return {}
             for row in rows:
                 seller_profile_dict = {}
-                seller_profile_dict['first_name'] = row.first_name
-                seller_profile_dict['last_name'] = row.last_name
+                seller_profile_dict['seller_name'] = row.seller_name
                 seller_profile_dict['user_type'] = row.user_type
                 seller_profile_dict['email'] = row.email
                 seller_profile_dict['phone'] = row.phone
-                seller_profile_dict['dob'] = row.dob
-                seller_profile_dict['gender'] = row.gender
+                seller_profile_dict['GSTIN'] = row.GSTIN
+                seller_profile_dict['PAN'] = row.PAN
                 seller_profile_dict['enabled'] = row.enabled
 
                 dp_media_dict = {}
@@ -73,7 +74,7 @@ class GetSeller(Resource):
         return seller_list
 
 
-class GetCustomer(Resource):
+class GetCustomers(Resource):
     @f_jwt.jwt_required()
     def get(self):
         user_id = f_jwt.get_jwt_identity()
@@ -83,7 +84,8 @@ class GetCustomer(Resource):
         app.logger.debug("user_type= %s", user_type)
 
         if user_type != "admin" and user_type != "super_admin":
-            abort(400, "super-admins and admins can create categories only")
+            abort(400, "only super-admins and admins can view all customers")
+
 
         customer_list = []
 

@@ -10,7 +10,7 @@ import atexit
 # local imports
 from app.config import app_config
 from app.resources.address import UserAddress
-from app.resources.auth import Register, Login, RefreshToken, RegisterSeller, VerifyEmail
+from app.resources.auth import Register, Login, RefreshToken, RegisterAdmin, RegisterSeller, VerifyEmail
 from app.resources.orders import Orders, UserOrders
 from app.resources.product_items import ProductItems, SellersProductItems
 from app.resources.products import Products, ProductsAllDetails, ProductsByCategory, SellersProducts
@@ -19,7 +19,7 @@ from app.resources.tags import Tags
 from app.resources.users import CustomerProfile, SellerProfile, ResetEmail, ResetPhone, ResetPassword
 from app.resources.media import UploadImage, UploadAudio, UploadVideo, UploadFile, DeleteMedia
 from app.resources.categories import Categories
-from app.resources.admin import GetSeller, GetCustomer, EnableDisableUser, PromoteToSeller
+from app.resources.admin import GetCustomers, EnableDisableUser, GetSellers, PromoteToSeller
 from app.resources.super_admin import GetAllAdmins, PromoteToAdmin
 from app.resources.banners import Banners
 from app.resources.seller_applicant_form import Seller_Applicant_Form
@@ -98,6 +98,7 @@ def create_app(config_name):
     # Auth
     api.add_resource(Register, '/auth/register')
     api.add_resource(RegisterSeller, '/auth/register/seller')
+    api.add_resource(RegisterAdmin, '/auth/register/admin')
     api.add_resource(Login, '/auth/login')
     api.add_resource(RefreshToken, '/auth/refresh')
     api.add_resource(VerifyEmail, '/auth/verify-email')
@@ -119,8 +120,8 @@ def create_app(config_name):
                      '/categories/<int:category_id>')
 
     # Admin related endpoints
-    api.add_resource(GetSeller, '/sellers')
-    api.add_resource(GetCustomer, '/customers')
+    api.add_resource(GetSellers, '/sellers')
+    api.add_resource(GetCustomers, '/customers')
     api.add_resource(EnableDisableUser, '/users/<int:users_id>/status')
     api.add_resource(PromoteToSeller, '/admin/sellers/promote')
 
