@@ -768,12 +768,12 @@
     "method": "POST",
     "sortNum": 0,
     "created": "2023-03-01T03:53:59.643Z",
-    "modified": "2023-03-01T03:55:18.285Z",
+    "modified": "2023-03-07T14:19:22.228Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n\t\"name\": \"s1\",\n\t\"parent_id\" : 5 ,\n\t\"cover_id\" : 1\n}",
+      "raw": "{\n\t\"name\": \"c1\",\n\t\"parent_id\" : null,\n\t\"cover_id\" : null\n}",
       "form": []
     },
     "auth": {
@@ -791,12 +791,12 @@
     "method": "PUT",
     "sortNum": 0,
     "created": "2023-03-01T03:57:09.859Z",
-    "modified": "2023-03-01T03:58:02.333Z",
+    "modified": "2023-03-07T14:17:52.488Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n\t\"name\": \"s1c5\",\n\t\"parent_id\" : 5,\n\t\"cover_id\" : 1\n}",
+      "raw": "{\n\t\"name\": \"c1 modified\",\n\t\"parent_id\" : null,\n\t\"cover_id\" : 1\n}",
       "form": []
     },
     "auth": {
@@ -2238,6 +2238,47 @@
     "auth": {
       "type": "bearer",
       "bearer": "{{admin_token}}"
+    },
+    "tests": []
+  },
+  {
+    "_id": "703b4367-006a-4570-a4e9-2ae343cffb1e",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/categories/1",
+    "url": "{{baseUrl}}/categories/1",
+    "method": "PUT",
+    "sortNum": 0,
+    "created": "2023-03-07T14:18:33.633Z",
+    "modified": "2023-03-07T14:18:33.633Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n\t\"name\": \"c1 modified\",\n\t\"parent_id\" : null,\n\t\"cover_id\" : 1\n}",
+      "form": []
+    },
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{admin_token}}"
+    },
+    "tests": []
+  },
+  {
+    "_id": "3b398e12-f17e-44d3-ac2b-01e43a75f9e1",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/categories/1",
+    "url": "{{baseUrl}}/categories/1",
+    "method": "DELETE",
+    "sortNum": 0,
+    "created": "2023-03-07T14:18:46.993Z",
+    "modified": "2023-03-07T14:19:06.043Z",
+    "headers": [],
+    "params": [],
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{seller_token}}"
     },
     "tests": []
   }

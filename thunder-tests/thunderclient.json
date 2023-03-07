@@ -529,12 +529,12 @@
     "method": "POST",
     "sortNum": 250000,
     "created": "2023-02-20T16:38:51.052Z",
-    "modified": "2023-03-01T03:55:18.278Z",
+    "modified": "2023-03-07T14:19:22.220Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n\t\"name\": \"s1\",\n\t\"parent_id\" : 5 ,\n\t\"cover_id\" : 1\n}",
+      "raw": "{\n\t\"name\": \"c1\",\n\t\"parent_id\" : null,\n\t\"cover_id\" : null\n}",
       "form": []
     },
     "auth": {
@@ -548,16 +548,16 @@
     "colId": "80d178ef-5176-474a-8708-db78bd45faee",
     "containerId": "67bd2609-a1c1-41da-ab7e-1e5b9002ee51",
     "name": "Update category",
-    "url": "{{baseUrl}}/categories/7",
+    "url": "{{baseUrl}}/categories/1",
     "method": "PUT",
     "sortNum": 270000,
     "created": "2023-02-20T16:38:51.054Z",
-    "modified": "2023-03-01T03:58:02.325Z",
+    "modified": "2023-03-07T14:18:33.812Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n\t\"name\": \"s1c5\",\n\t\"parent_id\" : 5,\n\t\"cover_id\" : 1\n}",
+      "raw": "{\n\t\"name\": \"c1 modified\",\n\t\"parent_id\" : null,\n\t\"cover_id\" : 1\n}",
       "form": []
     },
     "auth": {
@@ -571,18 +571,18 @@
     "colId": "80d178ef-5176-474a-8708-db78bd45faee",
     "containerId": "67bd2609-a1c1-41da-ab7e-1e5b9002ee51",
     "name": "Delete category",
-    "url": "{{baseUrl}}/categories/14",
+    "url": "{{baseUrl}}/categories/1",
     "method": "DELETE",
     "sortNum": 280000,
     "created": "2023-02-20T16:38:51.055Z",
-    "modified": "2023-02-20T16:38:51.055Z",
+    "modified": "2023-03-07T14:19:13.582Z",
     "headers": [],
     "params": [],
     "auth": {
       "type": "bearer",
-      "bearer": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2NDI0Mjg3OTAsImlkIjoyNSwidXNlcl90eXBlIjoiYWRtaW4ifQ.gbGE8jDHPqRKnI0UAEzcqUOinyhwBQ2AZ5VXqqx9Rio"
+      "bearer": "{{admin_token}}"
     },
-    "docs": ""
+    "tests": []
   },
   {
     "_id": "121966cf-522c-443c-8b03-8aa18a1a85dc",

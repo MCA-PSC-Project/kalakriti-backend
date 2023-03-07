@@ -368,7 +368,6 @@ class ResetEmail(Resource):
     @f_jwt.jwt_required()
     def patch(self):
         user_id = f_jwt.get_jwt_identity()
-        # user_id=20
         app.logger.debug("user_id= %s", user_id)
         data = request.get_json()
         email = data.get('email', None)

@@ -11,8 +11,8 @@ from flask import current_app as app
 class Categories(Resource):
     @f_jwt.jwt_required()
     def post(self):
-        user_id = f_jwt.get_jwt_identity()
-        app.logger.debug("user_id= %s", user_id)
+        admin_id = f_jwt.get_jwt_identity().get("admin_id")
+        app.logger.debug("admin_id= %s", admin_id)
         claims = f_jwt.get_jwt()
         user_type = claims['user_type']
         app.logger.debug("user_type= %s", user_type)
@@ -21,21 +21,16 @@ class Categories(Resource):
         name = data.get("name", None)
         cover_id = data.get("cover_id", None)
         parent_id = data.get("parent_id", None)
-        current_time = datetime.now()
 
-        if user_type != "admin" and user_type != "super_admin":
-            abort(400, "only super-admins and admins can create category")
+        if (not admin_id) and (user_type != "admin" and user_type != "super_admin"):
+            abort(403, 'Forbidden: only super-admins and admins can create category')
 
-        CREATE_CATEGORY = '''INSERT INTO categories(name, added_at,cover_id,parent_id, added_by)
+        CREATE_CATEGORY = '''INSERT INTO categories(name, added_at, cover_id, parent_id, added_by)
         VALUES(%s,%s, %s, %s, %s) RETURNING id'''
-        # catch exception for invalid SQL statement
         try:
-            # declare a cursor object from the connection
             cursor = app_globals.get_cursor()
-            # # app.logger.debug("cursor object: %s", cursor)
-
-            cursor.execute(CREATE_CATEGORY, (name, current_time,
-                           cover_id, parent_id, user_id))
+            cursor.execute(CREATE_CATEGORY, (name, datetime.now(),
+                           cover_id, parent_id, admin_id))
             id = cursor.fetchone()[0]
         except (Exception, psycopg2.Error) as err:
             app.logger.debug(err)
@@ -48,17 +43,13 @@ class Categories(Resource):
         categories_list = []
         GET_CATEGORIES = '''SELECT c.id AS category_id, c.name AS category_name, c.parent_id,
         m.id AS media_id, m.name AS media_name, m.path
-		FROM categories c LEFT JOIN media m ON m.id= cover_id
+		FROM categories c 
+        LEFT JOIN media m ON m.id= cover_id
 		WHERE c.parent_id IS NULL
 		ORDER BY c.id DESC'''
 
-        # catch exception for invalid SQL statement
         try:
-            # declare a cursor object from the connection
-            # cursor = app_globals.get_cursor()
             cursor = app_globals.get_named_tuple_cursor()
-            # app.logger.debug("cursor object: %s", cursor)
-
             cursor.execute(GET_CATEGORIES)
             rows = cursor.fetchall()
             if not rows:
@@ -68,11 +59,9 @@ class Categories(Resource):
                 category_dict['id'] = row.category_id
                 category_dict['name'] = row.category_name
                 category_dict['parent_id'] = row.parent_id
-
                 cover_media_dict = {}
                 cover_media_dict['id'] = row.media_id
                 cover_media_dict['name'] = row.media_name
-                # media_dict['path'] = row.path
                 path = row.path
                 if path is not None:
                     cover_media_dict['path'] = "{}/{}".format(
@@ -86,14 +75,12 @@ class Categories(Resource):
                 subcategories_list = []
                 GET_SUBCATEGORIES = '''SELECT c.id AS category_id, c.name AS category_name, c.parent_id,
                 m.id AS media_id, m.name AS media_name, m.path
-                FROM categories c LEFT JOIN media m on c.cover_id = m.id
+                FROM categories c 
+                LEFT JOIN media m on c.cover_id = m.id
                 WHERE c.parent_id = %s ORDER BY c.id'''
 
                 try:
-                    # declare a cursor object from the connection
                     cursor = app_globals.get_named_tuple_cursor()
-                    # # app.logger.debug("cursor object: %s", cursor)
-                    # app.logger.debug(categories_list[i]['id'])
                     cursor.execute(GET_SUBCATEGORIES,
                                    (str(categories_list[i]['id']),))
                     rows = cursor.fetchall()
@@ -108,7 +95,6 @@ class Categories(Resource):
 
                         cover_media_dict['id'] = row.media_id
                         cover_media_dict['name'] = row.media_name
-                        # media_dict['path'] = row.path
                         path = row.path
                         if path is not None:
                             cover_media_dict['path'] = "{}/{}".format(
@@ -129,16 +115,14 @@ class Categories(Resource):
             app.logger.debug(err)
             abort(400, 'Bad Request')
         finally:
-            # app.logger.debug("cursor closed: %s", cursor.closed)
             cursor.close()
-            # app.logger.debug("cursor closed: %s", cursor.closed)
         # app.logger.debug(categories_list)
         return categories_list
 
     @ f_jwt.jwt_required()
     def put(self, category_id):
-        user_id = f_jwt.get_jwt_identity()
-        app.logger.debug("user_id= %s", user_id)
+        admin_id = f_jwt.get_jwt_identity().get("admin_id")
+        app.logger.debug("admin_id= %s", admin_id)
         claims = f_jwt.get_jwt()
         user_type = claims['user_type']
         app.logger.debug("user_type= %s", user_type)
@@ -148,23 +132,16 @@ class Categories(Resource):
         category_dict = json.loads(json.dumps(data))
         app.logger.debug(category_dict)
 
-        current_time = datetime.now()
+        if (not admin_id) and (user_type != "admin" and user_type != "super_admin"):
+            abort(403, 'Forbidden: only super-admins and admins can create category')
 
-        if user_type != "admin" and user_type != "super_admin":
-            abort(400, "only super-admins and admins can update category")
+        UPDATE_CATEGORY = 'UPDATE categories SET name= %s, parent_id= %s, cover_id= %s, updated_at= %s WHERE id= %s'
 
-        UPDATE_CATEGORY = 'UPDATE categories SET name= %s, parent_id= %s, cover_id=%s, updated_at= %s WHERE id= %s'
-
-        # catch exception for invalid SQL statement
         try:
-            # declare a cursor object from the connection
             cursor = app_globals.get_cursor()
-            # # app.logger.debug("cursor object: %s", cursor)
-
             cursor.execute(
                 UPDATE_CATEGORY, (category_dict['name'], category_dict['parent_id'], category_dict['cover_id'],
-                                  current_time, category_id,))
-            # app.logger.debug("row_counts= %s", cursor.rowcount)
+                                  datetime.now(), category_id,))
             if cursor.rowcount != 1:
                 abort(400, 'Bad Request: update row error')
         except (Exception, psycopg2.Error) as err:
@@ -176,29 +153,21 @@ class Categories(Resource):
 
     @ f_jwt.jwt_required()
     def delete(self, category_id):
-        # user_id = f_jwt.get_jwt_identity()
-        # user_id=20
-        user_id = f_jwt.get_jwt_identity()
-        app.logger.debug("user_id= %s", user_id)
+        admin_id = f_jwt.get_jwt_identity().get('admin_id')
+        app.logger.debug("admin_id= %s", admin_id)
         claims = f_jwt.get_jwt()
         user_type = claims['user_type']
         app.logger.debug("user_type= %s", user_type)
 
-        app.logger.debug("category_id=%s", category_id)
 
-        if user_type != "admin" and user_type != "super_admin":
-            abort(400, "only super-admins and admins can delete category")
+        if (not admin_id) and (user_type != "admin" and user_type != "super_admin"):
+            abort(403, 'Forbidden: only super-admins and admins can create category')
 
         DELETE_CATEGORY = 'DELETE FROM categories WHERE id= %s'
 
-        # catch exception for invalid SQL statement
         try:
-            # declare a cursor object from the connection
             cursor = app_globals.get_cursor()
-            # app.logger.debug("cursor object: %s", cursor)
-
             cursor.execute(DELETE_CATEGORY, (category_id,))
-            # app.logger.debug("row_counts= %s", cursor.rowcount)
             if cursor.rowcount != 1:
                 abort(400, 'Bad Request: delete row error')
         except (Exception, psycopg2.Error) as err:
