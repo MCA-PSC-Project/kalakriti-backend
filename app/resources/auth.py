@@ -41,7 +41,8 @@ class RegisterCustomer(Resource):
             password.encode('utf-8'), bcrypt.gensalt())
         hashed_password = hashed_password.decode('utf-8')
 
-        REGISTER_CUSTOMER = '''INSERT INTO customers(first_name, last_name, email, phone, hashed_password, dob, gender, added_at)
+        REGISTER_CUSTOMER = '''INSERT INTO customers(first_name, last_name, email, phone, hashed_password, 
+        dob, gender, added_at)
         VALUES(%s, %s, %s, %s, %s, %s, %s, %s) RETURNING id'''
 
         try:
@@ -187,7 +188,8 @@ class RegisterAdmin(Resource):
             password.encode('utf-8'), bcrypt.gensalt())
         hashed_password = hashed_password.decode('utf-8')
 
-        REGISTER_CUSTOMER = '''INSERT INTO admins(first_name, last_name, email, phone, hashed_password, dob, gender, added_at)
+        REGISTER_CUSTOMER = '''INSERT INTO admins(first_name, last_name, email, phone, hashed_password, 
+        dob, gender, added_at)
         VALUES(%s, %s, %s, %s, %s, %s, %s, %s) RETURNING id'''
 
         try:
@@ -299,10 +301,10 @@ class LoginSeller(Resource):
             abort(400, 'Bad Request')
 
         # check if user of given email already exists
-        GET_Customer = 'SELECT id, hashed_password, is_verified FROM sellers WHERE email= %s'
+        GET_SELLER = 'SELECT id, hashed_password, is_verified FROM sellers WHERE email= %s'
         try:
             cursor = app_globals.get_named_tuple_cursor()
-            cursor.execute(GET_Customer, (email,))
+            cursor.execute(GET_SELLER, (email,))
             row = cursor.fetchone()
             if row is None:
                 abort(400, 'Bad Request: User not found')
@@ -428,7 +430,6 @@ class RefreshToken(Resource):
 
 class VerifyEmail(Resource):
     def get(self):
-        # app.logger.debug("verify email called")
         args = request.args  # retrieve args from query string
         user_type= args.get('user_type', None)
         token = args.get('token', None)

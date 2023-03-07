@@ -89,24 +89,6 @@
     "tests": []
   },
   {
-    "_id": "727e9e05-afd1-4cca-8576-b705756e238c",
-    "colId": "history",
-    "containerId": "",
-    "name": "{{baseUrl}}/sellers/product-items/16",
-    "url": "{{baseUrl}}/sellers/product-items/16",
-    "method": "DELETE",
-    "sortNum": 0,
-    "created": "2023-02-23T13:40:50.926Z",
-    "modified": "2023-02-23T13:40:50.926Z",
-    "headers": [],
-    "params": [],
-    "auth": {
-      "type": "bearer",
-      "bearer": "{{admin_token}}"
-    },
-    "tests": []
-  },
-  {
     "_id": "dbf96566-6515-4ff5-b783-d863e97ccd83",
     "colId": "history",
     "containerId": "",
@@ -130,66 +112,6 @@
     "tests": []
   },
   {
-    "_id": "6637759e-78a5-411b-9ab4-0ad6265be347",
-    "colId": "history",
-    "containerId": "",
-    "name": "{{baseUrl}}/sellers/product-items/26",
-    "url": "{{baseUrl}}/sellers/product-items/26",
-    "method": "PUT",
-    "sortNum": 0,
-    "created": "2023-02-23T14:37:33.682Z",
-    "modified": "2023-02-23T14:37:33.682Z",
-    "headers": [],
-    "params": [],
-    "body": {
-      "type": "json",
-      "raw": "{\n  \"variant\": \"COLORM\",\n  \"variant_value\": \"LIGHT_GREEN\",\n  \"product_variant_name\": \"DARK_GREEN_COLOR_VARIANT\",\n  \"SKU\": \"dgreen-colorf\",\n  \"original_price\": 1000,\n  \"offer_price\": 500,\n  \"quantity_in_stock\": 20\n}",
-      "form": []
-    },
-    "auth": {
-      "type": "bearer",
-      "bearer": "{{seller_token}}"
-    },
-    "tests": []
-  },
-  {
-    "_id": "c8fc2f36-1a24-4b4a-b8ce-947319c8a41f",
-    "colId": "history",
-    "containerId": "",
-    "name": "{{baseUrl}}/sellers/product-items/15",
-    "url": "{{baseUrl}}/sellers/product-items/15",
-    "method": "PUT",
-    "sortNum": 0,
-    "created": "2023-02-23T14:54:54.848Z",
-    "modified": "2023-02-23T14:57:21.053Z",
-    "headers": [],
-    "params": [],
-    "body": {
-      "type": "json",
-      "raw": "{\n  \"variant\": \"MATERIAL\",\n  \"variant_value\": \"LIGHT_GREEN\",\n  \"product_variant_name\": \"LIGHT_GREEN_COLOR_VARIANT\",\n  \"SKU\": \"dgreen-colorf\",\n  \"original_price\": 5000,\n  \"offer_price\": 2000,\n  \"quantity_in_stock\": 25\n}",
-      "form": []
-    },
-    "auth": {
-      "type": "bearer",
-      "bearer": "{{seller_token}}"
-    },
-    "tests": []
-  },
-  {
-    "_id": "9ee5e89b-ad58-41b2-937a-fb7472bf9b76",
-    "colId": "history",
-    "containerId": "",
-    "name": "{{baseUrl}}/product-items/15",
-    "url": "{{baseUrl}}/product-items/15",
-    "method": "GET",
-    "sortNum": 0,
-    "created": "2023-02-23T14:58:41.524Z",
-    "modified": "2023-02-23T14:58:41.524Z",
-    "headers": [],
-    "params": [],
-    "tests": []
-  },
-  {
     "_id": "c19f27ca-d2fe-4a8a-9be7-75dcfdb7446b",
     "colId": "history",
     "containerId": "",
@@ -210,114 +132,6 @@
       "type": "bearer",
       "bearer": "{{seller_token}}"
     },
-    "tests": []
-  },
-  {
-    "_id": "b18988e7-e100-4f10-b914-9d8a66716ab0",
-    "colId": "history",
-    "containerId": "",
-    "name": "{{baseUrl}}/products/26/tags",
-    "url": "{{baseUrl}}/products/26/tags",
-    "method": "GET",
-    "sortNum": 0,
-    "created": "2023-02-24T10:29:16.307Z",
-    "modified": "2023-02-24T10:29:16.307Z",
-    "headers": [],
-    "params": [],
-    "tests": []
-  },
-  {
-    "_id": "e35603ba-99ec-49b8-8e40-23a19ae89bcc",
-    "colId": "history",
-    "containerId": "",
-    "name": "{{baseUrl}}/search",
-    "url": "{{baseUrl}}/search",
-    "method": "GET",
-    "sortNum": 0,
-    "created": "2023-02-24T11:53:54.832Z",
-    "modified": "2023-02-24T11:53:54.832Z",
-    "headers": [],
-    "params": [
-      {
-        "name": "query",
-        "value": "test",
-        "isPath": false
-      }
-    ],
-    "tests": []
-  },
-  {
-    "_id": "129bd1a9-b165-4fac-a95a-2e7a0333aeb5",
-    "colId": "history",
-    "containerId": "",
-    "name": "{{baseUrl}}/search?query=paint",
-    "url": "{{baseUrl}}/search?query=paint",
-    "method": "GET",
-    "sortNum": 0,
-    "created": "2023-02-24T11:55:35.292Z",
-    "modified": "2023-02-24T11:55:35.292Z",
-    "headers": [],
-    "params": [
-      {
-        "name": "query",
-        "value": "paint",
-        "isPath": false
-      }
-    ],
-    "tests": []
-  },
-  {
-    "_id": "e5f4d598-8e5a-4691-8a2b-5fc96103b169",
-    "colId": "history",
-    "containerId": "",
-    "name": "{{baseUrl}}/search?query=ar",
-    "url": "{{baseUrl}}/search?query=ar",
-    "method": "GET",
-    "sortNum": 0,
-    "created": "2023-02-24T11:55:49.677Z",
-    "modified": "2023-02-24T11:55:49.677Z",
-    "headers": [],
-    "params": [
-      {
-        "name": "query",
-        "value": "ar",
-        "isPath": false
-      }
-    ],
-    "tests": []
-  },
-  {
-    "_id": "b4f9f121-3865-425b-9f11-5e03f28f925b",
-    "colId": "history",
-    "containerId": "",
-    "name": "{{baseUrl}}/search?query=arts",
-    "url": "{{baseUrl}}/search?query=arts",
-    "method": "GET",
-    "sortNum": 0,
-    "created": "2023-02-24T11:55:56.095Z",
-    "modified": "2023-02-24T11:55:56.095Z",
-    "headers": [],
-    "params": [
-      {
-        "name": "query",
-        "value": "arts",
-        "isPath": false
-      }
-    ],
-    "tests": []
-  },
-  {
-    "_id": "83847a5c-0045-45fc-a245-e8653d16ecf0",
-    "colId": "history",
-    "containerId": "",
-    "name": "{{baseUrl}}/top-searches",
-    "url": "{{baseUrl}}/top-searches",
-    "method": "GET",
-    "sortNum": 0,
-    "created": "2023-02-24T12:12:34.150Z",
-    "modified": "2023-02-24T12:12:34.150Z",
-    "headers": [],
-    "params": [],
     "tests": []
   },
   {
@@ -2231,5 +2045,30 @@
     },
     "tests": [],
     "docs": "```json\n{\n    \"email\": \"customer@gmail.com\",\n    \"password\": \"abcd@123\"\n}\n```\n```json\n{\n\t\"email\": \"seller@gmail.com\",\n\t\"password\": \"abcd@123\"\n}\n```\n\n```json\n{\n\t\"email\": \"admin@gmail.com\",\n\t\"password\": \"abcd@123\"\n}\n```\n\n```json\n{\n    \"email\": \"customer1@gmail.com\",\n    \"password\": \"abcd@123\"\n}\n```\n\n```json\n{\n    \"email\": \"seller1@gmail.com\",\n    \"password\": \"abcd@123\"\n}\n```\n\n```json\n{\n    \"email\": \"updated_admin@gmail.com\",\n    \"password\": \"abcd@123\"\n}\n```\n\n```json\n{\n\t\"email\": \"mywebnewslettersinbox123@gmail.com\",\n\t\"password\": \"abcd@123\"\n}\n```"
+  },
+  {
+    "_id": "daef4db9-dd8b-4eb1-b0f0-4ad47aa124a6",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/auth/verify-email?user_type=customer&token=ImN1c3RvbWVyQGdtYWlsLmNvbSI.ZAcSxA.V7JX7dWiSb0yQKzvs3Kx62ezWp4",
+    "url": "{{baseUrl}}/auth/verify-email?user_type=customer&token=ImN1c3RvbWVyQGdtYWlsLmNvbSI.ZAcSxA.V7JX7dWiSb0yQKzvs3Kx62ezWp4",
+    "method": "GET",
+    "sortNum": 0,
+    "created": "2023-03-07T10:33:09.622Z",
+    "modified": "2023-03-07T10:33:09.622Z",
+    "headers": [],
+    "params": [
+      {
+        "name": "user_type",
+        "value": "customer",
+        "isPath": false
+      },
+      {
+        "name": "token",
+        "value": "ImN1c3RvbWVyQGdtYWlsLmNvbSI.ZAcSxA.V7JX7dWiSb0yQKzvs3Kx62ezWp4",
+        "isPath": false
+      }
+    ],
+    "tests": []
   }
 ]

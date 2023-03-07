@@ -8,46 +8,42 @@ import flask_jwt_extended as f_jwt
 import json
 from flask import current_app as app
 
+
 class CustomerProfile(Resource):
     @f_jwt.jwt_required()
     def get(self):
-        user_id = f_jwt.get_jwt_identity()
-        app.logger.debug("user_id= %s", user_id)
+        customer_id = f_jwt.get_jwt_identity().get("customer_id")
+        app.logger.debug("customer_id= %s", customer_id)
         claims = f_jwt.get_jwt()
         user_type = claims['user_type']
         app.logger.debug("user_type= %s", user_type)
 
-        if user_type != 'customer':
+        if (not customer_id) and (user_type != 'customer'):
             abort(403, 'Forbidden')
 
-        user_profile_dict = {}
+        customer_profile_dict = {}
 
-        GET_PROFILE = '''SELECT c.first_name, c.last_name, u.user_type, u.email, u.phone, 
-        TO_CHAR(c.dob, 'YYYY-MM-DD') AS dob, c.gender , u.enabled,
+        GET_PROFILE = '''SELECT c.first_name, c.last_name, c.email, c.phone, 
+        TO_CHAR(c.dob, 'YYYY-MM-DD') AS dob, c.gender, c.enabled,
         m.id AS media_id, m.name, m.path
-        FROM users u 
-        JOIN customers c ON u.id = c.user_id
-        LEFT JOIN media m ON u.dp_id = m.id 
-        WHERE u.id= %s'''
+        FROM customers c
+        LEFT JOIN media m ON c.dp_id = m.id 
+        WHERE c.id= %s'''
 
-        # catch exception for invalid SQL statement
         try:
-            # declare a cursor object from the connection
             cursor = app_globals.get_named_tuple_cursor()
-            # app.logger.debug("cursor object: %s", cursor)
-
-            cursor.execute(GET_PROFILE, (user_id,))
+            cursor.execute(GET_PROFILE, (customer_id,))
             row = cursor.fetchone()
             if row is None:
                 abort(400, 'Bad Request')
-            user_profile_dict['first_name'] = row.first_name
-            user_profile_dict['last_name'] = row.last_name
-            user_profile_dict['user_type'] = row.user_type
-            user_profile_dict['email'] = row.email
-            user_profile_dict['phone'] = row.phone
-            user_profile_dict['dob'] = row.dob
-            user_profile_dict['gender'] = row.gender
-            user_profile_dict['enabled'] = row.enabled
+            # customer_profile_dict = row._asdict()
+            customer_profile_dict['first_name'] = row.first_name
+            customer_profile_dict['last_name'] = row.last_name
+            customer_profile_dict['email'] = row.email
+            customer_profile_dict['phone'] = row.phone
+            customer_profile_dict['dob'] = row.dob
+            customer_profile_dict['gender'] = row.gender
+            customer_profile_dict['enabled'] = row.enabled
 
             dp_media_dict = {}
             dp_media_dict['id'] = row.media_id
@@ -59,65 +55,47 @@ class CustomerProfile(Resource):
                     app.config["S3_LOCATION"], path)
             else:
                 dp_media_dict['path'] = None
-            user_profile_dict.update({"dp": dp_media_dict})
+            customer_profile_dict.update({"dp": dp_media_dict})
         except (Exception, psycopg2.Error) as err:
             app.logger.debug(err)
             abort(400, 'Bad Request')
         finally:
             cursor.close()
-        # app.logger.debug(user_profile_dict)
-        return user_profile_dict
+        # app.logger.debug(customer_profile_dict)
+        return customer_profile_dict
 
     @f_jwt.jwt_required()
     def put(self):
-        user_id = f_jwt.get_jwt_identity()
-        app.logger.debug("user_id= %s", user_id)
+        customer_id = f_jwt.get_jwt_identity().get("customer_id")
+        app.logger.debug("customer_id= %s", customer_id)
         claims = f_jwt.get_jwt()
         user_type = claims['user_type']
         app.logger.debug("user_type= %s", user_type)
 
-        if user_type != 'customer':
+        if (not customer_id) and (user_type != 'customer'):
             abort(403, 'Forbidden')
 
         data = request.get_json()
-        user_dict = json.loads(json.dumps(data))
-        # app.logger.debug(user_dict)
-        current_time = datetime.now()
+        customer_dict = json.loads(json.dumps(data))
+        # app.logger.debug(customer_dict)
 
-        # before beginning transaction autocommit must be off
-        app_globals.db_conn.autocommit = False
-        # catch exception for invalid SQL statement
+        UPDATE_CUSTOMER = '''UPDATE customers SET first_name= %s, last_name= %s, dob= %s, 
+        gender= %s, dp_id= %s WHERE user_id= %s'''
         try:
-            # declare a cursor object from the connection
             cursor = app_globals.get_cursor()
-            # # app.logger.debug("cursor object: %s", cursor)
-
-            UPDATE_CUSTOMER = '''UPDATE customers SET first_name= %s, last_name= %s, dob= %s, 
-            gender= %s WHERE user_id= %s'''
             cursor.execute(
-                UPDATE_CUSTOMER, (user_dict['first_name'], user_dict['last_name'], user_dict['dob'],
-                                  user_dict['gender'], user_id,))
-            # app.logger.debug("row_counts= %s", cursor.rowcount)
+                UPDATE_CUSTOMER, (customer_dict.get('first_name'), customer_dict.get('last_name'),
+                                  customer_dict.get(
+                                      'dob'), customer_dict.get('gender'),
+                                  customer_dict.get('dp_id'), customer_id,))
             if cursor.rowcount != 1:
                 abort(400, 'Bad Request: update customers row error')
-
-            UPDATE_USER = '''UPDATE users SET dp_id= %s, updated_at= %s WHERE id= %s'''
-            cursor.execute(UPDATE_USER, (user_dict['dp_id'], current_time, user_id,))
-            # app.logger.debug("row_counts= %s", cursor.rowcount)
-            if cursor.rowcount != 1:
-                abort(400, 'Bad Request: update users row error')
-
         except (Exception, psycopg2.Error) as err:
             app.logger.debug(err)
-            app_globals.db_conn.rollback()
-            app_globals.db_conn.autocommit = True
-            app.logger.debug("autocommit switched back from off to on")
             abort(400, 'Bad Request')
         finally:
             cursor.close()
-        app_globals.db_conn.commit()
-        app_globals.db_conn.autocommit = True
-        return {"message": f"user_id {user_id} modified."}, 200
+        return {"message": f"customer_id {customer_id} modified."}, 200
 
     @f_jwt.jwt_required()
     def delete(self):
@@ -125,15 +103,10 @@ class CustomerProfile(Resource):
         app.logger.debug("user_id=%s", user_id)
 
         DELETE_USER = 'DELETE FROM users WHERE id= %s AND trashed= True'
-
-        # catch exception for invalid SQL statement
         try:
-            # declare a cursor object from the connection
             cursor = app_globals.get_cursor()
-            # app.logger.debug("cursor object: %s", cursor)
 
             cursor.execute(DELETE_USER, (user_id,))
-            # app.logger.debug("row_counts= %s", cursor.rowcount)
             if cursor.rowcount != 1:
                 abort(400, 'Bad Request: delete row error')
         except (Exception, psycopg2.Error) as err:
@@ -142,6 +115,7 @@ class CustomerProfile(Resource):
         finally:
             cursor.close()
         return 200
+
 
 class SellerProfile(Resource):
     @f_jwt.jwt_required()
@@ -154,7 +128,7 @@ class SellerProfile(Resource):
 
         if user_type != 'seller':
             abort(403, 'Forbidden')
-        
+
         seller_profile_dict = {}
 
         GET_SELLER_PROFILE = '''SELECT s.seller_name, u.user_type, u.email, u.phone, 
@@ -167,12 +141,8 @@ class SellerProfile(Resource):
         LEFT JOIN media sm ON s.sign_id = sm.id
         WHERE u.id= %s'''
 
-        # catch exception for invalid SQL statement
         try:
-            # declare a cursor object from the connection
             cursor = app_globals.get_named_tuple_cursor()
-            # # app.logger.debug("cursor object: %s", cursor)
-
             cursor.execute(GET_SELLER_PROFILE, (user_id,))
             row = cursor.fetchone()
             if row is None:
@@ -244,13 +214,14 @@ class SellerProfile(Resource):
             sign_id= %s WHERE user_id= %s'''
             cursor.execute(
                 UPDATE_SELLER, (user_dict['seller_name'], user_dict['GSTIN'], user_dict['PAN'],
-                                  user_dict['sign_id'], user_id,))
+                                user_dict['sign_id'], user_id,))
             # app.logger.debug("row_counts= %s", cursor.rowcount)
             if cursor.rowcount != 1:
                 abort(400, 'Bad Request: update sellers row error')
 
             UPDATE_USER = '''UPDATE users SET dp_id= %s, updated_at= %s WHERE id= %s'''
-            cursor.execute(UPDATE_USER, (user_dict['dp_id'], current_time, user_id,))
+            cursor.execute(
+                UPDATE_USER, (user_dict['dp_id'], current_time, user_id,))
             # app.logger.debug("row_counts= %s", cursor.rowcount)
             if cursor.rowcount != 1:
                 abort(400, 'Bad Request: update users row error')
@@ -290,6 +261,7 @@ class SellerProfile(Resource):
         finally:
             cursor.close()
         return 200
+
 
 class AdminProfile(Resource):
     @f_jwt.jwt_required()
@@ -358,7 +330,7 @@ class AdminProfile(Resource):
         claims = f_jwt.get_jwt()
         user_type = claims['user_type']
         app.logger.debug("user_type= %s", user_type)
-        
+
         if user_type != 'admin' and user_type != 'super_admin':
             abort(403, 'Forbidden')
 
@@ -379,13 +351,14 @@ class AdminProfile(Resource):
             gender= %s WHERE user_id= %s'''
             cursor.execute(
                 UPDATE_ADMIM, (admin_dict['first_name'], admin_dict['last_name'], admin_dict['dob'],
-                                  admin_dict['gender'], user_id,))
+                               admin_dict['gender'], user_id,))
             # app.logger.debug("row_counts= %s", cursor.rowcount)
             if cursor.rowcount != 1:
                 abort(400, 'Bad Request: update customers row error')
 
             UPDATE_USER = '''UPDATE users SET dp_id= %s, updated_at= %s WHERE id= %s'''
-            cursor.execute(UPDATE_USER, (admin_dict['dp_id'], current_time, user_id,))
+            cursor.execute(
+                UPDATE_USER, (admin_dict['dp_id'], current_time, user_id,))
             # app.logger.debug("row_counts= %s", cursor.rowcount)
             if cursor.rowcount != 1:
                 abort(400, 'Bad Request: update users row error')

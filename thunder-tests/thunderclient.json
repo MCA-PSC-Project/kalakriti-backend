@@ -62,21 +62,21 @@
     "colId": "80d178ef-5176-474a-8708-db78bd45faee",
     "containerId": "20dae99d-610b-4865-98e2-da1b674f86e0",
     "name": "verify email",
-    "url": "{{baseUrl}}/auth/verify-email?user_type=admin&token=ImFkbWluQGdtYWlsLmNvbSI.ZAbXPA.y8abBR-H_cL-DzTavyu3QGQBlpE",
+    "url": "{{baseUrl}}/auth/verify-email?user_type=customer&token=ImN1c3RvbWVyQGdtYWlsLmNvbSI.ZAcSxA.V7JX7dWiSb0yQKzvs3Kx62ezWp4",
     "method": "GET",
     "sortNum": 40000,
     "created": "2023-02-20T16:38:51.031Z",
-    "modified": "2023-03-07T06:37:11.674Z",
+    "modified": "2023-03-07T10:33:09.892Z",
     "headers": [],
     "params": [
       {
         "name": "user_type",
-        "value": "admin",
+        "value": "customer",
         "isPath": false
       },
       {
         "name": "token",
-        "value": "ImFkbWluQGdtYWlsLmNvbSI.ZAbXPA.y8abBR-H_cL-DzTavyu3QGQBlpE",
+        "value": "ImN1c3RvbWVyQGdtYWlsLmNvbSI.ZAcSxA.V7JX7dWiSb0yQKzvs3Kx62ezWp4",
         "isPath": false
       }
     ],
