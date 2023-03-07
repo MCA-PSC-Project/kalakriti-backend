@@ -120,7 +120,8 @@ class RegisterSeller(Resource):
 
         try:
             cursor = app_globals.get_cursor()
-            cursor.execute(REGISTER_SELLER, (seller_name, email, '', hashed_password, GSTIN, PAN, datetime.now(),))
+            cursor.execute(REGISTER_SELLER, (seller_name, email,
+                           '', hashed_password, GSTIN, PAN, datetime.now(),))
             seller_id = cursor.fetchone()[0]
         except (Exception, psycopg2.Error) as err:
             app.logger.debug(err)
@@ -231,6 +232,7 @@ class RegisterAdmin(Resource):
         # }, 201
         return f"verification Email sent to {email} successfully!", 201
 
+
 class LoginCustomer(Resource):
     def post(self):
         data = request.get_json()
@@ -262,12 +264,12 @@ class LoginCustomer(Resource):
         if (bcrypt.checkpw(password.encode('utf-8'), hashed_password.encode('utf-8')) == False):
             abort(400, 'Email or password not correct')
 
-        user_type="customer"
+        user_type = "customer"
         if is_verified:
             access_token = f_jwt.create_access_token(
-                identity={"customer_id":customer_id}, additional_claims={"user_type": user_type}, fresh=True)
+                identity={"customer_id": customer_id}, additional_claims={"user_type": user_type}, fresh=True)
             refresh_token = f_jwt.create_refresh_token(
-                identity={"customer_id":customer_id}, additional_claims={"user_type": user_type})
+                identity={"customer_id": customer_id}, additional_claims={"user_type": user_type})
             return {
                 'access_token': access_token,
                 'refresh_token': refresh_token
@@ -322,12 +324,12 @@ class LoginSeller(Resource):
         if (bcrypt.checkpw(password.encode('utf-8'), hashed_password.encode('utf-8')) == False):
             abort(400, 'Email or password not correct')
 
-        user_type="seller"
+        user_type = "seller"
         if is_verified:
             access_token = f_jwt.create_access_token(
-                identity={"seller_id":seller_id}, additional_claims={"user_type": user_type}, fresh=True)
+                identity={"seller_id": seller_id}, additional_claims={"user_type": user_type}, fresh=True)
             refresh_token = f_jwt.create_refresh_token(
-                identity={"seller_id":seller_id}, additional_claims={"user_type": user_type})
+                identity={"seller_id": seller_id}, additional_claims={"user_type": user_type})
             return {
                 'access_token': access_token,
                 'refresh_token': refresh_token
@@ -349,6 +351,7 @@ class LoginSeller(Resource):
             # send_email(email, subject, verify_email_html_page)/-------------------------------------------------------------------------
             app.logger.debug("Email sent successfully!")
             return f"verification Email sent to {email} successfully!", 201
+
 
 class LoginAdmin(Resource):
     def post(self):
@@ -383,15 +386,15 @@ class LoginAdmin(Resource):
             abort(400, 'Email or password not correct')
 
         if is_super_admin:
-            user_type="super_admin"
+            user_type = "super_admin"
         else:
-            user_type="admin"
+            user_type = "admin"
 
         if is_verified:
             access_token = f_jwt.create_access_token(
-                identity={"admin_id":admin_id}, additional_claims={"user_type": user_type}, fresh=True)
+                identity={"admin_id": admin_id}, additional_claims={"user_type": user_type}, fresh=True)
             refresh_token = f_jwt.create_refresh_token(
-                identity={"admin_id":admin_id}, additional_claims={"user_type": user_type})
+                identity={"admin_id": admin_id}, additional_claims={"user_type": user_type})
             return {
                 'access_token': access_token,
                 'refresh_token': refresh_token
@@ -414,6 +417,7 @@ class LoginAdmin(Resource):
             app.logger.debug("Email sent successfully!")
             return f"verification Email sent to {email} successfully!", 201
 
+
 class RefreshToken(Resource):
     @f_jwt.jwt_required(refresh=True)
     def post(self):
@@ -428,10 +432,11 @@ class RefreshToken(Resource):
             identity=current_user_dict, additional_claims={"user_type": current_user_type}, fresh=False)
         return {'access_token': new_token}, 200
 
+
 class VerifyEmail(Resource):
     def get(self):
         args = request.args  # retrieve args from query string
-        user_type= args.get('user_type', None)
+        user_type = args.get('user_type', None)
         token = args.get('token', None)
         app.logger.debug("?user_type=%s", user_type)
         app.logger.debug("?token=%s", token)
@@ -446,7 +451,8 @@ class VerifyEmail(Resource):
             flash('The verification link is invalid or has expired.', 'danger')
 
         # check if user of given email is verified or not
-        GET_USER = 'SELECT id, is_verified FROM {} WHERE email= %s'.format(user_type+'s')
+        GET_USER = 'SELECT id, is_verified FROM {} WHERE email= %s'.format(
+            user_type+'s')
         try:
             cursor = app_globals.get_named_tuple_cursor()
             cursor.execute(GET_USER, (email,))
@@ -465,7 +471,8 @@ class VerifyEmail(Resource):
         if is_verified:
             flash('Account already verified. Please login.', 'success')
         else:
-            UPDATE_USER_VERIFIED = 'UPDATE {} SET is_verified= %s, verified_at= %s WHERE id= %s'.format(user_type+'s')
+            UPDATE_USER_VERIFIED = 'UPDATE {} SET is_verified= %s, verified_at= %s WHERE id= %s'.format(
+                user_type+'s')
             try:
                 cursor = app_globals.get_cursor()
                 cursor.execute(UPDATE_USER_VERIFIED,

@@ -2281,5 +2281,128 @@
       "bearer": "{{seller_token}}"
     },
     "tests": []
+  },
+  {
+    "_id": "ba109109-cea8-45a8-abcd-e67cb8908c38",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/banners",
+    "url": "{{baseUrl}}/banners",
+    "method": "POST",
+    "sortNum": 0,
+    "created": "2023-03-07T14:36:21.276Z",
+    "modified": "2023-03-07T14:36:32.705Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n\t\"media_id\" : 1,\n\t\"redirect_type\" : \"rt\" ,\n\t\"redirect_url\" : \"www.example1.com\"\n}",
+      "form": []
+    },
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{admin_token}}"
+    },
+    "tests": []
+  },
+  {
+    "_id": "bfd9522c-8ca3-4cc9-86b3-62049cf4e01a",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/banners",
+    "url": "{{baseUrl}}/banners",
+    "method": "GET",
+    "sortNum": 0,
+    "created": "2023-03-07T14:36:37.899Z",
+    "modified": "2023-03-07T14:36:37.899Z",
+    "headers": [],
+    "params": [],
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{token}}"
+    },
+    "tests": []
+  },
+  {
+    "_id": "6acbea51-1e1b-4518-bb8a-fcedd6a243e8",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/banners/2",
+    "url": "{{baseUrl}}/banners/2",
+    "method": "PUT",
+    "sortNum": 0,
+    "created": "2023-03-07T14:36:51.779Z",
+    "modified": "2023-03-07T14:37:03.697Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n\t\"media_id\" : 1,\n\t\"redirect_type\" : \"rtype_updated\" ,\n\t\"redirect_url\" : \"www.example.com\"\n}",
+      "form": []
+    },
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{admin_token}}"
+    },
+    "tests": []
+  },
+  {
+    "_id": "1d64d983-2c30-4b13-a609-aa8a70c7a72b",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/banners/1",
+    "url": "{{baseUrl}}/banners/1",
+    "method": "PUT",
+    "sortNum": 0,
+    "created": "2023-03-07T14:37:16.156Z",
+    "modified": "2023-03-07T14:37:16.156Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n\t\"media_id\" : 1,\n\t\"redirect_type\" : \"rtype_updated\" ,\n\t\"redirect_url\" : \"www.example.com\"\n}",
+      "form": []
+    },
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{admin_token}}"
+    },
+    "tests": []
+  },
+  {
+    "_id": "cdf7e8aa-7e40-4ce1-9099-c1e6765ed6d2",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/banners/1",
+    "url": "{{baseUrl}}/banners/1",
+    "method": "DELETE",
+    "sortNum": 0,
+    "created": "2023-03-07T14:37:28.470Z",
+    "modified": "2023-03-07T14:37:37.933Z",
+    "headers": [],
+    "params": [],
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{admin_token}}"
+    },
+    "tests": []
+  },
+  {
+    "_id": "c3cf5f30-1e2d-474b-8940-cc315973c563",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/categories/2",
+    "url": "{{baseUrl}}/categories/2",
+    "method": "DELETE",
+    "sortNum": 0,
+    "created": "2023-03-07T14:38:53.497Z",
+    "modified": "2023-03-07T14:38:53.497Z",
+    "headers": [],
+    "params": [],
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{admin_token}}"
+    },
+    "tests": []
   }
 ]

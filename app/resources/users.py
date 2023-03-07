@@ -85,9 +85,9 @@ class CustomerProfile(Resource):
             cursor = app_globals.get_cursor()
             cursor.execute(
                 UPDATE_CUSTOMER_PROFILE, (customer_dict.get('first_name'), customer_dict.get('last_name'),
-                                  customer_dict.get(
-                                      'dob'), customer_dict.get('gender'),
-                                  customer_dict.get('dp_id'), datetime.now(), customer_id,))
+                                          customer_dict.get(
+                    'dob'), customer_dict.get('gender'),
+                    customer_dict.get('dp_id'), datetime.now(), customer_id,))
             if cursor.rowcount != 1:
                 abort(400, 'Bad Request: update customers row error')
         except (Exception, psycopg2.Error) as err:
@@ -108,11 +108,11 @@ class CustomerProfile(Resource):
         if (not customer_id) and (user_type != 'customer'):
             abort(403, 'Forbidden')
 
-        DELETE_USER = 'DELETE FROM users WHERE id= %s AND trashed= True'
+        DELETE_USER = 'DELETE FROM customers WHERE id= %s AND trashed= True'
         try:
             cursor = app_globals.get_cursor()
 
-            cursor.execute(DELETE_USER, (user_id,))
+            cursor.execute(DELETE_USER, (customer_id,))
             if cursor.rowcount != 1:
                 abort(400, 'Bad Request: delete row error')
         except (Exception, psycopg2.Error) as err:
@@ -212,9 +212,9 @@ class SellerProfile(Resource):
             cursor = app_globals.get_cursor()
             cursor.execute(
                 UPDATE_SELLER_PROFILE, (seller_dict.get('seller_name'), seller_dict.get('GSTIN'),
-                                seller_dict.get(
-                                    'PAN'), seller_dict.get('dp_id'),
-                                seller_dict.get('sign_id'), datetime.now(), seller_id,))
+                                        seller_dict.get(
+                    'PAN'), seller_dict.get('dp_id'),
+                    seller_dict.get('sign_id'), datetime.now(), seller_id,))
             if cursor.rowcount != 1:
                 abort(400, 'Bad Request: update sellers row error')
         except (Exception, psycopg2.Error) as err:
@@ -223,7 +223,7 @@ class SellerProfile(Resource):
         finally:
             cursor.close()
         return {"message": f"seller_id {seller_id} modified."}, 200
-    
+
     @f_jwt.jwt_required()
     def delete(self):
         seller_id = f_jwt.get_jwt_identity().get("seller_id")
@@ -248,6 +248,7 @@ class SellerProfile(Resource):
         finally:
             cursor.close()
         return 200
+
 
 class AdminProfile(Resource):
     @f_jwt.jwt_required()
@@ -325,9 +326,9 @@ class AdminProfile(Resource):
             cursor = app_globals.get_cursor()
             cursor.execute(
                 UPDATE_CUSTOMER_PROFILE, (admin_dict.get('first_name'), admin_dict.get('last_name'),
-                                  admin_dict.get(
-                                      'dob'), admin_dict.get('gender'),
-                                  admin_dict.get('dp_id'), datetime.now(), admin_id,))
+                                          admin_dict.get(
+                    'dob'), admin_dict.get('gender'),
+                    admin_dict.get('dp_id'), datetime.now(), admin_id,))
             if cursor.rowcount != 1:
                 abort(400, 'Bad Request: update admins row error')
         except (Exception, psycopg2.Error) as err:
@@ -361,7 +362,6 @@ class AdminProfile(Resource):
         finally:
             cursor.close()
         return 200
-
 
 
 class ResetEmail(Resource):

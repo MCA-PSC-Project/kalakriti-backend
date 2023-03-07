@@ -21,16 +21,13 @@ class Banners(Resource):
         redirect_url = data.get("redirect_url", None)
 
         if user_type != "admin" and user_type != "super_admin":
-            abort(400, "only super-admins and admins can create banner")
+            abort(403, 'Forbidden: only super-admins and admins can create category')
 
         CREATE_BANNER = '''INSERT INTO banners(media_id, redirect_type, redirect_url)
-        VALUES(%s,%s, %s) RETURNING id'''
-        # catch exception for invalid SQL statement
-        try:
-            # declare a cursor object from the connection
-            cursor = app_globals.get_cursor()
-            # # app.logger.debug("cursor object: %s", cursor)
+        VALUES(%s, %s, %s) RETURNING id'''
 
+        try:
+            cursor = app_globals.get_cursor()
             cursor.execute(
                 CREATE_BANNER, (media_id, redirect_type, redirect_url,))
             id = cursor.fetchone()[0]
@@ -39,32 +36,26 @@ class Banners(Resource):
             abort(400, 'Bad Request')
         finally:
             cursor.close()
-        return f"banner_id =  {id} created sucessfully", 201
+        return f"banner_id = {id} created sucessfully", 201
 
     def get(self):
         banners_list = []
 
         GET_BANNERS = '''SELECT b.id AS banner_id, b.redirect_type, b.redirect_url,
-                        m.id as media_id, m.name, m.path 
-                        FROM banners b LEFT JOIN media m on b.media_id = m.id
-                        '''
+        m.id AS media_id, m.name, m.path 
+        FROM banners b LEFT JOIN media m ON b.media_id = m.id'''
 
-        # catch exception for invalid SQL statement
         try:
-            # declare a cursor object from the connection
             cursor = app_globals.get_named_tuple_cursor()
-            # # app.logger.debug("cursor object: %s", cursor)
-
             cursor.execute(GET_BANNERS)
             rows = cursor.fetchall()
             if not rows:
-                return {}
+                return []
             for row in rows:
                 banners_dict = {}
                 banners_dict['id'] = row.banner_id
                 banners_dict['redirect_type'] = row.redirect_type
                 banners_dict['redirect_url'] = row.redirect_url
-
                 banner_media_dict = {}
                 banner_media_dict['id'] = row.media_id
                 banner_media_dict['name'] = row.name
@@ -75,14 +66,13 @@ class Banners(Resource):
                 else:
                     banner_media_dict['path'] = None
                 banners_dict.update({"dp": banner_media_dict})
-
                 banners_list.append(banners_dict)
         except (Exception, psycopg2.Error) as err:
             app.logger.debug(err)
             abort(400, 'Bad Request')
         finally:
             cursor.close()
-        # app.logger.debug(banner_dict)
+        # app.logger.debug(banners_list)
         return banners_list
 
     @ f_jwt.jwt_required()
@@ -98,17 +88,13 @@ class Banners(Resource):
         if user_type != "admin" and user_type != "super_admin":
             abort(400, "only super-admins and admins can update banners")
 
-        UPDATE_BANNER = 'UPDATE banners SET redirect_type= %s, redirect_url= %s WHERE id= %s'
+        UPDATE_BANNER = 'UPDATE banners SET media_id= %s, redirect_type= %s, redirect_url= %s WHERE id= %s'
 
-        # catch exception for invalid SQL statement
         try:
-            # declare a cursor object from the connection
             cursor = app_globals.get_cursor()
-            # # app.logger.debug("cursor object: %s", cursor)
-
             cursor.execute(
-                UPDATE_BANNER, (banner_dict['redirect_type'], banner_dict['redirect_url'], banner_id,))
-            # app.logger.debug("row_counts= %s", cursor.rowcount)
+                UPDATE_BANNER, (banner_dict['media_id'], banner_dict['redirect_type'],
+                                banner_dict['redirect_url'], banner_id,))
             if cursor.rowcount != 1:
                 abort(400, 'Bad Request: update row error')
         except (Exception, psycopg2.Error) as err:
@@ -130,14 +116,9 @@ class Banners(Resource):
 
         DELETE_BANNER = 'DELETE FROM banners WHERE id= %s'
 
-        # catch exception for invalid SQL statement
         try:
-            # declare a cursor object from the connection
             cursor = app_globals.get_cursor()
-            # app.logger.debug("cursor object: %s", cursor)
-
             cursor.execute(DELETE_BANNER, (banner_id,))
-            # app.logger.debug("row_counts= %s", cursor.rowcount)
             if cursor.rowcount != 1:
                 abort(400, 'Bad Request: delete row error')
         except (Exception, psycopg2.Error) as err:

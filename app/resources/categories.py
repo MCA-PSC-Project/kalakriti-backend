@@ -37,7 +37,7 @@ class Categories(Resource):
             abort(400, 'Bad Request')
         finally:
             cursor.close()
-        return f"category_id =  {id} created sucessfully", 201
+        return f"category_id = {id} created sucessfully", 201
 
     def get(self):
         categories_list = []
@@ -53,7 +53,7 @@ class Categories(Resource):
             cursor.execute(GET_CATEGORIES)
             rows = cursor.fetchall()
             if not rows:
-                return {}
+                return []
             for row in rows:
                 category_dict = {}
                 category_dict['id'] = row.category_id
