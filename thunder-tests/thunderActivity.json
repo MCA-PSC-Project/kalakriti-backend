@@ -1629,7 +1629,7 @@
     "method": "PUT",
     "sortNum": 0,
     "created": "2023-03-06T12:31:35.717Z",
-    "modified": "2023-03-06T12:31:35.717Z",
+    "modified": "2023-03-07T12:49:40.417Z",
     "headers": [],
     "params": [],
     "body": {
@@ -1639,7 +1639,7 @@
     },
     "auth": {
       "type": "bearer",
-      "bearer": "{{seller_token}}"
+      "bearer": "{{admin_token}}"
     },
     "tests": []
   },
@@ -2069,6 +2069,176 @@
         "isPath": false
       }
     ],
+    "tests": []
+  },
+  {
+    "_id": "c3a41dfc-61be-4666-aaac-d52b58206979",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/auth/verify-email?user_type=seller&token=InNlbGxlckBnbWFpbC5jb20i.ZAcw8A.k44__BdNUteua6fkc2IB4db7JQw",
+    "url": "{{baseUrl}}/auth/verify-email?user_type=seller&token=InNlbGxlckBnbWFpbC5jb20i.ZAcw8A.k44__BdNUteua6fkc2IB4db7JQw",
+    "method": "GET",
+    "sortNum": 0,
+    "created": "2023-03-07T12:41:48.692Z",
+    "modified": "2023-03-07T12:41:48.692Z",
+    "headers": [],
+    "params": [
+      {
+        "name": "user_type",
+        "value": "seller",
+        "isPath": false
+      },
+      {
+        "name": "token",
+        "value": "InNlbGxlckBnbWFpbC5jb20i.ZAcw8A.k44__BdNUteua6fkc2IB4db7JQw",
+        "isPath": false
+      }
+    ],
+    "tests": []
+  },
+  {
+    "_id": "814113e6-29a2-4074-a781-8b4c0c3bc0ff",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/auth/verify-email?user_type=seller&token=ImFkbWluQGdtYWlsLmNvbSI.ZAcxIQ.I-ZqPV8MUsM1U7BQsNC7ZpEg9V4",
+    "url": "{{baseUrl}}/auth/verify-email?user_type=seller&token=ImFkbWluQGdtYWlsLmNvbSI.ZAcxIQ.I-ZqPV8MUsM1U7BQsNC7ZpEg9V4",
+    "method": "GET",
+    "sortNum": 0,
+    "created": "2023-03-07T12:42:40.076Z",
+    "modified": "2023-03-07T12:42:40.076Z",
+    "headers": [],
+    "params": [
+      {
+        "name": "user_type",
+        "value": "seller",
+        "isPath": false
+      },
+      {
+        "name": "token",
+        "value": "ImFkbWluQGdtYWlsLmNvbSI.ZAcxIQ.I-ZqPV8MUsM1U7BQsNC7ZpEg9V4",
+        "isPath": false
+      }
+    ],
+    "tests": []
+  },
+  {
+    "_id": "60f51d1f-92a3-49b5-80e1-5a30d87c45d9",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/auth/verify-email?user_type=admin&token=ImFkbWluQGdtYWlsLmNvbSI.ZAcxIQ.I-ZqPV8MUsM1U7BQsNC7ZpEg9V4",
+    "url": "{{baseUrl}}/auth/verify-email?user_type=admin&token=ImFkbWluQGdtYWlsLmNvbSI.ZAcxIQ.I-ZqPV8MUsM1U7BQsNC7ZpEg9V4",
+    "method": "GET",
+    "sortNum": 0,
+    "created": "2023-03-07T12:42:49.160Z",
+    "modified": "2023-03-07T12:42:49.160Z",
+    "headers": [],
+    "params": [
+      {
+        "name": "user_type",
+        "value": "admin",
+        "isPath": false
+      },
+      {
+        "name": "token",
+        "value": "ImFkbWluQGdtYWlsLmNvbSI.ZAcxIQ.I-ZqPV8MUsM1U7BQsNC7ZpEg9V4",
+        "isPath": false
+      }
+    ],
+    "tests": []
+  },
+  {
+    "_id": "bd7699f6-b329-48d8-9e05-dfc1bba10854",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/sellers/profile/cddvd",
+    "url": "{{baseUrl}}/sellers/profile/cddvd",
+    "method": "GET",
+    "sortNum": 0,
+    "created": "2023-03-07T12:46:27.949Z",
+    "modified": "2023-03-07T12:46:27.949Z",
+    "headers": [],
+    "params": [],
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{seller_token}}"
+    },
+    "tests": []
+  },
+  {
+    "_id": "f0daf164-9324-4ed0-b4db-f442abc47c3d",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/sellers/profile/admin/",
+    "url": "{{baseUrl}}/sellers/profile/admin/",
+    "method": "GET",
+    "sortNum": 0,
+    "created": "2023-03-07T12:46:34.797Z",
+    "modified": "2023-03-07T12:46:34.797Z",
+    "headers": [],
+    "params": [],
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{seller_token}}"
+    },
+    "tests": []
+  },
+  {
+    "_id": "cd241a97-6c87-40e0-a562-c4435013876d",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/admin/profile",
+    "url": "{{baseUrl}}/admin/profile",
+    "method": "GET",
+    "sortNum": 0,
+    "created": "2023-03-07T12:46:43.646Z",
+    "modified": "2023-03-07T12:47:26.599Z",
+    "headers": [],
+    "params": [],
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{admin_token}}"
+    },
+    "tests": []
+  },
+  {
+    "_id": "84f0e331-f15d-4657-8107-0e5ae34b3b67",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/admins/profile",
+    "url": "{{baseUrl}}/admins/profile",
+    "method": "PUT",
+    "sortNum": 0,
+    "created": "2023-03-07T12:50:18.551Z",
+    "modified": "2023-03-07T12:52:15.387Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n  \"first_name\": \"Prashant\",\n  \"last_name\": \"Kumar\",\n  \"dob\": \"3/10/2000\",\n  \"gender\": \"male\",\n  \"dp_id\": null\n}",
+      "form": []
+    },
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{admin_token}}"
+    },
+    "tests": []
+  },
+  {
+    "_id": "f899a8bd-2f9d-4a4a-ac68-846a8b3e8b24",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/admins/profile",
+    "url": "{{baseUrl}}/admins/profile",
+    "method": "GET",
+    "sortNum": 0,
+    "created": "2023-03-07T12:50:47.534Z",
+    "modified": "2023-03-07T12:50:47.534Z",
+    "headers": [],
+    "params": [],
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{admin_token}}"
+    },
     "tests": []
   }
 ]

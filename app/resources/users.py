@@ -80,7 +80,7 @@ class CustomerProfile(Resource):
         # app.logger.debug(customer_dict)
 
         UPDATE_CUSTOMER_PROFILE = '''UPDATE customers SET first_name= %s, last_name= %s, dob= %s, 
-        gender= %s, dp_id= %s, updated_at= %s WHERE user_id= %s'''
+        gender= %s, dp_id= %s, updated_at= %s WHERE id= %s'''
         try:
             cursor = app_globals.get_cursor()
             cursor.execute(
@@ -153,7 +153,6 @@ class SellerProfile(Resource):
             if row is None:
                 abort(400, 'Bad Request')
             seller_profile_dict['seller_name'] = row.seller_name
-            seller_profile_dict['user_type'] = row.user_type
             seller_profile_dict['email'] = row.email
             seller_profile_dict['phone'] = row.phone
             seller_profile_dict['GSTIN'] = row.GSTIN
@@ -208,7 +207,7 @@ class SellerProfile(Resource):
 
         UPDATE_SELLER_PROFILE = '''UPDATE sellers SET seller_name= %s, "GSTIN"= %s, "PAN"= %s, 
         dp_id= %s, sign_id= %s, updated_at= %s
-        WHERE user_id= %s'''
+        WHERE id= %s'''
         try:
             cursor = app_globals.get_cursor()
             cursor.execute(
@@ -321,7 +320,7 @@ class AdminProfile(Resource):
         # app.logger.debug(admin_dict)
 
         UPDATE_CUSTOMER_PROFILE = '''UPDATE admins SET first_name= %s, last_name= %s, dob= %s, 
-        gender= %s, dp_id= %s, updated_at= %s WHERE user_id= %s'''
+        gender= %s, dp_id= %s, updated_at= %s WHERE id= %s'''
         try:
             cursor = app_globals.get_cursor()
             cursor.execute(
