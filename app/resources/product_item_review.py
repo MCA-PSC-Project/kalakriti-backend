@@ -54,10 +54,11 @@ class Product_item_review(Resource):
                 cursor.close()
         return f"Review_id = {review_id} created sucessfully for product_item_id ={product_item_id}", 201
 
-    def get(self,id):
+    @f_jwt.jwt_required()
+    def get(self,product_id):
         reviews_list = []
 
-        GET_REVIEWS = '''SELECT rating, review , added_at , updated_at FROM product_item_reviews 
+        GET_REVIEWS = '''SELECT id,user_id, rating, review , added_at , updated_at FROM product_item_reviews 
                          WHERE product_item_id IN (SELECT id FROM product_items WHERE product_id =%s)'''
 
         # catch exception for invalid SQL statement
@@ -66,12 +67,14 @@ class Product_item_review(Resource):
             cursor = app_globals.get_named_tuple_cursor()
             # # app.logger.debug("cursor object: %s", cursor)
 
-            cursor.execute(GET_REVIEWS,(id,))
+            cursor.execute(GET_REVIEWS,(product_id,))
             rows = cursor.fetchall()
             if not rows:
                 return {}
             for row in rows:
                 review_dict = {}
+                review_dict['review_id'] = row.id
+                review_dict['user_id'] = row.user_id
                 review_dict.update(json.loads(
                     json.dumps({'rating': row.rating}, default=str)))
                 review_dict['review'] = row.review
@@ -79,20 +82,32 @@ class Product_item_review(Resource):
                     json.dumps({'added_at': row.added_at}, default=str)))
                 review_dict.update(json.loads(
                     json.dumps({'updated_at': row.updated_at}, default=str)))
-
-
-                # banner_media_dict = {}
-                # banner_media_dict['id'] = row.media_id
-                # banner_media_dict['name'] = row.name
-                # path = row.path
-                # if path is not None:
-                #     banner_media_dict['path'] = "{}/{}".format(
-                #         app.config["S3_LOCATION"], path)
-                # else:
-                #     banner_media_dict['path'] = None
-                # review_dict.update({"dp": banner_media_dict})
-
+        
+                GET_USER_PROFILE = '''SELECT u.first_name, u.last_name,
+                m.id AS media_id, m.name AS media_name, m.path
+                FROM users u LEFT JOIN media m on u.dp_id = m.id WHERE u.id = %s'''
+                 
+                cursor.execute(
+                    GET_USER_PROFILE, (review_dict.get('user_id'),))
+                row = cursor.fetchone()
+                if row is None:
+                  return {}
+                review_dict['first_name'] = row.first_name
+                review_dict['last_name'] = row.last_name
+                media_dict={}
+                media_dict['id'] = row.media_id
+                media_dict['name'] = row.media_name
+                # media_dict['path'] = row.path
+                path = row.path
+                if path is not None:
+                    media_dict['path'] = "{}/{}".format(
+                        app.config["S3_LOCATION"], path)
+                else:
+                    media_dict['path'] = None
+                
+                review_dict.update({"dp": media_dict})
                 reviews_list.append(review_dict)
+
         except (Exception, psycopg2.Error) as err:
             app.logger.debug(err)
             abort(400, 'Bad Request')
@@ -101,64 +116,123 @@ class Product_item_review(Resource):
         # app.logger.debug(banner_dict)
         return reviews_list
 
-    # @ f_jwt.jwt_required()
-    # def put(self, banner_id):
-    #     claims = f_jwt.get_jwt()
-    #     user_type = claims['user_type']
-    #     app.logger.debug("user_type= %s", user_type)
+    @ f_jwt.jwt_required()
+    def put(self, review_id):
+        user_id = f_jwt.get_jwt_identity()
+        app.logger.debug("user_id= %s", user_id)
+        claims = f_jwt.get_jwt()
+        user_type = claims['user_type']
+        app.logger.debug("user_type= %s", user_type)
 
-    #     data = request.get_json()
-    #     banner_dict = json.loads(json.dumps(data))
-    #     app.logger.debug(banner_dict)
+        data = request.get_json()
+        review_dict = json.loads(json.dumps(data))
+        app.logger.debug(review_dict)
 
-    #     if user_type != "admin" and user_type != "super_admin":
-    #         abort(400, "only super-admins and admins can update banners")
+        current_time = datetime.now()
 
-    #     UPDATE_BANNER = 'UPDATE banners SET redirect_type= %s, redirect_url= %s WHERE id= %s'
+        UPDATE_BANNER = 'UPDATE product_item_reviews SET rating= %s, review= %s, updated_at=%s WHERE id= %s and user_id= %s'
 
-    #     # catch exception for invalid SQL statement
-    #     try:
-    #         # declare a cursor object from the connection
-    #         cursor = app_globals.get_cursor()
-    #         # # app.logger.debug("cursor object: %s", cursor)
+        # catch exception for invalid SQL statement
+        try:
+            # declare a cursor object from the connection
+            cursor = app_globals.get_cursor()
+            # # app.logger.debug("cursor object: %s", cursor)
 
-    #         cursor.execute(
-    #             UPDATE_BANNER, (banner_dict['redirect_type'], banner_dict['redirect_url'], banner_id,))
-    #         # app.logger.debug("row_counts= %s", cursor.rowcount)
-    #         if cursor.rowcount != 1:
-    #             abort(400, 'Bad Request: update row error')
-    #     except (Exception, psycopg2.Error) as err:
-    #         app.logger.debug(err)
-    #         abort(400, 'Bad Request')
-    #     finally:
-    #         cursor.close()
-    #     return {"message": f"Banner_id {banner_id} modified."}, 200
+            cursor.execute(
+                UPDATE_BANNER, (review_dict['rating'], review_dict['review'], current_time, review_id, user_id))
+            # app.logger.debug("row_counts= %s", cursor.rowcount)
+            if cursor.rowcount != 1:
+                abort(400, 'Bad Request: update row error')
+        except (Exception, psycopg2.Error) as err:
+            app.logger.debug(err)
+            abort(400, 'Bad Request')
+        finally:
+            cursor.close()
+        return {"message": f"Review_id {review_id} modified."}, 200
 
-    # @ f_jwt.jwt_required()
-    # def delete(self, banner_id):
-    #     user_id = f_jwt.get_jwt_identity()
-    #     app.logger.debug("user_id= %s", user_id)
-    #     claims = f_jwt.get_jwt()
-    #     user_type = claims['user_type']
+    @ f_jwt.jwt_required()
+    def delete(self, review_id):
+        user_id = f_jwt.get_jwt_identity()
+        app.logger.debug("user_id= %s", user_id)
 
-    #     if user_type != "admin" and user_type != "super_admin":
-    #         abort(400, "Only super-admins and admins can delete banner")
+        DELETE_REVIEW = 'DELETE FROM product_item_reviews WHERE id= %s AND user_id =%s'
 
-    #     DELETE_BANNER = 'DELETE FROM banners WHERE id= %s'
+        # catch exception for invalid SQL statement
+        try:
+            # declare a cursor object from the connection
+            cursor = app_globals.get_cursor()
+            # app.logger.debug("cursor object: %s", cursor)
 
-    #     # catch exception for invalid SQL statement
-    #     try:
-    #         # declare a cursor object from the connection
-    #         cursor = app_globals.get_cursor()
-    #         # app.logger.debug("cursor object: %s", cursor)
+            cursor.execute(DELETE_REVIEW, (review_id, user_id,))
+            # app.logger.debug("row_counts= %s", cursor.rowcount)
+            if cursor.rowcount != 1:
+                abort(400, 'Bad Request: delete row error')
+        except (Exception, psycopg2.Error) as err:
+            app.logger.debug(err)
+            abort(400, 'Bad Request')
+        finally:
+            cursor.close()
+        return 200
 
-    #         cursor.execute(DELETE_BANNER, (banner_id,))
-    #         # app.logger.debug("row_counts= %s", cursor.rowcount)
-    #         if cursor.rowcount != 1:
-    #             abort(400, 'Bad Request: delete row error')
-    #     except (Exception, psycopg2.Error) as err:
-    #         app.logger.debug(err)
-    #         abort(400, 'Bad Request')
-    #     finally:
-    #         cursor.close()
-    #     return 200
+class GetUserReviewOnProduct(Resource):
+    @f_jwt.jwt_required()
+    def get(self,product_item_id):
+        user_id = f_jwt.get_jwt_identity()
+        app.logger.debug("user_id= %s", user_id)
+        reviews_list = []
+
+        GET_REVIEWS = '''SELECT id, rating, review , added_at , updated_at FROM product_item_reviews 
+                         WHERE product_item_id = %s AND user_id = %s'''
+
+        # catch exception for invalid SQL statement
+        try:
+            # declare a cursor object from the connection
+            cursor = app_globals.get_named_tuple_cursor()
+            # # app.logger.debug("cursor object: %s", cursor)
+
+            cursor.execute(GET_REVIEWS,(product_item_id,user_id,))
+            row = cursor.fetchone()
+            if row is None:
+                return {}
+            # for row in rows:
+            review_dict = {}
+            review_dict['review_id'] = row.id
+            review_dict.update(json.loads(
+                json.dumps({'rating': row.rating}, default=str)))
+            review_dict['review'] = row.review
+            review_dict.update(json.loads(
+                json.dumps({'added_at': row.added_at}, default=str)))
+            review_dict.update(json.loads(
+                json.dumps({'updated_at': row.updated_at}, default=str)))
+
+            GET_USER_PROFILE = '''SELECT u.first_name, u.last_name,
+            m.id AS media_id, m.name AS media_name, m.path
+            FROM users u LEFT JOIN media m on u.dp_id = m.id WHERE u.id = %s'''
+                
+            cursor.execute(
+                GET_USER_PROFILE, (user_id,))
+            row = cursor.fetchone()
+            if row is None:
+                return {}
+            review_dict['first_name'] = row.first_name
+            review_dict['last_name'] = row.last_name
+            media_dict={}
+            media_dict['id'] = row.media_id
+            media_dict['name'] = row.media_name
+            # media_dict['path'] = row.path
+            path = row.path
+            if path is not None:
+                media_dict['path'] = "{}/{}".format(
+                    app.config["S3_LOCATION"], path)
+            else:
+                media_dict['path'] = None
+            
+            review_dict.update({"dp": media_dict})
+            reviews_list.append(review_dict)
+        except (Exception, psycopg2.Error) as err:
+            app.logger.debug(err)
+            abort(400, 'Bad Request')
+        finally:
+            cursor.close()
+        # app.logger.debug(banner_dict)
+        return reviews_list
