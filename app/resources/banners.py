@@ -86,7 +86,7 @@ class Banners(Resource):
         app.logger.debug(banner_dict)
 
         if user_type != "admin" and user_type != "super_admin":
-            abort(400, "only super-admins and admins can update banners")
+            abort(403, 'Forbidden: only super-admins and admins can update banner')
 
         UPDATE_BANNER = 'UPDATE banners SET media_id= %s, redirect_type= %s, redirect_url= %s WHERE id= %s'
 
@@ -106,13 +106,12 @@ class Banners(Resource):
 
     @ f_jwt.jwt_required()
     def delete(self, banner_id):
-        user_id = f_jwt.get_jwt_identity()
-        app.logger.debug("user_id= %s", user_id)
         claims = f_jwt.get_jwt()
         user_type = claims['user_type']
+        app.logger.debug("user_type= %s", user_type)
 
         if user_type != "admin" and user_type != "super_admin":
-            abort(400, "Only super-admins and admins can delete banner")
+            abort(403, 'Forbidden: only super-admins and admins can delete banner')
 
         DELETE_BANNER = 'DELETE FROM banners WHERE id= %s'
 

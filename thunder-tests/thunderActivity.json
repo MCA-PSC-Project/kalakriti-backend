@@ -1,28 +1,5 @@
 [
   {
-    "_id": "ad67376e-f3b0-4b54-8fc1-cc956f9e70a3",
-    "colId": "history",
-    "containerId": "",
-    "name": "{{baseUrl}}/products/26",
-    "url": "{{baseUrl}}/products/26",
-    "method": "PATCH",
-    "sortNum": 0,
-    "created": "2023-02-22T17:10:33.825Z",
-    "modified": "2023-02-24T14:17:11.720Z",
-    "headers": [],
-    "params": [],
-    "body": {
-      "type": "json",
-      "raw": "{\n  \"trashed\": true\n}",
-      "form": []
-    },
-    "auth": {
-      "type": "bearer",
-      "bearer": "{{seller_token}}"
-    },
-    "tests": []
-  },
-  {
     "_id": "3b2448ff-ad90-400a-9894-6823d22672bf",
     "colId": "history",
     "containerId": "",
@@ -66,157 +43,6 @@
     "tests": []
   },
   {
-    "_id": "0cb476ad-ae88-4ae2-85be-da17eb2b951e",
-    "colId": "history",
-    "containerId": "",
-    "name": "{{baseUrl}}/sellers/products/product-items",
-    "url": "{{baseUrl}}/sellers/products/product-items",
-    "method": "POST",
-    "sortNum": 0,
-    "created": "2023-02-23T11:36:16.694Z",
-    "modified": "2023-02-24T14:34:25.609Z",
-    "headers": [],
-    "params": [],
-    "body": {
-      "type": "json",
-      "raw": "{\n  \"product_id\": 26,\n  \"variant\": \"COLOR\",\n  \"variant_value\": \"BLACK\",\n  \"product_variant_name\": \"black_COLOR_VARIANT\",\n  \"SKU\": \"black-colorf\",\n  \"original_price\": 1000,\n  \"offer_price\": 500,\n  \"quantity_in_stock\": 20\n}",
-      "form": []
-    },
-    "auth": {
-      "type": "bearer",
-      "bearer": "{{seller_token}}"
-    },
-    "tests": []
-  },
-  {
-    "_id": "dbf96566-6515-4ff5-b783-d863e97ccd83",
-    "colId": "history",
-    "containerId": "",
-    "name": "{{baseUrl}}/sellers/products/26",
-    "url": "{{baseUrl}}/sellers/products/26",
-    "method": "PUT",
-    "sortNum": 0,
-    "created": "2023-02-23T14:31:47.358Z",
-    "modified": "2023-02-24T14:14:32.755Z",
-    "headers": [],
-    "params": [],
-    "body": {
-      "type": "json",
-      "raw": "{\n  \"product_name\": \"famous madhubani painting\",\n  \"product_description\": \"paintings from madhubani\",\n  \"category_id\": 5,\n  \"subcategory_id\": null,\n  \"currency\": \"INR\"\n}",
-      "form": []
-    },
-    "auth": {
-      "type": "bearer",
-      "bearer": "{{seller_token}}"
-    },
-    "tests": []
-  },
-  {
-    "_id": "c19f27ca-d2fe-4a8a-9be7-75dcfdb7446b",
-    "colId": "history",
-    "containerId": "",
-    "name": "{{baseUrl}}/products/26/tags",
-    "url": "{{baseUrl}}/products/26/tags",
-    "method": "PUT",
-    "sortNum": 0,
-    "created": "2023-02-24T09:47:22.754Z",
-    "modified": "2023-02-24T14:55:01.042Z",
-    "headers": [],
-    "params": [],
-    "body": {
-      "type": "json",
-      "raw": "[\n\t\"art\",\n\t\"painting\",\n\t\"drawing\",\n\t\"beautiful art\",\n\t\"extraordinary\"\n]",
-      "form": []
-    },
-    "auth": {
-      "type": "bearer",
-      "bearer": "{{seller_token}}"
-    },
-    "tests": []
-  },
-  {
-    "_id": "d243c5cf-6ae5-47eb-a953-a3909dd8d887",
-    "colId": "history",
-    "containerId": "",
-    "name": "{{baseUrl}}/sellers/products/26",
-    "url": "{{baseUrl}}/sellers/products/26",
-    "method": "PATCH",
-    "sortNum": 0,
-    "created": "2023-02-24T14:16:05.080Z",
-    "modified": "2023-02-24T14:17:25.622Z",
-    "headers": [],
-    "params": [],
-    "body": {
-      "type": "json",
-      "raw": "{\n  \"trashed\": true\n}",
-      "form": []
-    },
-    "auth": {
-      "type": "bearer",
-      "bearer": "{{seller_token}}"
-    },
-    "tests": []
-  },
-  {
-    "_id": "34a485ea-b3d6-4586-b53f-65103e221a22",
-    "colId": "history",
-    "containerId": "",
-    "name": "{{baseUrl}}/sellers/products/26",
-    "url": "{{baseUrl}}/sellers/products/26",
-    "method": "DELETE",
-    "sortNum": 0,
-    "created": "2023-02-24T14:17:52.832Z",
-    "modified": "2023-02-24T14:17:52.832Z",
-    "headers": [],
-    "params": [],
-    "auth": {
-      "type": "bearer",
-      "bearer": "{{admin_token}}"
-    },
-    "tests": []
-  },
-  {
-    "_id": "a8a60d2f-7a8d-4240-8ecb-85ef958e2d10",
-    "colId": "history",
-    "containerId": "",
-    "name": "{{baseUrl}}/sellers/products/29",
-    "url": "{{baseUrl}}/sellers/products/29",
-    "method": "DELETE",
-    "sortNum": 0,
-    "created": "2023-02-24T14:18:20.989Z",
-    "modified": "2023-02-24T14:18:20.989Z",
-    "headers": [],
-    "params": [],
-    "auth": {
-      "type": "bearer",
-      "bearer": "{{admin_token}}"
-    },
-    "tests": []
-  },
-  {
-    "_id": "76ff8c02-02a0-47b1-b61a-497a209d4740",
-    "colId": "history",
-    "containerId": "",
-    "name": "{{baseUrl}}/sellers/products/29",
-    "url": "{{baseUrl}}/sellers/products/29",
-    "method": "PATCH",
-    "sortNum": 0,
-    "created": "2023-02-24T14:18:32.955Z",
-    "modified": "2023-02-24T14:18:32.955Z",
-    "headers": [],
-    "params": [],
-    "body": {
-      "type": "json",
-      "raw": "{\n  \"trashed\": true\n}",
-      "form": []
-    },
-    "auth": {
-      "type": "bearer",
-      "bearer": "{{seller_token}}"
-    },
-    "tests": []
-  },
-  {
     "_id": "2c78c73a-f11b-432b-b635-9ed84a4ebb88",
     "colId": "history",
     "containerId": "",
@@ -237,175 +63,6 @@
       "type": "bearer",
       "bearer": "{{seller_token}}"
     },
-    "tests": []
-  },
-  {
-    "_id": "ae72e985-b8f2-49b8-bc9b-58a3e58c2e05",
-    "colId": "history",
-    "containerId": "",
-    "name": "{{baseUrl}}/sellers/product-items/18",
-    "url": "{{baseUrl}}/sellers/product-items/18",
-    "method": "PUT",
-    "sortNum": 0,
-    "created": "2023-02-24T14:41:32.951Z",
-    "modified": "2023-02-24T14:42:06.948Z",
-    "headers": [],
-    "params": [],
-    "body": {
-      "type": "json",
-      "raw": "{\n  \"variant\": \"MATERIAL\",\n  \"variant_value\": \"LIGHT_GREEN\",\n  \"product_variant_name\": \"LIGHT_GREEN_COLOR_VARIANT\",\n  \"SKU\": \"dgreen-colorf6\",\n  \"original_price\": 5000,\n  \"offer_price\": 2000,\n  \"quantity_in_stock\": 25\n}",
-      "form": []
-    },
-    "auth": {
-      "type": "bearer",
-      "bearer": "{{seller_token}}"
-    },
-    "tests": []
-  },
-  {
-    "_id": "111bb9da-e8d4-4a72-9c16-51e38d8e7d68",
-    "colId": "history",
-    "containerId": "",
-    "name": "{{baseUrl}}/search?query=art",
-    "url": "{{baseUrl}}/search?query=art",
-    "method": "GET",
-    "sortNum": 0,
-    "created": "2023-02-24T14:58:01.421Z",
-    "modified": "2023-02-24T14:58:01.421Z",
-    "headers": [],
-    "params": [
-      {
-        "name": "query",
-        "value": "art",
-        "isPath": false
-      }
-    ],
-    "tests": []
-  },
-  {
-    "_id": "8cf1b2f6-22e7-42c0-9e20-9db4a40371ad",
-    "colId": "history",
-    "containerId": "",
-    "name": "{{baseUrl}}/search?query=painting",
-    "url": "{{baseUrl}}/search?query=painting",
-    "method": "GET",
-    "sortNum": 0,
-    "created": "2023-02-24T14:58:09.142Z",
-    "modified": "2023-02-24T14:58:09.142Z",
-    "headers": [],
-    "params": [
-      {
-        "name": "query",
-        "value": "painting",
-        "isPath": false
-      }
-    ],
-    "tests": []
-  },
-  {
-    "_id": "7596842a-82b3-4f6f-b48d-7c8d94d129ee",
-    "colId": "history",
-    "containerId": "",
-    "name": "{{baseUrl}}/search?query=artabcd",
-    "url": "{{baseUrl}}/search?query=artabcd",
-    "method": "GET",
-    "sortNum": 0,
-    "created": "2023-02-24T15:00:01.177Z",
-    "modified": "2023-02-24T15:00:01.177Z",
-    "headers": [],
-    "params": [
-      {
-        "name": "query",
-        "value": "artabcd",
-        "isPath": false
-      }
-    ],
-    "tests": []
-  },
-  {
-    "_id": "0e347e72-d955-4c8d-ab35-d674c5f52154",
-    "colId": "history",
-    "containerId": "",
-    "name": "{{baseUrl}}/search?query=art abcd",
-    "url": "{{baseUrl}}/search?query=art abcd",
-    "method": "GET",
-    "sortNum": 0,
-    "created": "2023-02-24T15:00:06.492Z",
-    "modified": "2023-02-24T15:00:06.492Z",
-    "headers": [],
-    "params": [
-      {
-        "name": "query",
-        "value": "art abcd",
-        "isPath": false
-      }
-    ],
-    "tests": []
-  },
-  {
-    "_id": "217da65f-b8f6-4895-b012-2efbf027e5d1",
-    "colId": "history",
-    "containerId": "",
-    "name": "{{baseUrl}}/search?query=atr",
-    "url": "{{baseUrl}}/search?query=atr",
-    "method": "GET",
-    "sortNum": 0,
-    "created": "2023-02-24T15:00:17.535Z",
-    "modified": "2023-02-24T15:00:17.535Z",
-    "headers": [],
-    "params": [
-      {
-        "name": "query",
-        "value": "atr",
-        "isPath": false
-      }
-    ],
-    "tests": []
-  },
-  {
-    "_id": "fdd586ab-4dca-4a04-8032-e3480f8c3202",
-    "colId": "history",
-    "containerId": "",
-    "name": "{{baseUrl}}/wishlists",
-    "url": "{{baseUrl}}/wishlists",
-    "method": "GET",
-    "sortNum": 0,
-    "created": "2023-02-25T13:04:17.965Z",
-    "modified": "2023-02-25T13:04:17.965Z",
-    "headers": [],
-    "params": [],
-    "auth": {
-      "type": "bearer",
-      "bearer": "{{token}}"
-    },
-    "tests": []
-  },
-  {
-    "_id": "4eebec86-aca1-4790-b7c0-38113ed3ff63",
-    "colId": "history",
-    "containerId": "",
-    "name": "{{baseUrl}}/product-items/23",
-    "url": "{{baseUrl}}/product-items/23",
-    "method": "GET",
-    "sortNum": 0,
-    "created": "2023-02-26T03:49:37.059Z",
-    "modified": "2023-02-26T03:49:37.059Z",
-    "headers": [],
-    "params": [],
-    "tests": []
-  },
-  {
-    "_id": "879df69e-c39f-4b6f-8b40-eab39695d3fc",
-    "colId": "history",
-    "containerId": "",
-    "name": "{{baseUrl}}/product-items/24",
-    "url": "{{baseUrl}}/product-items/24",
-    "method": "GET",
-    "sortNum": 0,
-    "created": "2023-02-26T06:58:09.489Z",
-    "modified": "2023-02-26T06:58:09.489Z",
-    "headers": [],
-    "params": [],
     "tests": []
   },
   {
@@ -1151,12 +808,12 @@
     "method": "DELETE",
     "sortNum": 0,
     "created": "2023-03-03T13:03:13.333Z",
-    "modified": "2023-03-05T08:36:42.688Z",
+    "modified": "2023-03-08T17:12:48.212Z",
     "headers": [],
     "params": [],
     "auth": {
       "type": "bearer",
-      "bearer": "{{token}}"
+      "bearer": "{{admin_token}}"
     },
     "tests": []
   },
@@ -2397,6 +2054,129 @@
     "sortNum": 0,
     "created": "2023-03-07T14:38:53.497Z",
     "modified": "2023-03-07T14:38:53.497Z",
+    "headers": [],
+    "params": [],
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{admin_token}}"
+    },
+    "tests": []
+  },
+  {
+    "_id": "6fd2581f-1998-461a-9aa7-85689b029282",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/banners/2",
+    "url": "{{baseUrl}}/banners/2",
+    "method": "DELETE",
+    "sortNum": 0,
+    "created": "2023-03-08T17:05:55.294Z",
+    "modified": "2023-03-08T17:05:55.294Z",
+    "headers": [],
+    "params": [],
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{admin_token}}"
+    },
+    "tests": []
+  },
+  {
+    "_id": "c0c80c78-6801-43dd-94af-41d85b3007ee",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/banners/3",
+    "url": "{{baseUrl}}/banners/3",
+    "method": "PUT",
+    "sortNum": 0,
+    "created": "2023-03-08T17:08:31.015Z",
+    "modified": "2023-03-08T17:08:31.015Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n\t\"media_id\" : 1,\n\t\"redirect_type\" : \"rtype_updated\" ,\n\t\"redirect_url\" : \"www.example.com\"\n}",
+      "form": []
+    },
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{admin_token}}"
+    },
+    "tests": []
+  },
+  {
+    "_id": "1c4db916-2235-448c-8223-2484c7570527",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/banners/3",
+    "url": "{{baseUrl}}/banners/3",
+    "method": "DELETE",
+    "sortNum": 0,
+    "created": "2023-03-08T17:08:42.723Z",
+    "modified": "2023-03-08T17:08:42.723Z",
+    "headers": [],
+    "params": [],
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{admin_token}}"
+    },
+    "tests": []
+  },
+  {
+    "_id": "69ec97db-2b61-4026-bec9-3eae3458a54c",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/addresses/1",
+    "url": "{{baseUrl}}/addresses/1",
+    "method": "PUT",
+    "sortNum": 0,
+    "created": "2023-03-08T17:12:03.760Z",
+    "modified": "2023-03-08T17:12:03.760Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n  \"address\": \"psc\",\n  \"city\": \"patna\",\n  \"district\": \"Patna\",\n  \"state\": \"Bihar\",\n  \"country\": \"India\",\n  \"pincode\": \"800001\",\n  \"landmark\": \"ghanta nhi pta\"\n}",
+      "form": []
+    },
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{token}}"
+    },
+    "tests": []
+  },
+  {
+    "_id": "d4c8209b-5c50-4982-af3a-849bf56f2dc0",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/addresses/1",
+    "url": "{{baseUrl}}/addresses/1",
+    "method": "PATCH",
+    "sortNum": 0,
+    "created": "2023-03-08T17:12:42.264Z",
+    "modified": "2023-03-08T17:12:42.264Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n  \"trashed\": true\n}",
+      "form": []
+    },
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{token}}"
+    },
+    "tests": []
+  },
+  {
+    "_id": "cf28b683-9495-4895-b02a-9c006fce71a3",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/addresses/1",
+    "url": "{{baseUrl}}/addresses/1",
+    "method": "DELETE",
+    "sortNum": 0,
+    "created": "2023-03-08T17:12:55.737Z",
+    "modified": "2023-03-08T17:12:55.737Z",
     "headers": [],
     "params": [],
     "auth": {
