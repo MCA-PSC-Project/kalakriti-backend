@@ -101,7 +101,7 @@ CREATE TABLE "sellers"(
 	FOREIGN KEY("sign_id") REFERENCES "media"("id") ON DELETE SET NULL
 );
 CREATE TABLE "seller_bank_details"(
-	"id" INT PRIMARY KEY,
+	"id" SERIAL PRIMARY KEY,
 	"seller_id" INT,
 	"account_holder_name" varchar NOT NULL,
 	"account_no" varchar NOT NULL,

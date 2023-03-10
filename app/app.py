@@ -26,6 +26,7 @@ from app.resources.seller_applicant_form import Seller_Applicant_Form
 from app.resources.wishlists import Wishlists
 from app.resources.carts import Carts
 from app.resources.product_item_review import Product_item_review, GetUserReviewOnProduct
+from app.resources.seller_bank_details import Seller_Bank_Details
 
 import app.app_globals as app_globals
 
@@ -155,6 +156,10 @@ def create_app(config_name):
     # Seller_Applicant_Form
     api.add_resource(Seller_Applicant_Form, '/sellers-form',
                      '/sellers-form/<int:seller_id>')
+    
+    # Seller_Bank_Details
+    api.add_resource(Seller_Bank_Details,'/sellers-bank-details',
+                     '/sellers-bank-details/<int:seller_id>')
 
     # Wishlists
     api.add_resource(Wishlists, '/wishlists',

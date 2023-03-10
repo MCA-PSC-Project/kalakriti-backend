@@ -2304,5 +2304,42 @@
       "bearer": "{{admin_token}}"
     },
     "tests": []
+  },
+  {
+    "_id": "fc26987f-621b-49de-bff1-75181136fbb6",
+    "colId": "80d178ef-5176-474a-8708-db78bd45faee",
+    "containerId": "9f72ba7a-8196-4f17-a6c8-ca3a4ba3c8b2",
+    "name": "Enter bank details",
+    "url": "{{baseUrl}}/sellers-bank-details",
+    "method": "POST",
+    "sortNum": 990000,
+    "created": "2023-03-10T10:52:53.918Z",
+    "modified": "2023-03-10T10:58:02.467Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n  \"account_holder_name\" : \"abcdef\",\n  \"account_no\": 7387384787,\n  \"IFSC\" :\"BRPIO099833\",\n  \"account_type\" : \"savings\"\n}",
+      "form": []
+    },
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{seller_token}}"
+    },
+    "tests": []
+  },
+  {
+    "_id": "3d143101-03f2-439e-a21c-6187dfb9181e",
+    "colId": "80d178ef-5176-474a-8708-db78bd45faee",
+    "containerId": "9f72ba7a-8196-4f17-a6c8-ca3a4ba3c8b2",
+    "name": "get bank details",
+    "url": "{{baseUrl}}/sellers-bank-details/1",
+    "method": "GET",
+    "sortNum": 1000000,
+    "created": "2023-03-10T11:00:51.253Z",
+    "modified": "2023-03-10T11:05:59.740Z",
+    "headers": [],
+    "params": [],
+    "tests": []
   }
 ]
