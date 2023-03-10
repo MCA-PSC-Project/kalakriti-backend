@@ -1789,12 +1789,12 @@
     "method": "POST",
     "sortNum": 15000,
     "created": "2023-02-23T11:07:04.114Z",
-    "modified": "2023-03-01T08:24:34.012Z",
+    "modified": "2023-03-10T10:27:21.649Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n  \"product_id\": 23,\n  \"variant\": \"COLOR\",\n  \"variant_value\": \"BLACK\",\n  \"product_variant_name\": \"black_COLOR_VARIANT\",\n  \"SKU\": \"black-colorfvujjh\",\n  \"original_price\": 1000,\n  \"offer_price\": 500,\n  \"quantity_in_stock\": 20,\n  \"media_ids\": [\n    {\n      \"media_id\": 1,\n      \"display_order\": 2\n    },\n    {\n      \"media_id\": 2,\n      \"display_order\": 1\n    }\n  ]\n}",
+      "raw": "{\n  \"product_id\": 3,\n  \"variant\": \"COLOR\",\n  \"variant_value\": \"BLACK\",\n  \"product_variant_name\": \"black_COLOR_VARIANT\",\n  \"SKU\": \"black-colorfvujjh\",\n  \"original_price\": 1000,\n  \"offer_price\": 500,\n  \"quantity_in_stock\": 20,\n  \"media_ids\": [\n    {\n      \"media_id\": 1,\n      \"display_order\": 2\n    },\n    {\n      \"media_id\": 2,\n      \"display_order\": 1\n    }\n  ]\n}",
       "form": []
     },
     "auth": {
@@ -1808,11 +1808,11 @@
     "colId": "80d178ef-5176-474a-8708-db78bd45faee",
     "containerId": "9525375d-6d7f-486c-8969-7b49f2983b85",
     "name": "get product item by id",
-    "url": "{{baseUrl}}/product-items/11",
+    "url": "{{baseUrl}}/product-items/1",
     "method": "GET",
     "sortNum": 10000,
     "created": "2023-02-23T11:46:39.450Z",
-    "modified": "2023-03-01T07:52:52.339Z",
+    "modified": "2023-03-10T10:26:49.497Z",
     "headers": [],
     "params": [],
     "tests": []

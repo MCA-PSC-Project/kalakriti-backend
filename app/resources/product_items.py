@@ -11,11 +11,8 @@ from flask import current_app as app
 class ProductItems(Resource):
     def get(self, product_item_id):
         product_item_dict = {}
-        # catch exception for invalid SQL statement
         try:
-            # declare a cursor object from the connection
             cursor = app_globals.get_named_tuple_cursor()
-            # app.logger.debug("cursor object: %s", cursor)
 
             GET_PRODUCT_ITEM = '''SELECT pi.id AS product_item_id, pi.product_id, pi.product_variant_name, pi."SKU", 
             pi.original_price, pi.offer_price, pi.quantity_in_stock, pi.added_at, pi.updated_at,
@@ -53,12 +50,6 @@ class ProductItems(Resource):
             product_item_dict['variant'] = row.variant
             product_item_dict['variant_value'] = row.variant_value
 
-            # GET_MEDIAS='''SELECT m.id, m.name, m.path, pim.display_order
-            # FROM media m WHERE m.id IN
-            # (SELECT pim.media_id, pim.display_order FROM product_item_medias pim
-            # WHERE pim.product_item_id= %s)
-            # '''
-
             GET_MEDIAS = '''SELECT m.id AS media_id, m.name, m.path, pim.display_order
             FROM product_item_medias pim 
             JOIN LATERAL
@@ -73,7 +64,6 @@ class ProductItems(Resource):
             cursor.execute(GET_MEDIAS, (product_item_id,))
             rows = cursor.fetchall()
             if not rows:
-                # app.logger.debug("No media rows")
                 pass
             for row in rows:
                 media_dict = {}
@@ -98,7 +88,6 @@ class ProductItems(Resource):
         # app.logger.debug(product_item_dict)
         return product_item_dict
 
-
 class SellersProductItems(Resource):
     # todo: work on medias and tags
     @f_jwt.jwt_required()
@@ -115,15 +104,9 @@ class SellersProductItems(Resource):
 
         if user_type != 'seller':
             abort(400, "only sellers can create product-items")
-
-        # before beginning transaction autocommit must be off
         app_globals.db_conn.autocommit = False
-        # print(app_globals.db_conn)
-        # catch exception for invalid SQL statement
         try:
-            # declare a cursor object from the connection
             cursor = app_globals.get_cursor()
-            # # app.logger.debug("cursor object: %s", cursor)
 
             GET_VARIANT_ID = '''SELECT id FROM variants WHERE variant= %s'''
             cursor.execute(
@@ -201,24 +184,21 @@ class SellersProductItems(Resource):
 
         products_list = []
 
-        # catch exception for invalid SQL statement
         try:
-            # declare a cursor object from the connection
-            cursor = app_globals.get_cursor()
-            # # app.logger.debug("cursor object: %s", cursor)
-            GET_PRODUCTS = '''SELECT p.id, p.product_name, p.product_description, 
-            ct.id, ct.name,
-            sct.id, sct.name, sct.parent_id, 
+            cursor = app_globals.get_named_tuple_cursor()
+            GET_PRODUCTS = '''SELECT p.id AS product_id, p.product_name, p.product_description, 
+            ct.id AS category_id, ct.name AS category_name,
+            sct.id AS subcategory_id, sct.name AS subcategory_name, sct.parent_id, 
             p.currency, p.product_status,
             p.added_at, p.updated_at, 
-            u.id, u.first_name, u.last_name, u.email,
+            s.id AS seller_id, s.seller_name, s.email,
             pbi.product_item_id
             FROM products p 
             JOIN categories ct ON p.category_id = ct.id
             LEFT JOIN categories sct ON p.subcategory_id = sct.id
-            JOIN users u ON p.seller_user_id = u.id 
+            JOIN sellers s ON p.seller_id = u.id 
             JOIN product_base_item pbi ON p.id = pbi.product_id
-            WHERE p.seller_user_id= %s 
+            WHERE p.seller_id= %s 
             ORDER BY p.id DESC'''
 
             cursor.execute(GET_PRODUCTS, (seller_user_id,))
@@ -227,36 +207,35 @@ class SellersProductItems(Resource):
             for row in rows:
                 product_dict = {}
 
-                product_dict['id'] = row[0]
-                product_dict['product_name'] = row[1]
-                product_dict['product_description'] = row[2]
+                product_dict['id'] = row.product_id
+                product_dict['product_name'] = row.product_name
+                product_dict['product_description'] = row.product_description
 
                 category_dict = {}
-                category_dict['id'] = row[3]
-                category_dict['name'] = row[4]
+                category_dict['id'] = row.category_id
+                category_dict['name'] = row.category_name
                 product_dict.update({"category": category_dict})
 
                 subcategory_dict = {}
-                subcategory_dict['id'] = row[5]
-                subcategory_dict['name'] = row[6]
-                subcategory_dict['parent_id'] = row[7]
+                subcategory_dict['id'] = row.subcategory_id
+                subcategory_dict['name'] = row.subcategory_name
+                subcategory_dict['parent_id'] = row.parent_id
                 product_dict.update({"subcategory": subcategory_dict})
 
-                product_dict['currency'] = row[8]
-                product_dict['product_status'] = row[9]
+                product_dict['currency'] = row.currency
+                product_dict['product_status'] = row.product_status
                 product_dict.update(json.loads(
-                    json.dumps({'added_at': row[10]}, default=str)))
+                    json.dumps({'added_at': row.added_at}, default=str)))
                 product_dict.update(json.loads(
-                    json.dumps({'updated_at': row[11]}, default=str)))
+                    json.dumps({'updated_at': row.updated_at}, default=str)))
 
                 seller_dict = {}
-                seller_dict['id'] = row[12]
-                seller_dict['first_name'] = row[13]
-                seller_dict['last_name'] = row[14]
-                seller_dict['email'] = row[15]
+                seller_dict['id'] = row.seller_id
+                seller_dict['seller_name'] = row.seller_name
+                seller_dict['email'] = row.email
                 product_dict.update({"seller": seller_dict})
 
-                product_dict['base_product_item_id'] = row[16]
+                product_dict['base_product_item_id'] = row.product_item_id
                 products_list.append(product_dict)
 
                 # for items list
@@ -320,20 +299,15 @@ class SellersProductItems(Resource):
         app.logger.debug("product_item_id= %s", product_item_id)
         data = request.get_json()
         product_item_dict = json.loads(json.dumps(data))
-        # app.logger.debug(product_dict)
 
         current_time = datetime.now()
 
         if user_type != "seller" and user_type != "admin" and user_type != "super_admin":
             abort(400, "only seller, super-admins and admins can update product-item")
 
-        # before beginning transaction autocommit must be off
         app_globals.db_conn.autocommit = False
-        # catch exception for invalid SQL statement
         try:
-            # declare a cursor object from the connection
             cursor = app_globals.get_cursor()
-            # app.logger.debug("cursor object: %s", cursor)
 
             GET_VARIANT_VALUE_ID = '''SELECT variant_value_id FROM product_item_values WHERE product_item_id= %s'''
             cursor.execute(
@@ -361,7 +335,6 @@ class SellersProductItems(Resource):
 
             cursor.execute(UPDATE_VARIANT_VALUE, (variant_id, product_item_dict.get(
                 'variant_value'), variant_value_id,))
-            # app.logger.debug("row_counts= %s", cursor.rowcount)
             if cursor.rowcount != 1:
                 abort(400, 'Bad Request: update variant_values row error')
 
@@ -374,7 +347,6 @@ class SellersProductItems(Resource):
                                       product_item_dict.get(
                                           'original_price'), product_item_dict.get('offer_price'),
                                       product_item_dict.get('quantity_in_stock'), current_time, str(product_item_id),))
-            # app.logger.debug("row_counts= %s", cursor.rowcount)
             if cursor.rowcount != 1:
                 abort(400, 'Bad Request: update product_items row error')
         except (Exception, psycopg2.Error) as err:
@@ -425,15 +397,10 @@ class SellersProductItems(Resource):
             abort(400, "Bad Request")
         current_time = datetime.now()
 
-        # catch exception for invalid SQL statement
         try:
-            # declare a cursor object from the connection
             cursor = app_globals.get_cursor()
-            # # app.logger.debug("cursor object: %s", cursor)
-
             cursor.execute(
                 PATCH_PRODUCT_ITEM, (value, current_time, product_item_id,))
-            # app.logger.debug("row_counts= %s", cursor.rowcount)
             if cursor.rowcount != 1:
                 abort(400, 'Bad Request: update row error')
         except (Exception, psycopg2.Error) as err:
@@ -458,13 +425,9 @@ class SellersProductItems(Resource):
         if user_type != "admin" and user_type != "super_admin":
             abort(400, "only super-admins and admins can delete product item")
 
-        # before beginning transaction autocommit must be off
         app_globals.db_conn.autocommit = False
-        # catch exception for invalid SQL statement
         try:
-            # declare a cursor object from the connection
             cursor = app_globals.get_cursor()
-            # app.logger.debug("cursor object: %s", cursor)
 
             DELETE_VARIANT_VALUE = '''DELETE FROM variant_values vv WHERE vv.id = (
                 SELECT piv.variant_value_id FROM product_item_values piv 
@@ -472,14 +435,12 @@ class SellersProductItems(Resource):
             )'''
 
             cursor.execute(DELETE_VARIANT_VALUE, (product_item_id,))
-            # app.logger.debug("row_counts= %s", cursor.rowcount)
             if cursor.rowcount != 1:
                 abort(400, 'Bad Request: delete variant value row error')
 
             DELETE_TRASHED_PRODUCT_ITEM = 'DELETE FROM product_items WHERE id= %s AND trashed= true'
 
             cursor.execute(DELETE_TRASHED_PRODUCT_ITEM, (product_item_id,))
-            # app.logger.debug("row_counts= %s", cursor.rowcount)
             if cursor.rowcount != 1:
                 abort(400, 'Bad Request: delete trashed product item row error')
         except (Exception, psycopg2.Error) as err:
