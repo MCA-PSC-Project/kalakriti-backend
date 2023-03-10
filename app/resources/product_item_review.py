@@ -58,14 +58,11 @@ class Product_item_review(Resource):
     def get(self,product_id):
         reviews_list = []
 
-        GET_REVIEWS = '''SELECT id,user_id, rating, review , added_at , updated_at FROM product_item_reviews 
+        GET_REVIEWS = '''SELECT id,customer_id, rating, review , added_at , updated_at FROM product_item_reviews 
                          WHERE product_item_id IN (SELECT id FROM product_items WHERE product_id =%s)'''
 
-        # catch exception for invalid SQL statement
         try:
-            # declare a cursor object from the connection
             cursor = app_globals.get_named_tuple_cursor()
-            # # app.logger.debug("cursor object: %s", cursor)
 
             cursor.execute(GET_REVIEWS,(product_id,))
             rows = cursor.fetchall()
@@ -74,7 +71,7 @@ class Product_item_review(Resource):
             for row in rows:
                 review_dict = {}
                 review_dict['review_id'] = row.id
-                review_dict['user_id'] = row.user_id
+                review_dict['customer_id'] = row.customer_id
                 review_dict.update(json.loads(
                     json.dumps({'rating': row.rating}, default=str)))
                 review_dict['review'] = row.review
@@ -83,12 +80,12 @@ class Product_item_review(Resource):
                 review_dict.update(json.loads(
                     json.dumps({'updated_at': row.updated_at}, default=str)))
         
-                GET_USER_PROFILE = '''SELECT u.first_name, u.last_name,
+                GET_USER_PROFILE = '''SELECT c.first_name, c.last_name,
                 m.id AS media_id, m.name AS media_name, m.path
-                FROM users u LEFT JOIN media m on u.dp_id = m.id WHERE u.id = %s'''
+                FROM customers c LEFT JOIN media m on c.dp_id = m.id WHERE c.id = %s'''
                  
                 cursor.execute(
-                    GET_USER_PROFILE, (review_dict.get('user_id'),))
+                    GET_USER_PROFILE, (review_dict.get('customer_id'),))
                 row = cursor.fetchone()
                 if row is None:
                   return {}
@@ -118,11 +115,8 @@ class Product_item_review(Resource):
 
     @ f_jwt.jwt_required()
     def put(self, review_id):
-        user_id = f_jwt.get_jwt_identity()
-        app.logger.debug("user_id= %s", user_id)
-        claims = f_jwt.get_jwt()
-        user_type = claims['user_type']
-        app.logger.debug("user_type= %s", user_type)
+        customer_id = f_jwt.get_jwt_identity().get("customer_id")
+        app.logger.debug("user_id= %s", customer_id)
 
         data = request.get_json()
         review_dict = json.loads(json.dumps(data))
@@ -130,17 +124,13 @@ class Product_item_review(Resource):
 
         current_time = datetime.now()
 
-        UPDATE_BANNER = 'UPDATE product_item_reviews SET rating= %s, review= %s, updated_at=%s WHERE id= %s and user_id= %s'
+        UPDATE_BANNER = 'UPDATE product_item_reviews SET rating= %s, review= %s, updated_at=%s WHERE id= %s and customer_id= %s'
 
-        # catch exception for invalid SQL statement
         try:
-            # declare a cursor object from the connection
             cursor = app_globals.get_cursor()
-            # # app.logger.debug("cursor object: %s", cursor)
 
             cursor.execute(
-                UPDATE_BANNER, (review_dict['rating'], review_dict['review'], current_time, review_id, user_id))
-            # app.logger.debug("row_counts= %s", cursor.rowcount)
+                UPDATE_BANNER, (review_dict['rating'], review_dict['review'], current_time, review_id, customer_id))
             if cursor.rowcount != 1:
                 abort(400, 'Bad Request: update row error')
         except (Exception, psycopg2.Error) as err:
@@ -152,19 +142,15 @@ class Product_item_review(Resource):
 
     @ f_jwt.jwt_required()
     def delete(self, review_id):
-        user_id = f_jwt.get_jwt_identity()
-        app.logger.debug("user_id= %s", user_id)
+        customer_id = f_jwt.get_jwt_identity().get("customer_id")
+        app.logger.debug("user_id= %s", customer_id)
 
-        DELETE_REVIEW = 'DELETE FROM product_item_reviews WHERE id= %s AND user_id =%s'
+        DELETE_REVIEW = 'DELETE FROM product_item_reviews WHERE id= %s AND customer_id =%s'
 
-        # catch exception for invalid SQL statement
         try:
-            # declare a cursor object from the connection
             cursor = app_globals.get_cursor()
-            # app.logger.debug("cursor object: %s", cursor)
 
-            cursor.execute(DELETE_REVIEW, (review_id, user_id,))
-            # app.logger.debug("row_counts= %s", cursor.rowcount)
+            cursor.execute(DELETE_REVIEW, (review_id, customer_id,))
             if cursor.rowcount != 1:
                 abort(400, 'Bad Request: delete row error')
         except (Exception, psycopg2.Error) as err:
@@ -177,20 +163,19 @@ class Product_item_review(Resource):
 class GetUserReviewOnProduct(Resource):
     @f_jwt.jwt_required()
     def get(self,product_item_id):
-        user_id = f_jwt.get_jwt_identity()
-        app.logger.debug("user_id= %s", user_id)
+        customer_id = f_jwt.get_jwt_identity().get("customer_id")
+        app.logger.debug("customer_id= %s", customer_id)
         reviews_list = []
 
         GET_REVIEWS = '''SELECT id, rating, review , added_at , updated_at FROM product_item_reviews 
-                         WHERE product_item_id = %s AND user_id = %s'''
+                         WHERE product_item_id = %s AND customer_id = %s'''
 
-        # catch exception for invalid SQL statement
         try:
             # declare a cursor object from the connection
             cursor = app_globals.get_named_tuple_cursor()
             # # app.logger.debug("cursor object: %s", cursor)
 
-            cursor.execute(GET_REVIEWS,(product_item_id,user_id,))
+            cursor.execute(GET_REVIEWS,(product_item_id,customer_id,))
             row = cursor.fetchone()
             if row is None:
                 return {}
@@ -205,12 +190,12 @@ class GetUserReviewOnProduct(Resource):
             review_dict.update(json.loads(
                 json.dumps({'updated_at': row.updated_at}, default=str)))
 
-            GET_USER_PROFILE = '''SELECT u.first_name, u.last_name,
+            GET_USER_PROFILE = '''SELECT c.first_name, c.last_name,
             m.id AS media_id, m.name AS media_name, m.path
-            FROM users u LEFT JOIN media m on u.dp_id = m.id WHERE u.id = %s'''
+            FROM customers c LEFT JOIN media m on c.dp_id = m.id WHERE c.id = %s'''
                 
             cursor.execute(
-                GET_USER_PROFILE, (user_id,))
+                GET_USER_PROFILE, (customer_id,))
             row = cursor.fetchone()
             if row is None:
                 return {}
@@ -234,5 +219,4 @@ class GetUserReviewOnProduct(Resource):
             abort(400, 'Bad Request')
         finally:
             cursor.close()
-        # app.logger.debug(banner_dict)
         return reviews_list
