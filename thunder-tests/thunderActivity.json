@@ -20,29 +20,6 @@
     "docs": "```json\n{\n    \"email\": \"customer@gmail.com\",\n    \"password\": \"abcd@123\"\n}\n```\n```json\n{\n\t\"email\": \"seller@gmail.com\",\n\t\"password\": \"abcd@123\"\n}\n```\n\n```json\n{\n\t\"email\": \"admin@gmail.com\",\n\t\"password\": \"abcd@123\"\n}\n```\n\n```json\n{\n    \"email\": \"customer1@gmail.com\",\n    \"password\": \"abcd@123\"\n}\n```\n\n```json\n{\n    \"email\": \"seller1@gmail.com\",\n    \"password\": \"abcd@123\"\n}\n```\n\n```json\n{\n    \"email\": \"updated_admin@gmail.com\",\n    \"password\": \"abcd@123\"\n}\n```\n\n```json\n{\n\t\"email\": \"mywebnewslettersinbox123@gmail.com\",\n\t\"password\": \"abcd@123\"\n}\n```"
   },
   {
-    "_id": "3304cb30-97e7-4eb1-ab22-4fe59cd853fb",
-    "colId": "history",
-    "containerId": "",
-    "name": "{{baseUrl}}/sellers/products",
-    "url": "{{baseUrl}}/sellers/products",
-    "method": "POST",
-    "sortNum": 0,
-    "created": "2023-02-23T10:51:58.473Z",
-    "modified": "2023-02-26T14:32:25.271Z",
-    "headers": [],
-    "params": [],
-    "body": {
-      "type": "json",
-      "raw": "{\n  \"product_name\": \"pot\",\n  \"product_description\": \"dxvxk\",\n  \"category_id\": 5,\n  \"subcategory_id\": null,\n  \"currency\": \"INR\",\n  \"min_order_quantity\": 2,\n  \"max_order_quantity\": 10,\n  \"product_items\": [\n    {\n      \"variant\": \"BASE\",\n      \"variant_value\": \"BASE\",\n      \"product_variant_name\": \"BASE\",\n      \"SKU\": \"abcdefgh\",\n      \"original_price\": 1000,\n      \"offer_price\": 500,\n      \"quantity_in_stock\": 10\n    }\n  ]\n}",
-      "form": []
-    },
-    "auth": {
-      "type": "bearer",
-      "bearer": "{{seller_token}}"
-    },
-    "tests": []
-  },
-  {
     "_id": "2c78c73a-f11b-432b-b635-9ed84a4ebb88",
     "colId": "history",
     "containerId": "",
@@ -62,47 +39,6 @@
     "auth": {
       "type": "bearer",
       "bearer": "{{seller_token}}"
-    },
-    "tests": []
-  },
-  {
-    "_id": "e10d17fc-fb8f-4fe4-ba7a-8f315e9f6aa0",
-    "colId": "history",
-    "containerId": "",
-    "name": "{{baseUrl}}/carts/14",
-    "url": "{{baseUrl}}/carts/14",
-    "method": "PATCH",
-    "sortNum": 0,
-    "created": "2023-02-26T11:46:37.260Z",
-    "modified": "2023-02-26T11:47:13.940Z",
-    "headers": [],
-    "params": [],
-    "body": {
-      "type": "json",
-      "raw": "{\n  \"quantity\": 5\n}",
-      "form": []
-    },
-    "auth": {
-      "type": "bearer",
-      "bearer": "{{token}}"
-    },
-    "tests": []
-  },
-  {
-    "_id": "457cf9ed-7c5f-4ef9-a538-7f7ebcca17bd",
-    "colId": "history",
-    "containerId": "",
-    "name": "{{baseUrl}}/carts",
-    "url": "{{baseUrl}}/carts",
-    "method": "GET",
-    "sortNum": 0,
-    "created": "2023-02-26T11:49:57.260Z",
-    "modified": "2023-02-26T11:49:57.260Z",
-    "headers": [],
-    "params": [],
-    "auth": {
-      "type": "bearer",
-      "bearer": "{{token}}"
     },
     "tests": []
   },
@@ -130,47 +66,6 @@
     "tests": []
   },
   {
-    "_id": "6d263e98-5eba-4e8a-9527-ee8508cbd0d9",
-    "colId": "history",
-    "containerId": "",
-    "name": "{{baseUrl}}/carts/10",
-    "url": "{{baseUrl}}/carts/10",
-    "method": "PATCH",
-    "sortNum": 0,
-    "created": "2023-02-26T12:00:06.881Z",
-    "modified": "2023-02-26T12:00:06.881Z",
-    "headers": [],
-    "params": [],
-    "body": {
-      "type": "json",
-      "raw": "{\n  \"quantity\": 5\n}",
-      "form": []
-    },
-    "auth": {
-      "type": "bearer",
-      "bearer": "{{token}}"
-    },
-    "tests": []
-  },
-  {
-    "_id": "d5c95f4d-56af-483c-93de-ca4eb1b07613",
-    "colId": "history",
-    "containerId": "",
-    "name": "{{baseUrl}}/carts/10",
-    "url": "{{baseUrl}}/carts/10",
-    "method": "DELETE",
-    "sortNum": 0,
-    "created": "2023-02-26T12:00:24.184Z",
-    "modified": "2023-02-26T12:00:24.184Z",
-    "headers": [],
-    "params": [],
-    "auth": {
-      "type": "bearer",
-      "bearer": "{{token}}"
-    },
-    "tests": []
-  },
-  {
     "_id": "a4633d50-5555-4b72-8e46-6af3a34f2c97",
     "colId": "history",
     "containerId": "",
@@ -191,20 +86,6 @@
       "type": "bearer",
       "bearer": "{{seller_token}}"
     },
-    "tests": []
-  },
-  {
-    "_id": "40083658-d139-4d1a-b66c-f5f0de8fa8ec",
-    "colId": "history",
-    "containerId": "",
-    "name": "{{baseUrl}}/products/31",
-    "url": "{{baseUrl}}/products/31",
-    "method": "GET",
-    "sortNum": 0,
-    "created": "2023-02-26T14:37:20.526Z",
-    "modified": "2023-02-26T14:37:20.526Z",
-    "headers": [],
-    "params": [],
     "tests": []
   },
   {

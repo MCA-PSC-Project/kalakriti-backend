@@ -26,18 +26,15 @@ class ProductsByCategory(Resource):
         else:
             abort(400, 'Bad Request')
 
-        # catch exception for invalid SQL statement
         try:
-            # declare a cursor object from the connection
             cursor = app_globals.get_named_tuple_cursor()
-            # # app.logger.debug("cursor object: %s", cursor)
             GET_PRODUCTS_BY_CATEGORY = '''SELECT p.id AS product_id, p.product_name, p.product_description, 
             p.currency, p.product_status, p.min_order_quantity, p.max_order_quantity,
             p.added_at, p.updated_at, 
-            u.id AS seller_user_id, u.first_name, u.last_name, u.email,
+            s.id AS seller_id, s.seller_name, s.email,
             pbi.product_item_id AS base_product_item_id
             FROM products p 
-            JOIN users u ON p.seller_user_id = u.id 
+            JOIN sellers s ON p.seller_id = s.id 
             JOIN product_base_item pbi ON p.id = pbi.product_id
             WHERE {} IN (SELECT id FROM categories ct WHERE ct.id = %s)
             ORDER BY p.id DESC'''.format(column_name)
@@ -62,9 +59,8 @@ class ProductsByCategory(Resource):
                     json.dumps({'updated_at': row.updated_at}, default=str)))
 
                 seller_dict = {}
-                seller_dict['id'] = row.seller_user_id
-                seller_dict['first_name'] = row.first_name
-                seller_dict['last_name'] = row.last_name
+                seller_dict['id'] = row.seller_id
+                seller_dict['seller_name'] = row.seller_name
                 seller_dict['email'] = row.email
                 product_dict.update({"seller": seller_dict})
 
@@ -152,22 +148,19 @@ class ProductsByCategory(Resource):
 class Products(Resource):
     def get(self, product_id):
         product_dict = {}
-        # catch exception for invalid SQL statement
         try:
-            # declare a cursor object from the connection
             cursor = app_globals.get_named_tuple_cursor()
-            # # app.logger.debug("cursor object: %s", cursor)
             GET_PRODUCT = '''SELECT p.id AS product_id, p.product_name, p.product_description, 
             ct.id AS category_id, ct.name AS category_name,
             sct.id AS subcategory_id, sct.name AS subcategory_name, sct.parent_id, 
             p.currency, p.product_status, p.min_order_quantity, p.max_order_quantity,
             p.added_at, p.updated_at, 
-            u.id AS seller_user_id, u.first_name, u.last_name, u.email,
+            s.id AS seller_id, s.seller_name, s.email,
             pbi.product_item_id AS base_product_item_id
             FROM products p 
             JOIN categories ct ON p.category_id = ct.id
             LEFT JOIN categories sct ON p.subcategory_id = sct.id
-            JOIN users u ON p.seller_user_id = u.id 
+            JOIN sellers s ON p.seller_id = s.id 
             JOIN product_base_item pbi ON p.id = pbi.product_id
             WHERE p.id= %s'''
 
@@ -201,9 +194,8 @@ class Products(Resource):
                 json.dumps({'updated_at': row.updated_at}, default=str)))
 
             seller_dict = {}
-            seller_dict['id'] = row.seller_user_id
-            seller_dict['first_name'] = row.first_name
-            seller_dict['last_name'] = row.last_name
+            seller_dict['id'] = row.seller_id
+            seller_dict['seller_name'] = row.seller_name
             seller_dict['email'] = row.email
             product_dict.update({"seller": seller_dict})
 
@@ -295,8 +287,8 @@ class SellersProducts(Resource):
     # todo: work on medias and tags
     @f_jwt.jwt_required()
     def post(self):
-        user_id = f_jwt.get_jwt_identity()
-        app.logger.debug("user_id= %s", user_id)
+        seller_id = f_jwt.get_jwt_identity().get("seller_id")
+        app.logger.debug("seller_id= %s", seller_id)
         claims = f_jwt.get_jwt()
         user_type = claims['user_type']
         app.logger.debug("user_type= %s", user_type)
@@ -312,20 +304,16 @@ class SellersProducts(Resource):
         # before beginning transaction autocommit must be off
         app_globals.db_conn.autocommit = False
         # print(app_globals.db_conn)
-        # catch exception for invalid SQL statement
         try:
-            # declare a cursor object from the connection
             cursor = app_globals.get_cursor()
-            # # app.logger.debug("cursor object: %s", cursor)
-
             CREATE_PRODUCT = '''INSERT INTO products(product_name, product_description, category_id, subcategory_id, 
-            currency, seller_user_id, min_order_quantity, max_order_quantity, added_at) 
+            currency, seller_id, min_order_quantity, max_order_quantity, added_at) 
             VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s) RETURNING id'''
             cursor.execute(CREATE_PRODUCT,
                            (product_dict.get('product_name'), product_dict.get('product_description'),
                             product_dict.get('category_id'), product_dict.get(
                                 'subcategory_id'),
-                            product_dict.get('currency', 'INR'), user_id,
+                            product_dict.get('currency', 'INR'), seller_id,
                             product_dict.get('min_order_quantity'), product_dict.get(
                                 'max_order_quantity'),
                             current_time,))
@@ -382,7 +370,7 @@ class SellersProducts(Resource):
     @f_jwt.jwt_required()
     def get(self):
         user_id = f_jwt.get_jwt_identity()
-        app.logger.debug("user_id= %s", user_id)
+        app.logger.debug("seller_id= %s", user_id)
         claims = f_jwt.get_jwt()
         user_type = claims['user_type']
         app.logger.debug("user_type= %s", user_type)
@@ -396,20 +384,17 @@ class SellersProducts(Resource):
         else:
             abort(400, "only sellers, admins and super_admins can view seller's products")
 
-        # catch exception for invalid SQL statement
         try:
-            # declare a cursor object from the connection
             cursor = app_globals.get_named_tuple_cursor()
-            # # app.logger.debug("cursor object: %s", cursor)
             GET_PRODUCTS_BY_SELLER = '''SELECT p.id AS product_id, p.product_name, p.product_description, 
             p.currency, p.product_status, p.min_order_quantity, p.max_order_quantity,
             p.added_at, p.updated_at, 
-            u.id AS seller_user_id, u.first_name, u.last_name, u.email,
+            s.id AS seller_id, s.seller_name, s.email,
             pbi.product_item_id AS base_product_item_id
             FROM products p 
-            JOIN users u ON p.seller_user_id = u.id 
+            JOIN sellers s ON p.seller_id = s.id 
             JOIN product_base_item pbi ON p.id = pbi.product_id
-            WHERE p.seller_user_id = %s
+            WHERE p.seller_id = %s
             ORDER BY p.id DESC'''
 
             cursor.execute(GET_PRODUCTS_BY_SELLER, (seller_user_id,))
@@ -432,9 +417,8 @@ class SellersProducts(Resource):
                     json.dumps({'updated_at': row.updated_at}, default=str)))
 
                 seller_dict = {}
-                seller_dict['id'] = row.seller_user_id
-                seller_dict['first_name'] = row.first_name
-                seller_dict['last_name'] = row.last_name
+                seller_dict['id'] = row.seller_id
+                seller_dict['seller_name'] = row.seller_name
                 seller_dict['email'] = row.email
                 product_dict.update({"seller": seller_dict})
 
@@ -599,15 +583,10 @@ class SellersProducts(Resource):
             abort(400, "Bad Request")
         current_time = datetime.now()
 
-        # catch exception for invalid SQL statement
         try:
-            # declare a cursor object from the connection
             cursor = app_globals.get_cursor()
-            # # app.logger.debug("cursor object: %s", cursor)
-
             cursor.execute(
                 PATCH_PRODUCT, (value, current_time, product_id,))
-            # app.logger.debug("row_counts= %s", cursor.rowcount)
             if cursor.rowcount != 1:
                 abort(400, 'Bad Request: update row error')
         except (Exception, psycopg2.Error) as err:
@@ -620,8 +599,6 @@ class SellersProducts(Resource):
     # delete trashed product
     @ f_jwt.jwt_required()
     def delete(self, product_id):
-        # user_id = f_jwt.get_jwt_identity()
-        # user_id=20
         user_id = f_jwt.get_jwt_identity()
         app.logger.debug("user_id= %s", user_id)
         claims = f_jwt.get_jwt()
@@ -633,14 +610,9 @@ class SellersProducts(Resource):
         if user_type != "admin" and user_type != "super_admin":
             abort(400, "only super-admins and admins can delete product")
 
-        # before beginning transaction autocommit must be off
         app_globals.db_conn.autocommit = False
-        # catch exception for invalid SQL statement
         try:
-            # declare a cursor object from the connection
             cursor = app_globals.get_cursor()
-            # app.logger.debug("cursor object: %s", cursor)
-
             DELETE_VARIANT_VALUE = '''DELETE FROM variant_values vv WHERE vv.id IN (
                 SELECT piv.variant_value_id FROM product_item_values piv 
                 WHERE piv.product_item_id IN (
@@ -649,7 +621,6 @@ class SellersProducts(Resource):
             )'''
 
             cursor.execute(DELETE_VARIANT_VALUE, (product_id,))
-            # app.logger.debug("row_counts= %s", cursor.rowcount)
             if not cursor.rowcount > 0:
                 abort(400, 'Bad Request: delete variant values row error')
 
@@ -675,22 +646,19 @@ class SellersProducts(Resource):
 class ProductsAllDetails(Resource):
     def get(self, product_id):
         product_dict = {}
-        # catch exception for invalid SQL statement
         try:
-            # declare a cursor object from the connection
             cursor = app_globals.get_named_tuple_cursor()
-            # # app.logger.debug("cursor object: %s", cursor)
             GET_PRODUCT = '''SELECT p.id AS product_id, p.product_name, p.product_description, 
             ct.id AS category_id, ct.name AS category_name,
             sct.id AS subcategory_id, sct.name AS subcategory_name, sct.parent_id, 
             p.currency, p.product_status, p.min_order_quantity, p.max_order_quantity,
             p.added_at, p.updated_at, 
-            u.id AS seller_user_id, u.first_name, u.last_name, u.email,
+            s.id AS seller_id, s.seller_name, s.email,
             pbi.product_item_id AS base_product_item_id
             FROM products p 
             JOIN categories ct ON p.category_id = ct.id
             LEFT JOIN categories sct ON p.subcategory_id = sct.id
-            JOIN users u ON p.seller_user_id = u.id 
+            JOIN sellers s ON p.seller_id = s.id 
             JOIN product_base_item pbi ON p.id = pbi.product_id
             WHERE p.id= %s'''
 
@@ -724,9 +692,8 @@ class ProductsAllDetails(Resource):
                 json.dumps({'updated_at': row.updated_at}, default=str)))
 
             seller_dict = {}
-            seller_dict['id'] = row.seller_user_id
-            seller_dict['first_name'] = row.first_name
-            seller_dict['last_name'] = row.last_name
+            seller_dict['id'] = row.seller_id
+            seller_dict['seller_name'] = row.seller_name
             seller_dict['email'] = row.email
             product_dict.update({"seller": seller_dict})
 
