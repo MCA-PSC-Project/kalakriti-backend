@@ -529,12 +529,12 @@
     "method": "POST",
     "sortNum": 250000,
     "created": "2023-02-20T16:38:51.052Z",
-    "modified": "2023-03-07T14:19:22.220Z",
+    "modified": "2023-03-11T14:35:41.219Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n\t\"name\": \"c1\",\n\t\"parent_id\" : null,\n\t\"cover_id\" : null\n}",
+      "raw": "{\n\t\"name\": \"c2\",\n\t\"parent_id\" : null,\n\t\"cover_id\" : null\n}",
       "form": []
     },
     "auth": {
@@ -548,16 +548,16 @@
     "colId": "80d178ef-5176-474a-8708-db78bd45faee",
     "containerId": "67bd2609-a1c1-41da-ab7e-1e5b9002ee51",
     "name": "Update category",
-    "url": "{{baseUrl}}/categories/1",
+    "url": "{{baseUrl}}/categories/6",
     "method": "PUT",
     "sortNum": 270000,
     "created": "2023-02-20T16:38:51.054Z",
-    "modified": "2023-03-07T14:18:33.812Z",
+    "modified": "2023-03-11T14:35:56.462Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n\t\"name\": \"c1 modified\",\n\t\"parent_id\" : null,\n\t\"cover_id\" : 1\n}",
+      "raw": "{\n\t\"name\": \"c2 modified\",\n\t\"parent_id\" : null,\n\t\"cover_id\" : 1\n}",
       "form": []
     },
     "auth": {
@@ -571,11 +571,11 @@
     "colId": "80d178ef-5176-474a-8708-db78bd45faee",
     "containerId": "67bd2609-a1c1-41da-ab7e-1e5b9002ee51",
     "name": "Delete category",
-    "url": "{{baseUrl}}/categories/2",
+    "url": "{{baseUrl}}/categories/6",
     "method": "DELETE",
     "sortNum": 280000,
     "created": "2023-02-20T16:38:51.055Z",
-    "modified": "2023-03-07T14:38:53.643Z",
+    "modified": "2023-03-11T14:36:06.787Z",
     "headers": [],
     "params": [],
     "auth": {
@@ -1159,16 +1159,16 @@
     "colId": "80d178ef-5176-474a-8708-db78bd45faee",
     "containerId": "d3f02f76-889e-4a8d-88e7-d026529d83a9",
     "name": "GET products by subcategory",
-    "url": "{{baseUrl}}/categories/products?subcategory_id=7",
+    "url": "{{baseUrl}}/categories/products?subcategory_id=5",
     "method": "GET",
     "sortNum": 265000,
     "created": "2023-02-20T16:38:51.086Z",
-    "modified": "2023-03-01T04:04:32.756Z",
+    "modified": "2023-03-11T14:42:29.782Z",
     "headers": [],
     "params": [
       {
         "name": "subcategory_id",
-        "value": "7",
+        "value": "5",
         "isPath": false
       }
     ],
@@ -1761,16 +1761,16 @@
     "colId": "80d178ef-5176-474a-8708-db78bd45faee",
     "containerId": "d3f02f76-889e-4a8d-88e7-d026529d83a9",
     "name": "Admin GET seller products ",
-    "url": "{{baseUrl}}/sellers/products?seller_user_id=4",
+    "url": "{{baseUrl}}/sellers/products?seller_user_id=1",
     "method": "GET",
     "sortNum": 555000,
     "created": "2023-02-23T10:56:47.972Z",
-    "modified": "2023-02-23T11:01:27.525Z",
+    "modified": "2023-03-11T14:45:27.347Z",
     "headers": [],
     "params": [
       {
         "name": "seller_user_id",
-        "value": "4",
+        "value": "1",
         "isPath": false
       }
     ],
@@ -1932,16 +1932,16 @@
     "colId": "80d178ef-5176-474a-8708-db78bd45faee",
     "containerId": "d3f02f76-889e-4a8d-88e7-d026529d83a9",
     "name": "GET products by category",
-    "url": "{{baseUrl}}/categories/products?subcategory_id=7",
+    "url": "{{baseUrl}}/categories/products?category_id=3",
     "method": "GET",
     "sortNum": 132500,
     "created": "2023-03-01T04:15:52.734Z",
-    "modified": "2023-03-02T13:28:33.306Z",
+    "modified": "2023-03-11T14:41:50.704Z",
     "headers": [],
     "params": [
       {
-        "name": "subcategory_id",
-        "value": "7",
+        "name": "category_id",
+        "value": "3",
         "isPath": false
       }
     ],
@@ -1988,12 +1988,12 @@
     "method": "POST",
     "sortNum": 950000,
     "created": "2023-03-03T10:23:13.876Z",
-    "modified": "2023-03-03T12:40:48.076Z",
+    "modified": "2023-03-11T14:37:19.842Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n  \"address\": \"lapataganj\",\n  \"city\": \"Patna\",\n  \"district\": \"Patna\",\n  \"state\": \"Bihar\",\n  \"country\": \"India\",\n  \"pincode\": \"801105\",\n  \"landmark\": \"ghanta nhi pta\"\n}",
+      "raw": "{\n  \"address\": \"lapataganj2\",\n  \"city\": \"Patna2\",\n  \"district\": \"Patna2\",\n  \"state\": \"Bihar\",\n  \"country\": \"India\",\n  \"pincode\": \"801105\",\n  \"landmark\": \"ghanta nhi pta\"\n}",
       "form": []
     },
     "auth": {
@@ -2030,11 +2030,11 @@
     "colId": "80d178ef-5176-474a-8708-db78bd45faee",
     "containerId": "a30a8ca7-aed2-44b8-9743-cb6771a99005",
     "name": "delete address",
-    "url": "{{baseUrl}}/addresses/1",
+    "url": "{{baseUrl}}/addresses/3",
     "method": "DELETE",
     "sortNum": 970000,
     "created": "2023-03-03T10:23:46.409Z",
-    "modified": "2023-03-08T17:12:55.874Z",
+    "modified": "2023-03-11T14:37:36.035Z",
     "headers": [],
     "params": [],
     "auth": {
@@ -2125,11 +2125,11 @@
     "colId": "80d178ef-5176-474a-8708-db78bd45faee",
     "containerId": "a30a8ca7-aed2-44b8-9743-cb6771a99005",
     "name": "mark/unmark address as trashed",
-    "url": "{{baseUrl}}/addresses/1",
+    "url": "{{baseUrl}}/addresses/3",
     "method": "PATCH",
     "sortNum": 965000,
     "created": "2023-03-05T08:03:17.445Z",
-    "modified": "2023-03-08T17:12:42.426Z",
+    "modified": "2023-03-11T14:37:51.010Z",
     "headers": [],
     "params": [],
     "body": {

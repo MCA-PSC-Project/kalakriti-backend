@@ -123,7 +123,7 @@ class Orders(Resource):
             row = cursor.fetchone()
             if row is None:
                 return {}
-            
+
             order_dict = {}
             order_dict['order_id'] = row.order_id
             order_dict['user_id'] = row.user_id
@@ -165,7 +165,7 @@ class Orders(Resource):
 
             cursor.execute(GET_ORDER_ITEMS, (order_id,))
             rows = cursor.fetchall()
-            order_items_list=[]
+            order_items_list = []
             if not rows:
                 return {}
             for row in rows:
@@ -200,10 +200,10 @@ class Orders(Resource):
                     GET_BASE_MEDIA, (order_item_dict.get('product_item_id'),))
                 row = cursor.fetchone()
                 if row is None:
-                        app.logger.debug("No media rows")
-                        order_item_dict.update({"media": media_dict})
-                        order_items_list.append(order_item_dict)
-                        continue
+                    app.logger.debug("No media rows")
+                    order_item_dict.update({"media": media_dict})
+                    order_items_list.append(order_item_dict)
+                    continue
                 media_dict['id'] = row.media_id
                 media_dict['name'] = row.name
                 # media_dict['path'] = row.path

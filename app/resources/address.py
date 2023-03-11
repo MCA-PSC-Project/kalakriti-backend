@@ -11,7 +11,7 @@ from flask import current_app as app
 class UserAddress(Resource):
     @f_jwt.jwt_required()
     def post(self):
-        customer_id = f_jwt.get_jwt_identity().get("customer_id")
+        customer_id = f_jwt.get_jwt_identity()
         app.logger.debug("customer_id= %s", customer_id)
         claims = f_jwt.get_jwt()
         user_type = claims['user_type']
@@ -55,7 +55,7 @@ class UserAddress(Resource):
 
     @f_jwt.jwt_required()
     def get(self):
-        customer_id = f_jwt.get_jwt_identity().get("customer_id")
+        customer_id = f_jwt.get_jwt_identity()
         app.logger.debug("customer_id= %s", customer_id)
 
         addresses_list = []
@@ -97,9 +97,9 @@ class UserAddress(Resource):
 
     @ f_jwt.jwt_required()
     def put(self, address_id):
-        customer_id = f_jwt.get_jwt_identity().get("customer_id")
+        customer_id = f_jwt.get_jwt_identity()
         app.logger.debug("customer_id= %s", customer_id)
-        
+
         app.logger.debug("address_id= %s", address_id)
         data = request.get_json()
         address_dict = json.loads(json.dumps(data))
@@ -127,7 +127,7 @@ class UserAddress(Resource):
 
     @f_jwt.jwt_required()
     def patch(self, address_id):
-        customer_id = f_jwt.get_jwt_identity().get("customer_id")
+        customer_id = f_jwt.get_jwt_identity()
         app.logger.debug("customer_id= %s", customer_id)
 
         data = request.get_json()

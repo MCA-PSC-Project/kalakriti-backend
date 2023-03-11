@@ -11,7 +11,7 @@ from flask import current_app as app
 class Categories(Resource):
     @f_jwt.jwt_required()
     def post(self):
-        admin_id = f_jwt.get_jwt_identity().get("admin_id")
+        admin_id = f_jwt.get_jwt_identity()
         app.logger.debug("admin_id= %s", admin_id)
         claims = f_jwt.get_jwt()
         user_type = claims['user_type']
@@ -22,7 +22,7 @@ class Categories(Resource):
         cover_id = data.get("cover_id", None)
         parent_id = data.get("parent_id", None)
 
-        if (not admin_id) and (user_type != "admin" and user_type != "super_admin"):
+        if user_type != "admin" and user_type != "super_admin":
             abort(403, 'Forbidden: only super-admins and admins can create category')
 
         CREATE_CATEGORY = '''INSERT INTO categories(name, added_at, cover_id, parent_id, added_by)
@@ -43,7 +43,7 @@ class Categories(Resource):
         categories_list = []
         GET_CATEGORIES = '''SELECT c.id AS category_id, c.name AS category_name, c.parent_id,
         m.id AS media_id, m.name AS media_name, m.path
-		FROM categories c 
+		FROM categories c
         LEFT JOIN media m ON m.id= cover_id
 		WHERE c.parent_id IS NULL
 		ORDER BY c.id DESC'''
@@ -75,7 +75,7 @@ class Categories(Resource):
                 subcategories_list = []
                 GET_SUBCATEGORIES = '''SELECT c.id AS category_id, c.name AS category_name, c.parent_id,
                 m.id AS media_id, m.name AS media_name, m.path
-                FROM categories c 
+                FROM categories c
                 LEFT JOIN media m on c.cover_id = m.id
                 WHERE c.parent_id = %s ORDER BY c.id'''
 
@@ -121,7 +121,7 @@ class Categories(Resource):
 
     @ f_jwt.jwt_required()
     def put(self, category_id):
-        admin_id = f_jwt.get_jwt_identity().get("admin_id")
+        admin_id = f_jwt.get_jwt_identity()
         app.logger.debug("admin_id= %s", admin_id)
         claims = f_jwt.get_jwt()
         user_type = claims['user_type']
@@ -132,7 +132,7 @@ class Categories(Resource):
         category_dict = json.loads(json.dumps(data))
         app.logger.debug(category_dict)
 
-        if (not admin_id) and (user_type != "admin" and user_type != "super_admin"):
+        if user_type != "admin" and user_type != "super_admin":
             abort(403, 'Forbidden: only super-admins and admins can create category')
 
         UPDATE_CATEGORY = 'UPDATE categories SET name= %s, parent_id= %s, cover_id= %s, updated_at= %s WHERE id= %s'
@@ -153,14 +153,13 @@ class Categories(Resource):
 
     @ f_jwt.jwt_required()
     def delete(self, category_id):
-        admin_id = f_jwt.get_jwt_identity().get('admin_id')
+        admin_id = f_jwt.get_jwt_identity()
         app.logger.debug("admin_id= %s", admin_id)
         claims = f_jwt.get_jwt()
         user_type = claims['user_type']
         app.logger.debug("user_type= %s", user_type)
 
-
-        if (not admin_id) and (user_type != "admin" and user_type != "super_admin"):
+        if user_type != "admin" and user_type != "super_admin":
             abort(403, 'Forbidden: only super-admins and admins can create category')
 
         DELETE_CATEGORY = 'DELETE FROM categories WHERE id= %s'

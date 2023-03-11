@@ -99,7 +99,7 @@ class Seller_Applicant_Form(Resource):
 
             cursor.execute(
                 UPDATE_SELLER_FORM, (seller_form_dict['name'], seller_form_dict['email'], seller_form_dict['phone'],
-                                seller_form_dict['description'], current_time, seller_id,))
+                                     seller_form_dict['description'], current_time, seller_id,))
             # app.logger.debug("row_counts= %s", cursor.rowcount)
             if cursor.rowcount != 1:
                 abort(400, 'Bad Request: update row error')

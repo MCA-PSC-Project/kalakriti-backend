@@ -12,22 +12,22 @@ from flask import current_app as app
 class CustomerProfile(Resource):
     @f_jwt.jwt_required()
     def get(self):
-        customer_id = f_jwt.get_jwt_identity().get("customer_id")
+        customer_id = f_jwt.get_jwt_identity()
         app.logger.debug("customer_id= %s", customer_id)
         claims = f_jwt.get_jwt()
         user_type = claims['user_type']
         app.logger.debug("user_type= %s", user_type)
 
-        if (not customer_id) and (user_type != 'customer'):
+        if user_type != 'customer':
             abort(403, 'Forbidden')
 
         customer_profile_dict = {}
 
-        GET_CUSTOMER_PROFILE = '''SELECT c.first_name, c.last_name, c.email, c.phone, 
+        GET_CUSTOMER_PROFILE = '''SELECT c.first_name, c.last_name, c.email, c.phone,
         TO_CHAR(c.dob, 'YYYY-MM-DD') AS dob, c.gender, c.enabled,
         m.id AS media_id, m.name, m.path
         FROM customers c
-        LEFT JOIN media m ON c.dp_id = m.id 
+        LEFT JOIN media m ON c.dp_id = m.id
         WHERE c.id= %s'''
 
         try:
@@ -64,22 +64,22 @@ class CustomerProfile(Resource):
         # app.logger.debug(customer_profile_dict)
         return customer_profile_dict
 
-    @f_jwt.jwt_required()
+    @ f_jwt.jwt_required()
     def put(self):
-        customer_id = f_jwt.get_jwt_identity().get("customer_id")
+        customer_id = f_jwt.get_jwt_identity()
         app.logger.debug("customer_id= %s", customer_id)
         claims = f_jwt.get_jwt()
         user_type = claims['user_type']
         app.logger.debug("user_type= %s", user_type)
 
-        if (not customer_id) and (user_type != 'customer'):
+        if user_type != 'customer':
             abort(403, 'Forbidden')
 
         data = request.get_json()
         customer_dict = json.loads(json.dumps(data))
         # app.logger.debug(customer_dict)
 
-        UPDATE_CUSTOMER_PROFILE = '''UPDATE customers SET first_name= %s, last_name= %s, dob= %s, 
+        UPDATE_CUSTOMER_PROFILE = '''UPDATE customers SET first_name= %s, last_name= %s, dob= %s,
         gender= %s, dp_id= %s, updated_at= %s WHERE id= %s'''
         try:
             cursor = app_globals.get_cursor()
@@ -97,15 +97,15 @@ class CustomerProfile(Resource):
             cursor.close()
         return {"message": f"customer_id {customer_id} modified."}, 200
 
-    @f_jwt.jwt_required()
+    @ f_jwt.jwt_required()
     def delete(self):
-        customer_id = f_jwt.get_jwt_identity().get("customer_id")
+        customer_id = f_jwt.get_jwt_identity()
         app.logger.debug("customer_id= %s", customer_id)
         claims = f_jwt.get_jwt()
         user_type = claims['user_type']
         app.logger.debug("user_type= %s", user_type)
 
-        if (not customer_id) and (user_type != 'customer'):
+        if user_type != 'customer':
             abort(403, 'Forbidden')
 
         DELETE_USER = 'DELETE FROM customers WHERE id= %s AND trashed= True'
@@ -124,24 +124,24 @@ class CustomerProfile(Resource):
 
 
 class SellerProfile(Resource):
-    @f_jwt.jwt_required()
+    @ f_jwt.jwt_required()
     def get(self):
-        seller_id = f_jwt.get_jwt_identity().get("seller_id")
+        seller_id = f_jwt.get_jwt_identity()
         app.logger.debug("seller_id= %s", seller_id)
         claims = f_jwt.get_jwt()
         user_type = claims['user_type']
         app.logger.debug("user_type= %s", user_type)
 
-        if (not seller_id) and (user_type != 'seller'):
+        if user_type != 'seller':
             abort(403, 'Forbidden')
 
         seller_profile_dict = {}
 
-        GET_SELLER_PROFILE = '''SELECT s.seller_name, s.email, s.phone, 
+        GET_SELLER_PROFILE = '''SELECT s.seller_name, s.email, s.phone,
         s."GSTIN", s."PAN", s.enabled,
         dm.id AS dp_media_id, dm.name AS dp_media_name, dm.path AS dp_media_path,
-        sm.id AS sign_media_id, sm.name AS sign_media_name, sm.path AS sign_media_path 
-        FROM sellers s 
+        sm.id AS sign_media_id, sm.name AS sign_media_name, sm.path AS sign_media_path
+        FROM sellers s
         LEFT JOIN media dm ON s.dp_id = dm.id
         LEFT JOIN media sm ON s.sign_id = sm.id
         WHERE s.id= %s'''
@@ -190,22 +190,22 @@ class SellerProfile(Resource):
         # app.logger.debug(seller_profile_dict)
         return seller_profile_dict
 
-    @f_jwt.jwt_required()
+    @ f_jwt.jwt_required()
     def put(self):
-        seller_id = f_jwt.get_jwt_identity().get("seller_id")
+        seller_id = f_jwt.get_jwt_identity()
         app.logger.debug("seller_id= %s", seller_id)
         claims = f_jwt.get_jwt()
         user_type = claims['user_type']
         app.logger.debug("user_type= %s", user_type)
 
-        if (not seller_id) and (user_type != 'seller'):
+        if user_type != 'seller':
             abort(403, 'Forbidden')
 
         data = request.get_json()
         seller_dict = json.loads(json.dumps(data))
         # app.logger.debug(seller_dict)
 
-        UPDATE_SELLER_PROFILE = '''UPDATE sellers SET seller_name= %s, "GSTIN"= %s, "PAN"= %s, 
+        UPDATE_SELLER_PROFILE = '''UPDATE sellers SET seller_name= %s, "GSTIN"= %s, "PAN"= %s,
         dp_id= %s, sign_id= %s, updated_at= %s
         WHERE id= %s'''
         try:
@@ -224,15 +224,15 @@ class SellerProfile(Resource):
             cursor.close()
         return {"message": f"seller_id {seller_id} modified."}, 200
 
-    @f_jwt.jwt_required()
+    @ f_jwt.jwt_required()
     def delete(self):
-        seller_id = f_jwt.get_jwt_identity().get("seller_id")
+        seller_id = f_jwt.get_jwt_identity()
         app.logger.debug("seller_id= %s", seller_id)
         claims = f_jwt.get_jwt()
         user_type = claims['user_type']
         app.logger.debug("user_type= %s", user_type)
 
-        if (not seller_id) and (user_type != 'seller'):
+        if user_type != 'seller':
             abort(403, 'Forbidden')
 
         DELETE_USER = 'DELETE FROM sellers WHERE id= %s AND trashed= True'
@@ -251,24 +251,24 @@ class SellerProfile(Resource):
 
 
 class AdminProfile(Resource):
-    @f_jwt.jwt_required()
+    @ f_jwt.jwt_required()
     def get(self):
-        admin_id = f_jwt.get_jwt_identity().get("admin_id")
+        admin_id = f_jwt.get_jwt_identity()
         app.logger.debug("admin_id= %s", admin_id)
         claims = f_jwt.get_jwt()
         user_type = claims['user_type']
         app.logger.debug("user_type= %s", user_type)
 
-        if (not admin_id) and (user_type != 'admin'):
+        if user_type != 'admin':
             abort(403, 'Forbidden')
 
         admin_profile_dict = {}
 
-        GET_ADMIN_PROFILE = '''SELECT a.first_name, a.last_name, a.email, a.phone, 
+        GET_ADMIN_PROFILE = '''SELECT a.first_name, a.last_name, a.email, a.phone,
         TO_CHAR(a.dob, 'YYYY-MM-DD') AS dob, a.gender, a.enabled,
         m.id AS media_id, m.name, m.path
         FROM admins a
-        LEFT JOIN media m ON a.dp_id = m.id 
+        LEFT JOIN media m ON a.dp_id = m.id
         WHERE a.id= %s'''
 
         try:
@@ -305,22 +305,22 @@ class AdminProfile(Resource):
         # app.logger.debug(admin_profile_dict)
         return admin_profile_dict
 
-    @f_jwt.jwt_required()
+    @ f_jwt.jwt_required()
     def put(self):
-        admin_id = f_jwt.get_jwt_identity().get("admin_id")
+        admin_id = f_jwt.get_jwt_identity()
         app.logger.debug("admin_id= %s", admin_id)
         claims = f_jwt.get_jwt()
         user_type = claims['user_type']
         app.logger.debug("user_type= %s", user_type)
 
-        if (not admin_id) and (user_type != 'admin'):
+        if user_type != 'admin':
             abort(403, 'Forbidden')
 
         data = request.get_json()
         admin_dict = json.loads(json.dumps(data))
         # app.logger.debug(admin_dict)
 
-        UPDATE_CUSTOMER_PROFILE = '''UPDATE admins SET first_name= %s, last_name= %s, dob= %s, 
+        UPDATE_CUSTOMER_PROFILE = '''UPDATE admins SET first_name= %s, last_name= %s, dob= %s,
         gender= %s, dp_id= %s, updated_at= %s WHERE id= %s'''
         try:
             cursor = app_globals.get_cursor()
@@ -338,15 +338,15 @@ class AdminProfile(Resource):
             cursor.close()
         return {"message": f"admin_id {admin_id} modified."}, 200
 
-    @f_jwt.jwt_required()
+    @ f_jwt.jwt_required()
     def delete(self):
-        admin_id = f_jwt.get_jwt_identity().get("admin_id")
+        admin_id = f_jwt.get_jwt_identity()
         app.logger.debug("admin_id= %s", admin_id)
         claims = f_jwt.get_jwt()
         user_type = claims['user_type']
         app.logger.debug("user_type= %s", user_type)
 
-        if (not admin_id) and (user_type != 'admin'):
+        if user_type != 'admin':
             abort(403, 'Forbidden')
 
         DELETE_USER = 'DELETE FROM admins WHERE id= %s AND trashed= True'
@@ -365,7 +365,7 @@ class AdminProfile(Resource):
 
 
 class ResetEmail(Resource):
-    @f_jwt.jwt_required()
+    @ f_jwt.jwt_required()
     def patch(self):
         user_id = f_jwt.get_jwt_identity()
         app.logger.debug("user_id= %s", user_id)
@@ -398,7 +398,7 @@ class ResetEmail(Resource):
 
 
 class ResetPhone(Resource):
-    @f_jwt.jwt_required()
+    @ f_jwt.jwt_required()
     def patch(self):
         user_id = f_jwt.get_jwt_identity()
         # user_id=20

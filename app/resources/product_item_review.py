@@ -7,6 +7,7 @@ import flask_jwt_extended as f_jwt
 import json
 from flask import current_app as app
 
+
 class Product_item_review(Resource):
     @f_jwt.jwt_required()
     def post(self):
@@ -15,26 +16,26 @@ class Product_item_review(Resource):
         claims = f_jwt.get_jwt()
         user_type = claims['user_type']
         app.logger.debug("user_type= %s", user_type)
-         # todo: check seller 
+        # todo: check seller
 
         data = request.get_json()
         order_item_id = data.get("order_item_id", None)
         app.logger.debug("order_item_id= %s", order_item_id)
-       
+
         rating = data.get("rating", None)
         review = data.get("review", None)
 
         current_time = datetime.now()
 
-         # catch exception for invalid SQL statement
+        # catch exception for invalid SQL statement
         try:
             # declare a cursor object from the connection
             cursor = app_globals.get_cursor()
             # # app.logger.debug("cursor object: %s", cursor)
             GET_PRODUCT_ITEM_ID = '''SELECT product_item_id FROM order_items WHERE order_id = %s'''
             cursor.execute(
-                    GET_PRODUCT_ITEM_ID, (order_item_id,))
-             
+                GET_PRODUCT_ITEM_ID, (order_item_id,))
+
             row = cursor.fetchone()
             if not row:
                 app.logger.debug("product_item_id not found!")
@@ -45,17 +46,17 @@ class Product_item_review(Resource):
             VALUES(%s, %s, %s, %s, %s, %s) RETURNING id'''
 
             cursor.execute(
-                    CREATE_REVIEW, (user_id, order_item_id, product_item_id, rating, review, current_time,))
+                CREATE_REVIEW, (user_id, order_item_id, product_item_id, rating, review, current_time,))
             review_id = cursor.fetchone()[0]
         except (Exception, psycopg2.Error) as err:
-                app.logger.debug(err)
-                abort(400, 'Bad Request')
+            app.logger.debug(err)
+            abort(400, 'Bad Request')
         finally:
-                cursor.close()
+            cursor.close()
         return f"Review_id = {review_id} created sucessfully for product_item_id ={product_item_id}", 201
 
     @f_jwt.jwt_required()
-    def get(self,product_id):
+    def get(self, product_id):
         reviews_list = []
 
         GET_REVIEWS = '''SELECT id,customer_id, rating, review , added_at , updated_at FROM product_item_reviews 
@@ -64,7 +65,7 @@ class Product_item_review(Resource):
         try:
             cursor = app_globals.get_named_tuple_cursor()
 
-            cursor.execute(GET_REVIEWS,(product_id,))
+            cursor.execute(GET_REVIEWS, (product_id,))
             rows = cursor.fetchall()
             if not rows:
                 return {}
@@ -79,19 +80,19 @@ class Product_item_review(Resource):
                     json.dumps({'added_at': row.added_at}, default=str)))
                 review_dict.update(json.loads(
                     json.dumps({'updated_at': row.updated_at}, default=str)))
-        
+
                 GET_USER_PROFILE = '''SELECT c.first_name, c.last_name,
                 m.id AS media_id, m.name AS media_name, m.path
                 FROM customers c LEFT JOIN media m on c.dp_id = m.id WHERE c.id = %s'''
-                 
+
                 cursor.execute(
                     GET_USER_PROFILE, (review_dict.get('customer_id'),))
                 row = cursor.fetchone()
                 if row is None:
-                  return {}
+                    return {}
                 review_dict['first_name'] = row.first_name
                 review_dict['last_name'] = row.last_name
-                media_dict={}
+                media_dict = {}
                 media_dict['id'] = row.media_id
                 media_dict['name'] = row.media_name
                 # media_dict['path'] = row.path
@@ -101,7 +102,7 @@ class Product_item_review(Resource):
                         app.config["S3_LOCATION"], path)
                 else:
                     media_dict['path'] = None
-                
+
                 review_dict.update({"dp": media_dict})
                 reviews_list.append(review_dict)
 
@@ -115,7 +116,7 @@ class Product_item_review(Resource):
 
     @ f_jwt.jwt_required()
     def put(self, review_id):
-        customer_id = f_jwt.get_jwt_identity().get("customer_id")
+        customer_id = f_jwt.get_jwt_identity()
         app.logger.debug("user_id= %s", customer_id)
 
         data = request.get_json()
@@ -142,7 +143,7 @@ class Product_item_review(Resource):
 
     @ f_jwt.jwt_required()
     def delete(self, review_id):
-        customer_id = f_jwt.get_jwt_identity().get("customer_id")
+        customer_id = f_jwt.get_jwt_identity()
         app.logger.debug("user_id= %s", customer_id)
 
         DELETE_REVIEW = 'DELETE FROM product_item_reviews WHERE id= %s AND customer_id =%s'
@@ -160,10 +161,11 @@ class Product_item_review(Resource):
             cursor.close()
         return 200
 
+
 class GetUserReviewOnProduct(Resource):
     @f_jwt.jwt_required()
-    def get(self,product_item_id):
-        customer_id = f_jwt.get_jwt_identity().get("customer_id")
+    def get(self, product_item_id):
+        customer_id = f_jwt.get_jwt_identity()
         app.logger.debug("customer_id= %s", customer_id)
         reviews_list = []
 
@@ -175,7 +177,7 @@ class GetUserReviewOnProduct(Resource):
             cursor = app_globals.get_named_tuple_cursor()
             # # app.logger.debug("cursor object: %s", cursor)
 
-            cursor.execute(GET_REVIEWS,(product_item_id,customer_id,))
+            cursor.execute(GET_REVIEWS, (product_item_id, customer_id,))
             row = cursor.fetchone()
             if row is None:
                 return {}
@@ -193,7 +195,7 @@ class GetUserReviewOnProduct(Resource):
             GET_USER_PROFILE = '''SELECT c.first_name, c.last_name,
             m.id AS media_id, m.name AS media_name, m.path
             FROM customers c LEFT JOIN media m on c.dp_id = m.id WHERE c.id = %s'''
-                
+
             cursor.execute(
                 GET_USER_PROFILE, (customer_id,))
             row = cursor.fetchone()
@@ -201,7 +203,7 @@ class GetUserReviewOnProduct(Resource):
                 return {}
             review_dict['first_name'] = row.first_name
             review_dict['last_name'] = row.last_name
-            media_dict={}
+            media_dict = {}
             media_dict['id'] = row.media_id
             media_dict['name'] = row.media_name
             # media_dict['path'] = row.path
@@ -211,7 +213,7 @@ class GetUserReviewOnProduct(Resource):
                     app.config["S3_LOCATION"], path)
             else:
                 media_dict['path'] = None
-            
+
             review_dict.update({"dp": media_dict})
             reviews_list.append(review_dict)
         except (Exception, psycopg2.Error) as err:

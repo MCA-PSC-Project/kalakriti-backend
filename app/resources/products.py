@@ -287,7 +287,7 @@ class SellersProducts(Resource):
     # todo: work on medias and tags
     @f_jwt.jwt_required()
     def post(self):
-        seller_id = f_jwt.get_jwt_identity().get("seller_id")
+        seller_id = f_jwt.get_jwt_identity()
         app.logger.debug("seller_id= %s", seller_id)
         claims = f_jwt.get_jwt()
         user_type = claims['user_type']

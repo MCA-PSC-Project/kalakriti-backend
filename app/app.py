@@ -47,8 +47,8 @@ def create_app(config_name):
     app.config.from_pyfile('config.py')
 
     app.logger.debug(app_config[config_name])
-    app.logger.debug('DATABASE_URI=%s ' % app.config['DATABASE_URI'])
-    app.logger.debug('SECRET_KEY=%s ' % app.config['SECRET_KEY'])
+    app.logger.debug('DATABASE_URI=%s' % app.config['DATABASE_URI'])
+    app.logger.debug('SECRET_KEY=%s' % app.config['SECRET_KEY'])
 
     # app_globals.db_conn = psycopg2.connect(app.config['DATABASE_URI'])
 

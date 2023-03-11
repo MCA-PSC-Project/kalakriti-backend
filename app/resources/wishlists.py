@@ -71,7 +71,7 @@ class Wishlists(Resource):
                 wishlist_dict = {}
                 wishlist_dict['product_id'] = row.product_id
                 wishlist_dict['product_name'] = row.product_name
-                product_item_dict={}
+                product_item_dict = {}
                 product_item_dict['id'] = row.product_item_id
                 product_item_dict['product_variant_name'] = row.product_variant_name
                 product_item_dict.update(json.loads(

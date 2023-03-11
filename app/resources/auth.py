@@ -267,9 +267,9 @@ class LoginCustomer(Resource):
         user_type = "customer"
         if is_verified:
             access_token = f_jwt.create_access_token(
-                identity={"customer_id": customer_id}, additional_claims={"user_type": user_type}, fresh=True)
+                identity=customer_id, additional_claims={"user_type": user_type}, fresh=True)
             refresh_token = f_jwt.create_refresh_token(
-                identity={"customer_id": customer_id}, additional_claims={"user_type": user_type})
+                identity=customer_id, additional_claims={"user_type": user_type})
             return {
                 'access_token': access_token,
                 'refresh_token': refresh_token
@@ -327,9 +327,9 @@ class LoginSeller(Resource):
         user_type = "seller"
         if is_verified:
             access_token = f_jwt.create_access_token(
-                identity={"seller_id": seller_id}, additional_claims={"user_type": user_type}, fresh=True)
+                identity=seller_id, additional_claims={"user_type": user_type}, fresh=True)
             refresh_token = f_jwt.create_refresh_token(
-                identity={"seller_id": seller_id}, additional_claims={"user_type": user_type})
+                identity=seller_id, additional_claims={"user_type": user_type})
             return {
                 'access_token': access_token,
                 'refresh_token': refresh_token
@@ -392,9 +392,9 @@ class LoginAdmin(Resource):
 
         if is_verified:
             access_token = f_jwt.create_access_token(
-                identity={"admin_id": admin_id}, additional_claims={"user_type": user_type}, fresh=True)
+                identity=admin_id, additional_claims={"user_type": user_type}, fresh=True)
             refresh_token = f_jwt.create_refresh_token(
-                identity={"admin_id": admin_id}, additional_claims={"user_type": user_type})
+                identity=admin_id, additional_claims={"user_type": user_type})
             return {
                 'access_token': access_token,
                 'refresh_token': refresh_token
@@ -422,14 +422,14 @@ class RefreshToken(Resource):
     @f_jwt.jwt_required(refresh=True)
     def post(self):
         # retrive the user's identity from the refresh token using a Flask-JWT-Extended built-in method
-        current_user_dict = f_jwt.get_jwt_identity()
-        # app.logger.debug(current_user_dict)
+        curent_user_id = f_jwt.get_jwt_identity()
+        # app.logger.debug(current_user_id)
         claims = f_jwt.get_jwt()
         current_user_type = claims['user_type']
 
         # return a non-fresh token for the user
         new_token = f_jwt.create_access_token(
-            identity=current_user_dict, additional_claims={"user_type": current_user_type}, fresh=False)
+            identity=curent_user_id, additional_claims={"user_type": current_user_type}, fresh=False)
         return {'access_token': new_token}, 200
 
 

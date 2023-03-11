@@ -86,7 +86,6 @@ class GetCustomers(Resource):
         if user_type != "admin" and user_type != "super_admin":
             abort(400, "only super-admins and admins can view all customers")
 
-
         customer_list = []
 
         GET_CUSTOMERS_PROFILES = '''SELECT u.first_name, u.last_name, u.user_type, u.email, u.phone, 

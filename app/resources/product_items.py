@@ -88,6 +88,7 @@ class ProductItems(Resource):
         # app.logger.debug(product_item_dict)
         return product_item_dict
 
+
 class SellersProductItems(Resource):
     # todo: work on medias and tags
     @f_jwt.jwt_required()
