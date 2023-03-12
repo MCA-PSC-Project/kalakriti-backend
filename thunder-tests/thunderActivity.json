@@ -66,69 +66,6 @@
     "tests": []
   },
   {
-    "_id": "4cb72560-56ca-4cfd-9fab-8431d7fe107c",
-    "colId": "history",
-    "containerId": "",
-    "name": "{{baseUrl}}/wishlists",
-    "url": "{{baseUrl}}/wishlists",
-    "method": "POST",
-    "sortNum": 0,
-    "created": "2023-02-28T04:22:30.088Z",
-    "modified": "2023-02-28T07:12:22.212Z",
-    "headers": [],
-    "params": [],
-    "body": {
-      "type": "json",
-      "raw": "{\n  \"product_item_id\": 10\n}",
-      "form": []
-    },
-    "auth": {
-      "type": "bearer",
-      "bearer": "{{token}}"
-    },
-    "tests": []
-  },
-  {
-    "_id": "90e8cd37-0ef0-4d13-a4c7-465d7bf84195",
-    "colId": "history",
-    "containerId": "",
-    "name": "{{baseUrl}}/categories/products?category_id=4",
-    "url": "{{baseUrl}}/categories/products?category_id=4",
-    "method": "GET",
-    "sortNum": 0,
-    "created": "2023-03-01T03:45:06.815Z",
-    "modified": "2023-03-01T03:45:06.815Z",
-    "headers": [],
-    "params": [
-      {
-        "name": "category_id",
-        "value": "4",
-        "isPath": false
-      }
-    ],
-    "tests": []
-  },
-  {
-    "_id": "54e752e4-8d9f-4c24-aebe-70d31168f36a",
-    "colId": "history",
-    "containerId": "",
-    "name": "{{baseUrl}}/categories/products?category_id=5",
-    "url": "{{baseUrl}}/categories/products?category_id=5",
-    "method": "GET",
-    "sortNum": 0,
-    "created": "2023-03-01T03:48:12.951Z",
-    "modified": "2023-03-01T03:48:12.951Z",
-    "headers": [],
-    "params": [
-      {
-        "name": "category_id",
-        "value": "5",
-        "isPath": false
-      }
-    ],
-    "tests": []
-  },
-  {
     "_id": "86905e38-b506-4350-8e6b-ec7ac39fa0f9",
     "colId": "history",
     "containerId": "",

@@ -11,39 +11,32 @@ from flask import current_app as app
 class Wishlists(Resource):
     @f_jwt.jwt_required()
     def post(self):
-        user_id = f_jwt.get_jwt_identity()
-        app.logger.debug("user_id= %s", user_id)
-        # claims = f_jwt.get_jwt()
-        # user_type = claims['user_type']
-        # app.logger.debug("user_type= %s", user_type)
+        customer_id = f_jwt.get_jwt_identity()
+        app.logger.debug("customer_id= %s", customer_id)
 
         data = request.get_json()
         product_item_id = data.get("product_item_id", None)
 
         current_time = datetime.now()
 
-        ADD_TO_WISHLIST = '''INSERT INTO wishlists(user_id,product_item_id, added_at)
-                               VALUES(%s, %s, %s)'''
-        # catch exception for invalid SQL statement
+        ADD_TO_WISHLIST = '''INSERT INTO wishlists(customer_id,product_item_id, added_at)
+                               VALUES(%s, %s, %s)'''        
         try:
-            # declare a cursor object from the connection
             cursor = app_globals.get_cursor()
-            # # app.logger.debug("cursor object: %s", cursor)
-
             cursor.execute(
-                ADD_TO_WISHLIST, (user_id, product_item_id, current_time,))
+                ADD_TO_WISHLIST, (customer_id, product_item_id, current_time,))
            # id = cursor.fetchone()[0]
         except (Exception, psycopg2.Error) as err:
             app.logger.debug(err)
             abort(400, 'Bad Request')
         finally:
             cursor.close()
-        return f"Product_item_id = {product_item_id} added to wishilist for user_id {user_id}", 201
+        return f"Product_item_id = {product_item_id} added to wishilist for user_id {customer_id}", 201
 
     @f_jwt.jwt_required()
     def get(self):
-        user_id = f_jwt.get_jwt_identity()
-        app.logger.debug("user_id= %s", user_id)
+        customer_id = f_jwt.get_jwt_identity()
+        app.logger.debug("customer_id= %s", customer_id)
 
         wishlists_list = []
 
@@ -56,14 +49,11 @@ class Wishlists(Resource):
         FROM product_items pi
         JOIN product_item_values piv ON pi.id = piv.product_item_id
         WHERE pi.id IN
-        (SELECT w.product_item_id FROM wishlists w WHERE w.user_id =%s)'''
+        (SELECT w.product_item_id FROM wishlists w WHERE w.customer_id =%s)'''
 
-        # catch exception for invalid SQL statement
         try:
-            # declare a cursor object from the connection
             cursor = app_globals.get_named_tuple_cursor()
-            # # app.logger.debug("cursor object: %s", cursor)
-            cursor.execute(GET_WISHLISTS, (user_id,))
+            cursor.execute(GET_WISHLISTS, (customer_id,))
             rows = cursor.fetchall()
             if not rows:
                 return {}
@@ -119,21 +109,14 @@ class Wishlists(Resource):
 
     @ f_jwt.jwt_required()
     def delete(self, product_item_id):
-        user_id = f_jwt.get_jwt_identity()
-        app.logger.debug("user_id= %s", user_id)
-        # claims = f_jwt.get_jwt()
-        # user_type = claims['user_type']
+        customer_id = f_jwt.get_jwt_identity()
+        app.logger.debug("customer_id= %s", customer_id)
 
-        REMOVE_FROM_WISHLIST = 'DELETE FROM wishlists WHERE product_item_id= %s AND user_id =%s'
+        REMOVE_FROM_WISHLIST = 'DELETE FROM wishlists WHERE product_item_id= %s AND customer_id =%s'
 
-        # catch exception for invalid SQL statement
         try:
-            # declare a cursor object from the connection
             cursor = app_globals.get_cursor()
-            # # app.logger.debug("cursor object: %s", cursor)
-
-            cursor.execute(REMOVE_FROM_WISHLIST, (product_item_id, user_id,))
-            # app.logger.debug("row_counts= %s", cursor.rowcount)
+            cursor.execute(REMOVE_FROM_WISHLIST, (product_item_id, customer_id,))
             if cursor.rowcount != 1:
                 abort(400, 'Bad Request: delete row error')
         except (Exception, psycopg2.Error) as err:
