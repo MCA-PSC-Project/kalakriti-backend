@@ -152,6 +152,7 @@ class EnableDisableUser(Resource):
         return {"message": f"{user_type}_id {user_id} modified"}, 200
 
 
+# Deprecated
 class PromoteToSeller(Resource):
     @f_jwt.jwt_required()
     def put(self):
