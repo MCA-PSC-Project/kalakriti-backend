@@ -25,7 +25,7 @@ class Seller_Bank_Details(Resource):
 
             cursor.execute(
                 APPLY_FOR_SELLER, (seller_id, account_holder_name, account_no, IFSC, account_type))
-            id = cursor.fetchone()[0]
+            bank_detail_id = cursor.fetchone()[0]
         except (Exception, psycopg2.Error) as err:
             app.logger.debug(err)
             abort(400, 'Bad Request')
@@ -39,11 +39,8 @@ class Seller_Bank_Details(Resource):
         GET_SELLERS_FORM = '''SELECT id, account_holder_name, account_no, "IFSC" , account_type FROM seller_bank_details 
         WHERE seller_id= %s'''
 
-        # catch exception for invalid SQL statement
         try:
-            # declare a cursor object from the connection
             cursor = app_globals.get_named_tuple_cursor()
-            # # app.logger.debug("cursor object: %s", cursor)
 
             cursor.execute(GET_SELLERS_FORM, (seller_id,))
             rows = cursor.fetchall()
@@ -65,61 +62,28 @@ class Seller_Bank_Details(Resource):
             cursor.close()
         return sellers_list
 
-    # @ f_jwt.jwt_required()
-    # def put(self, seller_id):
-    #     data = request.get_json()
-    #     seller_form_dict = json.loads(json.dumps(data))
-    #     # app.logger.debug(seller_form_dict)
+    @ f_jwt.jwt_required()
+    def put(self, bank_detail_id):
+        seller_id = f_jwt.get_jwt_identity()
+        data = request.get_json()
+        seller_bank_detail_dict = json.loads(json.dumps(data))
+        # app.logger.debug(seller_form_dict)
 
-    #     current_time = datetime.now()
+        UPDATE_SELLER_FORM = '''UPDATE seller_bank_details SET account_holder_name=%s, account_no=%s, "IFSC"=%s,
+                       account_type=%s  WHERE id= %s and seller_id= %s'''
 
-    #     UPDATE_SELLER_FORM = '''UPDATE seller_applicant_forms SET name=%s, email=%s, phone=%s,
-    #                     description=%s, updated_at=%s  WHERE id= %s'''
-
-    #     # catch exception for invalid SQL statement
-    #     try:
-    #         # declare a cursor object from the connection
-    #         cursor = app_globals.get_cursor()
-    #         # # app.logger.debug("cursor object: %s", cursor)
-
-    #         cursor.execute(
-    #             UPDATE_SELLER_FORM, (seller_form_dict['name'], seller_form_dict['email'], seller_form_dict['phone'],
-    #                             seller_form_dict['description'], current_time, seller_id,))
-    #         # app.logger.debug("row_counts= %s", cursor.rowcount)
-    #         if cursor.rowcount != 1:
-    #             abort(400, 'Bad Request: update row error')
-    #     except (Exception, psycopg2.Error) as err:
-    #         app.logger.debug(err)
-    #         abort(400, 'Bad Request')
-    #     finally:
-    #         cursor.close()
-    #     return {"message": f"Seller_id {seller_id} modified."}, 200
-
-    # @ f_jwt.jwt_required()
-    # def delete(self, seller_id):
-    #     user_id = f_jwt.get_jwt_identity()
-    #     app.logger.debug("user_id= %s", user_id)
-    #     claims = f_jwt.get_jwt()
-    #     user_type = claims['user_type']
-
-    #     if user_type != "admin" and user_type != "super_admin":
-    #         abort(400, "Only super-admins and admins can delete")
-
-    #     DELETE_SELLER_FORM = 'DELETE FROM seller_applicant_forms WHERE id= %s'
-
-    #     # catch exception for invalid SQL statement
-    #     try:
-    #         # declare a cursor object from the connection
-    #         cursor = app_globals.get_cursor()
-    #         # # app.logger.debug("cursor object: %s", cursor)
-
-    #         cursor.execute(DELETE_SELLER_FORM, (seller_id,))
-    #         # app.logger.debug("row_counts= %s", cursor.rowcount)
-    #         if cursor.rowcount != 1:
-    #             abort(400, 'Bad Request: delete row error')
-    #     except (Exception, psycopg2.Error) as err:
-    #         app.logger.debug(err)
-    #         abort(400, 'Bad Request')
-    #     finally:
-    #         cursor.close()
-    #     return 200
+        try:
+            cursor = app_globals.get_cursor()
+            cursor.execute(
+                UPDATE_SELLER_FORM, (seller_bank_detail_dict['account_holder_name'], seller_bank_detail_dict['account_no'],
+                                seller_bank_detail_dict['IFSC'], seller_bank_detail_dict['account_type'],
+                                bank_detail_id, seller_id,))
+            # app.logger.debug("row_counts= %s", cursor.rowcount)
+            if cursor.rowcount != 1:
+                abort(400, 'Bad Request: update row error')
+        except (Exception, psycopg2.Error) as err:
+            app.logger.debug(err)
+            abort(400, 'Bad Request')
+        finally:
+            cursor.close()
+        return {"message": f"Seller_id {seller_id} bank details modified."}, 200

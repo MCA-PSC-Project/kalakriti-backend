@@ -159,7 +159,8 @@ def create_app(config_name):
     
     # Seller_Bank_Details
     api.add_resource(Seller_Bank_Details,'/sellers-bank-details',
-                     '/sellers-bank-details/<int:seller_id>')
+                     '/sellers-bank-details/<int:seller_id>',
+                     '/sellers-bank-details/<int:bank_detail_id>/bank')
 
     # Wishlists
     api.add_resource(Wishlists, '/wishlists',
