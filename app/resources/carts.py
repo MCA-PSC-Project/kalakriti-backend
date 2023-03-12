@@ -12,33 +12,26 @@ from flask import current_app as app
 class Carts(Resource):
     @f_jwt.jwt_required()
     def post(self):
-        user_id = f_jwt.get_jwt_identity()
-        app.logger.debug("user_id= %s", user_id)
-        # claims = f_jwt.get_jwt()
-        # user_type = claims['user_type']
-        # app.logger.debug("user_type= %s", user_type)
+        customer_id = f_jwt.get_jwt_identity()
+        app.logger.debug("customer_id= %s", customer_id)
 
         data = request.get_json()
         product_item_id = data.get("product_item_id", None)
         quantity = data.get("quantity", None)
 
         app_globals.db_conn.autocommit = False
-        # catch exception for invalid SQL statement
         try:
-            # declare a cursor object from the connection
             cursor = app_globals.get_cursor()
-            # # app.logger.debug("cursor object: %s", cursor)
-            GET_CART_ID = '''SELECT id from carts WHERE user_id = %s'''
+            GET_CART_ID = '''SELECT id from carts WHERE customer_id = %s'''
             cursor.execute(
-                GET_CART_ID, (user_id,))
+                GET_CART_ID, (customer_id,))
             row = cursor.fetchone()
             if not row:
                 app.logger.debug(
-                    "cart_id not found!..Creating a cart for user_id =%s", user_id)
-                # app_globals.db_conn.rollback()
+                    "cart_id not found!..Creating a cart for user_id =%s", customer_id)
                 # if there is no cart for the user_id
-                CREATE_CART = '''INSERT INTO carts(user_id) VALUES(%s) RETURNING id'''
-                cursor.execute(CREATE_CART, (user_id,))
+                CREATE_CART = '''INSERT INTO carts(customer_id) VALUES(%s) RETURNING id'''
+                cursor.execute(CREATE_CART, (customer_id,))
                 row = cursor.fetchone()
             cart_id = row[0]
 
@@ -60,12 +53,12 @@ class Carts(Resource):
             cursor.close()
         app_globals.db_conn.commit()
         app_globals.db_conn.autocommit = True
-        return f"Product_item_id = {product_item_id} added to cart for user_id {user_id}", 201
+        return f"Product_item_id = {product_item_id} added to cart for customer_id {customer_id}", 201
 
     @f_jwt.jwt_required()
     def get(self):
-        user_id = f_jwt.get_jwt_identity()
-        app.logger.debug("user_id= %s", user_id)
+        customer_id = f_jwt.get_jwt_identity()
+        app.logger.debug("user_id= %s", customer_id)
 
         carts_list = []
 
@@ -75,14 +68,11 @@ class Carts(Resource):
         FROM cart_items ci
         JOIN product_items pi ON pi.id = ci.product_item_id
         JOIN products p ON p.id= (SELECT product_id FROM product_items WHERE id= ci.product_item_id)
-        WHERE cart_id = (SELECT id FROM carts WHERE user_id =%s)'''
+        WHERE cart_id = (SELECT id FROM carts WHERE customer_id =%s)'''
 
-        # catch exception for invalid SQL statement
         try:
-            # declare a cursor object from the connection
             cursor = app_globals.get_named_tuple_cursor()
-            # # app.logger.debug("cursor object: %s", cursor)
-            cursor.execute(GET_ITEMS_IN_CART, (user_id,))
+            cursor.execute(GET_ITEMS_IN_CART, (customer_id,))
             rows = cursor.fetchall()
             if not rows:
                 return {}
@@ -147,11 +137,8 @@ class Carts(Resource):
 
     @f_jwt.jwt_required()
     def patch(self, product_item_id):
-        user_id = f_jwt.get_jwt_identity()
-        app.logger.debug("user_id= %s", user_id)
-        # claims = f_jwt.get_jwt()
-        # user_type = claims['user_type']
-        # app.logger.debug("user_type= %s", user_type)
+        customer_id = f_jwt.get_jwt_identity()
+        app.logger.debug("customer_id= %s", customer_id)
 
         data = request.get_json()
         quantity = data.get("quantity", None)
@@ -159,14 +146,11 @@ class Carts(Resource):
             abort(400, 'Bad Request')
         current_time = datetime.now()
 
-        GET_CART_ID = '''SELECT id from carts WHERE user_id = %s'''
-        # catch exception for invalid SQL statement
+        GET_CART_ID = '''SELECT id from carts WHERE customer_id = %s'''
         try:
-            # declare a cursor object from the connection
             cursor = app_globals.get_cursor()
-            # # app.logger.debug("cursor object: %s", cursor)
             cursor.execute(
-                GET_CART_ID, (user_id,))
+                GET_CART_ID, (customer_id,))
             row = cursor.fetchone()
             if not row:
                 app.logger.debug("cart_id not found!")
@@ -178,7 +162,6 @@ class Carts(Resource):
 
             cursor.execute(
                 UPDATE_QUANTITY, (quantity, current_time, cart_id, product_item_id))
-            # app.logger.debug("row_counts= %s", cursor.rowcount)
             if cursor.rowcount != 1:
                 abort(400, 'Bad Request: update row error')
         except (Exception, psycopg2.Error) as err:
@@ -190,17 +173,13 @@ class Carts(Resource):
 
     @ f_jwt.jwt_required()
     def delete(self, product_item_id):
-        user_id = f_jwt.get_jwt_identity()
-        app.logger.debug("user_id= %s", user_id)
-        # claims = f_jwt.get_jwt()
-        # user_type = claims['user_type']
+        customer_id = f_jwt.get_jwt_identity()
+        app.logger.debug("customer_id= %s", customer_id)
         try:
-            # declare a cursor object from the connection
             cursor = app_globals.get_cursor()
-            # # app.logger.debug("cursor object: %s", cursor)
-            GET_CART_ID = '''SELECT id FROM carts WHERE user_id = %s '''
+            GET_CART_ID = '''SELECT id FROM carts WHERE customer_id = %s '''
             cursor.execute(
-                GET_CART_ID, (user_id,))
+                GET_CART_ID, (customer_id,))
             row = cursor.fetchone()
             if not row:
                 app.logger.debug("cart_id not found!")

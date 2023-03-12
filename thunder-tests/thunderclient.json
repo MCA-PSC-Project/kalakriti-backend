@@ -652,12 +652,12 @@
     "method": "POST",
     "sortNum": 320000,
     "created": "2023-02-20T16:38:51.059Z",
-    "modified": "2023-02-28T07:07:40.620Z",
+    "modified": "2023-03-12T08:56:44.794Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n\t\"product_item_id\":24,\n\t\"quantity\":5\n}",
+      "raw": "{\n\t\"product_item_id\":7,\n\t\"quantity\":5\n}",
       "form": []
     },
     "auth": {
@@ -689,11 +689,11 @@
     "colId": "80d178ef-5176-474a-8708-db78bd45faee",
     "containerId": "6bd7e1f1-03c2-44e9-a246-827e2d8f4f7f",
     "name": "Delete item from cart",
-    "url": "{{baseUrl}}/carts/10",
+    "url": "{{baseUrl}}/carts/7",
     "method": "DELETE",
     "sortNum": 340000,
     "created": "2023-02-20T16:38:51.061Z",
-    "modified": "2023-02-26T09:14:47.403Z",
+    "modified": "2023-03-12T08:57:03.037Z",
     "headers": [],
     "params": [],
     "auth": {
@@ -1904,11 +1904,11 @@
     "colId": "80d178ef-5176-474a-8708-db78bd45faee",
     "containerId": "6bd7e1f1-03c2-44e9-a246-827e2d8f4f7f",
     "name": "Update quantity",
-    "url": "{{baseUrl}}/carts/10",
+    "url": "{{baseUrl}}/carts/3",
     "method": "PATCH",
     "sortNum": 335000,
     "created": "2023-02-26T10:52:01.356Z",
-    "modified": "2023-02-26T12:00:07.153Z",
+    "modified": "2023-03-12T08:56:04.462Z",
     "headers": [],
     "params": [],
     "body": {
