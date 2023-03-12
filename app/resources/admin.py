@@ -70,7 +70,7 @@ class GetCustomers(Resource):
         app.logger.debug("user_type= %s", user_type)
 
         if user_type != "admin" and user_type != "super_admin":
-            abort(400, "only super-admins and admins can view all customers")
+            abort(403, "Forbidden: only super-admins and admins can view all customers")
 
         customers_list = []
 
@@ -120,33 +120,28 @@ class GetCustomers(Resource):
 
 class EnableDisableUser(Resource):
     @f_jwt.jwt_required()
-    def put(self, users_id):
-        # user_id = f_jwt.get_jwt_identity()
-        # app.logger.debug("user_id= %s", user_id)
+    def patch(self, user_id):
         claims = f_jwt.get_jwt()
         user_type = claims['user_type']
         app.logger.debug("user_type= %s", user_type)
 
+        if user_type != "admin" and user_type != "super_admin":
+            abort(403, "Forbidden: only super-admins and admins can enable/disable user")
+
         data = request.get_json()
         user_dict = json.loads(json.dumps(data))
-        app.logger.debug(user_dict)
+        # app.logger.debug(user_dict)
 
-        current_time = datetime.now()
+        user_type = user_dict.get('user_type', None)
+        if user_type not in ['customer', 'seller', 'admin']:
+            abort(400, 'Bad request')
 
-        if user_type != "admin" and user_type != "super_admin":
-            abort(400, "only super-admins and admins can update categories")
-
-        UPDATE_USER_ENABLED_STATUS = '''UPDATE users SET enabled= %s, updated_at= %s where id = %s'''
-
-        # catch exception for invalid SQL statement
+        UPDATE_USER_ENABLED_STATUS = '''UPDATE {} SET enabled= %s, updated_at= %s where id= %s'''.format(
+            user_type+'s')
         try:
-            # declare a cursor object from the connection
             cursor = app_globals.get_cursor()
-            # # app.logger.debug("cursor object: %s", cursor)
-
             cursor.execute(
-                UPDATE_USER_ENABLED_STATUS, (user_dict['enabled'], current_time, users_id,))
-            # app.logger.debug("row_counts= %s", cursor.rowcount)
+                UPDATE_USER_ENABLED_STATUS, (user_dict.get('enabled'), datetime.now(), user_id,))
             if cursor.rowcount != 1:
                 abort(400, 'Bad Request: update row error')
         except (Exception, psycopg2.Error) as err:
@@ -154,8 +149,7 @@ class EnableDisableUser(Resource):
             abort(400, 'Bad Request')
         finally:
             cursor.close()
-
-        return {"message": f"user_id {users_id} modified"}, 200
+        return {"message": f"{user_type}_id {user_id} modified"}, 200
 
 
 class PromoteToSeller(Resource):

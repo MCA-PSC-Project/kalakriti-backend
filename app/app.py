@@ -128,7 +128,7 @@ def create_app(config_name):
     # Admin related endpoints
     api.add_resource(GetSellers, '/sellers')
     api.add_resource(GetCustomers, '/customers')
-    api.add_resource(EnableDisableUser, '/users/<int:users_id>/status')
+    api.add_resource(EnableDisableUser, '/users/<int:user_id>/status')
     api.add_resource(PromoteToSeller, '/admin/sellers/promote')
 
     # Super_Admin related endpoints

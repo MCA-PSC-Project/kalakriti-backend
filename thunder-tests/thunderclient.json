@@ -824,22 +824,23 @@
     "colId": "80d178ef-5176-474a-8708-db78bd45faee",
     "containerId": "b47f348c-ce46-42a9-ae9f-4c0f43d70b24",
     "name": "enable/disable users",
-    "url": "{{baseUrl}}/users/20/status",
+    "url": "{{baseUrl}}/users/1/status",
     "method": "PATCH",
     "sortNum": 420000,
     "created": "2023-02-20T16:38:51.070Z",
-    "modified": "2023-02-20T16:38:51.070Z",
+    "modified": "2023-03-12T07:22:28.349Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n\t\"enabled\": true\n}"
+      "raw": "{\n  \"user_type\": \"customer\",\n  \"enabled\": true\n}",
+      "form": []
     },
     "auth": {
       "type": "bearer",
       "bearer": "{{admin_token}}"
     },
-    "docs": ""
+    "tests": []
   },
   {
     "_id": "62794093-f88a-48a2-a1f9-87e5ef211167",
@@ -2335,5 +2336,45 @@
     "headers": [],
     "params": [],
     "tests": []
+  },
+  {
+    "_id": "00cf0e47-4208-41f4-9a10-dc23155f6f4a",
+    "colId": "80d178ef-5176-474a-8708-db78bd45faee",
+    "containerId": "20dae99d-610b-4865-98e2-da1b674f86e0",
+    "name": "Login Super Admin ",
+    "url": "{{baseUrl}}/auth/login/admin",
+    "method": "POST",
+    "sortNum": 9375,
+    "created": "2023-03-12T04:29:39.481Z",
+    "modified": "2023-03-12T04:29:39.481Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n    \"email\": \"admin@gmail.com\",\n    \"password\": \"abcd@123\"\n}",
+      "form": []
+    },
+    "tests": [],
+    "docs": "```json\n{\n    \"email\": \"customer@gmail.com\",\n    \"password\": \"abcd@123\"\n}\n```\n```json\n{\n\t\"email\": \"seller@gmail.com\",\n\t\"password\": \"abcd@123\"\n}\n```\n\n```json\n{\n\t\"email\": \"admin@gmail.com\",\n\t\"password\": \"abcd@123\"\n}\n```\n\n```json\n{\n    \"email\": \"customer1@gmail.com\",\n    \"password\": \"abcd@123\"\n}\n```\n\n```json\n{\n    \"email\": \"seller1@gmail.com\",\n    \"password\": \"abcd@123\"\n}\n```\n\n```json\n{\n    \"email\": \"updated_admin@gmail.com\",\n    \"password\": \"abcd@123\"\n}\n```\n\n```json\n{\n\t\"email\": \"mywebnewslettersinbox123@gmail.com\",\n\t\"password\": \"abcd@123\"\n}\n```"
+  },
+  {
+    "_id": "19136c6f-41ff-46a5-afbd-173154e847b0",
+    "colId": "80d178ef-5176-474a-8708-db78bd45faee",
+    "containerId": "20dae99d-610b-4865-98e2-da1b674f86e0",
+    "name": "Register Super Admin",
+    "url": "{{baseUrl}}/auth/register/admin",
+    "method": "POST",
+    "sortNum": 26250,
+    "created": "2023-03-12T04:30:11.335Z",
+    "modified": "2023-03-12T04:30:11.335Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n\t\"email\": \"admin@gmail.com\",\n\t\"password\": \"abcd@123\",\n\t\"first_name\": \"bittu\",\n\t\"last_name\": \"kumar\",\n\t\"dob\": \"10/3/1998\",\n\t\"gender\": \"male\"\n}",
+      "form": []
+    },
+    "tests": [],
+    "docs": "```json\n{\n\t\"email\": \"updated_admin@gmail.com\",\n\t\"password\": \"abcd@123\",\n\t\"user_type\" : \"customer\",\n\t\"first_name\": \"abcdddl\",\n\t\"last_name\": \"kumari\",\n\t\"phone\": \"987467887\",\n\t\"dob\": \"10/3/1998\",\n\t\"gender\": \"female\"\n}\n```"
   }
 ]

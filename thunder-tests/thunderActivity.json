@@ -2095,5 +2095,51 @@
       "bearer": "{{admin_token}}"
     },
     "tests": []
+  },
+  {
+    "_id": "ffb51b7e-eee7-4edd-a637-fa8ae91d2d5c",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/users/1/status",
+    "url": "{{baseUrl}}/users/1/status",
+    "method": "PATCH",
+    "sortNum": 0,
+    "created": "2023-03-12T07:14:33.434Z",
+    "modified": "2023-03-12T07:22:28.357Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n  \"user_type\": \"customer\",\n  \"enabled\": true\n}",
+      "form": []
+    },
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{admin_token}}"
+    },
+    "tests": []
+  },
+  {
+    "_id": "44c78255-bd20-4530-b111-fcff43003e9f",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/users/2/status",
+    "url": "{{baseUrl}}/users/2/status",
+    "method": "PATCH",
+    "sortNum": 0,
+    "created": "2023-03-12T07:22:17.055Z",
+    "modified": "2023-03-12T07:22:17.055Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n  \"user_type\": \"customer\",\n  \"enabled\": true\n}",
+      "form": []
+    },
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{admin_token}}"
+    },
+    "tests": []
   }
 ]
