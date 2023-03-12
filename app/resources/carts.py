@@ -29,19 +29,16 @@ class Carts(Resource):
             if not row:
                 app.logger.debug(
                     "cart_id not found!..Creating a cart for user_id =%s", customer_id)
-                # if there is no cart for the user_id
+                # if there is no cart for the respective customer_id
                 CREATE_CART = '''INSERT INTO carts(customer_id) VALUES(%s) RETURNING id'''
                 cursor.execute(CREATE_CART, (customer_id,))
                 row = cursor.fetchone()
             cart_id = row[0]
 
-            current_time = datetime.now()
-
             ADD_TO_CART = '''INSERT INTO cart_items(cart_id,product_item_id,quantity, added_at)
                                 VALUES(%s,%s,%s,%s)'''
-
             cursor.execute(
-                ADD_TO_CART, (cart_id, product_item_id, quantity, current_time,))
+                ADD_TO_CART, (cart_id, product_item_id, quantity, datetime.now(),))
            # id = cursor.fetchone()[0]
         except (Exception, psycopg2.Error) as err:
             app.logger.debug(err)
@@ -61,7 +58,6 @@ class Carts(Resource):
         app.logger.debug("user_id= %s", customer_id)
 
         carts_list = []
-
         GET_ITEMS_IN_CART = '''SELECT ci.cart_id AS cart_id, ci.quantity, 
         p.id AS product_id, p.product_name, p.currency, p.min_order_quantity, p.max_order_quantity,
         pi.id AS product_item_id, pi.product_variant_name, pi.original_price, pi.offer_price, pi.quantity_in_stock 
@@ -114,7 +110,6 @@ class Carts(Resource):
                     continue
                 media_dict['id'] = row.media_id
                 media_dict['name'] = row.name
-                # media_dict['path'] = row.path
                 path = row.path
                 if path is not None:
                     media_dict['path'] = "{}/{}".format(
@@ -187,9 +182,7 @@ class Carts(Resource):
             cart_id = row[0]
 
             REMOVE_FROM_CART = 'DELETE FROM cart_items WHERE product_item_id= %s AND cart_id = %s'
-
             cursor.execute(REMOVE_FROM_CART, (product_item_id, cart_id,))
-            # app.logger.debug("row_counts= %s", cursor.rowcount)
             if cursor.rowcount != 1:
                 abort(400, 'Bad Request: delete row error')
         except (Exception, psycopg2.Error) as err:

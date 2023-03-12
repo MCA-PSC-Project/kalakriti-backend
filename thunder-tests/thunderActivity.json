@@ -43,29 +43,6 @@
     "tests": []
   },
   {
-    "_id": "a4633d50-5555-4b72-8e46-6af3a34f2c97",
-    "colId": "history",
-    "containerId": "",
-    "name": "{{baseUrl}}/sellers/products/31",
-    "url": "{{baseUrl}}/sellers/products/31",
-    "method": "PUT",
-    "sortNum": 0,
-    "created": "2023-02-26T14:36:30.573Z",
-    "modified": "2023-03-01T04:09:26.450Z",
-    "headers": [],
-    "params": [],
-    "body": {
-      "type": "json",
-      "raw": "{\n  \"product_name\": \"famous madhubani painting\",\n  \"product_description\": \"paintings from madhubani\",\n  \"category_id\": 5,\n  \"subcategory_id\": 7,\n  \"currency\": \"INR\",\n  \"min_order_quantity\": 1,\n  \"max_order_quantity\": 5\n}",
-      "form": []
-    },
-    "auth": {
-      "type": "bearer",
-      "bearer": "{{seller_token}}"
-    },
-    "tests": []
-  },
-  {
     "_id": "86905e38-b506-4350-8e6b-ec7ac39fa0f9",
     "colId": "history",
     "containerId": "",
@@ -109,99 +86,6 @@
       "type": "bearer",
       "bearer": "{{admin_token}}"
     },
-    "tests": []
-  },
-  {
-    "_id": "e76a47a9-1768-4c6d-8c75-90fda934b395",
-    "colId": "history",
-    "containerId": "",
-    "name": "{{baseUrl}}/categories/products?subcategory_id=5",
-    "url": "{{baseUrl}}/categories/products?subcategory_id=5",
-    "method": "GET",
-    "sortNum": 0,
-    "created": "2023-03-01T04:04:25.493Z",
-    "modified": "2023-03-01T04:04:25.493Z",
-    "headers": [],
-    "params": [
-      {
-        "name": "subcategory_id",
-        "value": "5",
-        "isPath": false
-      }
-    ],
-    "tests": []
-  },
-  {
-    "_id": "b6584816-d473-4cf9-9997-1623e4406c72",
-    "colId": "history",
-    "containerId": "",
-    "name": "{{baseUrl}}/categories/products?subcategory_id=7",
-    "url": "{{baseUrl}}/categories/products?subcategory_id=7",
-    "method": "GET",
-    "sortNum": 0,
-    "created": "2023-03-01T04:04:32.608Z",
-    "modified": "2023-03-01T04:04:32.608Z",
-    "headers": [],
-    "params": [
-      {
-        "name": "subcategory_id",
-        "value": "7",
-        "isPath": false
-      }
-    ],
-    "tests": []
-  },
-  {
-    "_id": "a9719b8f-6f4c-4259-a9fe-19278ea70737",
-    "colId": "history",
-    "containerId": "",
-    "name": "{{baseUrl}}/categories/products?category_id=5&subcategory_id=7",
-    "url": "{{baseUrl}}/categories/products?category_id=5&subcategory_id=7",
-    "method": "GET",
-    "sortNum": 0,
-    "created": "2023-03-01T04:16:51.164Z",
-    "modified": "2023-03-01T04:16:51.164Z",
-    "headers": [],
-    "params": [
-      {
-        "name": "category_id",
-        "value": "5",
-        "isPath": false
-      },
-      {
-        "name": "subcategory_id",
-        "value": "7",
-        "isPath": false
-      }
-    ],
-    "tests": []
-  },
-  {
-    "_id": "0491116d-e021-4e9b-a48c-a1d1e23bc12e",
-    "colId": "history",
-    "containerId": "",
-    "name": "{{baseUrl}}/products/all-details",
-    "url": "{{baseUrl}}/products/all-details",
-    "method": "GET",
-    "sortNum": 0,
-    "created": "2023-03-01T06:56:27.623Z",
-    "modified": "2023-03-01T06:56:27.623Z",
-    "headers": [],
-    "params": [],
-    "tests": []
-  },
-  {
-    "_id": "e55c2983-ed04-4239-b3c3-659f571a4da8",
-    "colId": "history",
-    "containerId": "",
-    "name": "{{baseUrl}}/products/26/all-details",
-    "url": "{{baseUrl}}/products/26/all-details",
-    "method": "GET",
-    "sortNum": 0,
-    "created": "2023-03-01T06:57:15.711Z",
-    "modified": "2023-03-01T06:57:15.711Z",
-    "headers": [],
-    "params": [],
     "tests": []
   },
   {

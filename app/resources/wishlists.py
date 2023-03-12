@@ -7,7 +7,6 @@ import flask_jwt_extended as f_jwt
 import json
 from flask import current_app as app
 
-
 class Wishlists(Resource):
     @f_jwt.jwt_required()
     def post(self):
@@ -17,15 +16,12 @@ class Wishlists(Resource):
         data = request.get_json()
         product_item_id = data.get("product_item_id", None)
 
-        current_time = datetime.now()
-
         ADD_TO_WISHLIST = '''INSERT INTO wishlists(customer_id,product_item_id, added_at)
-                               VALUES(%s, %s, %s)'''        
+                               VALUES(%s, %s, %s)'''
         try:
             cursor = app_globals.get_cursor()
             cursor.execute(
-                ADD_TO_WISHLIST, (customer_id, product_item_id, current_time,))
-           # id = cursor.fetchone()[0]
+                ADD_TO_WISHLIST, (customer_id, product_item_id, datetime.now(),))
         except (Exception, psycopg2.Error) as err:
             app.logger.debug(err)
             abort(400, 'Bad Request')
@@ -39,7 +35,6 @@ class Wishlists(Resource):
         app.logger.debug("customer_id= %s", customer_id)
 
         wishlists_list = []
-
         GET_WISHLISTS = '''SELECT pi.product_id, pi.id AS product_item_id,
         (SELECT p.product_name FROM products p WHERE p.id = pi.product_id),
         pi.product_variant_name ,pi.original_price, pi.offer_price,
@@ -89,7 +84,6 @@ class Wishlists(Resource):
                     continue
                 media_dict['id'] = row.media_id
                 media_dict['name'] = row.name
-                # media_dict['path'] = row.path
                 path = row.path
                 if path is not None:
                     media_dict['path'] = "{}/{}".format(
@@ -113,10 +107,10 @@ class Wishlists(Resource):
         app.logger.debug("customer_id= %s", customer_id)
 
         REMOVE_FROM_WISHLIST = 'DELETE FROM wishlists WHERE product_item_id= %s AND customer_id =%s'
-
         try:
             cursor = app_globals.get_cursor()
-            cursor.execute(REMOVE_FROM_WISHLIST, (product_item_id, customer_id,))
+            cursor.execute(REMOVE_FROM_WISHLIST,
+                           (product_item_id, customer_id,))
             if cursor.rowcount != 1:
                 abort(400, 'Bad Request: delete row error')
         except (Exception, psycopg2.Error) as err:
