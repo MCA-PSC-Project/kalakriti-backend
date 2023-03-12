@@ -18,7 +18,7 @@ class GetSellers(Resource):
         if user_type != "admin" and user_type != "super_admin":
             abort(403, "Forbidden: only super-admins and admins can view all sellers")
 
-        seller_list = []
+        sellers_list = []
 
         GET_SELLERS_PROFILES = '''SELECT s.seller_name, s.email, s.phone,
         s."GSTIN", s."PAN", s.enabled,
@@ -32,7 +32,7 @@ class GetSellers(Resource):
             cursor.execute(GET_SELLERS_PROFILES, ('seller',))
             rows = cursor.fetchall()
             if not rows:
-                return {}
+                return []
             for row in rows:
                 seller_profile_dict = {}
                 seller_profile_dict['seller_name'] = row.seller_name
@@ -52,21 +52,19 @@ class GetSellers(Resource):
                 else:
                     dp_media_dict['path'] = None
                 seller_profile_dict.update({"dp": dp_media_dict})
-                seller_list.append(seller_profile_dict)
+                sellers_list.append(seller_profile_dict)
         except (Exception, psycopg2.Error) as err:
             app.logger.debug(err)
             abort(400, 'Bad Request')
         finally:
             cursor.close()
-        # app.logger.debug(seller_list)
-        return seller_list
+        # app.logger.debug(sellers_list)
+        return sellers_list
 
 
 class GetCustomers(Resource):
     @f_jwt.jwt_required()
     def get(self):
-        user_id = f_jwt.get_jwt_identity()
-        app.logger.debug("user_id= %s", user_id)
         claims = f_jwt.get_jwt()
         user_type = claims['user_type']
         app.logger.debug("user_type= %s", user_type)
@@ -74,30 +72,25 @@ class GetCustomers(Resource):
         if user_type != "admin" and user_type != "super_admin":
             abort(400, "only super-admins and admins can view all customers")
 
-        customer_list = []
+        customers_list = []
 
-        GET_CUSTOMERS_PROFILES = '''SELECT u.first_name, u.last_name, u.user_type, u.email, u.phone, 
-        TO_CHAR(u.dob, 'YYYY-MM-DD'), u.gender , u.enabled,
+        GET_CUSTOMERS_PROFILES = '''SELECT c.first_name, c.last_name, c.email, c.phone, 
+        TO_CHAR(c.dob, 'YYYY-MM-DD') AS dob, c.gender , c.enabled,
         m.id AS media_id, m.name AS media_name, m.path
-        FROM users u 
-        LEFT JOIN media m ON u.dp_id = m.id 
-        WHERE user_type= %s'''
+        FROM customers c 
+        LEFT JOIN media m ON c.dp_id = m.id 
+        ORDER BY c.id DESC'''
 
-        # catch exception for invalid SQL statement
         try:
-            # declare a cursor object from the connection
             cursor = app_globals.get_named_tuple_cursor()
-            # # app.logger.debug("cursor object: %s", cursor)
-
             cursor.execute(GET_CUSTOMERS_PROFILES, ('customer',))
             rows = cursor.fetchall()
             if not rows:
-                return {}
+                return []
             for row in rows:
                 customer_profile_dict = {}
                 customer_profile_dict['first_name'] = row.first_name
                 customer_profile_dict['last_name'] = row.last_name
-                customer_profile_dict['user_type'] = row.user_type
                 customer_profile_dict['email'] = row.email
                 customer_profile_dict['phone'] = row.phone
                 customer_profile_dict['dob'] = row.dob
@@ -107,7 +100,6 @@ class GetCustomers(Resource):
                 dp_media_dict = {}
                 dp_media_dict['id'] = row.media_id
                 dp_media_dict['name'] = row.media_name
-                # media_dict['path'] = row.path
                 path = row.path
                 if path is not None:
                     dp_media_dict['path'] = "{}/{}".format(
@@ -115,15 +107,15 @@ class GetCustomers(Resource):
                 else:
                     dp_media_dict['path'] = None
                 customer_profile_dict.update({"dp": dp_media_dict})
-                customer_list.append(customer_profile_dict)
+                customers_list.append(customer_profile_dict)
 
         except (Exception, psycopg2.Error) as err:
             app.logger.debug(err)
             abort(400, 'Bad Request')
         finally:
             cursor.close()
-        # app.logger.debug(customer_list)
-        return customer_list
+        # app.logger.debug(customers_list)
+        return customers_list
 
 
 class EnableDisableUser(Resource):

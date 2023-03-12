@@ -2077,5 +2077,23 @@
       "bearer": "{{admin_token}}"
     },
     "tests": []
+  },
+  {
+    "_id": "ad4e29e8-c687-44d1-a3e5-534e74ce900b",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/customers",
+    "url": "{{baseUrl}}/customers",
+    "method": "GET",
+    "sortNum": 0,
+    "created": "2023-03-12T04:19:50.457Z",
+    "modified": "2023-03-12T04:20:36.559Z",
+    "headers": [],
+    "params": [],
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{admin_token}}"
+    },
+    "tests": []
   }
 ]
