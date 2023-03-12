@@ -60,7 +60,7 @@
       },
       {
         "name": "admin_token",
-        "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6dHJ1ZSwiaWF0IjoxNjc4NTQ1MTYzLCJqdGkiOiIyNGQ0YzY1Zi0xMmI2LTRlNzYtYTM1MC01MGYxNGYxYzg2ZjEiLCJ0eXBlIjoiYWNjZXNzIiwic3ViIjoxLCJuYmYiOjE2Nzg1NDUxNjMsImV4cCI6MTY3ODU2Njc2MywidXNlcl90eXBlIjoiYWRtaW4ifQ.rZmQzPeCHqsL4Q8HFQVY3ic1Y2Erp30afVKmPBetXWo"
+        "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6dHJ1ZSwiaWF0IjoxNjc4NTkzNjI1LCJqdGkiOiIwZTIxMGQzMC1lNjVlLTQyMDktYjgwYi03NjcxZjU2NjE4ZDYiLCJ0eXBlIjoiYWNjZXNzIiwic3ViIjoxLCJuYmYiOjE2Nzg1OTM2MjUsImV4cCI6MTY3ODYxNTIyNSwidXNlcl90eXBlIjoiYWRtaW4ifQ.YsSD0NkuYPRA3ak4j3by8cwOWQEpMhpxyoK_nLrNt-o"
       },
       {
         "name": "super_admin_token",

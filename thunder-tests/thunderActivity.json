@@ -43,29 +43,6 @@
     "tests": []
   },
   {
-    "_id": "8965ba3d-ebc8-4cb9-9f05-ac33aa8b4fd8",
-    "colId": "history",
-    "containerId": "",
-    "name": "{{baseUrl}}/carts",
-    "url": "{{baseUrl}}/carts",
-    "method": "POST",
-    "sortNum": 0,
-    "created": "2023-02-26T11:56:42.582Z",
-    "modified": "2023-02-28T07:07:40.630Z",
-    "headers": [],
-    "params": [],
-    "body": {
-      "type": "json",
-      "raw": "{\n\t\"product_item_id\":24,\n\t\"quantity\":5\n}",
-      "form": []
-    },
-    "auth": {
-      "type": "bearer",
-      "bearer": "{{token}}"
-    },
-    "tests": []
-  },
-  {
     "_id": "a4633d50-5555-4b72-8e46-6af3a34f2c97",
     "colId": "history",
     "containerId": "",
@@ -89,134 +66,6 @@
     "tests": []
   },
   {
-    "_id": "ae1f07e9-024f-414a-af84-adaa0dbd48ea",
-    "colId": "history",
-    "containerId": "",
-    "name": "{{baseUrl}}/users/profile",
-    "url": "{{baseUrl}}/users/profile",
-    "method": "GET",
-    "sortNum": 0,
-    "created": "2023-02-27T15:15:19.470Z",
-    "modified": "2023-02-27T15:15:19.470Z",
-    "headers": [],
-    "params": [],
-    "auth": {
-      "type": "bearer",
-      "bearer": "{{token}}"
-    },
-    "tests": []
-  },
-  {
-    "_id": "59f4a46b-ba9b-445c-82b7-effdb8033b50",
-    "colId": "history",
-    "containerId": "",
-    "name": "{{baseUrl}}/categories",
-    "url": "{{baseUrl}}/categories",
-    "method": "GET",
-    "sortNum": 0,
-    "created": "2023-02-27T17:10:24.701Z",
-    "modified": "2023-02-27T17:10:24.701Z",
-    "headers": [],
-    "params": [],
-    "tests": []
-  },
-  {
-    "_id": "61465a52-327a-40d4-a713-2ca9e16ac961",
-    "colId": "history",
-    "containerId": "",
-    "name": "{{baseUrl}}/sellers-form",
-    "url": "{{baseUrl}}/sellers-form",
-    "method": "POST",
-    "sortNum": 0,
-    "created": "2023-02-27T17:37:04.768Z",
-    "modified": "2023-02-27T17:40:41.775Z",
-    "headers": [],
-    "params": [],
-    "body": {
-      "type": "json",
-      "raw": "{\n \"name\" : \"apply_for_seller\",\n \"email\" : \"apply@seller3.com\",\n \"phone\" : \"98765438880\",\n \"description\" : \"want to sell saree\"\n}",
-      "form": []
-    },
-    "auth": {
-      "type": "bearer",
-      "bearer": "{{token}}"
-    },
-    "tests": []
-  },
-  {
-    "_id": "59acc520-7abc-4b9b-b60d-98cd3dee30b6",
-    "colId": "history",
-    "containerId": "",
-    "name": "{{baseUrl}}/sellers-form",
-    "url": "{{baseUrl}}/sellers-form",
-    "method": "GET",
-    "sortNum": 0,
-    "created": "2023-02-27T17:37:10.274Z",
-    "modified": "2023-02-27T17:37:10.274Z",
-    "headers": [],
-    "params": [],
-    "tests": []
-  },
-  {
-    "_id": "0203237a-ece7-4eea-a0a6-deeb88c066b1",
-    "colId": "history",
-    "containerId": "",
-    "name": "{{baseUrl}}/sellers-form/1",
-    "url": "{{baseUrl}}/sellers-form/1",
-    "method": "PUT",
-    "sortNum": 0,
-    "created": "2023-02-27T17:37:21.540Z",
-    "modified": "2023-02-27T17:37:21.540Z",
-    "headers": [],
-    "params": [],
-    "body": {
-      "type": "json",
-      "raw": "{\n \"name\" : \"updated_seller\",\n \"email\" : \"apply@seller2.com\",\n \"phone\" : \"98765438880\",\n \"description\" : \"want to sell saree\"\n}",
-      "form": []
-    },
-    "auth": {
-      "type": "bearer",
-      "bearer": "{{token}}"
-    },
-    "tests": []
-  },
-  {
-    "_id": "eb4eb376-0558-4f14-ba84-14b06b3232a2",
-    "colId": "history",
-    "containerId": "",
-    "name": "{{baseUrl}}/sellers-form/1",
-    "url": "{{baseUrl}}/sellers-form/1",
-    "method": "DELETE",
-    "sortNum": 0,
-    "created": "2023-02-27T17:37:33.470Z",
-    "modified": "2023-02-27T17:37:33.470Z",
-    "headers": [],
-    "params": [],
-    "auth": {
-      "type": "bearer",
-      "bearer": "{{token}}"
-    },
-    "tests": []
-  },
-  {
-    "_id": "536ab02c-15a8-4a12-9f1d-d8a788e62fc6",
-    "colId": "history",
-    "containerId": "",
-    "name": "{{baseUrl}}/admins",
-    "url": "{{baseUrl}}/admins",
-    "method": "GET",
-    "sortNum": 0,
-    "created": "2023-02-27T17:50:44.789Z",
-    "modified": "2023-02-27T17:50:44.789Z",
-    "headers": [],
-    "params": [],
-    "auth": {
-      "type": "bearer",
-      "bearer": "{{super_admin_token}}"
-    },
-    "tests": []
-  },
-  {
     "_id": "4cb72560-56ca-4cfd-9fab-8431d7fe107c",
     "colId": "history",
     "containerId": "",
@@ -233,24 +82,6 @@
       "raw": "{\n  \"product_item_id\": 10\n}",
       "form": []
     },
-    "auth": {
-      "type": "bearer",
-      "bearer": "{{token}}"
-    },
-    "tests": []
-  },
-  {
-    "_id": "e4ab97b6-ce2d-423e-abe3-674f6a0e9aa0",
-    "colId": "history",
-    "containerId": "",
-    "name": "{{baseUrl}}/wishlists/14",
-    "url": "{{baseUrl}}/wishlists/14",
-    "method": "DELETE",
-    "sortNum": 0,
-    "created": "2023-02-28T05:05:50.229Z",
-    "modified": "2023-02-28T05:05:50.229Z",
-    "headers": [],
-    "params": [],
     "auth": {
       "type": "bearer",
       "bearer": "{{token}}"

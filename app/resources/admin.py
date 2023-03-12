@@ -11,34 +11,24 @@ from flask import current_app as app
 class GetSellers(Resource):
     @f_jwt.jwt_required()
     def get(self):
-        user_id = f_jwt.get_jwt_identity()
-        app.logger.debug("user_id= %s", user_id)
         claims = f_jwt.get_jwt()
         user_type = claims['user_type']
         app.logger.debug("user_type= %s", user_type)
 
-        # args = request.args  # retrieve args from query string
-        # user = args.get('user', None)
-        # app.logger.debug("?user=%s", user)
-
         if user_type != "admin" and user_type != "super_admin":
-            abort(400, "only super-admins and admins can view all sellers")
+            abort(403, "Forbidden: only super-admins and admins can view all sellers")
 
         seller_list = []
 
-        GET_SELLERS_PROFILES = '''SELECT s.seller_name, u.user_type, u.email, u.phone, 
-        s."GSTIN", s."PAN", u.enabled,
+        GET_SELLERS_PROFILES = '''SELECT s.seller_name, s.email, s.phone,
+        s."GSTIN", s."PAN", s.enabled,
         m.id AS media_id, m.name AS media_name, m.path
-        FROM users u
-        JOIN sellers s ON u.id = s.user_id
-        LEFT JOIN media m on u.dp_id = m.id WHERE u.user_type= %s'''
+        FROM sellers s
+        LEFT JOIN media m ON s.id = m.id
+        ORDER BY s.id DESC'''
 
-        # catch exception for invalid SQL statement
         try:
-            # declare a cursor object from the connection
             cursor = app_globals.get_named_tuple_cursor()
-            # # app.logger.debug("cursor object: %s", cursor)
-
             cursor.execute(GET_SELLERS_PROFILES, ('seller',))
             rows = cursor.fetchall()
             if not rows:
@@ -46,7 +36,6 @@ class GetSellers(Resource):
             for row in rows:
                 seller_profile_dict = {}
                 seller_profile_dict['seller_name'] = row.seller_name
-                seller_profile_dict['user_type'] = row.user_type
                 seller_profile_dict['email'] = row.email
                 seller_profile_dict['phone'] = row.phone
                 seller_profile_dict['GSTIN'] = row.GSTIN
@@ -56,7 +45,6 @@ class GetSellers(Resource):
                 dp_media_dict = {}
                 dp_media_dict['id'] = row.media_id
                 dp_media_dict['name'] = row.media_name
-                # media_dict['path'] = row.path
                 path = row.path
                 if path is not None:
                     dp_media_dict['path'] = "{}/{}".format(
