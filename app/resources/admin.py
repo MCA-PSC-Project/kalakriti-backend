@@ -29,7 +29,7 @@ class GetSellers(Resource):
 
         try:
             cursor = app_globals.get_named_tuple_cursor()
-            cursor.execute(GET_SELLERS_PROFILES, ('seller',))
+            cursor.execute(GET_SELLERS_PROFILES,())
             rows = cursor.fetchall()
             if not rows:
                 return []
@@ -83,7 +83,7 @@ class GetCustomers(Resource):
 
         try:
             cursor = app_globals.get_named_tuple_cursor()
-            cursor.execute(GET_CUSTOMERS_PROFILES, ('customer',))
+            cursor.execute(GET_CUSTOMERS_PROFILES, ())
             rows = cursor.fetchall()
             if not rows:
                 return []
