@@ -29,7 +29,7 @@ class GetSellers(Resource):
 
         try:
             cursor = app_globals.get_named_tuple_cursor()
-            cursor.execute(GET_SELLERS_PROFILES, ('seller',))
+            cursor.execute(GET_SELLERS_PROFILES,())
             rows = cursor.fetchall()
             if not rows:
                 return []
@@ -83,7 +83,7 @@ class GetCustomers(Resource):
 
         try:
             cursor = app_globals.get_named_tuple_cursor()
-            cursor.execute(GET_CUSTOMERS_PROFILES, ('customer',))
+            cursor.execute(GET_CUSTOMERS_PROFILES, ())
             rows = cursor.fetchall()
             if not rows:
                 return []
@@ -152,6 +152,7 @@ class EnableDisableUser(Resource):
         return {"message": f"{user_type}_id {user_id} modified"}, 200
 
 
+# Deprecated
 class PromoteToSeller(Resource):
     @f_jwt.jwt_required()
     def put(self):

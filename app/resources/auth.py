@@ -41,14 +41,14 @@ class RegisterCustomer(Resource):
             password.encode('utf-8'), bcrypt.gensalt())
         hashed_password = hashed_password.decode('utf-8')
 
-        REGISTER_CUSTOMER = '''INSERT INTO customers(first_name, last_name, email, phone, hashed_password, 
+        REGISTER_CUSTOMER = '''INSERT INTO customers(first_name, last_name, email, hashed_password, 
         dob, gender, added_at)
-        VALUES(%s, %s, %s, %s, %s, %s, %s, %s) RETURNING id'''
+        VALUES(%s, %s, %s, %s, %s, %s, %s) RETURNING id'''
 
         try:
             cursor = app_globals.get_cursor()
             cursor.execute(REGISTER_CUSTOMER, (first_name, last_name,
-                           email, '', hashed_password, dob, gender, datetime.now(),))
+                           email, hashed_password, dob, gender, datetime.now(),))
             customer_id = cursor.fetchone()[0]
         except (Exception, psycopg2.Error) as err:
             app.logger.debug(err)
@@ -115,13 +115,13 @@ class RegisterSeller(Resource):
             password.encode('utf-8'), bcrypt.gensalt())
         hashed_password = hashed_password.decode('utf-8')
 
-        REGISTER_SELLER = '''INSERT INTO sellers(seller_name, email, phone, hashed_password, "GSTIN", "PAN" , added_at)
-        VALUES(%s, %s, %s, %s, %s, %s, %s) RETURNING id'''
+        REGISTER_SELLER = '''INSERT INTO sellers(seller_name, email, hashed_password, "GSTIN", "PAN" , added_at)
+        VALUES(%s, %s, %s, %s, %s, %s) RETURNING id'''
 
         try:
             cursor = app_globals.get_cursor()
             cursor.execute(REGISTER_SELLER, (seller_name, email,
-                           '', hashed_password, GSTIN, PAN, datetime.now(),))
+                           hashed_password, GSTIN, PAN, datetime.now(),))
             seller_id = cursor.fetchone()[0]
         except (Exception, psycopg2.Error) as err:
             app.logger.debug(err)
@@ -189,14 +189,14 @@ class RegisterAdmin(Resource):
             password.encode('utf-8'), bcrypt.gensalt())
         hashed_password = hashed_password.decode('utf-8')
 
-        REGISTER_CUSTOMER = '''INSERT INTO admins(first_name, last_name, email, phone, hashed_password, 
+        REGISTER_CUSTOMER = '''INSERT INTO admins(first_name, last_name, email, hashed_password, 
         dob, gender, added_at)
-        VALUES(%s, %s, %s, %s, %s, %s, %s, %s) RETURNING id'''
+        VALUES(%s, %s, %s, %s, %s, %s, %s) RETURNING id'''
 
         try:
             cursor = app_globals.get_cursor()
             cursor.execute(REGISTER_CUSTOMER, (first_name, last_name,
-                           email, '', hashed_password, dob, gender, datetime.now(),))
+                           email, hashed_password, dob, gender, datetime.now(),))
             admin_id = cursor.fetchone()[0]
         except (Exception, psycopg2.Error) as err:
             app.logger.debug(err)
