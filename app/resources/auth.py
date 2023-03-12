@@ -491,3 +491,15 @@ class VerifyEmail(Resource):
         redirect_url = "homepage url for KalaKriti frontend"
         # return redirect(redirect_url)
         return f"redirect url= {redirect_url}", 200
+
+class Register2fa(Resource):
+    user_id = f_jwt.get_jwt_identity()
+    app.logger.debug("user_id= %s", user_id)
+    claims = f_jwt.get_jwt()
+    user_type = claims['user_type']
+    app.logger.debug("user_type= %s", user_type)
+
+    table_name=user_type+'s'
+    
+
+
