@@ -36,6 +36,7 @@ CREATE TYPE "payment__mode" AS ENUM (
 	'digital_wallet'
 );
 CREATE TYPE "account__type" AS ENUM ('savings', 'current', 'overdraft');
+CREATE TYPE "two__fa__type" AS ENUM ('none', 'mobile_otp', 'totp');
 -----------------------TABLES-------------------------------------------
 CREATE TABLE "media"(
 	"id" SERIAL PRIMARY KEY,
@@ -60,6 +61,8 @@ CREATE TABLE "customers"(
 	"updated_at" TIMESTAMPTZ,
 	"enabled" BOOLEAN NOT NULL DEFAULT TRUE,
 	"trashed" boolean NOT NULL DEFAULT FALSE,
+	"default_two_fa_type" two__fa__type DEFAULT 'none',
+	"totp_secret_key" VARCHAR(32),
 	FOREIGN KEY("dp_id") REFERENCES "media"("id") ON DELETE SET NULL
 );
 CREATE TABLE "admins"(

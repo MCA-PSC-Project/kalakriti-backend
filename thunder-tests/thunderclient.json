@@ -2399,5 +2399,47 @@
       "bearer": "{{seller_token}}"
     },
     "tests": []
+  },
+  {
+    "_id": "ef1fd0ee-3ecd-4b0a-9b45-8c2fc050b256",
+    "colId": "80d178ef-5176-474a-8708-db78bd45faee",
+    "containerId": "df3efec6-c411-4a9a-9790-c86d800854c3",
+    "name": "register totp customer",
+    "url": "{{baseUrl}}/auth/login/customer/2fa",
+    "method": "POST",
+    "sortNum": 1020000,
+    "created": "2023-03-12T12:01:30.803Z",
+    "modified": "2023-03-12T12:09:16.085Z",
+    "headers": [],
+    "params": [],
+    "tests": []
+  },
+  {
+    "_id": "a712c18c-70b8-4e5b-9148-ef365972229d",
+    "colId": "80d178ef-5176-474a-8708-db78bd45faee",
+    "containerId": "df3efec6-c411-4a9a-9790-c86d800854c3",
+    "name": "register totp seller",
+    "url": "{{baseUrl}}/auth/login/customer/2fa",
+    "method": "POST",
+    "sortNum": 1030000,
+    "created": "2023-03-12T12:13:57.075Z",
+    "modified": "2023-03-12T12:13:57.075Z",
+    "headers": [],
+    "params": [],
+    "tests": []
+  },
+  {
+    "_id": "d689dc7a-58c7-45e0-a2cc-9d7dab68c641",
+    "colId": "80d178ef-5176-474a-8708-db78bd45faee",
+    "containerId": "df3efec6-c411-4a9a-9790-c86d800854c3",
+    "name": "register totp admin",
+    "url": "{{baseUrl}}/auth/login/customer/2fa",
+    "method": "POST",
+    "sortNum": 1040000,
+    "created": "2023-03-12T12:14:55.350Z",
+    "modified": "2023-03-12T12:14:55.350Z",
+    "headers": [],
+    "params": [],
+    "tests": []
   }
 ]
