@@ -62,11 +62,18 @@ CREATE TABLE "customers"(
 	"enabled" BOOLEAN NOT NULL DEFAULT TRUE,
 	"trashed" BOOLEAN NOT NULL DEFAULT FALSE,
 	"mfa_enabled" BOOLEAN NOT NULL DEFAULT FALSE,
-	"default_mfa_type" mfa__type DEFAULT 'none',
-	"totp_secret_key" VARCHAR,
 	"hashed_backup_key" VARCHAR,
 	FOREIGN KEY("dp_id") REFERENCES "media"("id") ON DELETE SET NULL
 );
+
+CREATE TABLE "customers_mfa"(
+	"id" SERIAL PRIMARY KEY,
+	"customer_id" INT,
+	"mfa_type" mfa__type DEFAULT 'none',
+	"secret_key" VARCHAR,
+	FOREIGN KEY("customer_id") REFERENCES "customers"("id") ON DELETE CASCADE
+);
+
 CREATE TABLE "admins"(
 	"id" SERIAL PRIMARY KEY,
 	"first_name" VARCHAR NOT NULL,

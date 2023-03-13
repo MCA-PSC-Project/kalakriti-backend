@@ -6,12 +6,9 @@ import psycopg2
 import app.app_globals as app_globals
 import bcrypt
 from flask import current_app as app
-from app.email_token import generate_email_token, verify_email_token
-from app.mail import send_email
 import otp
 
-
-class MFAuthentication(Resource):
+class MfaStatus(Resource):
     # get status of MFA
     @f_jwt.jwt_required()
     def get(self):
@@ -39,6 +36,7 @@ class MFAuthentication(Resource):
             cursor.close()
         return {"mfa_enabled": mfa_enabled, "default_mfa_type": default_mfa_type}, 200
 
+class MFAuthentication(Resource):
     # register MFA(totp) or login with mfa(totp)
     @f_jwt.jwt_required()
     def post(self):
