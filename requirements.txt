@@ -9,3 +9,4 @@ bcrypt
 gunicorn
 boto3
 pyotp
+qrcode

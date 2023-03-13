@@ -2105,5 +2105,37 @@
       "bearer": "{{super_admin_token}}"
     },
     "tests": []
+  },
+  {
+    "_id": "3422557f-2c62-45cc-9a4c-6ec008d05a47",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/auth/login/customer/2fa",
+    "url": "{{baseUrl}}/auth/login/customer/2fa",
+    "method": "POST",
+    "sortNum": 0,
+    "created": "2023-03-12T14:51:56.632Z",
+    "modified": "2023-03-12T14:51:56.632Z",
+    "headers": [],
+    "params": [],
+    "tests": []
+  },
+  {
+    "_id": "4496b9d1-f769-4539-81c1-77eb912c0186",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/auth/setup/2fa",
+    "url": "{{baseUrl}}/auth/setup/2fa",
+    "method": "POST",
+    "sortNum": 0,
+    "created": "2023-03-12T15:15:33.656Z",
+    "modified": "2023-03-12T15:15:33.656Z",
+    "headers": [],
+    "params": [],
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{admin_token}}"
+    },
+    "tests": []
   }
 ]
