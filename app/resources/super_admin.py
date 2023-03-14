@@ -6,6 +6,7 @@ import app.app_globals as app_globals
 import flask_jwt_extended as f_jwt
 from flask import current_app as app
 
+
 class GetAllAdmins(Resource):
     @f_jwt.jwt_required()
     def get(self):
@@ -17,7 +18,7 @@ class GetAllAdmins(Resource):
             abort(403, "Forbidden: only super-admins can view all admins")
 
         admins_list = []
-        GET_ADMINS_PROFILES = '''SELECT a.id AS user_id, a.first_name, a.last_name, a.email, a.phone, 
+        GET_ADMINS_PROFILES = '''SELECT a.id AS user_id, a.first_name, a.last_name, a.email, a.mobile_no, 
         TO_CHAR(a.dob, 'YYYY-MM-DD') AS dob, a.gender , a.enabled, a.is_super_admin,
         m.id AS media_id, m.name AS media_name, m.path
         FROM admins a 
@@ -36,7 +37,7 @@ class GetAllAdmins(Resource):
                 admin_profile_dict['first_name'] = row.first_name
                 admin_profile_dict['last_name'] = row.last_name
                 admin_profile_dict['email'] = row.email
-                admin_profile_dict['phone'] = row.phone
+                admin_profile_dict['mobile_no'] = row.mobile_no
                 admin_profile_dict['dob'] = row.dob
                 admin_profile_dict['gender'] = row.gender
                 admin_profile_dict['enabled'] = row.enabled

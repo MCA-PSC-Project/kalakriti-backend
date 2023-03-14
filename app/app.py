@@ -11,13 +11,13 @@ import atexit
 from app.config import app_config
 from app.resources.address import UserAddress
 from app.resources.auth import LoginAdmin, LoginCustomer, LoginSeller, RefreshToken, RegisterAdmin, RegisterCustomer, RegisterSeller, VerifyEmail
-from app.resources.auth_otp import GetMobileOtp
+from app.resources.auth_otp import GetMobileOtp, MobileOtpLoginAdmin, MobileOtpLoginCustomer, MobileOtpLoginSeller
 from app.resources.orders import Orders, UserOrders
 from app.resources.product_items import ProductItems, SellersProductItems
 from app.resources.products import Products, ProductsAllDetails, ProductsByCategory, SellersProducts
 from app.resources.search import Search, TopSearches
 from app.resources.tags import Tags
-from app.resources.users import AdminProfile, CustomerProfile, SellerProfile, ResetEmail, ResetPhone, ResetPassword
+from app.resources.users import AdminProfile, CustomerProfile, ResetMobile, SellerProfile, ResetEmail, ResetPassword
 from app.resources.media import UploadImage, UploadAudio, UploadVideo, UploadFile, DeleteMedia
 from app.resources.categories import Categories
 from app.resources.admin import GetCustomers, EnableDisableUser, GetSellers, PromoteToSeller
@@ -110,11 +110,13 @@ def create_app(config_name):
     api.add_resource(VerifyEmail, '/auth/verify-email')
 
     api.add_resource(GetMobileOtp, '/auth/motp')
-    
+    api.add_resource(MobileOtpLoginCustomer, '/customers/auth/motp/login')
+    api.add_resource(MobileOtpLoginSeller, '/sellers/auth/motp/login')
+    api.add_resource(MobileOtpLoginAdmin, '/admins/auth/motp/login')
 
     # TODO: Resets
     api.add_resource(ResetEmail, '/reset-email')
-    api.add_resource(ResetPhone, '/reset-phone')
+    api.add_resource(ResetMobile, '/reset-mobile')
     api.add_resource(ResetPassword, '/reset-password')
 
     # User Profile
@@ -160,9 +162,9 @@ def create_app(config_name):
     # Seller_Applicant_Form
     api.add_resource(Seller_Applicant_Form, '/sellers-form',
                      '/sellers-form/<int:seller_id>')
-    
+
     # Seller_Bank_Details
-    api.add_resource(Seller_Bank_Details,'/sellers-bank-details',
+    api.add_resource(Seller_Bank_Details, '/sellers-bank-details',
                      '/sellers-bank-details/<int:seller_id>',
                      '/sellers-bank-details/<int:bank_detail_id>/bank')
 
@@ -176,9 +178,10 @@ def create_app(config_name):
 
     # Reviews
     api.add_resource(Product_item_review, '/product-reviews',
-                      '/product-reviews/<int:review_id>',
+                     '/product-reviews/<int:review_id>',
                      '/product-reviews/<int:product_id>/product-id')  # products table id
-    api.add_resource( GetUserReviewOnProduct, '/product-review/<int:product_item_id>')
+    api.add_resource(GetUserReviewOnProduct,
+                     '/product-review/<int:product_item_id>')
 
     # Search
     api.add_resource(Search, '/search')

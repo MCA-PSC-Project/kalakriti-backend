@@ -51,7 +51,7 @@ CREATE TABLE "customers"(
 	"last_name" VARCHAR NOT NULL,
 	"email" VARCHAR NOT NULL UNIQUE,
 	"hashed_password" VARCHAR NOT NULL,
-	"phone" VARCHAR(15) UNIQUE,
+	"mobile_no" VARCHAR(15) UNIQUE,
 	"dob" date NOT NULL,
 	"gender" gender__type NOT NULL,
 	"is_verified" boolean NOT NULL DEFAULT FALSE,
@@ -80,7 +80,7 @@ CREATE TABLE "admins"(
 	"last_name" VARCHAR NOT NULL,
 	"email" VARCHAR NOT NULL UNIQUE,
 	"hashed_password" VARCHAR NOT NULL,
-	"phone" VARCHAR(15) UNIQUE,
+	"mobile_no" VARCHAR(15) UNIQUE,
 	"dob" date NOT NULL,
 	"gender" gender__type NOT NULL,
 	"is_verified" boolean NOT NULL DEFAULT FALSE,
@@ -98,7 +98,7 @@ CREATE TABLE "sellers"(
 	"seller_name" VARCHAR NOT NULL,
 	"email" VARCHAR NOT NULL UNIQUE,
 	"hashed_password" VARCHAR NOT NULL,
-	"phone" VARCHAR(15) UNIQUE,
+	"mobile_no" VARCHAR(15) UNIQUE,
 	"GSTIN" VARCHAR(15) UNIQUE,
 	"PAN" VARCHAR(10) NOT NULL UNIQUE,
 	"is_verified" boolean NOT NULL DEFAULT FALSE,
@@ -260,7 +260,7 @@ CREATE TABLE "orders"(
 	"id" SERIAL PRIMARY KEY,
 	"customer_id" INT,
 	"shipping_address_id" INT,
-	"phone" VARCHAR NOT NULL,
+	"mobile_no" VARCHAR NOT NULL,
 	"order_status" order__status DEFAULT 'initiated',
 	"total_original_price" NUMERIC NOT NULL,
 	"sub_total" NUMERIC NOT NULL,
@@ -317,7 +317,7 @@ CREATE TABLE "seller_applicant_forms"(
 	"id" SERIAL PRIMARY KEY,
 	"name" VARCHAR NOT NULL,
 	"email" VARCHAR NOT NULL UNIQUE,
-	"phone" VARCHAR NOT NULL UNIQUE,
+	"mobile_no" VARCHAR NOT NULL UNIQUE,
 	"reviewed" BOOLEAN DEFAULT FALSE,
 	"approval_status" approval__status DEFAULT 'pending',
 	"description" VARCHAR,
@@ -327,7 +327,7 @@ CREATE TABLE "seller_applicant_forms"(
 );
 CREATE TABLE "mobile_otp"(
 	"mobile_no" VARCHAR(15) PRIMARY KEY,
-	"otp" VARCHAR(6) NOT NULL,
+	"motp" VARCHAR(6) NOT NULL,
 	"expiry_at" TIMESTAMPTZ NOT NULL
 );
 CREATE TABLE "top_searches"(
@@ -347,9 +347,9 @@ CREATE INDEX ON "customers" ("email");
 CREATE INDEX ON "sellers" ("email");
 CREATE INDEX ON "admins" ("email");
 
-CREATE INDEX ON "customers" ("phone");
-CREATE INDEX ON "sellers" ("phone");
-CREATE INDEX ON "admins" ("phone");
+CREATE INDEX ON "customers" ("mobile_no");
+CREATE INDEX ON "sellers" ("mobile_no");
+CREATE INDEX ON "admins" ("mobile_no");
 
 CREATE INDEX ON "categories" ("name");
 CREATE INDEX ON "product_items" ("SKU");

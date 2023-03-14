@@ -20,7 +20,7 @@ class GetSellers(Resource):
 
         sellers_list = []
 
-        GET_SELLERS_PROFILES = '''SELECT s.seller_name, s.email, s.phone,
+        GET_SELLERS_PROFILES = '''SELECT s.seller_name, s.email, s.mobile_no,
         s."GSTIN", s."PAN", s.enabled,
         m.id AS media_id, m.name AS media_name, m.path
         FROM sellers s
@@ -29,7 +29,7 @@ class GetSellers(Resource):
 
         try:
             cursor = app_globals.get_named_tuple_cursor()
-            cursor.execute(GET_SELLERS_PROFILES,())
+            cursor.execute(GET_SELLERS_PROFILES, ())
             rows = cursor.fetchall()
             if not rows:
                 return []
@@ -37,7 +37,7 @@ class GetSellers(Resource):
                 seller_profile_dict = {}
                 seller_profile_dict['seller_name'] = row.seller_name
                 seller_profile_dict['email'] = row.email
-                seller_profile_dict['phone'] = row.phone
+                seller_profile_dict['mobile_no'] = row.mobile_no
                 seller_profile_dict['GSTIN'] = row.GSTIN
                 seller_profile_dict['PAN'] = row.PAN
                 seller_profile_dict['enabled'] = row.enabled
@@ -74,7 +74,7 @@ class GetCustomers(Resource):
 
         customers_list = []
 
-        GET_CUSTOMERS_PROFILES = '''SELECT c.first_name, c.last_name, c.email, c.phone, 
+        GET_CUSTOMERS_PROFILES = '''SELECT c.first_name, c.last_name, c.email, c.mobile_no, 
         TO_CHAR(c.dob, 'YYYY-MM-DD') AS dob, c.gender , c.enabled,
         m.id AS media_id, m.name AS media_name, m.path
         FROM customers c 
@@ -92,7 +92,7 @@ class GetCustomers(Resource):
                 customer_profile_dict['first_name'] = row.first_name
                 customer_profile_dict['last_name'] = row.last_name
                 customer_profile_dict['email'] = row.email
-                customer_profile_dict['phone'] = row.phone
+                customer_profile_dict['mobile_no'] = row.mobile_no
                 customer_profile_dict['dob'] = row.dob
                 customer_profile_dict['gender'] = row.gender
                 customer_profile_dict['enabled'] = row.enabled

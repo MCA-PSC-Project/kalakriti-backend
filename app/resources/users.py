@@ -23,7 +23,7 @@ class CustomerProfile(Resource):
 
         customer_profile_dict = {}
 
-        GET_CUSTOMER_PROFILE = '''SELECT c.first_name, c.last_name, c.email, c.phone,
+        GET_CUSTOMER_PROFILE = '''SELECT c.first_name, c.last_name, c.email, c.mobile_no,
         TO_CHAR(c.dob, 'YYYY-MM-DD') AS dob, c.gender, c.enabled,
         m.id AS media_id, m.name, m.path
         FROM customers c
@@ -40,7 +40,7 @@ class CustomerProfile(Resource):
             customer_profile_dict['first_name'] = row.first_name
             customer_profile_dict['last_name'] = row.last_name
             customer_profile_dict['email'] = row.email
-            customer_profile_dict['phone'] = row.phone
+            customer_profile_dict['mobile_no'] = row.mobile_no
             customer_profile_dict['dob'] = row.dob
             customer_profile_dict['gender'] = row.gender
             customer_profile_dict['enabled'] = row.enabled
@@ -137,7 +137,7 @@ class SellerProfile(Resource):
 
         seller_profile_dict = {}
 
-        GET_SELLER_PROFILE = '''SELECT s.seller_name, s.email, s.phone,
+        GET_SELLER_PROFILE = '''SELECT s.seller_name, s.email, s.mobile_no,
         s."GSTIN", s."PAN", s.enabled,
         dm.id AS dp_media_id, dm.name AS dp_media_name, dm.path AS dp_media_path,
         sm.id AS sign_media_id, sm.name AS sign_media_name, sm.path AS sign_media_path
@@ -154,7 +154,7 @@ class SellerProfile(Resource):
                 abort(400, 'Bad Request')
             seller_profile_dict['seller_name'] = row.seller_name
             seller_profile_dict['email'] = row.email
-            seller_profile_dict['phone'] = row.phone
+            seller_profile_dict['mobile_no'] = row.mobile_no
             seller_profile_dict['GSTIN'] = row.GSTIN
             seller_profile_dict['PAN'] = row.PAN
             seller_profile_dict['enabled'] = row.enabled
@@ -264,7 +264,7 @@ class AdminProfile(Resource):
 
         admin_profile_dict = {}
 
-        GET_ADMIN_PROFILE = '''SELECT a.first_name, a.last_name, a.email, a.phone,
+        GET_ADMIN_PROFILE = '''SELECT a.first_name, a.last_name, a.email, a.mobile_no,
         TO_CHAR(a.dob, 'YYYY-MM-DD') AS dob, a.gender, a.enabled,
         m.id AS media_id, m.name, m.path
         FROM admins a
@@ -281,7 +281,7 @@ class AdminProfile(Resource):
             admin_profile_dict['first_name'] = row.first_name
             admin_profile_dict['last_name'] = row.last_name
             admin_profile_dict['email'] = row.email
-            admin_profile_dict['phone'] = row.phone
+            admin_profile_dict['mobile_no'] = row.mobile_no
             admin_profile_dict['dob'] = row.dob
             admin_profile_dict['gender'] = row.gender
             admin_profile_dict['enabled'] = row.enabled
@@ -365,7 +365,7 @@ class AdminProfile(Resource):
 
 
 class ResetEmail(Resource):
-    @ f_jwt.jwt_required()
+    @f_jwt.jwt_required()
     def patch(self):
         user_id = f_jwt.get_jwt_identity()
         app.logger.debug("user_id= %s", user_id)
@@ -397,30 +397,45 @@ class ResetEmail(Resource):
         return {"message": f"user with id {user_id}, email modified."}, 200
 
 
-class ResetPhone(Resource):
-    @ f_jwt.jwt_required()
+class ResetMobile(Resource):
+    @f_jwt.jwt_required()
     def patch(self):
         user_id = f_jwt.get_jwt_identity()
-        # user_id=20
         app.logger.debug("user_id= %s", user_id)
+        claims = f_jwt.get_jwt()
+        user_type = claims['user_type']
+        app.logger.debug("user_type= %s", user_type)
+
         data = request.get_json()
-        phone = data.get('phone', None)
-        app.logger.debug(phone)
-        if not phone:
+        provided_mobile_no = data.get('mobile_no', None)
+        provided_motp = data.get("motp", None)
+
+        if not provided_mobile_no or not provided_motp:
             abort(400, 'Bad Request')
-        current_time = datetime.now()
-        # app.logger.debug("cur time : %s", current_time)
 
-        UPDATE_USER_PHONE = 'UPDATE users SET phone= %s, updated_at= %s WHERE id= %s'
-
-        # catch exception for invalid SQL statement
+        GET_MOTP_AND_EXPIRY = '''SELECT motp, expiry_at FROM mobile_otp WHERE mobile_no= %s'''
         try:
-            # declare a cursor object from the connection
-            cursor = app_globals.get_cursor()
-            # # app.logger.debug("cursor object: %s", cursor)
+            cursor = app_globals.get_named_tuple_cursor()
+            cursor.execute(GET_MOTP_AND_EXPIRY, (provided_mobile_no,))
+            row = cursor.fetchone()
+            if row is None:
+                abort(400, 'Bad Request')
+            stored_motp = row.motp
+            expiry_at = row.expiry_at
+        except (Exception, psycopg2.Error) as err:
+            app.logger.debug(err)
+            abort(400, 'Bad Request')
+        finally:
+            cursor.close()
 
-            cursor.execute(UPDATE_USER_PHONE, (phone, current_time, user_id,))
-            # app.logger.debug("row_counts= %s", cursor.rowcount)
+        if provided_motp != stored_motp or datetime.now() > expiry_at:
+            abort(400, 'Bad Request')
+
+        UPDATE_MOBILE_NUMBER = '''UPDATE {} SET mobile_no= %s, updated_at= %s WHERE id= %s'''.format(user_type + 's')
+        try:
+            cursor = app_globals.get_cursor()
+            cursor.execute(UPDATE_MOBILE_NUMBER,
+                           (provided_mobile_no, datetime.now(), user_id,))
             if cursor.rowcount != 1:
                 abort(400, 'Bad Request: update row error')
         except (Exception, psycopg2.Error) as err:
@@ -428,7 +443,7 @@ class ResetPhone(Resource):
             abort(400, 'Bad Request')
         finally:
             cursor.close()
-        return {"message": f"user with id {user_id}, phone modified."}, 200
+        return {"message": f"mobile_no updated successfully."}, 200
 
 
 class ResetPassword(Resource):
