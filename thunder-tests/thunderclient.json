@@ -24,16 +24,16 @@
     "colId": "80d178ef-5176-474a-8708-db78bd45faee",
     "containerId": "20dae99d-610b-4865-98e2-da1b674f86e0",
     "name": "Login Customer",
-    "url": "{{baseUrl}}/auth/login/customer",
+    "url": "{{baseUrl}}/customers/auth/login",
     "method": "POST",
     "sortNum": 5000,
     "created": "2023-02-20T16:38:51.029Z",
-    "modified": "2023-03-12T07:47:11.772Z",
+    "modified": "2023-03-14T16:41:33.715Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n    \"email\": \"customer1@gmail.com\",\n    \"password\": \"abcd@123\"\n}",
+      "raw": "{\n    \"email\": \"customer@gmail.com\",\n    \"password\": \"abcd@123\"\n}",
       "form": []
     },
     "tests": [],
@@ -127,12 +127,12 @@
     "method": "POST",
     "sortNum": 45000,
     "created": "2023-02-20T16:38:51.034Z",
-    "modified": "2023-03-14T11:41:59.314Z",
+    "modified": "2023-03-14T17:26:09.921Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n\t\"mobile_no\" : \"9879870000\"\n}",
+      "raw": "{\n\t\"mobile_no\" : \"1234567890\"\n}",
       "form": []
     },
     "tests": []
@@ -142,40 +142,19 @@
     "colId": "80d178ef-5176-474a-8708-db78bd45faee",
     "containerId": "20dae99d-610b-4865-98e2-da1b674f86e0",
     "name": "motp login customer",
-    "url": "{{baseUrl}}/auth/otp/login",
+    "url": "{{baseUrl}}/customers/auth/motp/login",
     "method": "POST",
     "sortNum": 47500,
     "created": "2023-02-20T16:38:51.035Z",
-    "modified": "2023-03-14T10:37:05.027Z",
+    "modified": "2023-03-14T17:19:01.569Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n\t\"mobile_no\" : \"9879870000\",\n\t\"otp\": \"420464\"\n}"
+      "raw": "{\n\t\"mobile_no\" : \"9879870000\",\n\t\"motp\": \"805807\"\n}",
+      "form": []
     },
-    "docs": ""
-  },
-  {
-    "_id": "0fa2c34f-c0b8-41ca-a193-91fda4479e07",
-    "colId": "80d178ef-5176-474a-8708-db78bd45faee",
-    "containerId": "20dae99d-610b-4865-98e2-da1b674f86e0",
-    "name": "reset",
-    "url": "{{baseUrl}}/auth/reset",
-    "method": "POST",
-    "sortNum": 90000,
-    "created": "2023-02-20T16:38:51.036Z",
-    "modified": "2023-02-20T16:38:51.036Z",
-    "headers": [],
-    "params": [],
-    "body": {
-      "type": "json",
-      "raw": "{\n\t\"email\": \"codewiretesting123@gmail.com\",\n\t\"password\": \"nopassword123\"\n}"
-    },
-    "auth": {
-      "type": "bearer",
-      "bearer": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MjA5OTI4NzksImlkIjoxLCJ0eXBlIjoiMiJ9.4lGplTsqDLu8JnS5BM3bzLAzCk4sd_Lc0uPVZAWNFyg"
-    },
-    "docs": ""
+    "tests": []
   },
   {
     "_id": "ddf3bab6-020a-42ab-9713-fe4c59e532eb",
@@ -2225,16 +2204,16 @@
     "colId": "80d178ef-5176-474a-8708-db78bd45faee",
     "containerId": "20dae99d-610b-4865-98e2-da1b674f86e0",
     "name": "Login Seller",
-    "url": "{{baseUrl}}/auth/login/seller",
+    "url": "{{baseUrl}}/sellers/auth/login",
     "method": "POST",
     "sortNum": 7500,
     "created": "2023-03-07T07:12:53.183Z",
-    "modified": "2023-03-12T07:47:04.161Z",
+    "modified": "2023-03-14T17:30:16.840Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n    \"email\": \"seller1@gmail.com\",\n    \"password\": \"abcd@123\"\n}",
+      "raw": "{\n    \"email\": \"seller@gmail.com\",\n    \"password\": \"abcd@123\"\n}",
       "form": []
     },
     "tests": [],
@@ -2245,11 +2224,11 @@
     "colId": "80d178ef-5176-474a-8708-db78bd45faee",
     "containerId": "20dae99d-610b-4865-98e2-da1b674f86e0",
     "name": "Login Admin",
-    "url": "{{baseUrl}}/auth/login/admin",
+    "url": "{{baseUrl}}/admins/auth/login",
     "method": "POST",
     "sortNum": 8750,
     "created": "2023-03-07T07:12:55.732Z",
-    "modified": "2023-03-12T07:56:35.108Z",
+    "modified": "2023-03-14T16:41:29.741Z",
     "headers": [],
     "params": [],
     "body": {
@@ -2452,36 +2431,38 @@
     "colId": "80d178ef-5176-474a-8708-db78bd45faee",
     "containerId": "20dae99d-610b-4865-98e2-da1b674f86e0",
     "name": "motp login Admin",
-    "url": "{{baseUrl}}/auth/otp/login",
+    "url": "{{baseUrl}}/admins/auth/motp/login",
     "method": "POST",
     "sortNum": 48750,
     "created": "2023-03-14T11:48:43.519Z",
-    "modified": "2023-03-14T11:48:43.519Z",
+    "modified": "2023-03-14T17:33:56.502Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n\t\"mobile_no\" : \"9879870000\",\n\t\"otp\": \"420464\"\n}"
+      "raw": "{\n\t\"mobile_no\" : \"1234567890\",\n\t\"motp\": \"257469\"\n}",
+      "form": []
     },
-    "docs": ""
+    "tests": []
   },
   {
     "_id": "3db1c6eb-0435-4ed0-9323-5e6e193334a2",
     "colId": "80d178ef-5176-474a-8708-db78bd45faee",
     "containerId": "20dae99d-610b-4865-98e2-da1b674f86e0",
     "name": "motp login Seller",
-    "url": "{{baseUrl}}/auth/otp/login",
+    "url": "{{baseUrl}}/sellers/auth/motp/login",
     "method": "POST",
     "sortNum": 48125,
     "created": "2023-03-14T11:48:47.569Z",
-    "modified": "2023-03-14T11:48:47.569Z",
+    "modified": "2023-03-14T17:33:47.912Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n\t\"mobile_no\" : \"9879870000\",\n\t\"otp\": \"420464\"\n}"
+      "raw": "{\n\t\"mobile_no\" : \"1234567890\",\n\t\"motp\": \"257469\"\n}",
+      "form": []
     },
-    "docs": ""
+    "tests": []
   },
   {
     "_id": "6a58c029-15e2-4d24-8199-321d1a423394",
@@ -2492,12 +2473,12 @@
     "method": "POST",
     "sortNum": 49375,
     "created": "2023-03-14T11:50:05.768Z",
-    "modified": "2023-03-14T13:19:36.659Z",
+    "modified": "2023-03-14T17:34:03.242Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n\t\"mobile_no\" : \"9879870000\",\n\t\"otp\": \"420464\"\n}",
+      "raw": "{\n\t\"mobile_no\" : \"1234567890\",\n\t\"motp\": \"257469\"\n}",
       "form": []
     },
     "tests": []
@@ -2505,23 +2486,69 @@
   {
     "_id": "72b63ac4-a480-4c76-a642-41b5d5a7a22a",
     "colId": "80d178ef-5176-474a-8708-db78bd45faee",
-    "containerId": "20dae99d-610b-4865-98e2-da1b674f86e0",
-    "name": "reset mobile",
-    "url": "{{baseUrl}}/auth/reset",
+    "containerId": "3ae0d271-930d-4ac2-a094-bf22abd319bb",
+    "name": "reset/add mobile",
+    "url": "{{baseUrl}}/reset-mobile",
     "method": "POST",
-    "sortNum": 49687.5,
+    "sortNum": 10000,
     "created": "2023-03-14T13:10:26.400Z",
-    "modified": "2023-03-14T13:19:53.488Z",
+    "modified": "2023-03-14T17:32:44.821Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n\t\"mobile_no\" : \"9879870000\",\n\t\"motp\": \"420464\"\n}",
+      "raw": "{\n\t\"mobile_no\" : \"1234567890\",\n\t\"motp\": \"257469\"\n}",
       "form": []
     },
     "auth": {
       "type": "bearer",
-      "bearer": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MjA5OTI4NzksImlkIjoxLCJ0eXBlIjoiMiJ9.4lGplTsqDLu8JnS5BM3bzLAzCk4sd_Lc0uPVZAWNFyg"
+      "bearer": "{{super_admin_token}}"
+    },
+    "tests": []
+  },
+  {
+    "_id": "daaf89ab-5d0e-447e-9c24-b7db56a820d1",
+    "colId": "80d178ef-5176-474a-8708-db78bd45faee",
+    "containerId": "3ae0d271-930d-4ac2-a094-bf22abd319bb",
+    "name": "reset password",
+    "url": "{{baseUrl}}/reset-mobile",
+    "method": "POST",
+    "sortNum": 20000,
+    "created": "2023-03-14T17:06:16.671Z",
+    "modified": "2023-03-14T17:06:16.671Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n\t\"mobile_no\" : \"9879870001\",\n\t\"motp\": \"352318\"\n}",
+      "form": []
+    },
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{token}}"
+    },
+    "tests": []
+  },
+  {
+    "_id": "581af974-b9bd-4625-aedd-33c6a648d973",
+    "colId": "80d178ef-5176-474a-8708-db78bd45faee",
+    "containerId": "3ae0d271-930d-4ac2-a094-bf22abd319bb",
+    "name": "reset email",
+    "url": "{{baseUrl}}/reset-mobile",
+    "method": "POST",
+    "sortNum": 5000,
+    "created": "2023-03-14T17:06:21.275Z",
+    "modified": "2023-03-14T17:06:32.960Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n\t\"mobile_no\" : \"9879870001\",\n\t\"motp\": \"352318\"\n}",
+      "form": []
+    },
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{token}}"
     },
     "tests": []
   }

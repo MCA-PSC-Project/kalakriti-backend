@@ -17,7 +17,8 @@ from app.resources.product_items import ProductItems, SellersProductItems
 from app.resources.products import Products, ProductsAllDetails, ProductsByCategory, SellersProducts
 from app.resources.search import Search, TopSearches
 from app.resources.tags import Tags
-from app.resources.users import AdminProfile, CustomerProfile, ResetMobile, SellerProfile, ResetEmail, ResetPassword
+from app.resources.users import CustomerProfile, SellerProfile, AdminProfile
+from app.resources.reset import ResetEmail, ResetMobile, ResetPassword
 from app.resources.media import UploadImage, UploadAudio, UploadVideo, UploadFile, DeleteMedia
 from app.resources.categories import Categories
 from app.resources.admin import GetCustomers, EnableDisableUser, GetSellers, PromoteToSeller

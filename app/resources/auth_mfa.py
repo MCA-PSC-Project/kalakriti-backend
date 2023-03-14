@@ -8,6 +8,7 @@ import bcrypt
 from flask import current_app as app
 import app.otp as otp
 
+
 class MfaStatus(Resource):
     # get status of MFA
     @f_jwt.jwt_required()
@@ -35,6 +36,7 @@ class MfaStatus(Resource):
         finally:
             cursor.close()
         return {"mfa_enabled": mfa_enabled, "default_mfa_type": default_mfa_type}, 200
+
 
 class MFAuthentication(Resource):
     # register MFA(totp) or login with mfa(totp)
@@ -77,6 +79,8 @@ class MFAuthentication(Resource):
 
         # for enabling mfa using totp
         if not mfa_enabled:
+            if user_type == 'super_admin':
+                user_type = 'admin'
             table_name = user_type+'s'
             INSERT_TOTP_SECRET_KEY = '''UPDATE {} SET (mfa_enabled, totp_secret_key, updated_at) 
             VALUES(%s, %s, %s)'''.format(table_name)
@@ -123,6 +127,8 @@ class Register_2fa(Resource):
         # is_verified = otp.verify_totp(totp_secret_key, generated_totp)
         # app.logger.debug("is_verified= %s", is_verified)
 
+        if user_type == 'super_admin':
+            user_type = 'admin'
         table_name = user_type+'s'
         GET_USER_EMAIL = '''SELECT email, mfa_enabled, default_mfa_type FROM {} WHERE id= %s'''.format(
             table_name)

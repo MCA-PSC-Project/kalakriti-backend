@@ -9,6 +9,7 @@ from flask import current_app as app
 from app.email_token import generate_email_token, verify_email_token
 from app.mail import send_email
 
+
 class RegisterCustomer(Resource):
     def post(self):
         data = request.get_json()
@@ -441,7 +442,7 @@ class VerifyEmail(Resource):
         app.logger.debug("?token=%s", token)
         if not (user_type and token):
             abort(400, 'Bad Request')
-        if user_type not in ['customer', 'seller', 'admin']:
+        if user_type not in ['customer', 'seller', 'admin', 'super_admin']:
             abort(400, 'Bad Request')
 
         try:
@@ -450,8 +451,11 @@ class VerifyEmail(Resource):
             flash('The verification link is invalid or has expired.', 'danger')
 
         # check if user of given email is verified or not
+        if user_type == 'super_admin':
+            user_type = 'admin'
+        table_name = user_type+'s'
         GET_USER = 'SELECT id, is_verified FROM {} WHERE email= %s'.format(
-            user_type+'s')
+            table_name)
         try:
             cursor = app_globals.get_named_tuple_cursor()
             cursor.execute(GET_USER, (email,))
@@ -470,8 +474,7 @@ class VerifyEmail(Resource):
         if is_verified:
             flash('Account already verified. Please login.', 'success')
         else:
-            UPDATE_USER_VERIFIED = 'UPDATE {} SET is_verified= %s, verified_at= %s WHERE id= %s'.format(
-                user_type+'s')
+            UPDATE_USER_VERIFIED = 'UPDATE {} SET is_verified= %s, verified_at= %s WHERE id= %s'.format(table_name)
             try:
                 cursor = app_globals.get_cursor()
                 cursor.execute(UPDATE_USER_VERIFIED,
@@ -490,4 +493,3 @@ class VerifyEmail(Resource):
         redirect_url = "homepage url for KalaKriti frontend"
         # return redirect(redirect_url)
         return f"redirect url= {redirect_url}", 200
-

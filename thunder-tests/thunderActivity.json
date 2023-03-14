@@ -2092,12 +2092,174 @@
     "method": "POST",
     "sortNum": 0,
     "created": "2023-03-14T11:41:59.188Z",
-    "modified": "2023-03-14T11:41:59.188Z",
+    "modified": "2023-03-14T17:26:09.928Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n\t\"mobile_no\" : \"9879870000\"\n}",
+      "raw": "{\n\t\"mobile_no\" : \"1234567890\"\n}",
+      "form": []
+    },
+    "tests": []
+  },
+  {
+    "_id": "92ec4cfb-c07e-4e87-9abf-75c311919ab0",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/auth/reset-mobile",
+    "url": "{{baseUrl}}/auth/reset-mobile",
+    "method": "POST",
+    "sortNum": 0,
+    "created": "2023-03-14T16:44:33.838Z",
+    "modified": "2023-03-14T16:44:33.838Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n\t\"mobile_no\" : \"9879870000\",\n\t\"motp\": \"420464\"\n}",
+      "form": []
+    },
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{token}}"
+    },
+    "tests": []
+  },
+  {
+    "_id": "b76a5be8-bc9d-4483-bfb9-0934ab3720fd",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/reset-mobile",
+    "url": "{{baseUrl}}/reset-mobile",
+    "method": "POST",
+    "sortNum": 0,
+    "created": "2023-03-14T16:45:02.606Z",
+    "modified": "2023-03-14T17:32:44.832Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n\t\"mobile_no\" : \"1234567890\",\n\t\"motp\": \"257469\"\n}",
+      "form": []
+    },
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{super_admin_token}}"
+    },
+    "tests": []
+  },
+  {
+    "_id": "ea196855-bfcf-43b5-b624-41bd3e9bc440",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/customers/auth/otp/login",
+    "url": "{{baseUrl}}/customers/auth/otp/login",
+    "method": "POST",
+    "sortNum": 0,
+    "created": "2023-03-14T17:11:12.256Z",
+    "modified": "2023-03-14T17:11:12.256Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n\t\"mobile_no\" : \"9879870000\",\n\t\"otp\": \"420464\"\n}",
+      "form": []
+    },
+    "tests": []
+  },
+  {
+    "_id": "755b9a9d-5473-4b01-ad5b-67ed6e907073",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/customers/auth/motp/login",
+    "url": "{{baseUrl}}/customers/auth/motp/login",
+    "method": "POST",
+    "sortNum": 0,
+    "created": "2023-03-14T17:11:25.977Z",
+    "modified": "2023-03-14T17:19:01.583Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n\t\"mobile_no\" : \"9879870000\",\n\t\"motp\": \"805807\"\n}",
+      "form": []
+    },
+    "tests": []
+  },
+  {
+    "_id": "d64d918e-c75b-4665-b536-393ef7899b03",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/sellers/auth/login",
+    "url": "{{baseUrl}}/sellers/auth/login",
+    "method": "POST",
+    "sortNum": 0,
+    "created": "2023-03-14T17:29:45.854Z",
+    "modified": "2023-03-14T17:30:16.847Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n    \"email\": \"seller@gmail.com\",\n    \"password\": \"abcd@123\"\n}",
+      "form": []
+    },
+    "tests": [],
+    "docs": "```json\n{\n    \"email\": \"customer@gmail.com\",\n    \"password\": \"abcd@123\"\n}\n```\n```json\n{\n\t\"email\": \"seller@gmail.com\",\n\t\"password\": \"abcd@123\"\n}\n```\n\n```json\n{\n\t\"email\": \"admin@gmail.com\",\n\t\"password\": \"abcd@123\"\n}\n```\n\n```json\n{\n    \"email\": \"customer1@gmail.com\",\n    \"password\": \"abcd@123\"\n}\n```\n\n```json\n{\n    \"email\": \"seller1@gmail.com\",\n    \"password\": \"abcd@123\"\n}\n```\n\n```json\n{\n    \"email\": \"updated_admin@gmail.com\",\n    \"password\": \"abcd@123\"\n}\n```\n\n```json\n{\n\t\"email\": \"mywebnewslettersinbox123@gmail.com\",\n\t\"password\": \"abcd@123\"\n}\n```"
+  },
+  {
+    "_id": "05be539a-1aa5-4df3-869a-2ab92b1d6c13",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/admins/auth/login",
+    "url": "{{baseUrl}}/admins/auth/login",
+    "method": "POST",
+    "sortNum": 0,
+    "created": "2023-03-14T17:30:06.748Z",
+    "modified": "2023-03-14T17:30:44.239Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n    \"email\": \"super_admin@gmail.com\",\n    \"password\": \"abcd@123\"\n}",
+      "form": []
+    },
+    "tests": [],
+    "docs": "```json\n{\n    \"email\": \"customer@gmail.com\",\n    \"password\": \"abcd@123\"\n}\n```\n```json\n{\n\t\"email\": \"seller@gmail.com\",\n\t\"password\": \"abcd@123\"\n}\n```\n\n```json\n{\n\t\"email\": \"admin@gmail.com\",\n\t\"password\": \"abcd@123\"\n}\n```\n\n```json\n{\n    \"email\": \"customer1@gmail.com\",\n    \"password\": \"abcd@123\"\n}\n```\n\n```json\n{\n    \"email\": \"seller1@gmail.com\",\n    \"password\": \"abcd@123\"\n}\n```\n\n```json\n{\n    \"email\": \"updated_admin@gmail.com\",\n    \"password\": \"abcd@123\"\n}\n```\n\n```json\n{\n\t\"email\": \"mywebnewslettersinbox123@gmail.com\",\n\t\"password\": \"abcd@123\"\n}\n```"
+  },
+  {
+    "_id": "7f716d33-62e4-4b2a-85d4-586e2da725d2",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/sellers/auth/motp/login",
+    "url": "{{baseUrl}}/sellers/auth/motp/login",
+    "method": "POST",
+    "sortNum": 0,
+    "created": "2023-03-14T17:33:47.632Z",
+    "modified": "2023-03-14T17:33:47.632Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n\t\"mobile_no\" : \"1234567890\",\n\t\"motp\": \"257469\"\n}",
+      "form": []
+    },
+    "tests": []
+  },
+  {
+    "_id": "6bb97eb4-ad3e-48ed-911f-25ca4179d856",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/admins/auth/motp/login",
+    "url": "{{baseUrl}}/admins/auth/motp/login",
+    "method": "POST",
+    "sortNum": 0,
+    "created": "2023-03-14T17:33:56.211Z",
+    "modified": "2023-03-14T17:33:56.211Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n\t\"mobile_no\" : \"1234567890\",\n\t\"motp\": \"257469\"\n}",
       "form": []
     },
     "tests": []
