@@ -1,6 +1,15 @@
+import math
+import random
 from time import sleep
 import pyotp
 import qrcode
+
+def generate_motp(otp_length=6):
+    digits= '0123456789'
+    otp=''
+    for i in range(otp_length):
+        otp+= digits[math.floor(random.random()*10)]
+    return otp
 
 def generate_totp_secret_key():
     # generate random PyOTP secret key

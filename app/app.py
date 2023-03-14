@@ -11,6 +11,7 @@ import atexit
 from app.config import app_config
 from app.resources.address import UserAddress
 from app.resources.auth import LoginAdmin, LoginCustomer, LoginSeller, RefreshToken, RegisterAdmin, RegisterCustomer, RegisterSeller, VerifyEmail
+from app.resources.auth_otp import GetMobileOtp
 from app.resources.orders import Orders, UserOrders
 from app.resources.product_items import ProductItems, SellersProductItems
 from app.resources.products import Products, ProductsAllDetails, ProductsByCategory, SellersProducts
@@ -97,18 +98,21 @@ def create_app(config_name):
     api.add_resource(DeleteMedia, '/uploads/media/<int:media_id>')
 
     # Auth
-    api.add_resource(RegisterCustomer, '/auth/register/customer')
-    api.add_resource(RegisterSeller, '/auth/register/seller')
-    api.add_resource(RegisterAdmin, '/auth/register/admin')
+    api.add_resource(RegisterCustomer, '/customers/auth/register')
+    api.add_resource(RegisterSeller, '/sellers/auth/register')
+    api.add_resource(RegisterAdmin, '/admins/auth/register')
 
-    api.add_resource(LoginCustomer, '/auth/login/customer')
-    api.add_resource(LoginSeller, '/auth/login/seller')
-    api.add_resource(LoginAdmin, '/auth/login/admin')
+    api.add_resource(LoginCustomer, '/customers/auth/login')
+    api.add_resource(LoginSeller, '/sellers/auth/login')
+    api.add_resource(LoginAdmin, '/admins/auth/login')
 
     api.add_resource(RefreshToken, '/auth/refresh')
     api.add_resource(VerifyEmail, '/auth/verify-email')
 
-    # todo: Resets
+    api.add_resource(GetMobileOtp, '/auth/motp')
+    
+
+    # TODO: Resets
     api.add_resource(ResetEmail, '/reset-email')
     api.add_resource(ResetPhone, '/reset-phone')
     api.add_resource(ResetPassword, '/reset-password')

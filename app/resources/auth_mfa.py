@@ -6,7 +6,7 @@ import psycopg2
 import app.app_globals as app_globals
 import bcrypt
 from flask import current_app as app
-import otp
+import app.otp as otp
 
 class MfaStatus(Resource):
     # get status of MFA

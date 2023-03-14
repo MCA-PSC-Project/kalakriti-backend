@@ -123,18 +123,19 @@
     "colId": "80d178ef-5176-474a-8708-db78bd45faee",
     "containerId": "20dae99d-610b-4865-98e2-da1b674f86e0",
     "name": "Get otp on mobile",
-    "url": "{{baseUrl}}/auth/otp",
+    "url": "{{baseUrl}}/auth/motp",
     "method": "POST",
-    "sortNum": 70000,
+    "sortNum": 45000,
     "created": "2023-02-20T16:38:51.034Z",
-    "modified": "2023-02-20T16:38:51.034Z",
+    "modified": "2023-03-14T11:41:59.314Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n\t\"mobile_no\" : \"9879870000\"\n}"
+      "raw": "{\n\t\"mobile_no\" : \"9879870000\"\n}",
+      "form": []
     },
-    "docs": ""
+    "tests": []
   },
   {
     "_id": "8750a88a-ccb7-49d3-8a38-7552b35b735b",
@@ -143,9 +144,9 @@
     "name": "mobile otp login",
     "url": "{{baseUrl}}/auth/otp/login",
     "method": "POST",
-    "sortNum": 80000,
+    "sortNum": 47500,
     "created": "2023-02-20T16:38:51.035Z",
-    "modified": "2023-02-20T16:38:51.035Z",
+    "modified": "2023-03-14T10:37:05.027Z",
     "headers": [],
     "params": [],
     "body": {

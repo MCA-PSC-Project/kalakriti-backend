@@ -328,7 +328,7 @@ CREATE TABLE "seller_applicant_forms"(
 CREATE TABLE "mobile_otp"(
 	"mobile_no" VARCHAR(15) PRIMARY KEY,
 	"otp" VARCHAR(6) NOT NULL,
-	"expiry" INT
+	"expiry_at" TIMESTAMPTZ NOT NULL
 );
 CREATE TABLE "top_searches"(
 	"rank" smallint,

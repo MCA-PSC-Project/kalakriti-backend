@@ -2137,5 +2137,24 @@
       "bearer": "{{admin_token}}"
     },
     "tests": []
+  },
+  {
+    "_id": "509b9be0-79f8-4baa-a85a-bd2a6dd78592",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/auth/motp",
+    "url": "{{baseUrl}}/auth/motp",
+    "method": "POST",
+    "sortNum": 0,
+    "created": "2023-03-14T11:41:59.188Z",
+    "modified": "2023-03-14T11:41:59.188Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n\t\"mobile_no\" : \"9879870000\"\n}",
+      "form": []
+    },
+    "tests": []
   }
 ]
