@@ -2489,12 +2489,12 @@
     "method": "POST",
     "sortNum": 0,
     "created": "2023-03-15T11:20:40.836Z",
-    "modified": "2023-03-15T11:20:40.836Z",
+    "modified": "2023-03-15T12:14:08.469Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n\t\"email\" : \"codewiretesting123@gmail.com\"\n}",
+      "raw": "{\n\t\"email\" : \"customer2@gmail.com\"\n}",
       "form": []
     },
     "auth": {
@@ -2648,6 +2648,176 @@
       {
         "name": "token",
         "value": "ImN1c3RvbWVyMkBnbWFpbC5jb20i.ZBGvCg.u986fOFtOP6it6iw1VrmLqbj-KM",
+        "isPath": false
+      }
+    ],
+    "tests": []
+  },
+  {
+    "_id": "1e008416-4daa-47bf-baa3-635f65857fd4",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/reset-email?user_id=4&user_type=customer&old_token=ImN1c3RvbWVyMkBnbWFpbC5jb20i.ZBGvCg.u986fOFtOP6it6iw1VrmLqbj-KM&new_token",
+    "url": "{{baseUrl}}/reset-email?user_id=4&user_type=customer&old_token=ImN1c3RvbWVyMkBnbWFpbC5jb20i.ZBGvCg.u986fOFtOP6it6iw1VrmLqbj-KM&new_token",
+    "method": "GET",
+    "sortNum": 0,
+    "created": "2023-03-15T12:12:39.216Z",
+    "modified": "2023-03-15T12:12:39.216Z",
+    "headers": [],
+    "params": [
+      {
+        "name": "user_id",
+        "value": "4",
+        "isPath": false
+      },
+      {
+        "name": "user_type",
+        "value": "customer",
+        "isPath": false
+      },
+      {
+        "name": "old_token",
+        "value": "ImN1c3RvbWVyMkBnbWFpbC5jb20i.ZBGvCg.u986fOFtOP6it6iw1VrmLqbj-KM",
+        "isPath": false
+      },
+      {
+        "name": "new_token",
+        "value": "",
+        "isPath": false
+      }
+    ],
+    "tests": []
+  },
+  {
+    "_id": "4e02d703-16e5-4eca-8b19-429158b9568e",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/reset-email?user_id=4&user_type=customer&old_token=mN1c3RvbWVyMkBnbWFpbC5jb20i.ZBG2LQ.nYdOMfmcsjkxK7vAi_Betpn9XcA&new_token=ImNvZGV3aXJldGVzdGluZzEyM0BnbWFpbC5jb20i.ZBG2LQ.R_9Jv2Dvcjo5tEymlEtV3xnZjMs",
+    "url": "{{baseUrl}}/reset-email?user_id=4&user_type=customer&old_token=mN1c3RvbWVyMkBnbWFpbC5jb20i.ZBG2LQ.nYdOMfmcsjkxK7vAi_Betpn9XcA&new_token=ImNvZGV3aXJldGVzdGluZzEyM0BnbWFpbC5jb20i.ZBG2LQ.R_9Jv2Dvcjo5tEymlEtV3xnZjMs",
+    "method": "GET",
+    "sortNum": 0,
+    "created": "2023-03-15T12:13:11.373Z",
+    "modified": "2023-03-15T12:13:11.373Z",
+    "headers": [],
+    "params": [
+      {
+        "name": "user_id",
+        "value": "4",
+        "isPath": false
+      },
+      {
+        "name": "user_type",
+        "value": "customer",
+        "isPath": false
+      },
+      {
+        "name": "old_token",
+        "value": "mN1c3RvbWVyMkBnbWFpbC5jb20i.ZBG2LQ.nYdOMfmcsjkxK7vAi_Betpn9XcA",
+        "isPath": false
+      },
+      {
+        "name": "new_token",
+        "value": "ImNvZGV3aXJldGVzdGluZzEyM0BnbWFpbC5jb20i.ZBG2LQ.R_9Jv2Dvcjo5tEymlEtV3xnZjMs",
+        "isPath": false
+      }
+    ],
+    "tests": []
+  },
+  {
+    "_id": "42e3817f-931e-4bb2-a5a7-b676b7f502b2",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/reset-email?user_id=4&user_type=customer&old_token=ImN1c3RvbWVyMkBnbWFpbC5jb20i.ZBG2LQ.nYdOMfmcsjkxK7vAi_Betpn9XcA&new_token=ImNvZGV3aXJldGVzdGluZzEyM0BnbWFpbC5jb20i.ZBG2LQ.R_9Jv2Dvcjo5tEymlEtV3xnZjMs",
+    "url": "{{baseUrl}}/reset-email?user_id=4&user_type=customer&old_token=ImN1c3RvbWVyMkBnbWFpbC5jb20i.ZBG2LQ.nYdOMfmcsjkxK7vAi_Betpn9XcA&new_token=ImNvZGV3aXJldGVzdGluZzEyM0BnbWFpbC5jb20i.ZBG2LQ.R_9Jv2Dvcjo5tEymlEtV3xnZjMs",
+    "method": "GET",
+    "sortNum": 0,
+    "created": "2023-03-15T12:13:22.306Z",
+    "modified": "2023-03-15T12:13:22.306Z",
+    "headers": [],
+    "params": [
+      {
+        "name": "user_id",
+        "value": "4",
+        "isPath": false
+      },
+      {
+        "name": "user_type",
+        "value": "customer",
+        "isPath": false
+      },
+      {
+        "name": "old_token",
+        "value": "ImN1c3RvbWVyMkBnbWFpbC5jb20i.ZBG2LQ.nYdOMfmcsjkxK7vAi_Betpn9XcA",
+        "isPath": false
+      },
+      {
+        "name": "new_token",
+        "value": "ImNvZGV3aXJldGVzdGluZzEyM0BnbWFpbC5jb20i.ZBG2LQ.R_9Jv2Dvcjo5tEymlEtV3xnZjMs",
+        "isPath": false
+      }
+    ],
+    "tests": []
+  },
+  {
+    "_id": "39d32245-81dc-43b5-b0a0-87b7176e8863",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/reset-email?user_id=4&user_type=customer&old_token=ImN1c3RvbWVyMkBnbWFpbC5jb20i.ZBG2LQ.nYdOMfmcsjkxK7vAi_Betpn9XcA&new_token=mNvZGV3aXJldGVzdGluZzEyM0BnbWFpbC5jb20i.ZBG2LQ.R_9Jv2Dvcjo5tEymlEtV3xnZjMs",
+    "url": "{{baseUrl}}/reset-email?user_id=4&user_type=customer&old_token=ImN1c3RvbWVyMkBnbWFpbC5jb20i.ZBG2LQ.nYdOMfmcsjkxK7vAi_Betpn9XcA&new_token=mNvZGV3aXJldGVzdGluZzEyM0BnbWFpbC5jb20i.ZBG2LQ.R_9Jv2Dvcjo5tEymlEtV3xnZjMs",
+    "method": "GET",
+    "sortNum": 0,
+    "created": "2023-03-15T12:13:31.807Z",
+    "modified": "2023-03-15T12:13:31.807Z",
+    "headers": [],
+    "params": [
+      {
+        "name": "user_id",
+        "value": "4",
+        "isPath": false
+      },
+      {
+        "name": "user_type",
+        "value": "customer",
+        "isPath": false
+      },
+      {
+        "name": "old_token",
+        "value": "ImN1c3RvbWVyMkBnbWFpbC5jb20i.ZBG2LQ.nYdOMfmcsjkxK7vAi_Betpn9XcA",
+        "isPath": false
+      },
+      {
+        "name": "new_token",
+        "value": "mNvZGV3aXJldGVzdGluZzEyM0BnbWFpbC5jb20i.ZBG2LQ.R_9Jv2Dvcjo5tEymlEtV3xnZjMs",
+        "isPath": false
+      }
+    ],
+    "tests": []
+  },
+  {
+    "_id": "4bc0ac9e-c323-43da-9103-26fe048dad88",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/reset-email?user_type=customer&old_token=ImNvZGV3aXJldGVzdGluZzEyM0BnbWFpbC5jb20i.ZBG2kA.pQJNm151I_WJshGrSjhEbWS1YwY&new_token=ImN1c3RvbWVyMkBnbWFpbC5jb20i.ZBG2kA.d_-OPWM6Q9Hut0GjuTqKOn5iUCw",
+    "url": "{{baseUrl}}/reset-email?user_type=customer&old_token=ImNvZGV3aXJldGVzdGluZzEyM0BnbWFpbC5jb20i.ZBG2kA.pQJNm151I_WJshGrSjhEbWS1YwY&new_token=ImN1c3RvbWVyMkBnbWFpbC5jb20i.ZBG2kA.d_-OPWM6Q9Hut0GjuTqKOn5iUCw",
+    "method": "GET",
+    "sortNum": 0,
+    "created": "2023-03-15T12:15:01.673Z",
+    "modified": "2023-03-15T12:15:01.673Z",
+    "headers": [],
+    "params": [
+      {
+        "name": "user_type",
+        "value": "customer",
+        "isPath": false
+      },
+      {
+        "name": "old_token",
+        "value": "ImNvZGV3aXJldGVzdGluZzEyM0BnbWFpbC5jb20i.ZBG2kA.pQJNm151I_WJshGrSjhEbWS1YwY",
+        "isPath": false
+      },
+      {
+        "name": "new_token",
+        "value": "ImN1c3RvbWVyMkBnbWFpbC5jb20i.ZBG2kA.d_-OPWM6Q9Hut0GjuTqKOn5iUCw",
         "isPath": false
       }
     ],

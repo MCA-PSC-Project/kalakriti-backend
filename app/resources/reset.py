@@ -8,7 +8,6 @@ import flask_jwt_extended as f_jwt
 from flask import current_app as app
 from app.email_token import generate_email_token, verify_email_token
 from flask import flash, redirect, render_template, request, abort, jsonify, url_for
-
 from app.mail import send_email
 
 
@@ -22,20 +21,48 @@ class RequestResetEmail(Resource):
         app.logger.debug("user_type= %s", user_type)
 
         data = request.get_json()
-        email = data.get('email', None)
+        provided_email = data.get('email', None)
 
-        if not email:
+        if not provided_email:
             app.logger.debug("email must be provided")
             abort(400, 'Bad Request')
 
-        # generate email token to send in email
-        generated_email_token = generate_email_token(email)
-        app.logger.debug("Generated email token= %s",
-                         generated_email_token)
+        if user_type == 'super_admin':
+            user_type = 'admin'
+        table_name = user_type+'s'
+        # Get current email to change with provided email
+        GET_CURRENT_EMAIL = '''SELECT email FROM {} WHERE id= %s'''.format(
+            table_name)
+        try:
+            cursor = app_globals.get_named_tuple_cursor()
+            cursor.execute(GET_CURRENT_EMAIL, (user_id,))
+            row = cursor.fetchone()
+            if row is None:
+                app.logger.debug(
+                    "No such email found in {} table".format(table_name))
+                abort(400, 'Bad Request')
+            stored_email = row.email
+        except (Exception, psycopg2.Error) as err:
+            app.logger.debug(err)
+            abort(400, 'Bad Request')
+        finally:
+            cursor.close()
+
+        # generate token on stored_email to send in email
+        generated_token_on_stored_email = generate_email_token(stored_email)
+        app.logger.debug("old_token= %s",
+                         generated_token_on_stored_email)
+
+        # generate token on provided_email to send in email
+        generated_token_on_provided_email = generate_email_token(
+            provided_email)
+        app.logger.debug("new_token= %s",
+                         generated_token_on_provided_email)
 
         # send email
         reset_email_url = url_for(
-            "resetemail", token=generated_email_token, user_id=user_id, user_type=user_type, _external=True)
+            "resetemail", old_token=generated_token_on_stored_email, new_token=generated_token_on_provided_email,
+            user_id=user_id, user_type=user_type, _external=True)
         app.logger.debug("reset_email_url= %s", reset_email_url)
         reset_email_html_page = render_template(
             "reset_email.html", reset_email_url=reset_email_url)
@@ -44,40 +71,46 @@ class RequestResetEmail(Resource):
         app.logger.debug(
             "app.config['SEND_EMAIL']= %s", app.config['SEND_EMAIL'])
         if app.config['SEND_EMAIL']:
-            send_email(email, subject, reset_email_html_page)
+            send_email(provided_email, subject, reset_email_html_page)
         app.logger.debug("Email sent successfully!")
-        return f"Link to reset email sent to {email} successfully!", 201
+        return f"Link to reset email sent to {provided_email} successfully!", 201
 
 
 class ResetEmail(Resource):
     def get(self):
         args = request.args  # retrieve args from query string
-        user_id = args.get('user_id', None)
         user_type = args.get('user_type', None)
-        token = args.get('token', None)
+        old_token = args.get('old_token', None)
+        new_token = args.get('new_token', None)
         app.logger.debug("?user_type=%s", user_type)
-        app.logger.debug("?token=%s", token)
-        if not (user_id and user_type and token):
+        app.logger.debug("?old_token=%s", old_token)
+        app.logger.debug("?new_token=%s", new_token)
+        if not (user_type and old_token and new_token):
             abort(400, 'Bad Request')
         if user_type not in ['customer', 'seller', 'admin', 'super_admin']:
             abort(400, 'Bad Request')
 
         try:
-            email = verify_email_token(token)
+            old_email = verify_email_token(old_token)
+            new_email = verify_email_token(new_token)
         except:
             flash('The verification link is invalid or has expired.', 'danger')
-        if not email:
-            app.logger.debug("invalid token")
+        if not old_email:
+            app.logger.debug("invalid old_token")
             abort(400, 'Bad Request')
-
+        if not new_email:
+            app.logger.debug("invalid new_token")
+            abort(400, 'Bad Request')
+    
         if user_type == 'super_admin':
             user_type = 'admin'
-        UPDATE_USER_EMAIL = '''UPDATE {} SET email= %s, updated_at= %s WHERE id= %s'''.format(
+        UPDATE_USER_EMAIL = '''UPDATE {} SET email= %s, updated_at= %s WHERE email= %s'''.format(
             user_type+'s')
 
         try:
             cursor = app_globals.get_cursor()
-            cursor.execute(UPDATE_USER_EMAIL, (email, datetime.now(), user_id,))
+            cursor.execute(UPDATE_USER_EMAIL,
+                           (new_email, datetime.now(), old_email,))
             if cursor.rowcount != 1:
                 abort(400, 'Bad Request: update row error')
         except (Exception, psycopg2.Error) as err:
