@@ -16,7 +16,7 @@ class Config(object):
 
     EMAIL_SECURITY_PASSWORD_SALT = os.getenv('EMAIL_SECURITY_PASSWORD_SALT')
     # Mail Settings
-    MAIL_DEFAULT_SENDER = "noreply@kalakriti.com"
+    MAIL_DEFAULT_SENDER = "kalakriti.email@gmail.com"
     MAIL_SERVER = "smtp.gmail.com"
     MAIL_PORT = 465
     MAIL_USE_TLS = False
@@ -43,6 +43,7 @@ class DevelopmentConfig(Config):
 
 class TestingConfig(Config):
     """Configurations for Testing, with a separate test database."""
+    # sending mail won't work when testing is true
     TESTING = True
     DEBUG = True
     SEND_EMAIL = True
@@ -54,6 +55,7 @@ class StagingConfig(Config):
     DEBUG = True
     SEND_EMAIL = True
     SEND_MOTP = True
+    # MAIL_DEBUG = True
 
 
 class ProductionConfig(Config):

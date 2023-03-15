@@ -1,6 +1,6 @@
 from datetime import datetime
 import bcrypt
-from flask import request, abort
+from flask import Response, make_response, request, abort
 from flask_restful import Resource
 import psycopg2
 import app.app_globals as app_globals
@@ -140,10 +140,19 @@ class RequestResetPassword(Resource):
         reset_password_url = url_for(
             "resetpassword", _external=True)
         app.logger.debug("reset_password_url= %s", reset_password_url)
+        # reset_password_html_page = render_template(
+        #     "reset_password.html", reset_password_url=reset_password_url, token=generated_email_token,
+        #     user_type=user_type)
         reset_password_html_page = render_template(
-            "reset_password.html", verify_url=reset_password_url, token=generated_email_token, user_type=user_type)
+            "reset_password_url.html", reset_password_url=reset_password_url, token=generated_email_token,
+            user_type=user_type)
+
+        # reset_password_html_page = render_template(
+        #     "reset_password.html", reset_password_url=reset_password_url, token=generated_email_token, user_type=user_type)
+
         subject = "Reset Password"
-        app.logger.debug("app.config['SEND_EMAIL']= %s", app.config['SEND_EMAIL'])
+        app.logger.debug(
+            "app.config['SEND_EMAIL']= %s", app.config['SEND_EMAIL'])
         if app.config['SEND_EMAIL']:
             send_email(email, subject, reset_password_html_page)
         app.logger.debug("Email sent successfully!")
@@ -151,6 +160,21 @@ class RequestResetPassword(Resource):
 
 
 class ResetPassword(Resource):
+    def get(self):
+        args = request.args  # retrieve args from query string
+        user_type = args.get('user_type', None)
+        token = args.get('token', None)
+        app.logger.debug("?user_type=%s", user_type)
+        app.logger.debug("?token=%s", token)
+        headers = {'Content-Type': 'text/html'}
+
+        reset_password_url = url_for(
+            "resetpassword", _external=True)
+        app.logger.debug("reset_password_url= %s", reset_password_url)
+        return make_response(render_template(
+            "reset_password.html", reset_password_url=reset_password_url, token=token,
+            user_type=user_type))
+
     def post(self):
         token = request.form.get('token', None)
         user_type = request.form.get('user_type', None)
@@ -185,4 +209,6 @@ class ResetPassword(Resource):
             abort(400, 'Bad Request')
         finally:
             cursor.close()
-        return {"message": "Status accepted"}, 202
+        # return {"message": "Status accepted"}, 202
+        headers = {'Content-Type': 'text/html'}
+        return make_response('Password changed successfully')

@@ -70,7 +70,8 @@ class RegisterCustomer(Resource):
         verify_email_html_page = render_template(
             "verify_email.html", verify_url=verify_url)
         subject = "Please verify your email"
-        # send_email(email, subject, verify_email_html_page)-------------------------------------------------------------------==============
+        if app.config['SEND_EMAIL']:
+            send_email(email, subject, verify_email_html_page)
         app.logger.debug("Email sent successfully!")
 
         # when authenticated, return a fresh access token and a refresh token
@@ -143,7 +144,8 @@ class RegisterSeller(Resource):
         verify_email_html_page = render_template(
             "verify_email.html", verify_url=verify_url)
         subject = "Please verify your email"
-        # send_email(email, subject, verify_email_html_page)-------------------------------------------------------------------==============
+        if app.config['SEND_EMAIL']:
+            send_email(email, subject, verify_email_html_page)
         app.logger.debug("Email sent successfully!")
 
         # when authenticated, return a fresh access token and a refresh token
@@ -218,7 +220,8 @@ class RegisterAdmin(Resource):
         verify_email_html_page = render_template(
             "verify_email.html", verify_url=verify_url)
         subject = "Please verify your email"
-        # send_email(email, subject, verify_email_html_page)-------------------------------------------------------------------==============
+        if app.config['SEND_EMAIL']:
+            send_email(email, subject, verify_email_html_page)
         app.logger.debug("Email sent successfully!")
 
         # when authenticated, return a fresh access token and a refresh token
@@ -288,7 +291,8 @@ class LoginCustomer(Resource):
             verify_email_html_page = render_template(
                 "verify_email.html", verify_url=verify_url)
             subject = "Please verify your email"
-            # send_email(email, subject, verify_email_html_page)/-------------------------------------------------------------------------
+            if app.config['SEND_EMAIL']:
+                send_email(email, subject, verify_email_html_page)
             app.logger.debug("Email sent successfully!")
             return f"verification Email sent to {email} successfully!", 201
 
@@ -348,7 +352,8 @@ class LoginSeller(Resource):
             verify_email_html_page = render_template(
                 "verify_email.html", verify_url=verify_url)
             subject = "Please verify your email"
-            # send_email(email, subject, verify_email_html_page)/-------------------------------------------------------------------------
+            if app.config['SEND_EMAIL']:
+                send_email(email, subject, verify_email_html_page)
             app.logger.debug("Email sent successfully!")
             return f"verification Email sent to {email} successfully!", 201
 
@@ -413,7 +418,8 @@ class LoginAdmin(Resource):
             verify_email_html_page = render_template(
                 "verify_email.html", verify_url=verify_url)
             subject = "Please verify your email"
-            # send_email(email, subject, verify_email_html_page)/-------------------------------------------------------------------------
+            if app.config['SEND_EMAIL']:
+                send_email(email, subject, verify_email_html_page)
             app.logger.debug("Email sent successfully!")
             return f"verification Email sent to {email} successfully!", 201
 

@@ -2273,12 +2273,12 @@
     "method": "POST",
     "sortNum": 0,
     "created": "2023-03-15T06:42:55.110Z",
-    "modified": "2023-03-15T07:05:30.422Z",
+    "modified": "2023-03-15T08:44:24.266Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n\t\"user_type\" : \"customer\",\n\t\"email\": \"lms.pc.software@gmail.com\"\n}",
+      "raw": "{\n\t\"user_type\" : \"customer\",\n\t\"email\": \"codewiretesting123@gmail.com\"\n}",
       "form": []
     },
     "tests": []
@@ -2292,7 +2292,7 @@
     "method": "POST",
     "sortNum": 0,
     "created": "2023-03-15T06:47:21.101Z",
-    "modified": "2023-03-15T06:55:37.475Z",
+    "modified": "2023-03-15T09:41:12.942Z",
     "headers": [],
     "params": [],
     "body": {
@@ -2301,11 +2301,11 @@
       "form": [
         {
           "name": "password",
-          "value": "abcd"
+          "value": "abcd@123"
         },
         {
           "name": "token",
-          "value": "ImN1c3RvbWVyMkBnbWFpbC5jb20i.ZBFrxg.9NSWJsPihWc1Mug35vqngjCXYyA"
+          "value": "ImNvZGV3aXJldGVzdGluZzEyM0BnbWFpbC5jb20i.ZBGSTw.N9afa-7jVGf3HHiY7mRuDTagwoQ"
         },
         {
           "name": "user_type",
@@ -2324,12 +2324,12 @@
     "method": "POST",
     "sortNum": 0,
     "created": "2023-03-15T06:52:04.525Z",
-    "modified": "2023-03-15T06:56:07.589Z",
+    "modified": "2023-03-15T09:42:37.148Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n    \"email\": \"customer@gmail.com\",\n    \"password\": \"abcd@123\"\n}",
+      "raw": "{\n    \"email\": \"codewiretesting123@gmail.com\",\n    \"password\": \"abcd@123\"\n}",
       "form": []
     },
     "tests": [],
@@ -2380,6 +2380,51 @@
       {
         "name": "token",
         "value": "ImN1c3RvbWVyMkBnbWFpbC5jb20i.ZBFrFA.ZidN13xiYKIUB_eS1As2EeyaNMw",
+        "isPath": false
+      }
+    ],
+    "tests": []
+  },
+  {
+    "_id": "0164b3fa-0db4-4aaa-9dfc-7fb262b63cbd",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/customers/auth/register",
+    "url": "{{baseUrl}}/customers/auth/register",
+    "method": "POST",
+    "sortNum": 0,
+    "created": "2023-03-15T08:01:03.215Z",
+    "modified": "2023-03-15T08:01:03.215Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n  \"email\": \"customer3@gmail.com\",\n  \"password\": \"abcd@123\",\n  \"first_name\": \"bittu\",\n  \"last_name\": \"kumar\",\n  \"dob\": \"10/3/1998\",\n  \"gender\": \"male\"\n}",
+      "form": []
+    },
+    "tests": [],
+    "docs": "```json\n{\n\t\"email\": \"updated_admin@gmail.com\",\n\t\"password\": \"abcd@123\",\n\t\"user_type\" : \"customer\",\n\t\"first_name\": \"abcdddl\",\n\t\"last_name\": \"kumari\",\n\t\"mobile_no\": \"987467887\",\n\t\"dob\": \"10/3/1998\",\n\t\"gender\": \"female\"\n}\n```"
+  },
+  {
+    "_id": "cf60a816-d64a-4ca4-9d2e-8a2bcca11db7",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/reset-password?user_type=customer&token=ImNvZGV3aXJldGVzdGluZzEyM0BnbWFpbC5jb20i.ZBGSTw.N9afa-7jVGf3HHiY7mRuDTagwoQ",
+    "url": "{{baseUrl}}/reset-password?user_type=customer&token=ImNvZGV3aXJldGVzdGluZzEyM0BnbWFpbC5jb20i.ZBGSTw.N9afa-7jVGf3HHiY7mRuDTagwoQ",
+    "method": "GET",
+    "sortNum": 0,
+    "created": "2023-03-15T09:39:55.848Z",
+    "modified": "2023-03-15T09:39:55.848Z",
+    "headers": [],
+    "params": [
+      {
+        "name": "user_type",
+        "value": "customer",
+        "isPath": false
+      },
+      {
+        "name": "token",
+        "value": "ImNvZGV3aXJldGVzdGluZzEyM0BnbWFpbC5jb20i.ZBGSTw.N9afa-7jVGf3HHiY7mRuDTagwoQ",
         "isPath": false
       }
     ],
