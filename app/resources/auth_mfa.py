@@ -9,7 +9,7 @@ from flask import current_app as app
 import app.otp as otp
 
 
-class MfaStatus(Resource):
+class MFAStatus(Resource):
     # get status of MFA
     @f_jwt.jwt_required()
     def get(self):
@@ -38,7 +38,49 @@ class MfaStatus(Resource):
         return {"mfa_enabled": mfa_enabled, "default_mfa_type": default_mfa_type}, 200
 
 
-class MFAuthentication(Resource):
+class TOTPAuthentication(Resource):
+    # get secret key with provisioning uri
+    def get(self):
+        user_id = f_jwt.get_jwt_identity()
+        app.logger.debug("user_id= %s", user_id)
+        claims = f_jwt.get_jwt()
+        user_type = claims['user_type']
+        app.logger.debug("user_type= %s", user_type)
+
+        if user_type == 'super_admin':
+            user_type = 'admin'
+        table_name = user_type+'s'
+        GET_USER_EMAIL = '''SELECT email FROM {} WHERE id= %s'''.format(
+            table_name)
+        try:
+            cursor = app_globals.get_named_tuple_cursor()
+            cursor.execute(GET_USER_EMAIL, (user_id,))
+            row = cursor.fetchone()
+            if row is None:
+                abort(400, 'Bad Request')
+            user_email = row.email
+        except (Exception, psycopg2.Error) as err:
+            app.logger.debug(err)
+            abort(400, 'Bad Request')
+        finally:
+            cursor.close()
+
+        totp_secret_key, provisioning_uri = otp.generate_totp_key_with_uri(
+            name=user_email, issuer_name='KalaKriti')
+        INSERT_TOTP_SECRET_KEY = '''INSERT INTO {} ({}, secret_key, added_at) VALUES(%s, %s, %s) RETURNING id'''.format(
+            table_name+'_mfa', user_type+'_id')
+        try:
+            cursor = app_globals.get_cursor()
+            cursor.execute(INSERT_TOTP_SECRET_KEY,
+                           (user_id, totp_secret_key, datetime.now(),))
+            id = cursor.fetchone()[0]
+        except (Exception, psycopg2.Error) as err:
+            app.logger.debug(err)
+            abort(400, 'Bad Request')
+        finally:
+            cursor.close()
+        return {totp_secret_key, provisioning_uri}, 201
+
     # register MFA(totp) or login with mfa(totp)
     @f_jwt.jwt_required()
     def post(self):
@@ -53,8 +95,11 @@ class MFAuthentication(Resource):
         if not provided_totp:
             abort(400, 'Bad Request')
 
-        GET_TOTP_SECRET_KEY = '''SELECT mfa_enabled, totp_secret_key FROM {} WHERE id= %s'''.format(
-            table_name)
+        GET_TOTP_SECRET_KEY = '''SELECT u.mfa_enabled, um.secret_key 
+        FROM {} u
+        JOIN {} um u.id = um.{} 
+        WHERE id= %s'''.format(
+            table_name, user_type+'_mfa', user_type+'_id')
         try:
             cursor = app_globals.get_named_tuple_cursor()
             cursor.execute(GET_TOTP_SECRET_KEY, (user_id,))

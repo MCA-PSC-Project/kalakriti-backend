@@ -2324,12 +2324,12 @@
     "method": "POST",
     "sortNum": 0,
     "created": "2023-03-15T06:52:04.525Z",
-    "modified": "2023-03-15T11:10:49.807Z",
+    "modified": "2023-03-15T17:47:32.512Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n    \"email\": \"customer2@gmail.com\",\n    \"password\": \"abcd@123\"\n}",
+      "raw": "{\n    \"email\": \"customer@gmail.com\",\n    \"password\": \"abcd@123\"\n}",
       "form": []
     },
     "tests": [],
@@ -2394,12 +2394,12 @@
     "method": "POST",
     "sortNum": 0,
     "created": "2023-03-15T08:01:03.215Z",
-    "modified": "2023-03-15T08:01:03.215Z",
+    "modified": "2023-03-15T17:46:59.098Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n  \"email\": \"customer3@gmail.com\",\n  \"password\": \"abcd@123\",\n  \"first_name\": \"bittu\",\n  \"last_name\": \"kumar\",\n  \"dob\": \"10/3/1998\",\n  \"gender\": \"male\"\n}",
+      "raw": "{\n  \"email\": \"customer@gmail.com\",\n  \"password\": \"abcd@123\",\n  \"first_name\": \"bittu\",\n  \"last_name\": \"kumar\",\n  \"dob\": \"10/3/1998\",\n  \"gender\": \"male\"\n}",
       "form": []
     },
     "tests": [],
@@ -2908,6 +2908,31 @@
       {
         "name": "new_token",
         "value": "ImN1c3RvbWVyMkBbWFpbC5jb20i.ZBHl5w.AToUQCcMOIPdOfYHD-bX2FVzxJY",
+        "isPath": false
+      }
+    ],
+    "tests": []
+  },
+  {
+    "_id": "a6d7cbee-a8fb-4b1c-9dc4-215a9699f780",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/auth/verify-email?user_type=customer&token=ImN1c3RvbWVyQGdtYWlsLmNvbSI.ZBIEkw.6tgbUj_6NQchoZMiUHEtIkdE5wM",
+    "url": "{{baseUrl}}/auth/verify-email?user_type=customer&token=ImN1c3RvbWVyQGdtYWlsLmNvbSI.ZBIEkw.6tgbUj_6NQchoZMiUHEtIkdE5wM",
+    "method": "GET",
+    "sortNum": 0,
+    "created": "2023-03-15T17:47:16.637Z",
+    "modified": "2023-03-15T17:47:16.637Z",
+    "headers": [],
+    "params": [
+      {
+        "name": "user_type",
+        "value": "customer",
+        "isPath": false
+      },
+      {
+        "name": "token",
+        "value": "ImN1c3RvbWVyQGdtYWlsLmNvbSI.ZBIEkw.6tgbUj_6NQchoZMiUHEtIkdE5wM",
         "isPath": false
       }
     ],

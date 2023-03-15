@@ -36,7 +36,7 @@ CREATE TYPE "payment__mode" AS ENUM (
 	'digital_wallet'
 );
 CREATE TYPE "account__type" AS ENUM ('savings', 'current', 'overdraft');
-CREATE TYPE "mfa__type" AS ENUM ('none', 'mobile_otp', 'totp');
+CREATE TYPE "mfa__type" AS ENUM ('motp', 'totp', 'biometric', 'face_recognition');
 -----------------------TABLES-------------------------------------------
 CREATE TABLE "media"(
 	"id" SERIAL PRIMARY KEY,
@@ -69,8 +69,11 @@ CREATE TABLE "customers"(
 CREATE TABLE "customers_mfa"(
 	"id" SERIAL PRIMARY KEY,
 	"customer_id" INT,
-	"mfa_type" mfa__type DEFAULT 'none',
+	"mfa_type" mfa__type DEFAULT 'totp',
 	"secret_key" VARCHAR,
+	"added_at" TIMESTAMPTZ NOT NULL,
+	"updated_at" TIMESTAMPTZ,
+	UNIQUE("customer_id", "mfa_type"),
 	FOREIGN KEY("customer_id") REFERENCES "customers"("id") ON DELETE CASCADE
 );
 
@@ -91,8 +94,22 @@ CREATE TABLE "admins"(
 	"enabled" BOOLEAN NOT NULL DEFAULT TRUE,
 	"trashed" boolean NOT NULL DEFAULT FALSE,
 	"is_super_admin" BOOLEAN DEFAULT FALSE,
+	"mfa_enabled" BOOLEAN NOT NULL DEFAULT FALSE,
+	"hashed_backup_key" VARCHAR,
 	FOREIGN KEY("dp_id") REFERENCES "media"("id") ON DELETE SET NULL
 );
+
+CREATE TABLE "admins_mfa"(
+	"id" SERIAL PRIMARY KEY,
+	"admin_id" INT,
+	"mfa_type" mfa__type DEFAULT 'totp',
+	"secret_key" VARCHAR,
+	"added_at" TIMESTAMPTZ NOT NULL,
+	"updated_at" TIMESTAMPTZ,
+	UNIQUE("admin_id", "mfa_type"),
+	FOREIGN KEY("admin_id") REFERENCES "admins"("id") ON DELETE CASCADE
+);
+
 CREATE TABLE "sellers"(
 	"id" SERIAL PRIMARY KEY,
 	"seller_name" VARCHAR NOT NULL,
@@ -109,9 +126,23 @@ CREATE TABLE "sellers"(
 	"updated_at" TIMESTAMPTZ,
 	"enabled" BOOLEAN NOT NULL DEFAULT TRUE,
 	"trashed" boolean NOT NULL DEFAULT FALSE,
+	"mfa_enabled" BOOLEAN NOT NULL DEFAULT FALSE,
+	"hashed_backup_key" VARCHAR,
 	FOREIGN KEY("dp_id") REFERENCES "media"("id") ON DELETE SET NULL,
 	FOREIGN KEY("sign_id") REFERENCES "media"("id") ON DELETE SET NULL
 );
+
+CREATE TABLE "sellers_mfa"(
+	"id" SERIAL PRIMARY KEY,
+	"seller_id" INT,
+	"mfa_type" mfa__type DEFAULT 'totp',
+	"secret_key" VARCHAR,
+	"added_at" TIMESTAMPTZ NOT NULL,
+	"updated_at" TIMESTAMPTZ,
+	UNIQUE("seller_id", "mfa_type"),
+	FOREIGN KEY("seller_id") REFERENCES "sellers"("id") ON DELETE CASCADE
+);
+
 CREATE TABLE "seller_bank_details"(
 	"id" SERIAL PRIMARY KEY,
 	"seller_id" INT,
