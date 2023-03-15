@@ -2515,12 +2515,12 @@
     "method": "POST",
     "sortNum": 20000,
     "created": "2023-03-14T17:06:16.671Z",
-    "modified": "2023-03-15T08:44:24.247Z",
+    "modified": "2023-03-15T09:47:51.754Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n\t\"user_type\" : \"customer\",\n\t\"email\": \"codewiretesting123@gmail.com\"\n}",
+      "raw": "{\n\t\"user_type\" : \"customer\",\n\t\"email\": \"customer2@gmail.com\"\n}",
       "form": []
     },
     "tests": []
@@ -2553,11 +2553,11 @@
     "colId": "80d178ef-5176-474a-8708-db78bd45faee",
     "containerId": "3ae0d271-930d-4ac2-a094-bf22abd319bb",
     "name": "reset password ",
-    "url": "{{baseUrl}}/reset-password?user_type=customer&token=ImNvZGV3aXJldGVzdGluZzEyM0BnbWFpbC5jb20i.ZBGSTw.N9afa-7jVGf3HHiY7mRuDTagwoQ",
+    "url": "{{baseUrl}}/reset-password?user_type=customer&token=ImN1c3RvbWVyMkBnbWFpbC5jb20i.ZBGURw.5z9zd1Kua32hOJUIeknvkPXu8NY",
     "method": "GET",
     "sortNum": 30000,
     "created": "2023-03-15T05:48:37.971Z",
-    "modified": "2023-03-15T09:39:55.878Z",
+    "modified": "2023-03-15T09:48:56.410Z",
     "headers": [],
     "params": [
       {
@@ -2567,7 +2567,7 @@
       },
       {
         "name": "token",
-        "value": "ImNvZGV3aXJldGVzdGluZzEyM0BnbWFpbC5jb20i.ZBGSTw.N9afa-7jVGf3HHiY7mRuDTagwoQ",
+        "value": "ImN1c3RvbWVyMkBnbWFpbC5jb20i.ZBGURw.5z9zd1Kua32hOJUIeknvkPXu8NY",
         "isPath": false
       }
     ],
@@ -2582,7 +2582,7 @@
     "method": "POST",
     "sortNum": 40000,
     "created": "2023-03-15T09:09:09.846Z",
-    "modified": "2023-03-15T09:41:12.924Z",
+    "modified": "2023-03-15T09:49:25.442Z",
     "headers": [],
     "params": [],
     "body": {
@@ -2595,7 +2595,7 @@
         },
         {
           "name": "token",
-          "value": "ImNvZGV3aXJldGVzdGluZzEyM0BnbWFpbC5jb20i.ZBGSTw.N9afa-7jVGf3HHiY7mRuDTagwoQ"
+          "value": "ImN1c3RvbWVyMkBnbWFpbC5jb20i.ZBGURw.5z9zd1Kua32hOJUIeknvkPXu8NY"
         },
         {
           "name": "user_type",

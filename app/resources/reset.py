@@ -168,6 +168,15 @@ class ResetPassword(Resource):
         app.logger.debug("?token=%s", token)
         headers = {'Content-Type': 'text/html'}
 
+        try:
+            email = verify_email_token(token)
+        except:
+            app.logger.debug("invalid email token")
+            flash('The link is invalid or has expired.', 'danger')
+        if not email:
+            app.logger.debug("invalid token")
+            abort(400, 'Bad Request')
+
         reset_password_url = url_for(
             "resetpassword", _external=True)
         app.logger.debug("reset_password_url= %s", reset_password_url)

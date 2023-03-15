@@ -2273,12 +2273,12 @@
     "method": "POST",
     "sortNum": 0,
     "created": "2023-03-15T06:42:55.110Z",
-    "modified": "2023-03-15T08:44:24.266Z",
+    "modified": "2023-03-15T09:47:51.764Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n\t\"user_type\" : \"customer\",\n\t\"email\": \"codewiretesting123@gmail.com\"\n}",
+      "raw": "{\n\t\"user_type\" : \"customer\",\n\t\"email\": \"customer2@gmail.com\"\n}",
       "form": []
     },
     "tests": []
@@ -2292,7 +2292,7 @@
     "method": "POST",
     "sortNum": 0,
     "created": "2023-03-15T06:47:21.101Z",
-    "modified": "2023-03-15T09:41:12.942Z",
+    "modified": "2023-03-15T09:49:25.455Z",
     "headers": [],
     "params": [],
     "body": {
@@ -2305,7 +2305,7 @@
         },
         {
           "name": "token",
-          "value": "ImNvZGV3aXJldGVzdGluZzEyM0BnbWFpbC5jb20i.ZBGSTw.N9afa-7jVGf3HHiY7mRuDTagwoQ"
+          "value": "ImN1c3RvbWVyMkBnbWFpbC5jb20i.ZBGURw.5z9zd1Kua32hOJUIeknvkPXu8NY"
         },
         {
           "name": "user_type",
@@ -2425,6 +2425,56 @@
       {
         "name": "token",
         "value": "ImNvZGV3aXJldGVzdGluZzEyM0BnbWFpbC5jb20i.ZBGSTw.N9afa-7jVGf3HHiY7mRuDTagwoQ",
+        "isPath": false
+      }
+    ],
+    "tests": []
+  },
+  {
+    "_id": "50934b10-115e-4778-b747-c48fdd64d65a",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/reset-password?user_type=customer&token=ImNvZGV3aXJldGVzdGluZzEyM0BnbWFpbC5jb20i.ZBGSTw.N9afa-7jVGf3HHiY7mRuDTagwo",
+    "url": "{{baseUrl}}/reset-password?user_type=customer&token=ImNvZGV3aXJldGVzdGluZzEyM0BnbWFpbC5jb20i.ZBGSTw.N9afa-7jVGf3HHiY7mRuDTagwo",
+    "method": "GET",
+    "sortNum": 0,
+    "created": "2023-03-15T09:48:38.258Z",
+    "modified": "2023-03-15T09:48:38.258Z",
+    "headers": [],
+    "params": [
+      {
+        "name": "user_type",
+        "value": "customer",
+        "isPath": false
+      },
+      {
+        "name": "token",
+        "value": "ImNvZGV3aXJldGVzdGluZzEyM0BnbWFpbC5jb20i.ZBGSTw.N9afa-7jVGf3HHiY7mRuDTagwo",
+        "isPath": false
+      }
+    ],
+    "tests": []
+  },
+  {
+    "_id": "b5ae6bc1-2b70-492d-9ca1-d4a5afc4fb5b",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/reset-password?user_type=customer&token=ImN1c3RvbWVyMkBnbWFpbC5jb20i.ZBGURw.5z9zd1Kua32hOJUIeknvkPXu8NY",
+    "url": "{{baseUrl}}/reset-password?user_type=customer&token=ImN1c3RvbWVyMkBnbWFpbC5jb20i.ZBGURw.5z9zd1Kua32hOJUIeknvkPXu8NY",
+    "method": "GET",
+    "sortNum": 0,
+    "created": "2023-03-15T09:48:56.389Z",
+    "modified": "2023-03-15T09:48:56.389Z",
+    "headers": [],
+    "params": [
+      {
+        "name": "user_type",
+        "value": "customer",
+        "isPath": false
+      },
+      {
+        "name": "token",
+        "value": "ImN1c3RvbWVyMkBnbWFpbC5jb20i.ZBGURw.5z9zd1Kua32hOJUIeknvkPXu8NY",
         "isPath": false
       }
     ],
