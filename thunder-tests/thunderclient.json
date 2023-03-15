@@ -28,12 +28,12 @@
     "method": "POST",
     "sortNum": 5000,
     "created": "2023-02-20T16:38:51.029Z",
-    "modified": "2023-03-15T09:42:37.141Z",
+    "modified": "2023-03-15T11:10:49.799Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n    \"email\": \"codewiretesting123@gmail.com\",\n    \"password\": \"abcd@123\"\n}",
+      "raw": "{\n    \"email\": \"customer2@gmail.com\",\n    \"password\": \"abcd@123\"\n}",
       "form": []
     },
     "tests": [],
@@ -125,9 +125,9 @@
     "name": "Get motp on mobile",
     "url": "{{baseUrl}}/auth/motp",
     "method": "POST",
-    "sortNum": 45000,
+    "sortNum": 43750,
     "created": "2023-02-20T16:38:51.034Z",
-    "modified": "2023-03-14T17:26:09.921Z",
+    "modified": "2023-03-15T10:52:36.185Z",
     "headers": [],
     "params": [],
     "body": {
@@ -163,9 +163,9 @@
     "name": "Get Customer Profile",
     "url": "{{baseUrl}}/customers/profile",
     "method": "GET",
-    "sortNum": 100000,
+    "sortNum": 52500,
     "created": "2023-02-20T16:38:51.037Z",
-    "modified": "2023-03-06T12:10:33.648Z",
+    "modified": "2023-03-15T11:12:06.140Z",
     "headers": [],
     "params": [],
     "auth": {
@@ -2529,17 +2529,17 @@
     "_id": "581af974-b9bd-4625-aedd-33c6a648d973",
     "colId": "80d178ef-5176-474a-8708-db78bd45faee",
     "containerId": "3ae0d271-930d-4ac2-a094-bf22abd319bb",
-    "name": "reset email",
-    "url": "{{baseUrl}}/reset-mobile",
+    "name": "request reset email",
+    "url": "{{baseUrl}}/reset-email/request",
     "method": "POST",
     "sortNum": 5000,
     "created": "2023-03-14T17:06:21.275Z",
-    "modified": "2023-03-14T17:06:32.960Z",
+    "modified": "2023-03-15T11:42:02.112Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n\t\"mobile_no\" : \"9879870001\",\n\t\"motp\": \"352318\"\n}",
+      "raw": "{\n\t\"email\" : \"customer2@gmail.com\"\n}",
       "form": []
     },
     "auth": {
@@ -2603,6 +2603,55 @@
         }
       ]
     },
+    "tests": []
+  },
+  {
+    "_id": "231e69a8-1505-4831-a426-28b653f1b1f8",
+    "colId": "80d178ef-5176-474a-8708-db78bd45faee",
+    "containerId": "3ae0d271-930d-4ac2-a094-bf22abd319bb",
+    "name": "Get motp on mobile Copy",
+    "url": "{{baseUrl}}/auth/motp",
+    "method": "POST",
+    "sortNum": 7500,
+    "created": "2023-03-15T10:51:57.471Z",
+    "modified": "2023-03-15T10:52:58.360Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n\t\"mobile_no\" : \"1234567890\"\n}",
+      "form": []
+    },
+    "tests": []
+  },
+  {
+    "_id": "83fa951d-6670-459f-afd4-eb0d895ae991",
+    "colId": "80d178ef-5176-474a-8708-db78bd45faee",
+    "containerId": "3ae0d271-930d-4ac2-a094-bf22abd319bb",
+    "name": "reset email ",
+    "url": "{{baseUrl}}/reset-email?user_id=4&user_type=customer&token=ImN1c3RvbWVyMkBnbWFpbC5jb20i.ZBGvCg.u986fOFtOP6it6iw1VrmLqbj-KM",
+    "method": "GET",
+    "sortNum": 6250,
+    "created": "2023-03-15T10:53:46.698Z",
+    "modified": "2023-03-15T11:42:25.004Z",
+    "headers": [],
+    "params": [
+      {
+        "name": "user_id",
+        "value": "4",
+        "isPath": false
+      },
+      {
+        "name": "user_type",
+        "value": "customer",
+        "isPath": false
+      },
+      {
+        "name": "token",
+        "value": "ImN1c3RvbWVyMkBnbWFpbC5jb20i.ZBGvCg.u986fOFtOP6it6iw1VrmLqbj-KM",
+        "isPath": false
+      }
+    ],
     "tests": []
   }
 ]

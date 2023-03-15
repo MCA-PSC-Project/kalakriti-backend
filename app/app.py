@@ -18,7 +18,7 @@ from app.resources.products import Products, ProductsAllDetails, ProductsByCateg
 from app.resources.search import Search, TopSearches
 from app.resources.tags import Tags
 from app.resources.users import CustomerProfile, SellerProfile, AdminProfile
-from app.resources.reset import RequestResetPassword, ResetEmail, ResetMobile, ResetPassword
+from app.resources.reset import RequestResetEmail, RequestResetPassword, ResetEmail, ResetMobile, ResetPassword
 from app.resources.media import UploadImage, UploadAudio, UploadVideo, UploadFile, DeleteMedia
 from app.resources.categories import Categories
 from app.resources.admin import GetCustomers, EnableDisableUser, GetSellers, PromoteToSeller
@@ -116,6 +116,7 @@ def create_app(config_name):
     api.add_resource(MobileOtpLoginAdmin, '/admins/auth/motp/login')
 
     # TODO: Resets
+    api.add_resource(RequestResetEmail, '/reset-email/request')
     api.add_resource(ResetEmail, '/reset-email')
     api.add_resource(ResetMobile, '/reset-mobile')
     api.add_resource(RequestResetPassword, '/reset-password/request')

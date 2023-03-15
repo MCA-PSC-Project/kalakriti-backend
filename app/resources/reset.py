@@ -12,29 +12,72 @@ from flask import flash, redirect, render_template, request, abort, jsonify, url
 from app.mail import send_email
 
 
-class ResetEmail(Resource):
+class RequestResetEmail(Resource):
     @f_jwt.jwt_required()
-    def patch(self):
+    def post(self):
         user_id = f_jwt.get_jwt_identity()
         app.logger.debug("user_id= %s", user_id)
+        claims = f_jwt.get_jwt()
+        user_type = claims['user_type']
+        app.logger.debug("user_type= %s", user_type)
+
         data = request.get_json()
         email = data.get('email', None)
-        app.logger.debug(email)
+
         if not email:
+            app.logger.debug("email must be provided")
             abort(400, 'Bad Request')
-        current_time = datetime.now()
-        # app.logger.debug("cur time : %s", current_time)
 
-        UPDATE_USER_EMAIL = 'UPDATE users SET email= %s, updated_at= %s WHERE id= %s'
+        # generate email token to send in email
+        generated_email_token = generate_email_token(email)
+        app.logger.debug("Generated email token= %s",
+                         generated_email_token)
 
-        # catch exception for invalid SQL statement
+        # send email
+        reset_email_url = url_for(
+            "resetemail", token=generated_email_token, user_id=user_id, user_type=user_type, _external=True)
+        app.logger.debug("reset_email_url= %s", reset_email_url)
+        reset_email_html_page = render_template(
+            "reset_email.html", reset_email_url=reset_email_url)
+
+        subject = "Reset Email"
+        app.logger.debug(
+            "app.config['SEND_EMAIL']= %s", app.config['SEND_EMAIL'])
+        if app.config['SEND_EMAIL']:
+            send_email(email, subject, reset_email_html_page)
+        app.logger.debug("Email sent successfully!")
+        return f"Link to reset email sent to {email} successfully!", 201
+
+
+class ResetEmail(Resource):
+    def get(self):
+        args = request.args  # retrieve args from query string
+        user_id = args.get('user_id', None)
+        user_type = args.get('user_type', None)
+        token = args.get('token', None)
+        app.logger.debug("?user_type=%s", user_type)
+        app.logger.debug("?token=%s", token)
+        if not (user_id and user_type and token):
+            abort(400, 'Bad Request')
+        if user_type not in ['customer', 'seller', 'admin', 'super_admin']:
+            abort(400, 'Bad Request')
+
         try:
-            # declare a cursor object from the connection
-            cursor = app_globals.get_cursor()
-            # # app.logger.debug("cursor object: %s", cursor)
+            email = verify_email_token(token)
+        except:
+            flash('The verification link is invalid or has expired.', 'danger')
+        if not email:
+            app.logger.debug("invalid token")
+            abort(400, 'Bad Request')
 
-            cursor.execute(UPDATE_USER_EMAIL, (email, current_time, user_id,))
-            # app.logger.debug("row_counts= %s", cursor.rowcount)
+        if user_type == 'super_admin':
+            user_type = 'admin'
+        UPDATE_USER_EMAIL = '''UPDATE {} SET email= %s, updated_at= %s WHERE id= %s'''.format(
+            user_type+'s')
+
+        try:
+            cursor = app_globals.get_cursor()
+            cursor.execute(UPDATE_USER_EMAIL, (email, datetime.now(), user_id,))
             if cursor.rowcount != 1:
                 abort(400, 'Bad Request: update row error')
         except (Exception, psycopg2.Error) as err:
@@ -42,7 +85,9 @@ class ResetEmail(Resource):
             abort(400, 'Bad Request')
         finally:
             cursor.close()
-        return {"message": f"user with id {user_id}, email modified."}, 200
+        # return {"message": f"user with id {user_id}, email modified."}, 200
+        headers = {'Content-Type': 'text/html'}
+        return make_response('Email changed successfully')
 
 
 class ResetMobile(Resource):
@@ -136,19 +181,12 @@ class RequestResetPassword(Resource):
                          generated_email_token)
 
         # send email
-        # reset_password_url = url_for("accounts.verify_email", token=generate_email_token, _external=True)
         reset_password_url = url_for(
             "resetpassword", _external=True)
         app.logger.debug("reset_password_url= %s", reset_password_url)
-        # reset_password_html_page = render_template(
-        #     "reset_password.html", reset_password_url=reset_password_url, token=generated_email_token,
-        #     user_type=user_type)
         reset_password_html_page = render_template(
             "reset_password_url.html", reset_password_url=reset_password_url, token=generated_email_token,
             user_type=user_type)
-
-        # reset_password_html_page = render_template(
-        #     "reset_password.html", reset_password_url=reset_password_url, token=generated_email_token, user_type=user_type)
 
         subject = "Reset Password"
         app.logger.debug(
