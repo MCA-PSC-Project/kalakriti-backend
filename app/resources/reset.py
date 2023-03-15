@@ -6,6 +6,11 @@ import psycopg2
 import app.app_globals as app_globals
 import flask_jwt_extended as f_jwt
 from flask import current_app as app
+from app.email_token import generate_email_token, verify_email_token
+from flask import flash, redirect, render_template, request, abort, jsonify, url_for
+
+from app.mail import send_email
+
 
 class ResetEmail(Resource):
     @f_jwt.jwt_required()
@@ -79,7 +84,8 @@ class ResetMobile(Resource):
         if user_type == 'super_admin':
             user_type = 'admin'
         table_name = user_type+'s'
-        UPDATE_MOBILE_NUMBER = '''UPDATE {} SET mobile_no= %s, updated_at= %s WHERE id= %s'''.format(table_name)
+        UPDATE_MOBILE_NUMBER = '''UPDATE {} SET mobile_no= %s, updated_at= %s WHERE id= %s'''.format(
+            table_name)
         try:
             cursor = app_globals.get_cursor()
             cursor.execute(UPDATE_MOBILE_NUMBER,
@@ -94,32 +100,84 @@ class ResetMobile(Resource):
         return {"message": f"mobile_no updated successfully."}, 200
 
 
-class ResetPassword(Resource):
+class RequestResetPassword(Resource):
     def post(self):
         data = request.get_json()
-        email = data.get("email", None)
-        new_password = data.get("new_password", None)
-
-        if not email or not new_password:
+        user_type = data.get('user_type', None)
+        email = data.get('email', None)
+        if not user_type or not email:
+            app.logger.debug("Both user_type and email must be provided")
             abort(400, 'Bad Request')
-        current_time = datetime.now()
-        # app.logger.debug("cur time : %s", current_time)
+
+        if user_type == 'super_admin':
+            user_type = 'admin'
+        table_name = user_type + 's'
+        GET_MOTP_AND_EXPIRY = '''SELECT id FROM {} WHERE email= %s'''.format(
+            table_name)
+        try:
+            cursor = app_globals.get_named_tuple_cursor()
+            cursor.execute(GET_MOTP_AND_EXPIRY, (email,))
+            row = cursor.fetchone()
+            if row is None:
+                app.logger.debug(
+                    "No such email exists in {} table".format(table_name))
+                abort(400, 'Bad Request')
+            id = row.id
+        except (Exception, psycopg2.Error) as err:
+            app.logger.debug(err)
+            abort(400, 'Bad Request')
+        finally:
+            cursor.close()
+
+        # if user with given email exists
+        # generate email token to send in email
+        generated_email_token = generate_email_token(email)
+        app.logger.debug("Generated email token= %s",
+                         generated_email_token)
+
+        # send email
+        # reset_password_url = url_for("accounts.verify_email", token=generate_email_token, _external=True)
+        reset_password_url = url_for(
+            "resetpassword", _external=True)
+        app.logger.debug("reset_password_url= %s", reset_password_url)
+        reset_password_html_page = render_template(
+            "reset_password.html", verify_url=reset_password_url, token=generated_email_token, user_type=user_type)
+        subject = "Reset Password"
+        app.logger.debug("app.config['SEND_EMAIL']= %s", app.config['SEND_EMAIL'])
+        if app.config['SEND_EMAIL']:
+            send_email(email, subject, reset_password_html_page)
+        app.logger.debug("Email sent successfully!")
+        return f"Link to reset password sent to {email} successfully!", 201
+
+
+class ResetPassword(Resource):
+    def post(self):
+        token = request.form.get('token', None)
+        user_type = request.form.get('user_type', None)
+        new_password = request.form.get('password', None)
+        if not token or not user_type or not new_password:
+            abort(400, 'Bad Request')
+
+        try:
+            email = verify_email_token(token)
+        except:
+            app.logger.debug("invalid email token")
+            flash('The link is invalid or has expired.', 'danger')
+        if not email:
+            app.logger.debug("invalid token")
+            abort(400, 'Bad Request')
 
         new_hashed_password = bcrypt.hashpw(
             new_password.encode('utf-8'), bcrypt.gensalt())
         new_hashed_password = new_hashed_password.decode('utf-8')
 
-        CHANGE_USER_PASSWORD = 'UPDATE users SET password= %s, updated_at= %s WHERE email= %s'
+        CHANGE_USER_PASSWORD = '''UPDATE {} SET hashed_password= %s, updated_at= %s WHERE email= %s'''.format(
+            user_type+'s')
 
-        # catch exception for invalid SQL statement
         try:
-            # declare a cursor object from the connection
             cursor = app_globals.get_cursor()
-            # # app.logger.debug("cursor object: %s", cursor)
-
             cursor.execute(CHANGE_USER_PASSWORD,
-                           (new_hashed_password, current_time, email,))
-            # app.logger.debug("row_counts= %s", cursor.rowcount)
+                           (new_hashed_password, datetime.now(), email,))
             if cursor.rowcount != 1:
                 abort(400, 'Bad Request: update row error')
         except (Exception, psycopg2.Error) as err:

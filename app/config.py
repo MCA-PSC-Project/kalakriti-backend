@@ -32,6 +32,9 @@ class Config(object):
     S3_SECRET = os.getenv("S3_SECRET")
     S3_LOCATION = os.getenv("S3_LOCATION")
 
+    SEND_EMAIL = False
+    SEND_MOTP = False
+
 
 class DevelopmentConfig(Config):
     """Configurations for Development."""
@@ -42,17 +45,23 @@ class TestingConfig(Config):
     """Configurations for Testing, with a separate test database."""
     TESTING = True
     DEBUG = True
+    SEND_EMAIL = True
+    SEND_MOTP = True
 
 
 class StagingConfig(Config):
     """Configurations for Staging."""
     DEBUG = True
+    SEND_EMAIL = True
+    SEND_MOTP = True
 
 
 class ProductionConfig(Config):
     """Configurations for Production."""
     DEBUG = False
     TESTING = False
+    SEND_EMAIL = True
+    SEND_MOTP = True
 
 
 app_config = {

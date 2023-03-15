@@ -2263,5 +2263,126 @@
       "form": []
     },
     "tests": []
+  },
+  {
+    "_id": "19a7400c-ce44-4edc-82f5-fd2060a42b55",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/reset-password/request",
+    "url": "{{baseUrl}}/reset-password/request",
+    "method": "POST",
+    "sortNum": 0,
+    "created": "2023-03-15T06:42:55.110Z",
+    "modified": "2023-03-15T07:05:30.422Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n\t\"user_type\" : \"customer\",\n\t\"email\": \"lms.pc.software@gmail.com\"\n}",
+      "form": []
+    },
+    "tests": []
+  },
+  {
+    "_id": "0096fe5c-5347-447b-8037-153355ecb321",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/reset-password",
+    "url": "{{baseUrl}}/reset-password",
+    "method": "POST",
+    "sortNum": 0,
+    "created": "2023-03-15T06:47:21.101Z",
+    "modified": "2023-03-15T06:55:37.475Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "formdata",
+      "raw": "",
+      "form": [
+        {
+          "name": "password",
+          "value": "abcd"
+        },
+        {
+          "name": "token",
+          "value": "ImN1c3RvbWVyMkBnbWFpbC5jb20i.ZBFrxg.9NSWJsPihWc1Mug35vqngjCXYyA"
+        },
+        {
+          "name": "user_type",
+          "value": "customer"
+        }
+      ]
+    },
+    "tests": []
+  },
+  {
+    "_id": "ab7d2eb7-8094-4a18-8878-977382ec3214",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/customers/auth/login",
+    "url": "{{baseUrl}}/customers/auth/login",
+    "method": "POST",
+    "sortNum": 0,
+    "created": "2023-03-15T06:52:04.525Z",
+    "modified": "2023-03-15T06:56:07.589Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n    \"email\": \"customer@gmail.com\",\n    \"password\": \"abcd@123\"\n}",
+      "form": []
+    },
+    "tests": [],
+    "docs": "```json\n{\n    \"email\": \"customer@gmail.com\",\n    \"password\": \"abcd@123\"\n}\n```\n```json\n{\n\t\"email\": \"seller@gmail.com\",\n\t\"password\": \"abcd@123\"\n}\n```\n\n```json\n{\n\t\"email\": \"admin@gmail.com\",\n\t\"password\": \"abcd@123\"\n}\n```\n\n```json\n{\n    \"email\": \"customer1@gmail.com\",\n    \"password\": \"abcd@123\"\n}\n```\n\n```json\n{\n    \"email\": \"seller1@gmail.com\",\n    \"password\": \"abcd@123\"\n}\n```\n\n```json\n{\n    \"email\": \"updated_admin@gmail.com\",\n    \"password\": \"abcd@123\"\n}\n```\n\n```json\n{\n\t\"email\": \"mywebnewslettersinbox123@gmail.com\",\n\t\"password\": \"abcd@123\"\n}\n```"
+  },
+  {
+    "_id": "f5fdaea8-543f-4b34-b9a5-e1d12fb1f109",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/auth/verify-email?user_type=customer&token=InN1cGVyX2FkbWluQGdtYWlsLmNvbSI.ZA2FQg.tNim7xFfxCC62lc4jng7w0ts084",
+    "url": "{{baseUrl}}/auth/verify-email?user_type=customer&token=InN1cGVyX2FkbWluQGdtYWlsLmNvbSI.ZA2FQg.tNim7xFfxCC62lc4jng7w0ts084",
+    "method": "GET",
+    "sortNum": 0,
+    "created": "2023-03-15T06:52:34.617Z",
+    "modified": "2023-03-15T06:52:34.617Z",
+    "headers": [],
+    "params": [
+      {
+        "name": "user_type",
+        "value": "customer",
+        "isPath": false
+      },
+      {
+        "name": "token",
+        "value": "InN1cGVyX2FkbWluQGdtYWlsLmNvbSI.ZA2FQg.tNim7xFfxCC62lc4jng7w0ts084",
+        "isPath": false
+      }
+    ],
+    "tests": []
+  },
+  {
+    "_id": "96a42658-e4c0-4ca6-8ae7-ec5d05875ff0",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/auth/verify-email?user_type=customer&token=ImN1c3RvbWVyMkBnbWFpbC5jb20i.ZBFrFA.ZidN13xiYKIUB_eS1As2EeyaNMw",
+    "url": "{{baseUrl}}/auth/verify-email?user_type=customer&token=ImN1c3RvbWVyMkBnbWFpbC5jb20i.ZBFrFA.ZidN13xiYKIUB_eS1As2EeyaNMw",
+    "method": "GET",
+    "sortNum": 0,
+    "created": "2023-03-15T06:54:39.146Z",
+    "modified": "2023-03-15T06:54:39.146Z",
+    "headers": [],
+    "params": [
+      {
+        "name": "user_type",
+        "value": "customer",
+        "isPath": false
+      },
+      {
+        "name": "token",
+        "value": "ImN1c3RvbWVyMkBnbWFpbC5jb20i.ZBFrFA.ZidN13xiYKIUB_eS1As2EeyaNMw",
+        "isPath": false
+      }
+    ],
+    "tests": []
   }
 ]

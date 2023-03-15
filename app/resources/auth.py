@@ -275,7 +275,7 @@ class LoginCustomer(Resource):
                 'refresh_token': refresh_token
             }, 202
         else:
-            # generate for sending token in email for email verification
+            # generate email token to send in email
             generated_email_token = generate_email_token(email)
             app.logger.debug("Generated email token= %s",
                              generated_email_token)
@@ -335,7 +335,7 @@ class LoginSeller(Resource):
                 'refresh_token': refresh_token
             }, 202
         else:
-            # generate for sending token in email for email verification
+            # generate email token to send in email
             generated_email_token = generate_email_token(email)
             app.logger.debug("Generated email token= %s",
                              generated_email_token)
@@ -400,7 +400,7 @@ class LoginAdmin(Resource):
                 'refresh_token': refresh_token
             }, 202
         else:
-            # generate for sending token in email for email verification
+            # generate email token to send in email
             generated_email_token = generate_email_token(email)
             app.logger.debug("Generated email token= %s",
                              generated_email_token)
@@ -449,6 +449,9 @@ class VerifyEmail(Resource):
             email = verify_email_token(token)
         except:
             flash('The verification link is invalid or has expired.', 'danger')
+        if not email:
+            app.logger.debug("invalid token")
+            abort(400, 'Bad Request')
 
         # check if user of given email is verified or not
         if user_type == 'super_admin':
@@ -474,7 +477,8 @@ class VerifyEmail(Resource):
         if is_verified:
             flash('Account already verified. Please login.', 'success')
         else:
-            UPDATE_USER_VERIFIED = 'UPDATE {} SET is_verified= %s, verified_at= %s WHERE id= %s'.format(table_name)
+            UPDATE_USER_VERIFIED = 'UPDATE {} SET is_verified= %s, verified_at= %s WHERE id= %s'.format(
+                table_name)
             try:
                 cursor = app_globals.get_cursor()
                 cursor.execute(UPDATE_USER_VERIFIED,

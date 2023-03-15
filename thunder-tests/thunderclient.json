@@ -28,7 +28,7 @@
     "method": "POST",
     "sortNum": 5000,
     "created": "2023-02-20T16:38:51.029Z",
-    "modified": "2023-03-14T16:41:33.715Z",
+    "modified": "2023-03-15T06:56:07.581Z",
     "headers": [],
     "params": [],
     "body": {
@@ -62,21 +62,21 @@
     "colId": "80d178ef-5176-474a-8708-db78bd45faee",
     "containerId": "20dae99d-610b-4865-98e2-da1b674f86e0",
     "name": "verify email",
-    "url": "{{baseUrl}}/auth/verify-email?user_type=admin&token=InN1cGVyX2FkbWluQGdtYWlsLmNvbSI.ZA2FQg.tNim7xFfxCC62lc4jng7w0ts084",
+    "url": "{{baseUrl}}/auth/verify-email?user_type=customer&token=ImN1c3RvbWVyMkBnbWFpbC5jb20i.ZBFrFA.ZidN13xiYKIUB_eS1As2EeyaNMw",
     "method": "GET",
     "sortNum": 40000,
     "created": "2023-02-20T16:38:51.031Z",
-    "modified": "2023-03-12T07:55:33.673Z",
+    "modified": "2023-03-15T06:54:39.507Z",
     "headers": [],
     "params": [
       {
         "name": "user_type",
-        "value": "admin",
+        "value": "customer",
         "isPath": false
       },
       {
         "name": "token",
-        "value": "InN1cGVyX2FkbWluQGdtYWlsLmNvbSI.ZA2FQg.tNim7xFfxCC62lc4jng7w0ts084",
+        "value": "ImN1c3RvbWVyMkBnbWFpbC5jb20i.ZBFrFA.ZidN13xiYKIUB_eS1As2EeyaNMw",
         "isPath": false
       }
     ],
@@ -2510,22 +2510,18 @@
     "_id": "daaf89ab-5d0e-447e-9c24-b7db56a820d1",
     "colId": "80d178ef-5176-474a-8708-db78bd45faee",
     "containerId": "3ae0d271-930d-4ac2-a094-bf22abd319bb",
-    "name": "reset password",
-    "url": "{{baseUrl}}/reset-mobile",
+    "name": "request reset password",
+    "url": "{{baseUrl}}/reset-password/request",
     "method": "POST",
     "sortNum": 20000,
     "created": "2023-03-14T17:06:16.671Z",
-    "modified": "2023-03-14T17:06:16.671Z",
+    "modified": "2023-03-15T07:05:30.408Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n\t\"mobile_no\" : \"9879870001\",\n\t\"motp\": \"352318\"\n}",
+      "raw": "{\n\t\"user_type\" : \"customer\",\n\t\"email\": \"lms.pc.software@gmail.com\"\n}",
       "form": []
-    },
-    "auth": {
-      "type": "bearer",
-      "bearer": "{{token}}"
     },
     "tests": []
   },
@@ -2549,6 +2545,61 @@
     "auth": {
       "type": "bearer",
       "bearer": "{{token}}"
+    },
+    "tests": []
+  },
+  {
+    "_id": "235423c1-a1ff-46fc-acf5-0fe2fbf0d9a9",
+    "colId": "80d178ef-5176-474a-8708-db78bd45faee",
+    "containerId": "3ae0d271-930d-4ac2-a094-bf22abd319bb",
+    "name": "request reset password Copy",
+    "url": "{{baseUrl}}/reset-mobile",
+    "method": "POST",
+    "sortNum": 30000,
+    "created": "2023-03-15T05:48:33.760Z",
+    "modified": "2023-03-15T05:48:33.760Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n\t\"mobile_no\" : \"9879870001\",\n\t\"motp\": \"352318\"\n}",
+      "form": []
+    },
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{token}}"
+    },
+    "tests": []
+  },
+  {
+    "_id": "953086b8-dad5-41a3-a5fa-90bc3fe1d124",
+    "colId": "80d178ef-5176-474a-8708-db78bd45faee",
+    "containerId": "3ae0d271-930d-4ac2-a094-bf22abd319bb",
+    "name": "reset password ",
+    "url": "{{baseUrl}}/reset-password",
+    "method": "POST",
+    "sortNum": 30000,
+    "created": "2023-03-15T05:48:37.971Z",
+    "modified": "2023-03-15T06:55:37.458Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "formdata",
+      "raw": "",
+      "form": [
+        {
+          "name": "password",
+          "value": "abcd"
+        },
+        {
+          "name": "token",
+          "value": "ImN1c3RvbWVyMkBnbWFpbC5jb20i.ZBFrxg.9NSWJsPihWc1Mug35vqngjCXYyA"
+        },
+        {
+          "name": "user_type",
+          "value": "customer"
+        }
+      ]
     },
     "tests": []
   }
