@@ -20,7 +20,6 @@ class Search(Resource):
         # "quoted text": text inside quote marks will be converted to terms separated by <-> operators, as if processed by phraseto_tsquery.
         # OR : the word “or” will be converted to the | operator.
         # - : a dash will be converted to the ! operator.
-
         query = query.replace(" ", " or ")
 
         GET_PRODUCTS = '''SELECT p.id AS product_id, p.product_name
@@ -29,14 +28,9 @@ class Search(Resource):
             SELECT product_id FROM products_tsv_store 
             WHERE tsv @@ websearch_to_tsquery('english', %s)
         )'''
-
         products_list = []
-        # catch exception for invalid SQL statement
         try:
-            # declare a cursor object from the connection
             cursor = app_globals.get_named_tuple_cursor()
-            # # app.logger.debug("cursor object: %s", cursor)
-
             cursor.execute(GET_PRODUCTS, (query,))
             rows = cursor.fetchall()
             if not rows:
@@ -54,18 +48,12 @@ class Search(Resource):
         # app.logger.debug(products_list)
         return products_list
 
-
 class TopSearches(Resource):
     def get(self):
-        GET_PRODUCTS = '''SELECT query FROM top_searches ORDER BY rank'''
-
         queries_list = []
-        # catch exception for invalid SQL statement
+        GET_PRODUCTS = '''SELECT query FROM top_searches ORDER BY rank'''
         try:
-            # declare a cursor object from the connection
             cursor = app_globals.get_named_tuple_cursor()
-            # # app.logger.debug("cursor object: %s", cursor)
-
             cursor.execute(GET_PRODUCTS)
             rows = cursor.fetchall()
             if not rows:

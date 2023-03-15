@@ -4,36 +4,36 @@
     "colId": "80d178ef-5176-474a-8708-db78bd45faee",
     "containerId": "20dae99d-610b-4865-98e2-da1b674f86e0",
     "name": "Register Customer",
-    "url": "{{baseUrl}}/auth/register/customer",
+    "url": "{{baseUrl}}/customers/auth/register",
     "method": "POST",
     "sortNum": 10000,
     "created": "2023-02-20T16:38:51.028Z",
-    "modified": "2023-03-14T13:29:17.905Z",
+    "modified": "2023-03-15T08:01:03.799Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n  \"email\": \"customer2@gmail.com\",\n  \"password\": \"abcd@123\",\n  \"first_name\": \"bittu\",\n  \"last_name\": \"kumar\",\n  \"dob\": \"10/3/1998\",\n  \"gender\": \"male\"\n}",
+      "raw": "{\n  \"email\": \"customer3@gmail.com\",\n  \"password\": \"abcd@123\",\n  \"first_name\": \"bittu\",\n  \"last_name\": \"kumar\",\n  \"dob\": \"10/3/1998\",\n  \"gender\": \"male\"\n}",
       "form": []
     },
     "tests": [],
-    "docs": "```json\n{\n\t\"email\": \"updated_admin@gmail.com\",\n\t\"password\": \"abcd@123\",\n\t\"user_type\" : \"customer\",\n\t\"first_name\": \"abcdddl\",\n\t\"last_name\": \"kumari\",\n\t\"phone\": \"987467887\",\n\t\"dob\": \"10/3/1998\",\n\t\"gender\": \"female\"\n}\n```"
+    "docs": "```json\n{\n\t\"email\": \"updated_admin@gmail.com\",\n\t\"password\": \"abcd@123\",\n\t\"user_type\" : \"customer\",\n\t\"first_name\": \"abcdddl\",\n\t\"last_name\": \"kumari\",\n\t\"mobile_no\": \"987467887\",\n\t\"dob\": \"10/3/1998\",\n\t\"gender\": \"female\"\n}\n```"
   },
   {
     "_id": "894a2698-07d2-4d65-8673-8456f72cd13e",
     "colId": "80d178ef-5176-474a-8708-db78bd45faee",
     "containerId": "20dae99d-610b-4865-98e2-da1b674f86e0",
     "name": "Login Customer",
-    "url": "{{baseUrl}}/auth/login/customer",
+    "url": "{{baseUrl}}/customers/auth/login",
     "method": "POST",
     "sortNum": 5000,
     "created": "2023-02-20T16:38:51.029Z",
-    "modified": "2023-03-12T07:47:11.772Z",
+    "modified": "2023-03-15T11:10:49.799Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n    \"email\": \"customer1@gmail.com\",\n    \"password\": \"abcd@123\"\n}",
+      "raw": "{\n    \"email\": \"customer2@gmail.com\",\n    \"password\": \"abcd@123\"\n}",
       "form": []
     },
     "tests": [],
@@ -62,21 +62,21 @@
     "colId": "80d178ef-5176-474a-8708-db78bd45faee",
     "containerId": "20dae99d-610b-4865-98e2-da1b674f86e0",
     "name": "verify email",
-    "url": "{{baseUrl}}/auth/verify-email?user_type=admin&token=InN1cGVyX2FkbWluQGdtYWlsLmNvbSI.ZA2FQg.tNim7xFfxCC62lc4jng7w0ts084",
+    "url": "{{baseUrl}}/auth/verify-email?user_type=customer&token=ImN1c3RvbWVyMkBnbWFpbC5jb20i.ZBFrFA.ZidN13xiYKIUB_eS1As2EeyaNMw",
     "method": "GET",
     "sortNum": 40000,
     "created": "2023-02-20T16:38:51.031Z",
-    "modified": "2023-03-12T07:55:33.673Z",
+    "modified": "2023-03-15T06:54:39.507Z",
     "headers": [],
     "params": [
       {
         "name": "user_type",
-        "value": "admin",
+        "value": "customer",
         "isPath": false
       },
       {
         "name": "token",
-        "value": "InN1cGVyX2FkbWluQGdtYWlsLmNvbSI.ZA2FQg.tNim7xFfxCC62lc4jng7w0ts084",
+        "value": "ImN1c3RvbWVyMkBnbWFpbC5jb20i.ZBFrFA.ZidN13xiYKIUB_eS1As2EeyaNMw",
         "isPath": false
       }
     ],
@@ -122,59 +122,39 @@
     "_id": "2569cd6d-73df-410c-a834-b13b5160e1bb",
     "colId": "80d178ef-5176-474a-8708-db78bd45faee",
     "containerId": "20dae99d-610b-4865-98e2-da1b674f86e0",
-    "name": "Get otp on mobile",
-    "url": "{{baseUrl}}/auth/otp",
+    "name": "Get motp on mobile",
+    "url": "{{baseUrl}}/auth/motp",
     "method": "POST",
-    "sortNum": 70000,
+    "sortNum": 43750,
     "created": "2023-02-20T16:38:51.034Z",
-    "modified": "2023-02-20T16:38:51.034Z",
+    "modified": "2023-03-15T14:36:34.843Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n\t\"mobile_no\" : \"9879870000\"\n}"
+      "raw": "{\n\t\"mobile_no\" : \"9879870000\"\n}",
+      "form": []
     },
-    "docs": ""
+    "tests": []
   },
   {
     "_id": "8750a88a-ccb7-49d3-8a38-7552b35b735b",
     "colId": "80d178ef-5176-474a-8708-db78bd45faee",
     "containerId": "20dae99d-610b-4865-98e2-da1b674f86e0",
-    "name": "mobile otp login",
-    "url": "{{baseUrl}}/auth/otp/login",
+    "name": "motp login customer",
+    "url": "{{baseUrl}}/customers/auth/motp/login",
     "method": "POST",
-    "sortNum": 80000,
+    "sortNum": 47500,
     "created": "2023-02-20T16:38:51.035Z",
-    "modified": "2023-02-20T16:38:51.035Z",
+    "modified": "2023-03-15T14:36:50.378Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n\t\"mobile_no\" : \"9879870000\",\n\t\"otp\": \"420464\"\n}"
+      "raw": "{\n\t\"mobile_no\" : \"9879870000\",\n\t\"motp\": \"891126\"\n}",
+      "form": []
     },
-    "docs": ""
-  },
-  {
-    "_id": "0fa2c34f-c0b8-41ca-a193-91fda4479e07",
-    "colId": "80d178ef-5176-474a-8708-db78bd45faee",
-    "containerId": "20dae99d-610b-4865-98e2-da1b674f86e0",
-    "name": "reset",
-    "url": "{{baseUrl}}/auth/reset",
-    "method": "POST",
-    "sortNum": 90000,
-    "created": "2023-02-20T16:38:51.036Z",
-    "modified": "2023-02-20T16:38:51.036Z",
-    "headers": [],
-    "params": [],
-    "body": {
-      "type": "json",
-      "raw": "{\n\t\"email\": \"codewiretesting123@gmail.com\",\n\t\"password\": \"nopassword123\"\n}"
-    },
-    "auth": {
-      "type": "bearer",
-      "bearer": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MjA5OTI4NzksImlkIjoxLCJ0eXBlIjoiMiJ9.4lGplTsqDLu8JnS5BM3bzLAzCk4sd_Lc0uPVZAWNFyg"
-    },
-    "docs": ""
+    "tests": []
   },
   {
     "_id": "ddf3bab6-020a-42ab-9713-fe4c59e532eb",
@@ -183,9 +163,9 @@
     "name": "Get Customer Profile",
     "url": "{{baseUrl}}/customers/profile",
     "method": "GET",
-    "sortNum": 100000,
+    "sortNum": 52500,
     "created": "2023-02-20T16:38:51.037Z",
-    "modified": "2023-03-06T12:10:33.648Z",
+    "modified": "2023-03-15T11:12:06.140Z",
     "headers": [],
     "params": [],
     "auth": {
@@ -967,7 +947,7 @@
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n  \"shipping_address_id\": 5 ,\n  \"phone\": \"9876543210\",\n  \"order_items\": [\n    {\n      \"product_item_id\": 23,\n      \"quantity\": 2,\n      \"original_price\": 1000,\n      \"offer_price\": 500,\n      \"discount_percent\": 50,\n      \"discount\": 500,\n      \"tax\": 20\n    },\n    {\n      \"product_item_id\": 24,\n      \"quantity\": 2,\n      \"original_price\": 2000,\n      \"offer_price\": 1000,\n      \"discount_percent\": 50,\n      \"discount\": 1000,\n      \"tax\": 20\n    }\n  ]\n}",
+      "raw": "{\n  \"shipping_address_id\": 5 ,\n  \"mobile_no\": \"9876543210\",\n  \"order_items\": [\n    {\n      \"product_item_id\": 23,\n      \"quantity\": 2,\n      \"original_price\": 1000,\n      \"offer_price\": 500,\n      \"discount_percent\": 50,\n      \"discount\": 500,\n      \"tax\": 20\n    },\n    {\n      \"product_item_id\": 24,\n      \"quantity\": 2,\n      \"original_price\": 2000,\n      \"offer_price\": 1000,\n      \"discount_percent\": 50,\n      \"discount\": 1000,\n      \"tax\": 20\n    }\n  ]\n}",
       "form": []
     },
     "auth": {
@@ -1528,7 +1508,7 @@
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n \"name\" : \"apply_for_seller\",\n \"email\" : \"apply@seller3.com\",\n \"phone\" : \"98765438880\",\n \"description\" : \"want to sell saree\"\n}",
+      "raw": "{\n \"name\" : \"apply_for_seller\",\n \"email\" : \"apply@seller3.com\",\n \"mobile_no\" : \"98765438880\",\n \"description\" : \"want to sell saree\"\n}",
       "form": []
     },
     "auth": {
@@ -1565,7 +1545,7 @@
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n \"name\" : \"updated_seller\",\n \"email\" : \"apply@seller2.com\",\n \"phone\" : \"98765438880\",\n \"description\" : \"want to sell saree\"\n}",
+      "raw": "{\n \"name\" : \"updated_seller\",\n \"email\" : \"apply@seller2.com\",\n \"mobile_no\" : \"98765438880\",\n \"description\" : \"want to sell saree\"\n}",
       "form": []
     },
     "auth": {
@@ -2061,7 +2041,7 @@
       "form": []
     },
     "tests": [],
-    "docs": "```json\n{\n\t\"email\": \"updated_admin@gmail.com\",\n\t\"password\": \"abcd@123\",\n\t\"user_type\" : \"customer\",\n\t\"first_name\": \"abcdddl\",\n\t\"last_name\": \"kumari\",\n\t\"phone\": \"987467887\",\n\t\"dob\": \"10/3/1998\",\n\t\"gender\": \"female\"\n}\n```"
+    "docs": "```json\n{\n\t\"email\": \"updated_admin@gmail.com\",\n\t\"password\": \"abcd@123\",\n\t\"user_type\" : \"customer\",\n\t\"first_name\": \"abcdddl\",\n\t\"last_name\": \"kumari\",\n\t\"mobile_no\": \"987467887\",\n\t\"dob\": \"10/3/1998\",\n\t\"gender\": \"female\"\n}\n```"
   },
   {
     "_id": "c952d8d5-da9d-408f-bef6-a676a5e3ee19",
@@ -2122,23 +2102,23 @@
       "form": []
     },
     "tests": [],
-    "docs": "```json\n{\n\t\"email\": \"updated_admin@gmail.com\",\n\t\"password\": \"abcd@123\",\n\t\"user_type\" : \"customer\",\n\t\"first_name\": \"abcdddl\",\n\t\"last_name\": \"kumari\",\n\t\"phone\": \"987467887\",\n\t\"dob\": \"10/3/1998\",\n\t\"gender\": \"female\"\n}\n```"
+    "docs": "```json\n{\n\t\"email\": \"updated_admin@gmail.com\",\n\t\"password\": \"abcd@123\",\n\t\"user_type\" : \"customer\",\n\t\"first_name\": \"abcdddl\",\n\t\"last_name\": \"kumari\",\n\t\"mobile_no\": \"987467887\",\n\t\"dob\": \"10/3/1998\",\n\t\"gender\": \"female\"\n}\n```"
   },
   {
     "_id": "baf63bba-95c1-4320-9b14-5305fda26a9d",
     "colId": "80d178ef-5176-474a-8708-db78bd45faee",
     "containerId": "20dae99d-610b-4865-98e2-da1b674f86e0",
     "name": "Login Seller",
-    "url": "{{baseUrl}}/auth/login/seller",
+    "url": "{{baseUrl}}/sellers/auth/login",
     "method": "POST",
     "sortNum": 7500,
     "created": "2023-03-07T07:12:53.183Z",
-    "modified": "2023-03-12T07:47:04.161Z",
+    "modified": "2023-03-14T17:30:16.840Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n    \"email\": \"seller1@gmail.com\",\n    \"password\": \"abcd@123\"\n}",
+      "raw": "{\n    \"email\": \"seller@gmail.com\",\n    \"password\": \"abcd@123\"\n}",
       "form": []
     },
     "tests": [],
@@ -2149,11 +2129,11 @@
     "colId": "80d178ef-5176-474a-8708-db78bd45faee",
     "containerId": "20dae99d-610b-4865-98e2-da1b674f86e0",
     "name": "Login Admin",
-    "url": "{{baseUrl}}/auth/login/admin",
+    "url": "{{baseUrl}}/admins/auth/login",
     "method": "POST",
     "sortNum": 8750,
     "created": "2023-03-07T07:12:55.732Z",
-    "modified": "2023-03-12T07:56:35.108Z",
+    "modified": "2023-03-14T16:41:29.741Z",
     "headers": [],
     "params": [],
     "body": {
@@ -2247,11 +2227,11 @@
     "colId": "80d178ef-5176-474a-8708-db78bd45faee",
     "containerId": "20dae99d-610b-4865-98e2-da1b674f86e0",
     "name": "Login Super Admin ",
-    "url": "{{baseUrl}}/auth/login/admin",
+    "url": "{{baseUrl}}/admins/auth/login",
     "method": "POST",
     "sortNum": 9375,
     "created": "2023-03-12T04:29:39.481Z",
-    "modified": "2023-03-12T07:54:23.842Z",
+    "modified": "2023-03-14T13:17:57.260Z",
     "headers": [],
     "params": [],
     "body": {
@@ -2267,11 +2247,11 @@
     "colId": "80d178ef-5176-474a-8708-db78bd45faee",
     "containerId": "20dae99d-610b-4865-98e2-da1b674f86e0",
     "name": "Register Super Admin",
-    "url": "{{baseUrl}}/auth/register/admin",
+    "url": "{{baseUrl}}/admins/auth/register",
     "method": "POST",
     "sortNum": 26250,
     "created": "2023-03-12T04:30:11.335Z",
-    "modified": "2023-03-14T13:30:54.950Z",
+    "modified": "2023-03-14T13:21:47.332Z",
     "headers": [],
     "params": [],
     "body": {
@@ -2280,7 +2260,7 @@
       "form": []
     },
     "tests": [],
-    "docs": "```json\n{\n\t\"email\": \"updated_admin@gmail.com\",\n\t\"password\": \"abcd@123\",\n\t\"user_type\" : \"customer\",\n\t\"first_name\": \"abcdddl\",\n\t\"last_name\": \"kumari\",\n\t\"phone\": \"987467887\",\n\t\"dob\": \"10/3/1998\",\n\t\"gender\": \"female\"\n}\n```"
+    "docs": "```json\n{\n\t\"email\": \"updated_admin@gmail.com\",\n\t\"password\": \"abcd@123\",\n\t\"user_type\" : \"customer\",\n\t\"first_name\": \"abcdddl\",\n\t\"last_name\": \"kumari\",\n\t\"mobile_no\": \"987467887\",\n\t\"dob\": \"10/3/1998\",\n\t\"gender\": \"female\"\n}\n```"
   },
   {
     "_id": "410ac30f-f087-4b20-8c03-e6fce9260332",
@@ -2306,26 +2286,277 @@
     "tests": []
   },
   {
-    "_id": "9274fb02-f975-4fb9-a41f-c24f103934be",
+    "_id": "ef1fd0ee-3ecd-4b0a-9b45-8c2fc050b256",
     "colId": "80d178ef-5176-474a-8708-db78bd45faee",
-    "containerId": "67bd2609-a1c1-41da-ab7e-1e5b9002ee51",
-    "name": "Create subcategory",
-    "url": "{{baseUrl}}/categories",
+    "containerId": "df3efec6-c411-4a9a-9790-c86d800854c3",
+    "name": "setup 2fa totp customer",
+    "url": "{{baseUrl}}/auth/login/customer/2fa",
     "method": "POST",
-    "sortNum": 260000,
-    "created": "2023-03-14T13:55:55.511Z",
-    "modified": "2023-03-14T13:56:41.780Z",
+    "sortNum": 1020000,
+    "created": "2023-03-12T12:01:30.803Z",
+    "modified": "2023-03-12T12:09:16.085Z",
     "headers": [],
     "params": [],
-    "body": {
-      "type": "json",
-      "raw": "{\n\t\"name\": \"new subcategory\",\n\t\"parent_id\" : 7,\n\t\"cover_id\" : 4\n}",
-      "form": []
-    },
+    "tests": []
+  },
+  {
+    "_id": "a712c18c-70b8-4e5b-9148-ef365972229d",
+    "colId": "80d178ef-5176-474a-8708-db78bd45faee",
+    "containerId": "df3efec6-c411-4a9a-9790-c86d800854c3",
+    "name": "setup 2fa totp seller",
+    "url": "{{baseUrl}}/auth/login/customer/2fa",
+    "method": "POST",
+    "sortNum": 1030000,
+    "created": "2023-03-12T12:13:57.075Z",
+    "modified": "2023-03-12T12:13:57.075Z",
+    "headers": [],
+    "params": [],
+    "tests": []
+  },
+  {
+    "_id": "d689dc7a-58c7-45e0-a2cc-9d7dab68c641",
+    "colId": "80d178ef-5176-474a-8708-db78bd45faee",
+    "containerId": "df3efec6-c411-4a9a-9790-c86d800854c3",
+    "name": "setup 2fa totp admin",
+    "url": "{{baseUrl}}/auth/setup/2fa",
+    "method": "POST",
+    "sortNum": 1040000,
+    "created": "2023-03-12T12:14:55.350Z",
+    "modified": "2023-03-12T15:15:33.677Z",
+    "headers": [],
+    "params": [],
     "auth": {
       "type": "bearer",
       "bearer": "{{admin_token}}"
     },
+    "tests": []
+  },
+  {
+    "_id": "75ff3b54-a129-4dca-adcb-898aea2e16b6",
+    "colId": "80d178ef-5176-474a-8708-db78bd45faee",
+    "containerId": "20dae99d-610b-4865-98e2-da1b674f86e0",
+    "name": "motp login Admin",
+    "url": "{{baseUrl}}/admins/auth/motp/login",
+    "method": "POST",
+    "sortNum": 48750,
+    "created": "2023-03-14T11:48:43.519Z",
+    "modified": "2023-03-14T17:33:56.502Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n\t\"mobile_no\" : \"1234567890\",\n\t\"motp\": \"257469\"\n}",
+      "form": []
+    },
+    "tests": []
+  },
+  {
+    "_id": "3db1c6eb-0435-4ed0-9323-5e6e193334a2",
+    "colId": "80d178ef-5176-474a-8708-db78bd45faee",
+    "containerId": "20dae99d-610b-4865-98e2-da1b674f86e0",
+    "name": "motp login Seller",
+    "url": "{{baseUrl}}/sellers/auth/motp/login",
+    "method": "POST",
+    "sortNum": 48125,
+    "created": "2023-03-14T11:48:47.569Z",
+    "modified": "2023-03-14T17:33:47.912Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n\t\"mobile_no\" : \"1234567890\",\n\t\"motp\": \"257469\"\n}",
+      "form": []
+    },
+    "tests": []
+  },
+  {
+    "_id": "6a58c029-15e2-4d24-8199-321d1a423394",
+    "colId": "80d178ef-5176-474a-8708-db78bd45faee",
+    "containerId": "20dae99d-610b-4865-98e2-da1b674f86e0",
+    "name": "motp login Super Admin",
+    "url": "{{baseUrl}}/admins/auth/motp/login",
+    "method": "POST",
+    "sortNum": 49375,
+    "created": "2023-03-14T11:50:05.768Z",
+    "modified": "2023-03-14T17:34:03.242Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n\t\"mobile_no\" : \"1234567890\",\n\t\"motp\": \"257469\"\n}",
+      "form": []
+    },
+    "tests": []
+  },
+  {
+    "_id": "72b63ac4-a480-4c76-a642-41b5d5a7a22a",
+    "colId": "80d178ef-5176-474a-8708-db78bd45faee",
+    "containerId": "3ae0d271-930d-4ac2-a094-bf22abd319bb",
+    "name": "reset/add mobile",
+    "url": "{{baseUrl}}/reset-mobile",
+    "method": "POST",
+    "sortNum": 10000,
+    "created": "2023-03-14T13:10:26.400Z",
+    "modified": "2023-03-15T14:48:51.138Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n\t\"mobile_no\" : \"9078563419\",\n\t\"motp\": \"697321\"\n}",
+      "form": []
+    },
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{token}}"
+    },
+    "tests": []
+  },
+  {
+    "_id": "daaf89ab-5d0e-447e-9c24-b7db56a820d1",
+    "colId": "80d178ef-5176-474a-8708-db78bd45faee",
+    "containerId": "3ae0d271-930d-4ac2-a094-bf22abd319bb",
+    "name": "request reset password",
+    "url": "{{baseUrl}}/reset-password/request",
+    "method": "POST",
+    "sortNum": 20000,
+    "created": "2023-03-14T17:06:16.671Z",
+    "modified": "2023-03-15T15:04:20.151Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n\t\"user_type\" : \"customer\",\n\t\"email\": \"codewiretesting123@gmail.com\"\n}",
+      "form": []
+    },
+    "tests": []
+  },
+  {
+    "_id": "581af974-b9bd-4625-aedd-33c6a648d973",
+    "colId": "80d178ef-5176-474a-8708-db78bd45faee",
+    "containerId": "3ae0d271-930d-4ac2-a094-bf22abd319bb",
+    "name": "request reset email",
+    "url": "{{baseUrl}}/reset-email/request",
+    "method": "POST",
+    "sortNum": 5000,
+    "created": "2023-03-14T17:06:21.275Z",
+    "modified": "2023-03-15T12:14:08.460Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n\t\"email\" : \"customer2@gmail.com\"\n}",
+      "form": []
+    },
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{token}}"
+    },
+    "tests": []
+  },
+  {
+    "_id": "953086b8-dad5-41a3-a5fa-90bc3fe1d124",
+    "colId": "80d178ef-5176-474a-8708-db78bd45faee",
+    "containerId": "3ae0d271-930d-4ac2-a094-bf22abd319bb",
+    "name": "reset password ",
+    "url": "{{baseUrl}}/reset-password?user_type=customer&token=ImN1c3RvbWVyMkBnbWFpbC5jb20i.ZBGURw.5z9zd1Kua32hOJUIeknvkPXu8NY",
+    "method": "GET",
+    "sortNum": 30000,
+    "created": "2023-03-15T05:48:37.971Z",
+    "modified": "2023-03-15T09:48:56.410Z",
+    "headers": [],
+    "params": [
+      {
+        "name": "user_type",
+        "value": "customer",
+        "isPath": false
+      },
+      {
+        "name": "token",
+        "value": "ImN1c3RvbWVyMkBnbWFpbC5jb20i.ZBGURw.5z9zd1Kua32hOJUIeknvkPXu8NY",
+        "isPath": false
+      }
+    ],
+    "tests": []
+  },
+  {
+    "_id": "f19982d8-19fa-483e-8fa6-e50321699e7d",
+    "colId": "80d178ef-5176-474a-8708-db78bd45faee",
+    "containerId": "3ae0d271-930d-4ac2-a094-bf22abd319bb",
+    "name": "reset password",
+    "url": "{{baseUrl}}/reset-password",
+    "method": "POST",
+    "sortNum": 40000,
+    "created": "2023-03-15T09:09:09.846Z",
+    "modified": "2023-03-15T09:49:25.442Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "formdata",
+      "raw": "",
+      "form": [
+        {
+          "name": "password",
+          "value": "abcd@123"
+        },
+        {
+          "name": "token",
+          "value": "ImN1c3RvbWVyMkBnbWFpbC5jb20i.ZBGURw.5z9zd1Kua32hOJUIeknvkPXu8NY"
+        },
+        {
+          "name": "user_type",
+          "value": "customer"
+        }
+      ]
+    },
+    "tests": []
+  },
+  {
+    "_id": "231e69a8-1505-4831-a426-28b653f1b1f8",
+    "colId": "80d178ef-5176-474a-8708-db78bd45faee",
+    "containerId": "3ae0d271-930d-4ac2-a094-bf22abd319bb",
+    "name": "Get motp on mobile Copy",
+    "url": "{{baseUrl}}/auth/motp",
+    "method": "POST",
+    "sortNum": 7500,
+    "created": "2023-03-15T10:51:57.471Z",
+    "modified": "2023-03-15T14:48:19.845Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n\t\"mobile_no\" : \"9078563419\"\n}",
+      "form": []
+    },
+    "tests": []
+  },
+  {
+    "_id": "83fa951d-6670-459f-afd4-eb0d895ae991",
+    "colId": "80d178ef-5176-474a-8708-db78bd45faee",
+    "containerId": "3ae0d271-930d-4ac2-a094-bf22abd319bb",
+    "name": "reset email ",
+    "url": "{{baseUrl}}/reset-email?user_type=customer&old_token=ImNvZGV3aXJldGVzdGluZzEyM0BnbpbC5jb20i.ZBHl5w.HdvQGz5laeqHC5zjid2oyncLykA&new_token=ImN1c3RvbWVyMkBbWFpbC5jb20i.ZBHl5w.AToUQCcMOIPdOfYHD-bX2FVzxJY",
+    "method": "GET",
+    "sortNum": 6250,
+    "created": "2023-03-15T10:53:46.698Z",
+    "modified": "2023-03-15T15:41:18.556Z",
+    "headers": [],
+    "params": [
+      {
+        "name": "user_type",
+        "value": "customer",
+        "isPath": false
+      },
+      {
+        "name": "old_token",
+        "value": "ImNvZGV3aXJldGVzdGluZzEyM0BnbpbC5jb20i.ZBHl5w.HdvQGz5laeqHC5zjid2oyncLykA",
+        "isPath": false
+      },
+      {
+        "name": "new_token",
+        "value": "ImN1c3RvbWVyMkBbWFpbC5jb20i.ZBHl5w.AToUQCcMOIPdOfYHD-bX2FVzxJY",
+        "isPath": false
+      }
+    ],
     "tests": []
   }
 ]

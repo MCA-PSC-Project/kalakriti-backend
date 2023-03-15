@@ -15,13 +15,8 @@ class Tags(Resource):
 
         tags_list = []
         GET_TAGS = '''SELECT tags from products WHERE id= %s'''
-
-        # catch exception for invalid SQL statement
         try:
-            # declare a cursor object from the connection
             cursor = app_globals.get_named_tuple_cursor()
-            # # app.logger.debug("cursor object: %s", cursor)
-
             cursor.execute(GET_TAGS, (product_id,))
             row = cursor.fetchone()
             if not row:
@@ -51,16 +46,10 @@ class Tags(Resource):
             abort(400, "only sellers, super-admins and admins can update tags")
 
         UPDATE_TAGS = '''UPDATE products SET tags= %s WHERE id= %s'''
-
-        # catch exception for invalid SQL statement
         try:
-            # declare a cursor object from the connection
             cursor = app_globals.get_cursor()
-            # # app.logger.debug("cursor object: %s", cursor)
-
             cursor.execute(
                 UPDATE_TAGS, (tags_list, product_id,))
-            # app.logger.debug("row_counts= %s", cursor.rowcount)
             if cursor.rowcount != 1:
                 abort(400, 'Bad Request: update row error')
         except (Exception, psycopg2.Error) as err:

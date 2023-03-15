@@ -13,3 +13,4 @@ def send_email(to, subject, template):
         sender=app.config["MAIL_DEFAULT_SENDER"],
     )
     app_globals.mail.send(msg)
+    # app.logger.debug("email sent")

@@ -41,7 +41,7 @@ class RegisterCustomer(Resource):
             password.encode('utf-8'), bcrypt.gensalt())
         hashed_password = hashed_password.decode('utf-8')
 
-        REGISTER_CUSTOMER = '''INSERT INTO customers(first_name, last_name, email, hashed_password, 
+        REGISTER_CUSTOMER = '''INSERT INTO customers(first_name, last_name, email, hashed_password,
         dob, gender, added_at)
         VALUES(%s, %s, %s, %s, %s, %s, %s) RETURNING id'''
 
@@ -70,7 +70,8 @@ class RegisterCustomer(Resource):
         verify_email_html_page = render_template(
             "verify_email.html", verify_url=verify_url)
         subject = "Please verify your email"
-        # send_email(email, subject, verify_email_html_page)-------------------------------------------------------------------==============
+        if app.config['SEND_EMAIL']:
+            send_email(email, subject, verify_email_html_page)
         app.logger.debug("Email sent successfully!")
 
         # when authenticated, return a fresh access token and a refresh token
@@ -143,7 +144,8 @@ class RegisterSeller(Resource):
         verify_email_html_page = render_template(
             "verify_email.html", verify_url=verify_url)
         subject = "Please verify your email"
-        # send_email(email, subject, verify_email_html_page)-------------------------------------------------------------------==============
+        if app.config['SEND_EMAIL']:
+            send_email(email, subject, verify_email_html_page)
         app.logger.debug("Email sent successfully!")
 
         # when authenticated, return a fresh access token and a refresh token
@@ -189,7 +191,7 @@ class RegisterAdmin(Resource):
             password.encode('utf-8'), bcrypt.gensalt())
         hashed_password = hashed_password.decode('utf-8')
 
-        REGISTER_CUSTOMER = '''INSERT INTO admins(first_name, last_name, email, hashed_password, 
+        REGISTER_CUSTOMER = '''INSERT INTO admins(first_name, last_name, email, hashed_password,
         dob, gender, added_at)
         VALUES(%s, %s, %s, %s, %s, %s, %s) RETURNING id'''
 
@@ -218,7 +220,8 @@ class RegisterAdmin(Resource):
         verify_email_html_page = render_template(
             "verify_email.html", verify_url=verify_url)
         subject = "Please verify your email"
-        # send_email(email, subject, verify_email_html_page)-------------------------------------------------------------------==============
+        if app.config['SEND_EMAIL']:
+            send_email(email, subject, verify_email_html_page)
         app.logger.debug("Email sent successfully!")
 
         # when authenticated, return a fresh access token and a refresh token
@@ -275,7 +278,7 @@ class LoginCustomer(Resource):
                 'refresh_token': refresh_token
             }, 202
         else:
-            # generate for sending token in email for email verification
+            # generate email token to send in email
             generated_email_token = generate_email_token(email)
             app.logger.debug("Generated email token= %s",
                              generated_email_token)
@@ -288,7 +291,8 @@ class LoginCustomer(Resource):
             verify_email_html_page = render_template(
                 "verify_email.html", verify_url=verify_url)
             subject = "Please verify your email"
-            # send_email(email, subject, verify_email_html_page)/-------------------------------------------------------------------------
+            if app.config['SEND_EMAIL']:
+                send_email(email, subject, verify_email_html_page)
             app.logger.debug("Email sent successfully!")
             return f"verification Email sent to {email} successfully!", 201
 
@@ -335,7 +339,7 @@ class LoginSeller(Resource):
                 'refresh_token': refresh_token
             }, 202
         else:
-            # generate for sending token in email for email verification
+            # generate email token to send in email
             generated_email_token = generate_email_token(email)
             app.logger.debug("Generated email token= %s",
                              generated_email_token)
@@ -348,7 +352,8 @@ class LoginSeller(Resource):
             verify_email_html_page = render_template(
                 "verify_email.html", verify_url=verify_url)
             subject = "Please verify your email"
-            # send_email(email, subject, verify_email_html_page)/-------------------------------------------------------------------------
+            if app.config['SEND_EMAIL']:
+                send_email(email, subject, verify_email_html_page)
             app.logger.debug("Email sent successfully!")
             return f"verification Email sent to {email} successfully!", 201
 
@@ -400,7 +405,7 @@ class LoginAdmin(Resource):
                 'refresh_token': refresh_token
             }, 202
         else:
-            # generate for sending token in email for email verification
+            # generate email token to send in email
             generated_email_token = generate_email_token(email)
             app.logger.debug("Generated email token= %s",
                              generated_email_token)
@@ -413,7 +418,8 @@ class LoginAdmin(Resource):
             verify_email_html_page = render_template(
                 "verify_email.html", verify_url=verify_url)
             subject = "Please verify your email"
-            # send_email(email, subject, verify_email_html_page)/-------------------------------------------------------------------------
+            if app.config['SEND_EMAIL']:
+                send_email(email, subject, verify_email_html_page)
             app.logger.debug("Email sent successfully!")
             return f"verification Email sent to {email} successfully!", 201
 
@@ -442,17 +448,23 @@ class VerifyEmail(Resource):
         app.logger.debug("?token=%s", token)
         if not (user_type and token):
             abort(400, 'Bad Request')
-        if user_type not in ['customer', 'seller', 'admin']:
+        if user_type not in ['customer', 'seller', 'admin', 'super_admin']:
             abort(400, 'Bad Request')
 
         try:
             email = verify_email_token(token)
         except:
             flash('The verification link is invalid or has expired.', 'danger')
+        if not email:
+            app.logger.debug("invalid token")
+            abort(400, 'Bad Request')
 
         # check if user of given email is verified or not
+        if user_type == 'super_admin':
+            user_type = 'admin'
+        table_name = user_type+'s'
         GET_USER = 'SELECT id, is_verified FROM {} WHERE email= %s'.format(
-            user_type+'s')
+            table_name)
         try:
             cursor = app_globals.get_named_tuple_cursor()
             cursor.execute(GET_USER, (email,))
@@ -472,7 +484,7 @@ class VerifyEmail(Resource):
             flash('Account already verified. Please login.', 'success')
         else:
             UPDATE_USER_VERIFIED = 'UPDATE {} SET is_verified= %s, verified_at= %s WHERE id= %s'.format(
-                user_type+'s')
+                table_name)
             try:
                 cursor = app_globals.get_cursor()
                 cursor.execute(UPDATE_USER_VERIFIED,

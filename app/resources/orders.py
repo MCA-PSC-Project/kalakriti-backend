@@ -46,12 +46,12 @@ class Orders(Resource):
             cursor = app_globals.get_cursor()
             # # app.logger.debug("cursor object: %s", cursor)
 
-            CREATE_ORDER = '''INSERT INTO orders(user_id, shipping_address_id, phone,
+            CREATE_ORDER = '''INSERT INTO orders(user_id, shipping_address_id, mobile_no,
             total_original_price, sub_total, total_discount, total_tax, grand_total, added_at)
             VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s) RETURNING id'''
 
             cursor.execute(CREATE_ORDER,
-                           (user_id, order_dict.get('shipping_address_id'), order_dict.get('phone'),
+                           (user_id, order_dict.get('shipping_address_id'), order_dict.get('mobile_no'),
                             order_dict.get('total_original_price'),
                             order_dict.get('sub_total'), order_dict.get(
                                 'total_discount'),
@@ -107,7 +107,7 @@ class Orders(Resource):
         user_id = f_jwt.get_jwt_identity()
         app.logger.debug("user_id= %s", user_id)
 
-        GET_ORDER = '''SELECT o.id AS order_id, o.user_id, o.phone, o.order_status,
+        GET_ORDER = '''SELECT o.id AS order_id, o.user_id, o.mobile_no, o.order_status,
         o.total_original_price, o.sub_total, o.total_discount, o.total_tax, o.grand_total, o.added_at, o.updated_at,
         ad.id AS address_id, ad.address, ad.district, ad.city, ad.state, ad.country, ad.pincode, ad.landmark
         FROM orders o
@@ -127,7 +127,7 @@ class Orders(Resource):
             order_dict = {}
             order_dict['order_id'] = row.order_id
             order_dict['user_id'] = row.user_id
-            order_dict['phone'] = row.phone
+            order_dict['mobile_no'] = row.mobile_no
             order_dict['order_status'] = row.order_status
             order_dict.update(json.loads(
                 json.dumps({'total_original_price': row.total_original_price}, default=str)))
