@@ -190,11 +190,11 @@ class RequestResetPassword(Resource):
         if user_type == 'super_admin':
             user_type = 'admin'
         table_name = user_type + 's'
-        GET_MOTP_AND_EXPIRY = '''SELECT id FROM {} WHERE email= %s'''.format(
+        GET_USER_ID = '''SELECT id FROM {} WHERE email= %s'''.format(
             table_name)
         try:
             cursor = app_globals.get_named_tuple_cursor()
-            cursor.execute(GET_MOTP_AND_EXPIRY, (email,))
+            cursor.execute(GET_USER_ID, (email,))
             row = cursor.fetchone()
             if row is None:
                 app.logger.debug(
