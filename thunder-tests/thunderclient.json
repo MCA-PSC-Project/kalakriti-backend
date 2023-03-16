@@ -2744,7 +2744,7 @@
     "method": "POST",
     "sortNum": 765000,
     "created": "2023-03-16T08:58:09.235Z",
-    "modified": "2023-03-16T09:03:44.749Z",
+    "modified": "2023-03-16T11:18:14.918Z",
     "headers": [],
     "params": [],
     "body": {
@@ -2752,6 +2752,38 @@
       "raw": "{\n  \"user_id\": 1,\n  \"user_type\": \"customer\",\n  \"totp\": \"330604\"\n}",
       "form": []
     },
+    "tests": []
+  },
+  {
+    "_id": "54010bc6-81cb-45c8-ab0b-e70447d1eebe",
+    "colId": "80d178ef-5176-474a-8708-db78bd45faee",
+    "containerId": "df3efec6-c411-4a9a-9790-c86d800854c3",
+    "name": "Generate new backup key",
+    "url": "{{baseUrl}}/auth/mfa/backup-key",
+    "method": "PATCH",
+    "sortNum": 1050000,
+    "created": "2023-03-16T11:11:50.320Z",
+    "modified": "2023-03-16T11:25:15.803Z",
+    "headers": [],
+    "params": [],
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{token}}"
+    },
+    "tests": []
+  },
+  {
+    "_id": "49ae6237-2a4c-4755-aa83-07736fbbd65c",
+    "colId": "80d178ef-5176-474a-8708-db78bd45faee",
+    "containerId": "df3efec6-c411-4a9a-9790-c86d800854c3",
+    "name": "Login with backup key",
+    "url": "{{baseUrl}}/auth/mfa/backup-key",
+    "method": "POST",
+    "sortNum": 1050000,
+    "created": "2023-03-16T11:16:49.003Z",
+    "modified": "2023-03-16T11:17:33.777Z",
+    "headers": [],
+    "params": [],
     "auth": {
       "type": "bearer",
       "bearer": "{{token}}"

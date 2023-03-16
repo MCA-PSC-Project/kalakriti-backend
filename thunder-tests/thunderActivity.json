@@ -2333,5 +2333,41 @@
       "bearer": "{{token}}"
     },
     "tests": []
+  },
+  {
+    "_id": "eca1c5cb-617b-43b7-9b39-ff157179a5b6",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/auth/mfa/backup-key",
+    "url": "{{baseUrl}}/auth/mfa/backup-key",
+    "method": "GET",
+    "sortNum": 0,
+    "created": "2023-03-16T11:13:18.397Z",
+    "modified": "2023-03-16T11:13:18.397Z",
+    "headers": [],
+    "params": [],
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{token}}"
+    },
+    "tests": []
+  },
+  {
+    "_id": "2f2fce9b-20c9-4054-b328-0ec7262b7796",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/auth/mfa/backup-key",
+    "url": "{{baseUrl}}/auth/mfa/backup-key",
+    "method": "PATCH",
+    "sortNum": 0,
+    "created": "2023-03-16T11:26:57.023Z",
+    "modified": "2023-03-16T11:26:57.023Z",
+    "headers": [],
+    "params": [],
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{token}}"
+    },
+    "tests": []
   }
 ]

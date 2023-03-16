@@ -221,17 +221,6 @@ class SetupTOTPAuthentication(Resource):
         # return "MFA successfully setup with backup key {backup_key}", 201
         return {'mfa_totp_setup': 'success', 'backup_key': backup_key}, 201
 
-        # if mfa is already enabled/login with mfa
-
-        # access_token = f_jwt.create_access_token(
-        #     identity=user_id, additional_claims={"user_type": user_type}, fresh=True)
-        # refresh_token = f_jwt.create_refresh_token(
-        #     identity=user_id, additional_claims={"user_type": user_type})
-        # return {
-        #     'access_token': access_token,
-        #     'refresh_token': refresh_token
-        # }, 202
-
 
 class TOTPAuthenticationLogin(Resource):
     # if mfa is already enabled/login with mfa
@@ -287,7 +276,44 @@ class TOTPAuthenticationLogin(Resource):
             'refresh_token': refresh_token
         }, 202
 
+
 class MFABackupKey(Resource):
-    @f_jwt.jwt_required()
+    # login with backup key
     def post(self):
         pass
+
+    # generate new backup key and store hash version of the backup key
+    @f_jwt.jwt_required()
+    def patch(self):
+        user_id = f_jwt.get_jwt_identity()
+        app.logger.debug("user_id= %s", user_id)
+        claims = f_jwt.get_jwt()
+        user_type = claims['user_type']
+        app.logger.debug("user_type= %s", user_type)
+
+        if user_type == 'super_admin':
+            user_type = 'admin'
+        table_name = user_type+'s'
+        # Generate 12 digit backup key
+        backup_key = otp.generate_alpha_numeric_otp(otp_length=12)
+        app.logger.debug("backup_key= %s", backup_key)
+
+        hashed_backup_key = bcrypt.hashpw(
+            backup_key.encode('utf-8'), bcrypt.gensalt())
+        hashed_backup_key = hashed_backup_key.decode('utf-8')
+
+        UPDATE_MFA_ENABLED_HASHED_BACKUP_KEY = '''UPDATE {} SET hashed_backup_key= %s, updated_at= %s 
+        WHERE id= %s'''.format(table_name)
+        try:
+            cursor = app_globals.get_cursor()
+            cursor.execute(UPDATE_MFA_ENABLED_HASHED_BACKUP_KEY,
+                           (hashed_backup_key, datetime.now(), user_id,))
+            if cursor.rowcount != 1:
+                abort(400, 'Bad Request: update {} row error'.format(table_name))
+        except (Exception, psycopg2.Error) as err:
+            app.logger.debug(err)
+            abort(400, 'Bad Request')
+        finally:
+            cursor.close()
+        return {"backup_key": backup_key}, 201
+    
