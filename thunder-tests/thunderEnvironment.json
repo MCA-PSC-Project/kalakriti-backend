@@ -52,7 +52,7 @@
     "data": [
       {
         "name": "token",
-        "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6dHJ1ZSwiaWF0IjoxNjc4OTY3OTkyLCJqdGkiOiIwMzY4NDhlMi05MzA5LTQxYTktYjE0My1hMTQzOTYwNGE4ZjQiLCJ0eXBlIjoiYWNjZXNzIiwic3ViIjoxLCJuYmYiOjE2Nzg5Njc5OTIsImV4cCI6MTY3ODk4OTU5MiwidXNlcl90eXBlIjoiY3VzdG9tZXIifQ.-RqfLi6kFPxBpNa35YmnYD-qFR1jPuPZfgpmEMxgsEY"
+        "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6dHJ1ZSwiaWF0IjoxNjc4OTc3NDA0LCJqdGkiOiI1ZGJjYWVjMS04NjllLTRhYjQtYWMzYS0zNDk5NjliOTJhOGUiLCJ0eXBlIjoiYWNjZXNzIiwic3ViIjoxLCJuYmYiOjE2Nzg5Nzc0MDQsImV4cCI6MTY3ODk5OTAwNCwidXNlcl90eXBlIjoiY3VzdG9tZXIifQ.cxhD7i0LlL3IG9T0JX3y7-a3eCFR4Oqo7KVD9OJ-4o4"
       },
       {
         "name": "seller_token",
@@ -68,7 +68,7 @@
       },
       {
         "name": "temp_token",
-        "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6dHJ1ZSwiaWF0IjoxNjc4OTY3NzMwLCJqdGkiOiIxYmI1YjkxOS0xMjkyLTRjMDYtODk5NC1hYzZlYzczZWJmMDUiLCJ0eXBlIjoiYWNjZXNzIiwic3ViIjotMSwibmJmIjoxNjc4OTY3NzMwLCJleHAiOjE2Nzg5NjgzMzAsInVzZXJfdHlwZSI6ImN1c3RvbWVyX3RlbXAifQ.hn_bhDSQAPND54UQSBHZZepFHPQY5Xz2XGQAf6-Si6k"
+        "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6dHJ1ZSwiaWF0IjoxNjc4OTc3MzUyLCJqdGkiOiJhYzQ5MGM5Mi02ZDRiLTRiYjYtODI0Yi01MTQ5OTZkNWI0ZjQiLCJ0eXBlIjoiYWNjZXNzIiwic3ViIjotMSwibmJmIjoxNjc4OTc3MzUyLCJleHAiOjE2Nzg5Nzc5NTIsInVzZXJfdHlwZSI6ImN1c3RvbWVyX3RlbXAifQ.oxHIYkR7ygrcjfxvVomDLNc02tniaoKXT4fcHP_gf90"
       }
     ]
   }

@@ -177,9 +177,9 @@ class SetupTOTPAuthentication(Resource):
         if not totp_matched:
             abort(400, 'Bad Request: Invalid totp')
 
+        # if user_type == 'super_admin':
+        #     user_type = 'admin'
         # for enabling mfa using totp
-        if user_type == 'super_admin':
-            user_type = 'admin'
         # Generate 12 digit backup key
         backup_key = otp.generate_alpha_numeric_otp(otp_length=12)
         app.logger.debug("backup_key= %s", backup_key)
@@ -248,8 +248,9 @@ class TOTPAuthenticationLogin(Resource):
             user_type = 'admin'
 
         # make user_id +ve
-        user_id = -user_id
-        
+        user_id = abs(user_id)
+        app.logger.debug("user_id= %s", user_id)
+
         GET_TOTP_SECRET_KEY = '''SELECT u.mfa_enabled, um.id AS mfa_id, um.secret_key 
         FROM {0} u
         JOIN {1} um ON u.id = um.{2} AND um.mfa_type = 'totp'

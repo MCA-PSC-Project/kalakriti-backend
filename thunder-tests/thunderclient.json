@@ -62,11 +62,11 @@
     "colId": "80d178ef-5176-474a-8708-db78bd45faee",
     "containerId": "20dae99d-610b-4865-98e2-da1b674f86e0",
     "name": "verify email",
-    "url": "{{baseUrl}}/auth/verify-email?user_type=customer&token=ImN1c3RvbWVyQGdtYWlsLmNvbSI.ZBKs7A.GtfEhkCY_1ANzKpXU9l4zd20S6s",
+    "url": "{{baseUrl}}/auth/verify-email?user_type=customer&token=ImN1c3RvbWVyQGdtYWlsLmNvbSI.ZBMY2g.FVsmvI4OKgb4eavuaMcT5e-G74s",
     "method": "GET",
     "sortNum": 40000,
     "created": "2023-02-20T16:38:51.031Z",
-    "modified": "2023-03-16T05:45:44.002Z",
+    "modified": "2023-03-16T13:26:08.522Z",
     "headers": [],
     "params": [
       {
@@ -76,7 +76,7 @@
       },
       {
         "name": "token",
-        "value": "ImN1c3RvbWVyQGdtYWlsLmNvbSI.ZBKs7A.GtfEhkCY_1ANzKpXU9l4zd20S6s",
+        "value": "ImN1c3RvbWVyQGdtYWlsLmNvbSI.ZBMY2g.FVsmvI4OKgb4eavuaMcT5e-G74s",
         "isPath": false
       }
     ],
@@ -165,7 +165,7 @@
     "method": "GET",
     "sortNum": 52500,
     "created": "2023-02-20T16:38:51.037Z",
-    "modified": "2023-03-15T11:12:06.140Z",
+    "modified": "2023-03-16T14:22:37.237Z",
     "headers": [],
     "params": [],
     "auth": {
@@ -2389,12 +2389,12 @@
     "method": "POST",
     "sortNum": 1020000,
     "created": "2023-03-12T12:01:30.803Z",
-    "modified": "2023-03-16T07:07:22.013Z",
+    "modified": "2023-03-16T13:55:19.416Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n  \"totp\": \"085022\"\n}",
+      "raw": "{\n  \"totp\": \"135855\"\n}",
       "form": []
     },
     "auth": {
@@ -2422,11 +2422,11 @@
     "colId": "80d178ef-5176-474a-8708-db78bd45faee",
     "containerId": "df3efec6-c411-4a9a-9790-c86d800854c3",
     "name": "setup mfa totp admin",
-    "url": "{{baseUrl}}/admins/auth/setup/2fa",
+    "url": "{{baseUrl}}/auth/setup/mfa/totp",
     "method": "POST",
     "sortNum": 1040000,
     "created": "2023-03-12T12:14:55.350Z",
-    "modified": "2023-03-15T16:46:00.656Z",
+    "modified": "2023-03-16T13:50:26.538Z",
     "headers": [],
     "params": [],
     "auth": {
@@ -2744,12 +2744,12 @@
     "method": "POST",
     "sortNum": 765000,
     "created": "2023-03-16T08:58:09.235Z",
-    "modified": "2023-03-16T11:59:52.165Z",
+    "modified": "2023-03-16T14:36:44.203Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n  \"totp\": \"706455\"\n}",
+      "raw": "{\n  \"totp\": \"053473\"\n}",
       "form": []
     },
     "auth": {
