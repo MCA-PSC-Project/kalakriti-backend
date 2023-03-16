@@ -85,6 +85,7 @@ class MFAStatus(Resource):
             cursor.close()
         return {"message": "MFA disabled successfully"}, 200
 
+
 class SetupTOTPAuthentication(Resource):
     # get secret key with provisioning uri
     @f_jwt.jwt_required()
@@ -231,6 +232,57 @@ class SetupTOTPAuthentication(Resource):
         #     'refresh_token': refresh_token
         # }, 202
 
+
 class TOTPAuthentication(Resource):
+    # if mfa is already enabled/login with mfa
     def post(self):
-        pass
+        data = request.get_json()
+        user_id = data.get('user_id', None)
+        user_type = data.get('user_type', None)
+        provided_totp = data.get('totp', None)
+        if not (user_id and user_type and provided_totp):
+            app.logger.debug(
+                "All user_id, user_type and totp must be provided")
+            abort(400, 'Bad Request')
+        if user_type not in ['customer', 'seller', 'admin', 'super_admin']:
+            abort(400, 'Bad request')
+        if user_type == 'super_admin':
+            user_type = 'admin'
+
+        GET_TOTP_SECRET_KEY = '''SELECT u.mfa_enabled, um.id AS mfa_id, um.secret_key 
+        FROM {0} u
+        JOIN {1} um ON u.id = um.{2} AND um.mfa_type = 'totp'
+        WHERE u.id= %s'''.format(
+            user_type+'s', user_type+'s_mfa', user_type+'_id')
+        try:
+            cursor = app_globals.get_named_tuple_cursor()
+            cursor.execute(GET_TOTP_SECRET_KEY, (user_id,))
+            row = cursor.fetchone()
+            if row is None:
+                abort(400, 'Bad Request')
+            mfa_enabled = row.mfa_enabled
+            mfa_id = row.mfa_id
+            totp_secret_key = row.secret_key
+        except (Exception, psycopg2.Error) as err:
+            app.logger.debug(err)
+            abort(400, 'Bad Request')
+        finally:
+            cursor.close()
+
+        if not totp_secret_key:
+            abort(400, 'Bad Request')
+
+        totp_matched = otp.verify_totp(totp_secret_key, provided_totp)
+        app.logger.debug("totp_matched= %s", totp_matched)
+        if not totp_matched:
+            abort(400, 'Bad Request: Invalid totp')
+
+        # if totp matched return access & refresh tokens
+        access_token = f_jwt.create_access_token(
+            identity=user_id, additional_claims={"user_type": user_type}, fresh=True)
+        refresh_token = f_jwt.create_refresh_token(
+            identity=user_id, additional_claims={"user_type": user_type})
+        return {
+            'access_token': access_token,
+            'refresh_token': refresh_token
+        }, 202

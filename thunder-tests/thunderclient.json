@@ -2734,5 +2734,28 @@
       "bearer": "{{token}}"
     },
     "tests": []
+  },
+  {
+    "_id": "0b821eff-c191-4b1b-bc76-44c3aa63a5f5",
+    "colId": "80d178ef-5176-474a-8708-db78bd45faee",
+    "containerId": "df3efec6-c411-4a9a-9790-c86d800854c3",
+    "name": "totp login",
+    "url": "{{baseUrl}}/auth/mfa/totp/login",
+    "method": "POST",
+    "sortNum": 765000,
+    "created": "2023-03-16T08:58:09.235Z",
+    "modified": "2023-03-16T09:03:44.749Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n  \"user_id\": 1,\n  \"user_type\": \"customer\",\n  \"totp\": \"330604\"\n}",
+      "form": []
+    },
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{token}}"
+    },
+    "tests": []
   }
 ]

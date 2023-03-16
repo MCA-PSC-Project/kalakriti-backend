@@ -2310,5 +2310,28 @@
       "bearer": "{{token}}"
     },
     "tests": []
+  },
+  {
+    "_id": "19e95ea7-80e7-4216-917f-648c9186e608",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/auth/mfa/totp/login",
+    "url": "{{baseUrl}}/auth/mfa/totp/login",
+    "method": "POST",
+    "sortNum": 0,
+    "created": "2023-03-16T09:00:53.498Z",
+    "modified": "2023-03-16T09:03:44.760Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n  \"user_id\": 1,\n  \"user_type\": \"customer\",\n  \"totp\": \"330604\"\n}",
+      "form": []
+    },
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{token}}"
+    },
+    "tests": []
   }
 ]

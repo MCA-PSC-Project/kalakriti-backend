@@ -128,7 +128,7 @@ def create_app(config_name):
     # MFA (TOTP)
     api.add_resource(MFAStatus ,'/auth/mfa/status')
     api.add_resource(SetupTOTPAuthentication ,'/auth/setup/mfa/totp')
-    api.add_resource(TOTPAuthentication ,'/auth/mfa/totp')
+    api.add_resource(TOTPAuthentication ,'/auth/mfa/totp/login')
 
     # User Profile
     api.add_resource(CustomerProfile, '/customers/profile')

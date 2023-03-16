@@ -246,7 +246,7 @@ class LoginCustomer(Resource):
             abort(400, 'Bad Request')
 
         # check if user of given email already exists
-        GET_Customer = 'SELECT id, hashed_password, is_verified FROM customers WHERE email= %s'
+        GET_Customer = 'SELECT id, hashed_password, is_verified, mfa_enabled FROM customers WHERE email= %s'
         try:
             cursor = app_globals.get_named_tuple_cursor()
             cursor.execute(GET_Customer, (email,))
@@ -257,6 +257,7 @@ class LoginCustomer(Resource):
                 customer_id = row.id
                 hashed_password = row.hashed_password
                 is_verified = row.is_verified
+                mfa_enabled = row.mfa_enabled
         except (Exception, psycopg2.Error) as err:
             app.logger.debug(err)
             abort(400, 'Bad Request')
@@ -269,6 +270,11 @@ class LoginCustomer(Resource):
 
         user_type = "customer"
         if is_verified:
+            if mfa_enabled:
+                return {
+                    'mfa_enabled': True,
+                    'customer_id': customer_id
+                }, 200
             access_token = f_jwt.create_access_token(
                 identity=customer_id, additional_claims={"user_type": user_type}, fresh=True)
             refresh_token = f_jwt.create_refresh_token(
@@ -307,7 +313,7 @@ class LoginSeller(Resource):
             abort(400, 'Bad Request')
 
         # check if user of given email already exists
-        GET_SELLER = 'SELECT id, hashed_password, is_verified FROM sellers WHERE email= %s'
+        GET_SELLER = 'SELECT id, hashed_password, is_verified, mfa_enabled FROM sellers WHERE email= %s'
         try:
             cursor = app_globals.get_named_tuple_cursor()
             cursor.execute(GET_SELLER, (email,))
@@ -318,6 +324,7 @@ class LoginSeller(Resource):
                 seller_id = row.id
                 hashed_password = row.hashed_password
                 is_verified = row.is_verified
+                mfa_enabled = row.mfa_enabled
         except (Exception, psycopg2.Error) as err:
             app.logger.debug(err)
             abort(400, 'Bad Request')
@@ -330,6 +337,11 @@ class LoginSeller(Resource):
 
         user_type = "seller"
         if is_verified:
+            if mfa_enabled:
+                return {
+                    'mfa_enabled': True,
+                    'seller_id': seller_id
+                }, 200
             access_token = f_jwt.create_access_token(
                 identity=seller_id, additional_claims={"user_type": user_type}, fresh=True)
             refresh_token = f_jwt.create_refresh_token(
@@ -368,7 +380,7 @@ class LoginAdmin(Resource):
             abort(400, 'Bad Request')
 
         # check if user of given email already exists
-        GET_Customer = 'SELECT id, hashed_password, is_verified, is_super_admin FROM admins WHERE email= %s'
+        GET_Customer = 'SELECT id, hashed_password, is_verified, is_super_admin, mfa_enabled FROM admins WHERE email= %s'
         try:
             cursor = app_globals.get_named_tuple_cursor()
             cursor.execute(GET_Customer, (email,))
@@ -380,6 +392,7 @@ class LoginAdmin(Resource):
                 hashed_password = row.hashed_password
                 is_verified = row.is_verified
                 is_super_admin = row.is_super_admin
+                mfa_enabled = row.mfa_enabled
         except (Exception, psycopg2.Error) as err:
             app.logger.debug(err)
             abort(400, 'Bad Request')
@@ -396,6 +409,12 @@ class LoginAdmin(Resource):
             user_type = "admin"
 
         if is_verified:
+            if mfa_enabled:
+                return {
+                    'mfa_enabled': True,
+                    'admin_id': admin_id,
+                    'user_type': user_type 
+                }, 200
             access_token = f_jwt.create_access_token(
                 identity=admin_id, additional_claims={"user_type": user_type}, fresh=True)
             refresh_token = f_jwt.create_refresh_token(
