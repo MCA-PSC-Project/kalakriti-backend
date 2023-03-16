@@ -1,21 +1,29 @@
 import math
 import random
+import string
 from time import sleep
 import pyotp
 import qrcode
 
+
+def generate_alpha_numeric_otp(otp_length=6):
+    return ''.join(random.choices(string.ascii_uppercase + string.digits, k=otp_length))
+
+
 def generate_motp(otp_length=6):
-    digits= '0123456789'
-    otp=''
+    digits = '0123456789'
+    otp = ''
     for i in range(otp_length):
-        otp+= digits[math.floor(random.random()*10)]
+        otp += digits[math.floor(random.random()*10)]
     return otp
+
 
 def generate_totp_secret_key():
     # generate random PyOTP secret key
     key = pyotp.random_base32()
     # print(key)
     return key
+
 
 def generate_totp_key_with_uri(name, issuer_name):
     # generate random PyOTP secret key
@@ -26,11 +34,13 @@ def generate_totp_key_with_uri(name, issuer_name):
     # print(provisioning_uri)
     return totp_secret_key, provisioning_uri
 
+
 def generate_totp(key):
     # generating TOTP codes with provided secret
     # totp = pyotp.TOTP("base32secretkey")
     totp = pyotp.TOTP(key, interval=30)
     return totp.now()
+
 
 def verify_totp(otp_secret_key, user_provided_key):
     # verifying TOTP codes with PyOTP

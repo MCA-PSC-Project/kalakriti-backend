@@ -180,8 +180,8 @@ class SetupTOTPAuthentication(Resource):
         # for enabling mfa using totp
         if user_type == 'super_admin':
             user_type = 'admin'
-        # Generate 10 digit backup key
-        backup_key = otp.generate_motp(otp_length=10)
+        # Generate 12 digit backup key
+        backup_key = otp.generate_alpha_numeric_otp(otp_length=12)
         app.logger.debug("backup_key= %s", backup_key)
 
         hashed_backup_key = bcrypt.hashpw(
@@ -233,7 +233,7 @@ class SetupTOTPAuthentication(Resource):
         # }, 202
 
 
-class TOTPAuthentication(Resource):
+class TOTPAuthenticationLogin(Resource):
     # if mfa is already enabled/login with mfa
     def post(self):
         data = request.get_json()
@@ -286,3 +286,8 @@ class TOTPAuthentication(Resource):
             'access_token': access_token,
             'refresh_token': refresh_token
         }, 202
+
+class MFABackupKey(Resource):
+    @f_jwt.jwt_required()
+    def post(self):
+        pass

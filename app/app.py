@@ -11,7 +11,7 @@ import atexit
 from app.config import app_config
 from app.resources.address import UserAddress
 from app.resources.auth import LoginAdmin, LoginCustomer, LoginSeller, RefreshToken, RegisterAdmin, RegisterCustomer, RegisterSeller, VerifyEmail
-from app.resources.auth_mfa import MFAStatus, SetupTOTPAuthentication, TOTPAuthentication
+from app.resources.auth_mfa import MFAStatus, SetupTOTPAuthentication, TOTPAuthenticationLogin
 from app.resources.auth_otp import GetMobileOtp, MobileOtpLoginAdmin, MobileOtpLoginCustomer, MobileOtpLoginSeller
 from app.resources.orders import Orders, UserOrders
 from app.resources.product_items import ProductItems, SellersProductItems
@@ -128,7 +128,7 @@ def create_app(config_name):
     # MFA (TOTP)
     api.add_resource(MFAStatus ,'/auth/mfa/status')
     api.add_resource(SetupTOTPAuthentication ,'/auth/setup/mfa/totp')
-    api.add_resource(TOTPAuthentication ,'/auth/mfa/totp/login')
+    api.add_resource(TOTPAuthenticationLogin ,'/auth/mfa/totp/login')
 
     # User Profile
     api.add_resource(CustomerProfile, '/customers/profile')
