@@ -58,7 +58,7 @@ class MFAStatus(Resource):
         return mfa_dict, 200
 
 
-class TOTPAuthenticationSetup(Resource):
+class SetupTOTPAuthentication(Resource):
     # get secret key with provisioning uri
     @f_jwt.jwt_required()
     def get(self):
@@ -204,6 +204,11 @@ class TOTPAuthenticationSetup(Resource):
         #     'refresh_token': refresh_token
         # }, 202
 
+class DisableMFAuthentication(Resource):
+    @f_jwt.jwt_required()
+    def post(self):
+        pass
 
 class TOTPAuthentication(Resource):
-    pass
+    def post(self):
+        pass
