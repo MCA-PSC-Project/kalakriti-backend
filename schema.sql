@@ -71,9 +71,12 @@ CREATE TABLE "customers_mfa"(
 	"customer_id" INT,
 	"mfa_type" mfa__type DEFAULT 'totp',
 	"secret_key" VARCHAR,
+	"is_default" BOOLEAN,
 	"added_at" TIMESTAMPTZ NOT NULL,
 	"updated_at" TIMESTAMPTZ,
 	UNIQUE("customer_id", "mfa_type"),
+	UNIQUE("customer_id", "is_default"),
+	CONSTRAINT "is_default_not_false" CHECK("is_default" != false),
 	FOREIGN KEY("customer_id") REFERENCES "customers"("id") ON DELETE CASCADE
 );
 
@@ -104,9 +107,12 @@ CREATE TABLE "admins_mfa"(
 	"admin_id" INT,
 	"mfa_type" mfa__type DEFAULT 'totp',
 	"secret_key" VARCHAR,
+	"is_default" BOOLEAN,
 	"added_at" TIMESTAMPTZ NOT NULL,
 	"updated_at" TIMESTAMPTZ,
 	UNIQUE("admin_id", "mfa_type"),
+	UNIQUE("admin_id", "is_default"),
+	CONSTRAINT "is_default_not_false" CHECK("is_default" != false),
 	FOREIGN KEY("admin_id") REFERENCES "admins"("id") ON DELETE CASCADE
 );
 
@@ -137,9 +143,12 @@ CREATE TABLE "sellers_mfa"(
 	"seller_id" INT,
 	"mfa_type" mfa__type DEFAULT 'totp',
 	"secret_key" VARCHAR,
+	"is_default" BOOLEAN,
 	"added_at" TIMESTAMPTZ NOT NULL,
 	"updated_at" TIMESTAMPTZ,
 	UNIQUE("seller_id", "mfa_type"),
+	UNIQUE("seller_id", "is_default"),
+	CONSTRAINT "is_default_not_false" CHECK("is_default" != false),
 	FOREIGN KEY("seller_id") REFERENCES "sellers"("id") ON DELETE CASCADE
 );
 
