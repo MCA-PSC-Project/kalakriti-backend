@@ -8,12 +8,12 @@
     "method": "POST",
     "sortNum": 10000,
     "created": "2023-02-20T16:38:51.028Z",
-    "modified": "2023-03-15T08:01:03.799Z",
+    "modified": "2023-03-15T17:46:59.091Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n  \"email\": \"customer3@gmail.com\",\n  \"password\": \"abcd@123\",\n  \"first_name\": \"bittu\",\n  \"last_name\": \"kumar\",\n  \"dob\": \"10/3/1998\",\n  \"gender\": \"male\"\n}",
+      "raw": "{\n  \"email\": \"customer@gmail.com\",\n  \"password\": \"abcd@123\",\n  \"first_name\": \"bittu\",\n  \"last_name\": \"kumar\",\n  \"dob\": \"10/3/1998\",\n  \"gender\": \"male\"\n}",
       "form": []
     },
     "tests": [],
@@ -28,12 +28,12 @@
     "method": "POST",
     "sortNum": 5000,
     "created": "2023-02-20T16:38:51.029Z",
-    "modified": "2023-03-15T11:10:49.799Z",
+    "modified": "2023-03-15T17:47:32.504Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n    \"email\": \"customer2@gmail.com\",\n    \"password\": \"abcd@123\"\n}",
+      "raw": "{\n    \"email\": \"customer@gmail.com\",\n    \"password\": \"abcd@123\"\n}",
       "form": []
     },
     "tests": [],
@@ -62,11 +62,11 @@
     "colId": "80d178ef-5176-474a-8708-db78bd45faee",
     "containerId": "20dae99d-610b-4865-98e2-da1b674f86e0",
     "name": "verify email",
-    "url": "{{baseUrl}}/auth/verify-email?user_type=customer&token=ImN1c3RvbWVyMkBnbWFpbC5jb20i.ZBFrFA.ZidN13xiYKIUB_eS1As2EeyaNMw",
+    "url": "{{baseUrl}}/auth/verify-email?user_type=customer&token=ImN1c3RvbWVyQGdtYWlsLmNvbSI.ZBMY2g.FVsmvI4OKgb4eavuaMcT5e-G74s",
     "method": "GET",
     "sortNum": 40000,
     "created": "2023-02-20T16:38:51.031Z",
-    "modified": "2023-03-15T06:54:39.507Z",
+    "modified": "2023-03-16T13:26:08.522Z",
     "headers": [],
     "params": [
       {
@@ -76,7 +76,7 @@
       },
       {
         "name": "token",
-        "value": "ImN1c3RvbWVyMkBnbWFpbC5jb20i.ZBFrFA.ZidN13xiYKIUB_eS1As2EeyaNMw",
+        "value": "ImN1c3RvbWVyQGdtYWlsLmNvbSI.ZBMY2g.FVsmvI4OKgb4eavuaMcT5e-G74s",
         "isPath": false
       }
     ],
@@ -89,9 +89,9 @@
     "name": "Get otp on email",
     "url": "{{baseUrl}}/auth/otp",
     "method": "POST",
-    "sortNum": 50000,
+    "sortNum": 49687.5,
     "created": "2023-02-20T16:38:51.032Z",
-    "modified": "2023-02-20T16:38:51.032Z",
+    "modified": "2023-03-16T09:14:15.051Z",
     "headers": [],
     "params": [],
     "body": {
@@ -165,7 +165,7 @@
     "method": "GET",
     "sortNum": 52500,
     "created": "2023-02-20T16:38:51.037Z",
-    "modified": "2023-03-15T11:12:06.140Z",
+    "modified": "2023-03-16T14:22:37.237Z",
     "headers": [],
     "params": [],
     "auth": {
@@ -2289,21 +2289,30 @@
     "_id": "ef1fd0ee-3ecd-4b0a-9b45-8c2fc050b256",
     "colId": "80d178ef-5176-474a-8708-db78bd45faee",
     "containerId": "df3efec6-c411-4a9a-9790-c86d800854c3",
-    "name": "setup 2fa totp customer",
-    "url": "{{baseUrl}}/auth/login/customer/2fa",
+    "name": "setup mfa totp customer",
+    "url": "{{baseUrl}}/auth/setup/mfa/totp",
     "method": "POST",
     "sortNum": 1020000,
     "created": "2023-03-12T12:01:30.803Z",
-    "modified": "2023-03-12T12:09:16.085Z",
+    "modified": "2023-03-16T13:55:19.416Z",
     "headers": [],
     "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n  \"totp\": \"135855\"\n}",
+      "form": []
+    },
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{token}}"
+    },
     "tests": []
   },
   {
     "_id": "a712c18c-70b8-4e5b-9148-ef365972229d",
     "colId": "80d178ef-5176-474a-8708-db78bd45faee",
     "containerId": "df3efec6-c411-4a9a-9790-c86d800854c3",
-    "name": "setup 2fa totp seller",
+    "name": "setup mfa totp seller",
     "url": "{{baseUrl}}/auth/login/customer/2fa",
     "method": "POST",
     "sortNum": 1030000,
@@ -2317,12 +2326,12 @@
     "_id": "d689dc7a-58c7-45e0-a2cc-9d7dab68c641",
     "colId": "80d178ef-5176-474a-8708-db78bd45faee",
     "containerId": "df3efec6-c411-4a9a-9790-c86d800854c3",
-    "name": "setup 2fa totp admin",
-    "url": "{{baseUrl}}/auth/setup/2fa",
+    "name": "setup mfa totp admin",
+    "url": "{{baseUrl}}/auth/setup/mfa/totp",
     "method": "POST",
     "sortNum": 1040000,
     "created": "2023-03-12T12:14:55.350Z",
-    "modified": "2023-03-12T15:15:33.677Z",
+    "modified": "2023-03-16T13:50:26.538Z",
     "headers": [],
     "params": [],
     "auth": {
@@ -2557,6 +2566,137 @@
         "isPath": false
       }
     ],
+    "tests": []
+  },
+  {
+    "_id": "ec978e20-75a0-4228-a985-05bb18d85e47",
+    "colId": "80d178ef-5176-474a-8708-db78bd45faee",
+    "containerId": "df3efec6-c411-4a9a-9790-c86d800854c3",
+    "name": "Get secret key & provisioning uri",
+    "url": "{{baseUrl}}/auth/setup/mfa/totp",
+    "method": "GET",
+    "sortNum": 510000,
+    "created": "2023-03-15T17:51:49.207Z",
+    "modified": "2023-03-16T02:57:52.198Z",
+    "headers": [],
+    "params": [],
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{token}}"
+    },
+    "tests": []
+  },
+  {
+    "_id": "9647bf73-27ac-4de9-98ec-84d621d84493",
+    "colId": "80d178ef-5176-474a-8708-db78bd45faee",
+    "containerId": "df3efec6-c411-4a9a-9790-c86d800854c3",
+    "name": "Get MFA status",
+    "url": "{{baseUrl}}/auth/mfa/status",
+    "method": "GET",
+    "sortNum": 255000,
+    "created": "2023-03-15T18:19:15.461Z",
+    "modified": "2023-03-16T02:58:49.213Z",
+    "headers": [],
+    "params": [],
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{token}}"
+    },
+    "tests": []
+  },
+  {
+    "_id": "ac434c08-2719-4cfa-86e6-f7b135dcc595",
+    "colId": "80d178ef-5176-474a-8708-db78bd45faee",
+    "containerId": "df3efec6-c411-4a9a-9790-c86d800854c3",
+    "name": "setup mfa totp super admin ",
+    "url": "{{baseUrl}}/admins/auth/setup/2fa",
+    "method": "POST",
+    "sortNum": 1050000,
+    "created": "2023-03-16T07:01:11.955Z",
+    "modified": "2023-03-16T07:01:38.193Z",
+    "headers": [],
+    "params": [],
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{super_admin_token}}"
+    },
+    "tests": []
+  },
+  {
+    "_id": "f8fca592-55fe-48aa-b681-6f132ebe377c",
+    "colId": "80d178ef-5176-474a-8708-db78bd45faee",
+    "containerId": "df3efec6-c411-4a9a-9790-c86d800854c3",
+    "name": "disable mfa",
+    "url": "{{baseUrl}}/auth/mfa/status",
+    "method": "PATCH",
+    "sortNum": 1050000,
+    "created": "2023-03-16T07:20:13.387Z",
+    "modified": "2023-03-16T08:22:43.886Z",
+    "headers": [],
+    "params": [],
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{token}}"
+    },
+    "tests": []
+  },
+  {
+    "_id": "0b821eff-c191-4b1b-bc76-44c3aa63a5f5",
+    "colId": "80d178ef-5176-474a-8708-db78bd45faee",
+    "containerId": "df3efec6-c411-4a9a-9790-c86d800854c3",
+    "name": "totp login",
+    "url": "{{baseUrl}}/auth/mfa/totp/login",
+    "method": "POST",
+    "sortNum": 765000,
+    "created": "2023-03-16T08:58:09.235Z",
+    "modified": "2023-03-16T14:36:44.203Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n  \"totp\": \"053473\"\n}",
+      "form": []
+    },
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{temp_token}}"
+    },
+    "tests": []
+  },
+  {
+    "_id": "54010bc6-81cb-45c8-ab0b-e70447d1eebe",
+    "colId": "80d178ef-5176-474a-8708-db78bd45faee",
+    "containerId": "df3efec6-c411-4a9a-9790-c86d800854c3",
+    "name": "Generate new backup key",
+    "url": "{{baseUrl}}/auth/mfa/backup-key",
+    "method": "PATCH",
+    "sortNum": 1050000,
+    "created": "2023-03-16T11:11:50.320Z",
+    "modified": "2023-03-16T11:25:15.803Z",
+    "headers": [],
+    "params": [],
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{token}}"
+    },
+    "tests": []
+  },
+  {
+    "_id": "49ae6237-2a4c-4755-aa83-07736fbbd65c",
+    "colId": "80d178ef-5176-474a-8708-db78bd45faee",
+    "containerId": "df3efec6-c411-4a9a-9790-c86d800854c3",
+    "name": "Login with backup key",
+    "url": "{{baseUrl}}/auth/mfa/backup-key",
+    "method": "POST",
+    "sortNum": 1050000,
+    "created": "2023-03-16T11:16:49.003Z",
+    "modified": "2023-03-16T11:17:33.777Z",
+    "headers": [],
+    "params": [],
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{token}}"
+    },
     "tests": []
   }
 ]

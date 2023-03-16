@@ -11,6 +11,7 @@ import atexit
 from app.config import app_config
 from app.resources.address import UserAddress
 from app.resources.auth import LoginAdmin, LoginCustomer, LoginSeller, RefreshToken, RegisterAdmin, RegisterCustomer, RegisterSeller, VerifyEmail
+from app.resources.auth_mfa import MFABackupKey, MFAStatus, SetupTOTPAuthentication, TOTPAuthenticationLogin
 from app.resources.auth_otp import GetMobileOtp, MobileOtpLoginAdmin, MobileOtpLoginCustomer, MobileOtpLoginSeller
 from app.resources.orders import Orders, UserOrders
 from app.resources.product_items import ProductItems, SellersProductItems
@@ -88,6 +89,7 @@ def create_app(config_name):
     print('Existing buckets:')
     for bucket in response['Buckets']:
         print(f'{bucket["Name"]}')
+
     # Endpoints
 
     # Media
@@ -110,17 +112,24 @@ def create_app(config_name):
     api.add_resource(RefreshToken, '/auth/refresh')
     api.add_resource(VerifyEmail, '/auth/verify-email')
 
+    # MOTP
     api.add_resource(GetMobileOtp, '/auth/motp')
     api.add_resource(MobileOtpLoginCustomer, '/customers/auth/motp/login')
     api.add_resource(MobileOtpLoginSeller, '/sellers/auth/motp/login')
     api.add_resource(MobileOtpLoginAdmin, '/admins/auth/motp/login')
 
-    # TODO: Resets
+    # Reset
     api.add_resource(RequestResetEmail, '/reset-email/request')
     api.add_resource(ResetEmail, '/reset-email')
     api.add_resource(ResetMobile, '/reset-mobile')
     api.add_resource(RequestResetPassword, '/reset-password/request')
     api.add_resource(ResetPassword, '/reset-password')
+
+    # MFA (TOTP)
+    api.add_resource(MFAStatus, '/auth/mfa/status')
+    api.add_resource(SetupTOTPAuthentication, '/auth/setup/mfa/totp')
+    api.add_resource(TOTPAuthenticationLogin, '/auth/mfa/totp/login')
+    api.add_resource(MFABackupKey, '/auth/mfa/backup-key')
 
     # User Profile
     api.add_resource(CustomerProfile, '/customers/profile')

@@ -35,6 +35,8 @@ class Config(object):
     SEND_EMAIL = False
     SEND_MOTP = False
 
+    APP_NAME = os.getenv("APP_NAME")
+
 
 class DevelopmentConfig(Config):
     """Configurations for Development."""
