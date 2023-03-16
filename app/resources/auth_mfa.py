@@ -57,6 +57,33 @@ class MFAStatus(Resource):
             cursor.close()
         return mfa_dict, 200
 
+    # Disable mfa
+    @f_jwt.jwt_required()
+    def patch(self):
+        user_id = f_jwt.get_jwt_identity()
+        app.logger.debug("user_id= %s", user_id)
+        claims = f_jwt.get_jwt()
+        user_type = claims['user_type']
+        app.logger.debug("user_type= %s", user_type)
+
+        if user_type == 'super_admin':
+            user_type = 'admin'
+        table_name = user_type+'s'
+        mfa_enabled = False
+        UPDATE_MFA_ENABLED_STATUS = '''UPDATE {} SET mfa_enabled= %s, updated_at= %s WHERE id= %s'''.format(
+            table_name)
+        try:
+            cursor = app_globals.get_cursor()
+            cursor.execute(UPDATE_MFA_ENABLED_STATUS,
+                           (mfa_enabled, datetime.now(), user_id,))
+            if cursor.rowcount != 1:
+                abort(400, 'Bad Request: update {} row error'.format(table_name))
+        except (Exception, psycopg2.Error) as err:
+            app.logger.debug(err)
+            abort(400, 'Bad Request')
+        finally:
+            cursor.close()
+        return {"message": "MFA disabled successfully"}, 200
 
 class SetupTOTPAuthentication(Resource):
     # get secret key with provisioning uri
@@ -203,11 +230,6 @@ class SetupTOTPAuthentication(Resource):
         #     'access_token': access_token,
         #     'refresh_token': refresh_token
         # }, 202
-
-class DisableMFAuthentication(Resource):
-    @f_jwt.jwt_required()
-    def post(self):
-        pass
 
 class TOTPAuthentication(Resource):
     def post(self):

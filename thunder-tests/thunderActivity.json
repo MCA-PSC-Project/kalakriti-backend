@@ -2292,5 +2292,23 @@
       }
     ],
     "tests": []
+  },
+  {
+    "_id": "2f090c8b-bf64-4a8d-b8b4-f8718ba51ee4",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/auth/mfa/status",
+    "url": "{{baseUrl}}/auth/mfa/status",
+    "method": "PATCH",
+    "sortNum": 0,
+    "created": "2023-03-16T08:22:43.859Z",
+    "modified": "2023-03-16T08:22:43.859Z",
+    "headers": [],
+    "params": [],
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{token}}"
+    },
+    "tests": []
   }
 ]

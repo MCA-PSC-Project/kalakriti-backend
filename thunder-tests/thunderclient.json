@@ -2722,11 +2722,17 @@
     "colId": "80d178ef-5176-474a-8708-db78bd45faee",
     "containerId": "df3efec6-c411-4a9a-9790-c86d800854c3",
     "name": "disable mfa",
-    "url": "",
-    "method": "GET",
+    "url": "{{baseUrl}}/auth/mfa/status",
+    "method": "PATCH",
     "sortNum": 1050000,
     "created": "2023-03-16T07:20:13.387Z",
-    "modified": "2023-03-16T07:20:13.387Z",
-    "headers": []
+    "modified": "2023-03-16T08:22:43.886Z",
+    "headers": [],
+    "params": [],
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{token}}"
+    },
+    "tests": []
   }
 ]
