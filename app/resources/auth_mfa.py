@@ -87,7 +87,7 @@ class TOTPAuthenticationSetup(Resource):
             cursor.close()
 
         totp_secret_key, provisioning_uri = otp.generate_totp_key_with_uri(
-            name=user_email, issuer_name='KalaKriti')
+            name=user_email, issuer_name=app.config['APP_NAME'])
         UPSERT_TOTP_SECRET_KEY = '''INSERT INTO {0} ({1}, secret_key, added_at) VALUES(%s, %s, %s)
         ON CONFLICT ({1}, mfa_type)
         DO UPDATE set secret_key= %s, updated_at= %s'''.format(
@@ -165,7 +165,7 @@ class TOTPAuthenticationSetup(Resource):
         try:
             cursor = app_globals.get_cursor()
             cursor.execute(UPDATE_MFA_ENABLED_HASHED_BACKUP_KEY,
-                            (True, hashed_backup_key, datetime.now(), user_id,))
+                           (True, hashed_backup_key, datetime.now(), user_id,))
             if cursor.rowcount != 1:
                 abort(400, 'Bad Request: update {} row error'.format(
                     user_type+'s'))
@@ -181,7 +181,7 @@ class TOTPAuthenticationSetup(Resource):
         try:
             cursor = app_globals.get_cursor()
             cursor.execute(MAKE_TOTP_MFA_DEFAULT,
-                            (True, datetime.now(), user_id))
+                           (True, datetime.now(), user_id))
             if cursor.rowcount != 1:
                 app.logger.debug("could not set totp as default mfa")
                 # abort(400, 'Bad Request: update {} row error'.format(user_type+'s_mfa'))

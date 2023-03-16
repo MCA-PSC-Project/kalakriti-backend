@@ -2384,17 +2384,17 @@
     "_id": "ef1fd0ee-3ecd-4b0a-9b45-8c2fc050b256",
     "colId": "80d178ef-5176-474a-8708-db78bd45faee",
     "containerId": "df3efec6-c411-4a9a-9790-c86d800854c3",
-    "name": "setup 2fa totp customer",
+    "name": "setup mfa totp customer",
     "url": "{{baseUrl}}/auth/setup/mfa/totp",
     "method": "POST",
     "sortNum": 1020000,
     "created": "2023-03-12T12:01:30.803Z",
-    "modified": "2023-03-16T06:58:18.762Z",
+    "modified": "2023-03-16T07:07:22.013Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n  \"totp\": \"691980\"\n}",
+      "raw": "{\n  \"totp\": \"085022\"\n}",
       "form": []
     },
     "auth": {
@@ -2407,7 +2407,7 @@
     "_id": "a712c18c-70b8-4e5b-9148-ef365972229d",
     "colId": "80d178ef-5176-474a-8708-db78bd45faee",
     "containerId": "df3efec6-c411-4a9a-9790-c86d800854c3",
-    "name": "setup 2fa totp seller",
+    "name": "setup mfa totp seller",
     "url": "{{baseUrl}}/auth/login/customer/2fa",
     "method": "POST",
     "sortNum": 1030000,
@@ -2421,7 +2421,7 @@
     "_id": "d689dc7a-58c7-45e0-a2cc-9d7dab68c641",
     "colId": "80d178ef-5176-474a-8708-db78bd45faee",
     "containerId": "df3efec6-c411-4a9a-9790-c86d800854c3",
-    "name": "setup 2fa totp admin",
+    "name": "setup mfa totp admin",
     "url": "{{baseUrl}}/admins/auth/setup/2fa",
     "method": "POST",
     "sortNum": 1040000,
@@ -2696,6 +2696,24 @@
     "auth": {
       "type": "bearer",
       "bearer": "{{token}}"
+    },
+    "tests": []
+  },
+  {
+    "_id": "ac434c08-2719-4cfa-86e6-f7b135dcc595",
+    "colId": "80d178ef-5176-474a-8708-db78bd45faee",
+    "containerId": "df3efec6-c411-4a9a-9790-c86d800854c3",
+    "name": "setup mfa totp super admin ",
+    "url": "{{baseUrl}}/admins/auth/setup/2fa",
+    "method": "POST",
+    "sortNum": 1050000,
+    "created": "2023-03-16T07:01:11.955Z",
+    "modified": "2023-03-16T07:01:38.193Z",
+    "headers": [],
+    "params": [],
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{super_admin_token}}"
     },
     "tests": []
   }

@@ -31,7 +31,10 @@ class GetMobileOtp(Resource):
             abort(400, 'Bad Request')
         finally:
             cursor.close()
-        # TODO: Add code to send otp here
+
+        if app.config['SEND_MOTP']:
+            # TODO: Add code to send motp here
+            pass
         return 'Otp has been sent successfully', 200
 
 
