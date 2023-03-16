@@ -2973,5 +2973,28 @@
       "bearer": "{{token}}"
     },
     "tests": []
+  },
+  {
+    "_id": "0aee8ef2-4c36-4653-a6df-edb2046288dd",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/auth/setup/mfa/totp",
+    "url": "{{baseUrl}}/auth/setup/mfa/totp",
+    "method": "POST",
+    "sortNum": 0,
+    "created": "2023-03-16T03:27:31.197Z",
+    "modified": "2023-03-16T03:49:39.081Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n  \"totp\": \"368109\"\n}",
+      "form": []
+    },
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{token}}"
+    },
+    "tests": []
   }
 ]

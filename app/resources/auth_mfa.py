@@ -102,9 +102,9 @@ class TOTPAuthenticationSetup(Resource):
 
         GET_TOTP_SECRET_KEY = '''SELECT u.mfa_enabled, um.secret_key 
         FROM {} u
-        JOIN {} um u.id = um.{} 
-        WHERE id= %s'''.format(
-            user_type+'s', user_type+'_mfa', user_type+'_id')
+        JOIN {} um ON u.id = um.{} 
+        WHERE u.id= %s'''.format(
+            user_type+'s', user_type+'s_mfa', user_type+'_id')
         try:
             cursor = app_globals.get_named_tuple_cursor()
             cursor.execute(GET_TOTP_SECRET_KEY, (user_id,))
@@ -112,7 +112,7 @@ class TOTPAuthenticationSetup(Resource):
             if row is None:
                 abort(400, 'Bad Request')
             mfa_enabled = row.mfa_enabled
-            totp_secret_key = row.totp_secret_key
+            totp_secret_key = row.secret_key
         except (Exception, psycopg2.Error) as err:
             app.logger.debug(err)
             abort(400, 'Bad Request')
@@ -139,8 +139,8 @@ class TOTPAuthenticationSetup(Resource):
                 backup_key.encode('utf-8'), bcrypt.gensalt())
             hashed_backup_key = hashed_backup_key.decode('utf-8')
 
-            UPDATE_MFA_ENABLED_HASHED_BACKUP_KEY = '''UPDATE {} SET (mfa_enabled, hashed_backup_key, updated_at) 
-            VALUES(%s, %s, %s) WHERE id= %s'''.format(user_type+'s')
+            UPDATE_MFA_ENABLED_HASHED_BACKUP_KEY = '''UPDATE {} SET mfa_enabled= %s, hashed_backup_key= %s,
+            updated_at= %s WHERE id= %s'''.format(user_type+'s')
             try:
                 cursor = app_globals.get_cursor()
                 cursor.execute(UPDATE_MFA_ENABLED_HASHED_BACKUP_KEY,
