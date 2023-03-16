@@ -36,7 +36,6 @@ class MFAStatus(Resource):
             cursor.close()
         return {"mfa_enabled": mfa_enabled}, 200
 
-
 class TOTPAuthenticationSetup(Resource):
     # get secret key with provisioning uri
     @f_jwt.jwt_required()
@@ -162,69 +161,6 @@ class TOTPAuthenticationSetup(Resource):
         #     'access_token': access_token,
         #     'refresh_token': refresh_token
         # }, 202
-
-
-class Register_2fa(Resource):
-    @f_jwt.jwt_required()
-    def post(self):
-        user_id = f_jwt.get_jwt_identity()
-        app.logger.debug("user_id= %s", user_id)
-        claims = f_jwt.get_jwt()
-        user_type = claims['user_type']
-        app.logger.debug("user_type= %s", user_type)
-
-        # totp_secret_key = otp.generate_totp_secret_key()
-        # app.logger.debug("totp_secret_key= %s", totp_secret_key)
-        # generated_totp = otp.generate_totp(totp_secret_key)
-        # app.logger.debug("generated_totp= %s", generated_totp)
-        # sleep(35)
-        # is_verified = otp.verify_totp(totp_secret_key, generated_totp)
-        # app.logger.debug("is_verified= %s", is_verified)
-
-        if user_type == 'super_admin':
-            user_type = 'admin'
-        table_name = user_type+'s'
-        GET_USER_EMAIL = '''SELECT email, mfa_enabled, default_mfa_type FROM {} WHERE id= %s'''.format(
-            table_name)
-        try:
-            cursor = app_globals.get_named_tuple_cursor()
-            cursor.execute(GET_USER_EMAIL, (user_id,))
-            row = cursor.fetchone()
-            if row is None:
-                abort(400, 'Bad Request')
-            user_email = row.email
-            mfa_enabled = row.mfa_enabled
-            default_mfa_type = row.default_mfa_type
-        except (Exception, psycopg2.Error) as err:
-            app.logger.debug(err)
-            abort(400, 'Bad Request')
-        finally:
-            cursor.close()
-
-        if mfa_enabled:
-            abort(400, 'Bad Request: MFA already enabled')
-        if default_mfa_type == "totp":
-            abort(400, 'Bad Request: 2FA with totp already enabled')
-
-        totp_secret_key, provisioning_uri = otp.generate_totp_key_with_uri(
-            name=user_email, issuer_name="KalaKriti")
-        app.logger.debug("totp_secret_key= %s", totp_secret_key)
-        app.logger.debug("provisioning_uri= %s", provisioning_uri)
-
-        INSERT_TOTP_SECRET_KEY = '''UPDATE {} SET (totp_secret_key, updated_at) VALUES(%s, %s)'''.format(
-            table_name)
-        try:
-            cursor = app_globals.get_cursor()
-            cursor.execute(INSERT_TOTP_SECRET_KEY,
-                           (totp_secret_key, datetime.now(),))
-            id = cursor.fetchone()[0]
-        except (Exception, psycopg2.Error) as err:
-            app.logger.debug(err)
-            abort(400, 'Bad Request')
-        finally:
-            cursor.close()
-        return {totp_secret_key, provisioning_uri}, 201
-
 
 class TOTPAuthentication(Resource):
     pass
