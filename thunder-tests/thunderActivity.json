@@ -2254,12 +2254,12 @@
     "method": "POST",
     "sortNum": 0,
     "created": "2023-03-16T03:27:31.197Z",
-    "modified": "2023-03-16T13:55:19.424Z",
+    "modified": "2023-03-16T16:24:24.873Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n  \"totp\": \"135855\"\n}",
+      "raw": "{\n  \"totp\": \"734502\"\n}",
       "form": []
     },
     "auth": {
@@ -2411,6 +2411,29 @@
         "isPath": false
       }
     ],
+    "tests": []
+  },
+  {
+    "_id": "2810c855-d3c7-4a59-911a-9f38345711d9",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/auth/mfa/backup-key",
+    "url": "{{baseUrl}}/auth/mfa/backup-key",
+    "method": "POST",
+    "sortNum": 0,
+    "created": "2023-03-16T16:26:34.780Z",
+    "modified": "2023-03-16T16:27:05.736Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n  \"backup_key\": \"BX7Q30AXJHMD\"\n}",
+      "form": []
+    },
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{temp_token}}"
+    },
     "tests": []
   }
 ]

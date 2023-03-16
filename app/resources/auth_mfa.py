@@ -292,8 +292,63 @@ class TOTPAuthenticationLogin(Resource):
 
 class MFABackupKey(Resource):
     # login with backup key
+    @f_jwt.jwt_required()
     def post(self):
-        pass
+        # user_id will be negative here and user_type will have _temp as suffix
+        user_id = f_jwt.get_jwt_identity()
+        app.logger.debug("user_id= %s", user_id)
+        claims = f_jwt.get_jwt()
+        user_type = claims['user_type']
+        app.logger.debug("user_type= %s", user_type)
+
+        data = request.get_json()
+        provided_backup_key = data.get('backup_key', None)
+        if not provided_backup_key:
+            app.logger.debug("backup_key must be provided")
+            abort(400, 'Bad Request')
+        if user_type not in ['customer_temp', 'seller_temp', 'admin_temp', 'super_admin_temp']:
+            abort(400, 'Bad request')
+
+        # remove _temp suffix from user_type
+        user_type = user_type.replace('_temp', '')
+        app.logger.debug("user_type after replace= %s", user_type)
+        if user_type == 'super_admin':
+            user_type = 'admin'
+
+        # make user_id +ve
+        user_id = abs(user_id)
+        app.logger.debug("user_id= %s", user_id)
+
+        GET_HASHED_BACKUP_KEY = '''SELECT hashed_backup_key FROM {} WHERE id= %s'''.format(user_type+'s')
+        try:
+            cursor = app_globals.get_named_tuple_cursor()
+            cursor.execute(GET_HASHED_BACKUP_KEY, (user_id,))
+            row = cursor.fetchone()
+            if row is None:
+                abort(400, 'Bad Request')
+            hashed_backup_key = row.hashed_backup_key
+        except (Exception, psycopg2.Error) as err:
+            app.logger.debug(err)
+            abort(400, 'Bad Request')
+        finally:
+            cursor.close()
+
+        if not hashed_backup_key:
+            abort(400, 'Bad Request')
+
+        # check user's entered password's hash with db's stored hashed password
+        if (bcrypt.checkpw(provided_backup_key.encode('utf-8'), hashed_backup_key.encode('utf-8')) == False):
+            abort(400, 'backup key not correct')
+
+        # if backup key is correct, then return access & refresh tokens
+        access_token = f_jwt.create_access_token(
+            identity=user_id, additional_claims={"user_type": user_type}, fresh=True)
+        refresh_token = f_jwt.create_refresh_token(
+            identity=user_id, additional_claims={"user_type": user_type})
+        return {
+            'access_token': access_token,
+            'refresh_token': refresh_token
+        }, 202
 
     # generate new backup key and store hash version of the backup key
     @f_jwt.jwt_required()
