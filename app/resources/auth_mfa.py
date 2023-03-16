@@ -38,7 +38,7 @@ class MFAStatus(Resource):
         return {"mfa_enabled": mfa_enabled, "default_mfa_type": default_mfa_type}, 200
 
 
-class TOTPAuthentication(Resource):
+class TOTPAuthenticationSetup(Resource):
     # get secret key with provisioning uri
     def get(self):
         user_id = f_jwt.get_jwt_identity()
@@ -81,7 +81,7 @@ class TOTPAuthentication(Resource):
             cursor.close()
         return {totp_secret_key, provisioning_uri}, 201
 
-    # register MFA(totp) or login with mfa(totp)
+    # register MFA(totp)
     @f_jwt.jwt_required()
     def post(self):
         user_id = f_jwt.get_jwt_identity()
@@ -93,13 +93,17 @@ class TOTPAuthentication(Resource):
         data = request.get_json()
         provided_totp = data.get('totp', None)
         if not provided_totp:
+            app.logger.debug("No totp provided")
             abort(400, 'Bad Request')
+
+        if user_type == 'super_admin':
+            user_type = 'admin'
 
         GET_TOTP_SECRET_KEY = '''SELECT u.mfa_enabled, um.secret_key 
         FROM {} u
         JOIN {} um u.id = um.{} 
         WHERE id= %s'''.format(
-            table_name, user_type+'_mfa', user_type+'_id')
+            user_type+'s', user_type+'_mfa', user_type+'_id')
         try:
             cursor = app_globals.get_named_tuple_cursor()
             cursor.execute(GET_TOTP_SECRET_KEY, (user_id,))
@@ -126,33 +130,37 @@ class TOTPAuthentication(Resource):
         if not mfa_enabled:
             if user_type == 'super_admin':
                 user_type = 'admin'
-            table_name = user_type+'s'
-            INSERT_TOTP_SECRET_KEY = '''UPDATE {} SET (mfa_enabled, totp_secret_key, updated_at) 
-            VALUES(%s, %s, %s)'''.format(table_name)
+            # TODO: Generate 10 digit backup key
+            backup_key = otp.generate_motp(otp_length=10)
+            app.logger.debug(backup_key)
+
+            hashed_backup_key = bcrypt.hashpw(
+                backup_key.encode('utf-8'), bcrypt.gensalt())
+            hashed_backup_key = hashed_backup_key.decode('utf-8')
+
+            UPDATE_MFA_ENABLED_HASHED_BACKUP_KEY = '''UPDATE {} SET (mfa_enabled, hashed_backup_key, updated_at) 
+            VALUES(%s, %s, %s) WHERE id= %s'''.format(user_type+'s')
             try:
                 cursor = app_globals.get_cursor()
-                cursor.execute(INSERT_TOTP_SECRET_KEY,
-                               (True, totp_secret_key, datetime.now(),))
-                id = cursor.fetchone()[0]
+                cursor.execute(UPDATE_MFA_ENABLED_HASHED_BACKUP_KEY,
+                               (True, hashed_backup_key, datetime.now(), user_id))
             except (Exception, psycopg2.Error) as err:
                 app.logger.debug(err)
                 abort(400, 'Bad Request')
             finally:
                 cursor.close()
-            # TODO: Generate backup key
-            backup_key = None
             # return "MFA successfully setup with backup key {backup_key}", 201
-            return {'backup_key': backup_key}, 201
+            return {'mfa_totp_setup': 'success', 'backup_key': backup_key}, 201
 
-        # if mfa is already enabled/login with mfa
-        access_token = f_jwt.create_access_token(
-            identity=user_id, additional_claims={"user_type": user_type}, fresh=True)
-        refresh_token = f_jwt.create_refresh_token(
-            identity=user_id, additional_claims={"user_type": user_type})
-        return {
-            'access_token': access_token,
-            'refresh_token': refresh_token
-        }, 202
+        # # if mfa is already enabled/login with mfa
+        # access_token = f_jwt.create_access_token(
+        #     identity=user_id, additional_claims={"user_type": user_type}, fresh=True)
+        # refresh_token = f_jwt.create_refresh_token(
+        #     identity=user_id, additional_claims={"user_type": user_type})
+        # return {
+        #     'access_token': access_token,
+        #     'refresh_token': refresh_token
+        # }, 202
 
 
 class Register_2fa(Resource):
