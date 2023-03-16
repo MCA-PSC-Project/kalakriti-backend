@@ -224,20 +224,32 @@ class SetupTOTPAuthentication(Resource):
 
 class TOTPAuthenticationLogin(Resource):
     # if mfa is already enabled/login with mfa
+    @f_jwt.jwt_required()
     def post(self):
+        # user_id will be negative here and user_type will have _temp as suffix
+        user_id = f_jwt.get_jwt_identity()
+        app.logger.debug("user_id= %s", user_id)
+        claims = f_jwt.get_jwt()
+        user_type = claims['user_type']
+        app.logger.debug("user_type= %s", user_type)
+
         data = request.get_json()
-        user_id = data.get('user_id', None)
-        user_type = data.get('user_type', None)
         provided_totp = data.get('totp', None)
-        if not (user_id and user_type and provided_totp):
-            app.logger.debug(
-                "All user_id, user_type and totp must be provided")
+        if not provided_totp:
+            app.logger.debug("totp must be provided")
             abort(400, 'Bad Request')
-        if user_type not in ['customer', 'seller', 'admin', 'super_admin']:
+        if user_type not in ['customer_temp', 'seller_temp', 'admin_temp', 'super_admin_temp']:
             abort(400, 'Bad request')
+
+        # remove _temp suffix from user_type
+        user_type = user_type.replace('_temp', '')
+        app.logger.debug("user_type after replace= %s", user_type)
         if user_type == 'super_admin':
             user_type = 'admin'
 
+        # make user_id +ve
+        user_id = -user_id
+        
         GET_TOTP_SECRET_KEY = '''SELECT u.mfa_enabled, um.id AS mfa_id, um.secret_key 
         FROM {0} u
         JOIN {1} um ON u.id = um.{2} AND um.mfa_type = 'totp'
@@ -316,4 +328,3 @@ class MFABackupKey(Resource):
         finally:
             cursor.close()
         return {"backup_key": backup_key}, 201
-    

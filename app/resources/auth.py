@@ -271,10 +271,15 @@ class LoginCustomer(Resource):
         user_type = "customer"
         if is_verified:
             if mfa_enabled:
+                # generate & return temp access token
+                access_token = f_jwt.create_access_token(
+                    identity=-customer_id, additional_claims={"user_type": user_type+'_temp'}, fresh=True,
+                    expires_delta=timedelta(minutes=10))
                 return {
-                    'mfa_enabled': True,
-                    'customer_id': customer_id
+                    'access_token': access_token
                 }, 200
+
+            # if mfa_enabled is False
             access_token = f_jwt.create_access_token(
                 identity=customer_id, additional_claims={"user_type": user_type}, fresh=True)
             refresh_token = f_jwt.create_refresh_token(
@@ -338,10 +343,15 @@ class LoginSeller(Resource):
         user_type = "seller"
         if is_verified:
             if mfa_enabled:
+                # generate & return temp access token
+                access_token = f_jwt.create_access_token(
+                    identity=-seller_id, additional_claims={"user_type": user_type+'_temp'}, fresh=True,
+                    expires_delta=timedelta(minutes=10))
                 return {
-                    'mfa_enabled': True,
-                    'seller_id': seller_id
+                    'access_token': access_token
                 }, 200
+
+            # if mfa_enabled is False
             access_token = f_jwt.create_access_token(
                 identity=seller_id, additional_claims={"user_type": user_type}, fresh=True)
             refresh_token = f_jwt.create_refresh_token(
@@ -410,11 +420,15 @@ class LoginAdmin(Resource):
 
         if is_verified:
             if mfa_enabled:
+                # generate & return temp access token
+                access_token = f_jwt.create_access_token(
+                    identity=-admin_id, additional_claims={"user_type": user_type+'_temp'}, fresh=True,
+                    expires_delta=timedelta(minutes=10))
                 return {
-                    'mfa_enabled': True,
-                    'admin_id': admin_id,
-                    'user_type': user_type 
+                    'access_token': access_token
                 }, 200
+
+            # if mfa_enabled is False
             access_token = f_jwt.create_access_token(
                 identity=admin_id, additional_claims={"user_type": user_type}, fresh=True)
             refresh_token = f_jwt.create_refresh_token(

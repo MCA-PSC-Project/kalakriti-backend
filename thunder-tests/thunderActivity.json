@@ -2320,17 +2320,17 @@
     "method": "POST",
     "sortNum": 0,
     "created": "2023-03-16T09:00:53.498Z",
-    "modified": "2023-03-16T09:03:44.760Z",
+    "modified": "2023-03-16T11:59:52.173Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n  \"user_id\": 1,\n  \"user_type\": \"customer\",\n  \"totp\": \"330604\"\n}",
+      "raw": "{\n  \"totp\": \"706455\"\n}",
       "form": []
     },
     "auth": {
       "type": "bearer",
-      "bearer": "{{token}}"
+      "bearer": "{{temp_token}}"
     },
     "tests": []
   },
@@ -2362,6 +2362,24 @@
     "sortNum": 0,
     "created": "2023-03-16T11:26:57.023Z",
     "modified": "2023-03-16T11:26:57.023Z",
+    "headers": [],
+    "params": [],
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{token}}"
+    },
+    "tests": []
+  },
+  {
+    "_id": "c170ed36-85fe-4d79-97e7-ba74b45ba286",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/customers/profile",
+    "url": "{{baseUrl}}/customers/profile",
+    "method": "GET",
+    "sortNum": 0,
+    "created": "2023-03-16T11:55:46.204Z",
+    "modified": "2023-03-16T11:55:46.204Z",
     "headers": [],
     "params": [],
     "auth": {
