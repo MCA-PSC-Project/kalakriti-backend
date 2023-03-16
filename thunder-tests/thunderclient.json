@@ -2658,24 +2658,36 @@
     "_id": "ec978e20-75a0-4228-a985-05bb18d85e47",
     "colId": "80d178ef-5176-474a-8708-db78bd45faee",
     "containerId": "df3efec6-c411-4a9a-9790-c86d800854c3",
-    "name": "Get secret key and url",
-    "url": "",
+    "name": "Get secret key & provisioning uri",
+    "url": "{{baseUrl}}/auth/setup/mfa/totp",
     "method": "GET",
     "sortNum": 510000,
     "created": "2023-03-15T17:51:49.207Z",
-    "modified": "2023-03-15T17:51:55.380Z",
-    "headers": []
+    "modified": "2023-03-16T02:57:52.198Z",
+    "headers": [],
+    "params": [],
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{token}}"
+    },
+    "tests": []
   },
   {
     "_id": "9647bf73-27ac-4de9-98ec-84d621d84493",
     "colId": "80d178ef-5176-474a-8708-db78bd45faee",
     "containerId": "df3efec6-c411-4a9a-9790-c86d800854c3",
     "name": "Get MFA status",
-    "url": "",
+    "url": "{{baseUrl}}/auth/mfa/status",
     "method": "GET",
     "sortNum": 255000,
     "created": "2023-03-15T18:19:15.461Z",
-    "modified": "2023-03-15T18:19:17.795Z",
-    "headers": []
+    "modified": "2023-03-16T02:58:49.213Z",
+    "headers": [],
+    "params": [],
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{token}}"
+    },
+    "tests": []
   }
 ]

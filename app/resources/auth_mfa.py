@@ -20,7 +20,7 @@ class MFAStatus(Resource):
         app.logger.debug("user_type= %s", user_type)
 
         table_name = user_type+'s'
-        GET_USER_EMAIL = '''SELECT mfa_enabled, default_mfa_type FROM {} WHERE id= %s'''.format(
+        GET_USER_EMAIL = '''SELECT mfa_enabled FROM {} WHERE id= %s'''.format(
             table_name)
         try:
             cursor = app_globals.get_named_tuple_cursor()
@@ -29,17 +29,17 @@ class MFAStatus(Resource):
             if row is None:
                 abort(400, 'Bad Request')
             mfa_enabled = row.mfa_enabled
-            default_mfa_type = row.default_mfa_type
         except (Exception, psycopg2.Error) as err:
             app.logger.debug(err)
             abort(400, 'Bad Request')
         finally:
             cursor.close()
-        return {"mfa_enabled": mfa_enabled, "default_mfa_type": default_mfa_type}, 200
+        return {"mfa_enabled": mfa_enabled}, 200
 
 
 class TOTPAuthenticationSetup(Resource):
     # get secret key with provisioning uri
+    @f_jwt.jwt_required()
     def get(self):
         user_id = f_jwt.get_jwt_identity()
         app.logger.debug("user_id= %s", user_id)
@@ -67,19 +67,20 @@ class TOTPAuthenticationSetup(Resource):
 
         totp_secret_key, provisioning_uri = otp.generate_totp_key_with_uri(
             name=user_email, issuer_name='KalaKriti')
-        INSERT_TOTP_SECRET_KEY = '''INSERT INTO {} ({}, secret_key, added_at) VALUES(%s, %s, %s) RETURNING id'''.format(
+        UPSERT_TOTP_SECRET_KEY = '''INSERT INTO {0} ({1}, secret_key, added_at) VALUES(%s, %s, %s)
+        ON CONFLICT ({1}, mfa_type)
+        DO UPDATE set secret_key= %s, updated_at= %s'''.format(
             table_name+'_mfa', user_type+'_id')
         try:
             cursor = app_globals.get_cursor()
-            cursor.execute(INSERT_TOTP_SECRET_KEY,
-                           (user_id, totp_secret_key, datetime.now(),))
-            id = cursor.fetchone()[0]
+            cursor.execute(UPSERT_TOTP_SECRET_KEY,
+                           (user_id, totp_secret_key, datetime.now(), totp_secret_key, datetime.now(),))
         except (Exception, psycopg2.Error) as err:
             app.logger.debug(err)
             abort(400, 'Bad Request')
         finally:
             cursor.close()
-        return {totp_secret_key, provisioning_uri}, 201
+        return {"totp_secret_key": totp_secret_key, "provisioning_uri": provisioning_uri}, 201
 
     # register MFA(totp)
     @f_jwt.jwt_required()
@@ -225,5 +226,5 @@ class Register_2fa(Resource):
         return {totp_secret_key, provisioning_uri}, 201
 
 
-class Login_2fa(Resource):
+class TOTPAuthentication(Resource):
     pass

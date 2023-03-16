@@ -2937,5 +2937,41 @@
       }
     ],
     "tests": []
+  },
+  {
+    "_id": "1106fc60-4d69-49cf-9127-4fb270d802a0",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/auth/mfa/status",
+    "url": "{{baseUrl}}/auth/mfa/status",
+    "method": "GET",
+    "sortNum": 0,
+    "created": "2023-03-16T02:58:37.319Z",
+    "modified": "2023-03-16T02:58:53.683Z",
+    "headers": [],
+    "params": [],
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{token}}"
+    },
+    "tests": []
+  },
+  {
+    "_id": "356238a7-b810-4327-aef4-2bcf76ac4904",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/auth/setup/mfa/totp",
+    "url": "{{baseUrl}}/auth/setup/mfa/totp",
+    "method": "GET",
+    "sortNum": 0,
+    "created": "2023-03-16T03:00:58.448Z",
+    "modified": "2023-03-16T03:00:58.448Z",
+    "headers": [],
+    "params": [],
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{token}}"
+    },
+    "tests": []
   }
 ]
