@@ -62,11 +62,11 @@
     "colId": "80d178ef-5176-474a-8708-db78bd45faee",
     "containerId": "20dae99d-610b-4865-98e2-da1b674f86e0",
     "name": "verify email",
-    "url": "{{baseUrl}}/auth/verify-email?user_type=customer&token=ImN1c3RvbWVyQGdtYWlsLmNvbSI.ZBIEkw.6tgbUj_6NQchoZMiUHEtIkdE5wM",
+    "url": "{{baseUrl}}/auth/verify-email?user_type=customer&token=ImN1c3RvbWVyQGdtYWlsLmNvbSI.ZBKs7A.GtfEhkCY_1ANzKpXU9l4zd20S6s",
     "method": "GET",
     "sortNum": 40000,
     "created": "2023-02-20T16:38:51.031Z",
-    "modified": "2023-03-15T17:47:16.668Z",
+    "modified": "2023-03-16T05:45:44.002Z",
     "headers": [],
     "params": [
       {
@@ -76,7 +76,7 @@
       },
       {
         "name": "token",
-        "value": "ImN1c3RvbWVyQGdtYWlsLmNvbSI.ZBIEkw.6tgbUj_6NQchoZMiUHEtIkdE5wM",
+        "value": "ImN1c3RvbWVyQGdtYWlsLmNvbSI.ZBKs7A.GtfEhkCY_1ANzKpXU9l4zd20S6s",
         "isPath": false
       }
     ],
@@ -2389,12 +2389,12 @@
     "method": "POST",
     "sortNum": 1020000,
     "created": "2023-03-12T12:01:30.803Z",
-    "modified": "2023-03-16T03:49:39.073Z",
+    "modified": "2023-03-16T06:58:18.762Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n  \"totp\": \"368109\"\n}",
+      "raw": "{\n  \"totp\": \"691980\"\n}",
       "form": []
     },
     "auth": {
