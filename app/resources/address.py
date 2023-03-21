@@ -11,12 +11,15 @@ from flask import current_app as app
 class UserAddress(Resource):
     @f_jwt.jwt_required()
     def post(self):
-        customer_id = f_jwt.get_jwt_identity()
-        app.logger.debug("customer_id= %s", customer_id)
+        user_id = f_jwt.get_jwt_identity()
+        app.logger.debug("user_id= %s", user_id)
         claims = f_jwt.get_jwt()
         user_type = claims['user_type']
         app.logger.debug("user_type= %s", user_type)
 
+        if user_type == 'super_admin':
+            user_type = 'admin'
+        
         data = request.get_json()
         address_dict = json.loads(json.dumps(data))
 
@@ -25,10 +28,12 @@ class UserAddress(Resource):
         try:
             cursor = app_globals.get_cursor()
 
-            ADD_ADDRESS = '''INSERT INTO addresses(address, district, city, state, country, pincode, landmark, added_at)
-            VALUES(%s, %s, %s, %s, %s, %s, %s, %s) RETURNING id'''
+            ADD_ADDRESS = '''INSERT INTO addresses(address_line1, address_line2, district, city, state, country, 
+            pincode, landmark, added_at)
+            VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s) RETURNING id'''
 
-            cursor.execute(ADD_ADDRESS, (address_dict.get('address'), address_dict.get('district'),
+            cursor.execute(ADD_ADDRESS, (address_dict.get('address_line1'), address_dict.get('address_line2'),
+                                         address_dict.get('district'),
                                          address_dict.get(
                                              'city'), address_dict.get('state'),
                                          address_dict.get(
@@ -36,10 +41,10 @@ class UserAddress(Resource):
                                          address_dict.get('landmark'), datetime.now()))
             address_id = cursor.fetchone()[0]
 
-            ASSOCIATE_ADDRESS_WITH_USER = '''INSERT INTO customer_addresses(customer_id, address_id) VALUES(%s, %s)'''
+            ASSOCIATE_ADDRESS_WITH_USER = '''INSERT INTO {0}_addresses({0}_id, address_id) VALUES(%s, %s)'''.format(
+                user_type)
 
-            cursor.execute(ASSOCIATE_ADDRESS_WITH_USER,
-                           (customer_id, address_id,))
+            cursor.execute(ASSOCIATE_ADDRESS_WITH_USER, (user_id, address_id,))
 
         except (Exception, psycopg2.Error) as err:
             app.logger.debug(err)
@@ -55,27 +60,33 @@ class UserAddress(Resource):
 
     @f_jwt.jwt_required()
     def get(self):
-        customer_id = f_jwt.get_jwt_identity()
-        app.logger.debug("customer_id= %s", customer_id)
+        user_id = f_jwt.get_jwt_identity()
+        app.logger.debug("user_id= %s", user_id)
+        claims = f_jwt.get_jwt()
+        user_type = claims['user_type']
+        app.logger.debug("user_type= %s", user_type)
 
+        if user_type == 'super_admin':
+            user_type = 'admin'
         addresses_list = []
 
-        GET_ADDRESSES = '''SELECT id AS address_id, address, district, city, state, country, pincode, landmark, 
-        added_at, updated_at
+        GET_ADDRESSES = '''SELECT id AS address_id, address_line1, address_line2, district, city, state, 
+        country, pincode, landmark, added_at, updated_at
         FROM addresses WHERE id IN (
-            SELECT address_id FROM customer_addresses WHERE customer_id = %s
-        ) AND trashed = False'''
+            SELECT address_id FROM {0}_addresses WHERE {0}_id = %s
+        ) AND trashed = False'''.format(user_type)
 
         try:
             cursor = app_globals.get_named_tuple_cursor()
-            cursor.execute(GET_ADDRESSES, (customer_id, ))
+            cursor.execute(GET_ADDRESSES, (user_id, ))
             rows = cursor.fetchall()
             if not rows:
                 return []
             for row in rows:
                 address_dict = {}
                 address_dict['address_id'] = row.address_id
-                address_dict['address'] = row.address
+                address_dict['address_line1'] = row.address_line1
+                address_dict['address_line2'] = row.address_line2
                 address_dict['district'] = row.district
                 address_dict['city'] = row.city
                 address_dict['state'] = row.state
@@ -97,25 +108,22 @@ class UserAddress(Resource):
 
     @ f_jwt.jwt_required()
     def put(self, address_id):
-        customer_id = f_jwt.get_jwt_identity()
-        app.logger.debug("customer_id= %s", customer_id)
-
         app.logger.debug("address_id= %s", address_id)
         data = request.get_json()
         address_dict = json.loads(json.dumps(data))
 
-        UPDATE_ADDRESS = '''UPDATE addresses SET address= %s, district= %s, city= %s, state= %s, country= %s, pincode= %s,
-        landmark= %s, updated_at= %s WHERE id= %s'''
+        UPDATE_ADDRESS = '''UPDATE addresses SET address_line1= %s, address_line2= %s, district= %s, city= %s, 
+        state= %s, country= %s, pincode= %s, landmark= %s, updated_at= %s WHERE id= %s'''
 
         try:
             cursor = app_globals.get_cursor()
-            cursor.execute(
-                UPDATE_ADDRESS, (address_dict.get('address'), address_dict.get('district'),
-                                 address_dict.get(
-                    'city'), address_dict.get('state'),
-                    address_dict.get(
-                    'country'), address_dict.get('pincode'),
-                    address_dict.get('landmark'), datetime.now(), address_id,))
+            cursor.execute(UPDATE_ADDRESS, (address_dict.get('address_line1'), address_dict.get('address_line2'),
+                                            address_dict.get('district'),
+                                            address_dict.get('city'), address_dict.get(
+                                                'state'), address_dict.get('country'),
+                                            address_dict.get(
+                                                'pincode'), address_dict.get('landmark'),
+                                            datetime.now(), address_id,))
             if cursor.rowcount != 1:
                 abort(400, 'Bad Request: update addresses row error')
         except (Exception, psycopg2.Error) as err:
@@ -127,17 +135,16 @@ class UserAddress(Resource):
 
     @f_jwt.jwt_required()
     def patch(self, address_id):
-        customer_id = f_jwt.get_jwt_identity()
-        app.logger.debug("customer_id= %s", customer_id)
-
+        app.logger.debug("address_id= %s", address_id)
         data = request.get_json()
         if 'trashed' not in data.keys():
             abort(400, 'Bad Request')
         trashed = data.get('trashed')
 
+        UPDATE_ADDRESS_TRASHED_VALUE = '''UPDATE addresses SET trashed= %s, updated_at= %s WHERE id= %s'''
+
         try:
             cursor = app_globals.get_cursor()
-            UPDATE_ADDRESS_TRASHED_VALUE = '''UPDATE addresses SET trashed= %s, updated_at= %s WHERE id= %s'''
             cursor.execute(
                 UPDATE_ADDRESS_TRASHED_VALUE, (trashed, datetime.now(), address_id,))
             if cursor.rowcount != 1:

@@ -54,17 +54,17 @@
     "method": "POST",
     "sortNum": 0,
     "created": "2023-03-03T12:40:25.505Z",
-    "modified": "2023-03-11T14:37:19.852Z",
+    "modified": "2023-03-21T17:24:08.038Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n  \"address\": \"lapataganj2\",\n  \"city\": \"Patna2\",\n  \"district\": \"Patna2\",\n  \"state\": \"Bihar\",\n  \"country\": \"India\",\n  \"pincode\": \"801105\",\n  \"landmark\": \"ghanta nhi pta\"\n}",
+      "raw": "{\n  \"address_line1\": \"al1\",\n  \"address_line2\": \"al2\",\n  \"city\": \"Patna\",\n  \"district\": \"Patna\",\n  \"state\": \"Bihar\",\n  \"country\": \"India\",\n  \"pincode\": \"801105\",\n  \"landmark\": \"ghanta nhi pta\"\n}",
       "form": []
     },
     "auth": {
       "type": "bearer",
-      "bearer": "{{token}}"
+      "bearer": "{{super_admin_token}}"
     },
     "tests": []
   },
@@ -138,12 +138,12 @@
     "method": "POST",
     "sortNum": 0,
     "created": "2023-03-06T18:09:44.237Z",
-    "modified": "2023-03-12T07:54:42.182Z",
+    "modified": "2023-03-21T17:09:37.520Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n\t\"email\": \"super_admin@gmail.com\",\n\t\"password\": \"abcd@123\",\n\t\"first_name\": \"bittu\",\n\t\"last_name\": \"kumar\",\n\t\"dob\": \"10/3/1998\",\n\t\"gender\": \"male\"\n}",
+      "raw": "{\n\t\"email\": \"admin1@gmail.com\",\n\t\"password\": \"abcd@123\",\n\t\"first_name\": \"bittu\",\n\t\"last_name\": \"kumar\",\n\t\"dob\": \"6/1/1998\",\n\t\"gender\": \"male\"\n}",
       "form": []
     },
     "tests": [],
@@ -1279,12 +1279,12 @@
     "method": "POST",
     "sortNum": 0,
     "created": "2023-03-14T17:29:45.854Z",
-    "modified": "2023-03-14T17:30:16.847Z",
+    "modified": "2023-03-21T17:12:37.691Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n    \"email\": \"seller@gmail.com\",\n    \"password\": \"abcd@123\"\n}",
+      "raw": "{\n    \"email\": \"seller1@gmail.com\",\n    \"password\": \"abcd@123\"\n}",
       "form": []
     },
     "tests": [],
@@ -1299,12 +1299,12 @@
     "method": "POST",
     "sortNum": 0,
     "created": "2023-03-14T17:30:06.748Z",
-    "modified": "2023-03-14T17:30:44.239Z",
+    "modified": "2023-03-21T17:18:47.903Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n    \"email\": \"super_admin@gmail.com\",\n    \"password\": \"abcd@123\"\n}",
+      "raw": "{\n    \"email\": \"super_admin1@gmail.com\",\n    \"password\": \"abcd@123\"\n}",
       "form": []
     },
     "tests": [],
@@ -1408,12 +1408,12 @@
     "method": "POST",
     "sortNum": 0,
     "created": "2023-03-15T06:52:04.525Z",
-    "modified": "2023-03-15T17:47:32.512Z",
+    "modified": "2023-03-21T17:13:21.295Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n    \"email\": \"customer@gmail.com\",\n    \"password\": \"abcd@123\"\n}",
+      "raw": "{\n    \"email\": \"customer1@gmail.com\",\n    \"password\": \"abcd@123\"\n}",
       "form": []
     },
     "tests": [],
@@ -1478,12 +1478,12 @@
     "method": "POST",
     "sortNum": 0,
     "created": "2023-03-15T08:01:03.215Z",
-    "modified": "2023-03-15T17:46:59.098Z",
+    "modified": "2023-03-21T17:12:47.928Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n  \"email\": \"customer@gmail.com\",\n  \"password\": \"abcd@123\",\n  \"first_name\": \"bittu\",\n  \"last_name\": \"kumar\",\n  \"dob\": \"10/3/1998\",\n  \"gender\": \"male\"\n}",
+      "raw": "{\n  \"email\": \"customer1@gmail.com\",\n  \"password\": \"abcd@123\",\n  \"first_name\": \"bittu\",\n  \"last_name\": \"kumar\",\n  \"dob\": \"10/3/1998\",\n  \"gender\": \"male\"\n}",
       "form": []
     },
     "tests": [],
@@ -2246,6 +2246,224 @@
     "auth": {
       "type": "bearer",
       "bearer": "{{temp_token}}"
+    },
+    "tests": []
+  },
+  {
+    "_id": "2abfdb0e-1437-41d9-ae8b-dec0eee919a5",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/admins/auth/register",
+    "url": "{{baseUrl}}/admins/auth/register",
+    "method": "POST",
+    "sortNum": 0,
+    "created": "2023-03-21T17:11:06.021Z",
+    "modified": "2023-03-21T17:17:54.868Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n\t\"email\": \"super_admin1@gmail.com\",\n\t\"password\": \"abcd@123\",\n\t\"first_name\": \"bittu\",\n\t\"last_name\": \"kumar\",\n\t\"dob\": \"10/3/1998\",\n\t\"gender\": \"male\"\n}",
+      "form": []
+    },
+    "tests": [],
+    "docs": "```json\n{\n\t\"email\": \"updated_admin@gmail.com\",\n\t\"password\": \"abcd@123\",\n\t\"user_type\" : \"customer\",\n\t\"first_name\": \"abcdddl\",\n\t\"last_name\": \"kumari\",\n\t\"mobile_no\": \"987467887\",\n\t\"dob\": \"10/3/1998\",\n\t\"gender\": \"female\"\n}\n```"
+  },
+  {
+    "_id": "de663316-6935-4490-8934-5b958aacd01b",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/auth/verify-email?user_type=admin&token=ImFkbWluMUBnbWFpbC5jb20i.ZBnlKg.7tZCunnYYHPzdbrD0AI9sqLhYuw",
+    "url": "{{baseUrl}}/auth/verify-email?user_type=admin&token=ImFkbWluMUBnbWFpbC5jb20i.ZBnlKg.7tZCunnYYHPzdbrD0AI9sqLhYuw",
+    "method": "GET",
+    "sortNum": 0,
+    "created": "2023-03-21T17:11:36.386Z",
+    "modified": "2023-03-21T17:11:36.386Z",
+    "headers": [],
+    "params": [
+      {
+        "name": "user_type",
+        "value": "admin",
+        "isPath": false
+      },
+      {
+        "name": "token",
+        "value": "ImFkbWluMUBnbWFpbC5jb20i.ZBnlKg.7tZCunnYYHPzdbrD0AI9sqLhYuw",
+        "isPath": false
+      }
+    ],
+    "tests": []
+  },
+  {
+    "_id": "ab1faada-8f16-4051-84c9-1db645839e10",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/sellers/auth/register",
+    "url": "{{baseUrl}}/sellers/auth/register",
+    "method": "POST",
+    "sortNum": 0,
+    "created": "2023-03-21T17:11:46.169Z",
+    "modified": "2023-03-21T17:11:46.169Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n\t\"email\": \"seller1@gmail.com\",\n\t\"password\": \"abcd@123\",\n\t\"seller_name\": \"seller1\",\n\t\"GSTIN\": \"12345abcdefghij\",\n\t\"PAN\":\"PKABC12345\"\n}",
+      "form": []
+    },
+    "tests": [],
+    "docs": "```json\n{\n\t\"email\": \"updated_admin@gmail.com\",\n\t\"password\": \"abcd@123\",\n\t\"user_type\" : \"customer\",\n\t\"first_name\": \"abcdddl\",\n\t\"last_name\": \"kumari\",\n\t\"mobile_no\": \"987467887\",\n\t\"dob\": \"10/3/1998\",\n\t\"gender\": \"female\"\n}\n```"
+  },
+  {
+    "_id": "deeef3bd-0398-4df8-8d20-0ad84b82d281",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/auth/verify-email?user_type=seller&token=InNlbGxlcjFAZ21haWwuY29tIg.ZBnlUg.-_B6O2zhvAen06y7nzEetolAvow",
+    "url": "{{baseUrl}}/auth/verify-email?user_type=seller&token=InNlbGxlcjFAZ21haWwuY29tIg.ZBnlUg.-_B6O2zhvAen06y7nzEetolAvow",
+    "method": "GET",
+    "sortNum": 0,
+    "created": "2023-03-21T17:12:17.875Z",
+    "modified": "2023-03-21T17:12:17.875Z",
+    "headers": [],
+    "params": [
+      {
+        "name": "user_type",
+        "value": "seller",
+        "isPath": false
+      },
+      {
+        "name": "token",
+        "value": "InNlbGxlcjFAZ21haWwuY29tIg.ZBnlUg.-_B6O2zhvAen06y7nzEetolAvow",
+        "isPath": false
+      }
+    ],
+    "tests": []
+  },
+  {
+    "_id": "c1642c0e-2727-4d0e-a387-ce799f65964e",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/auth/verify-email?user_type=customer&token=ImN1c3RvbWVyMUBnbWFpbC5jb20i.ZBnljw.pms3XT1NJxwRMFOBgIi0XZc-TPQ",
+    "url": "{{baseUrl}}/auth/verify-email?user_type=customer&token=ImN1c3RvbWVyMUBnbWFpbC5jb20i.ZBnljw.pms3XT1NJxwRMFOBgIi0XZc-TPQ",
+    "method": "GET",
+    "sortNum": 0,
+    "created": "2023-03-21T17:13:13.490Z",
+    "modified": "2023-03-21T17:13:13.490Z",
+    "headers": [],
+    "params": [
+      {
+        "name": "user_type",
+        "value": "customer",
+        "isPath": false
+      },
+      {
+        "name": "token",
+        "value": "ImN1c3RvbWVyMUBnbWFpbC5jb20i.ZBnljw.pms3XT1NJxwRMFOBgIi0XZc-TPQ",
+        "isPath": false
+      }
+    ],
+    "tests": []
+  },
+  {
+    "_id": "c5b78ce0-db26-4354-9886-2ebd5a0229e0",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/addresses",
+    "url": "{{baseUrl}}/addresses",
+    "method": "GET",
+    "sortNum": 0,
+    "created": "2023-03-21T17:14:29.516Z",
+    "modified": "2023-03-21T17:24:47.489Z",
+    "headers": [],
+    "params": [],
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{token}}"
+    },
+    "tests": []
+  },
+  {
+    "_id": "535e0a7d-849c-41ab-adba-fb41026d5e83",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/addresses/2",
+    "url": "{{baseUrl}}/addresses/2",
+    "method": "PUT",
+    "sortNum": 0,
+    "created": "2023-03-21T17:17:04.596Z",
+    "modified": "2023-03-21T17:22:35.663Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n  \"address_line1\": \"aline1\",\n  \"address_line2\": \"aline2\",\n  \"city\": \"patna\",\n  \"district\": \"Patna\",\n  \"state\": \"Bihar\",\n  \"country\": \"India\",\n  \"pincode\": \"800001\",\n  \"landmark\": \"ghanta nhi pta\"\n}",
+      "form": []
+    },
+    "tests": []
+  },
+  {
+    "_id": "d5f8017c-22f8-4ca1-8be1-5effb4adbffe",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/auth/verify-email?user_type=super_admin&token=InN1cGVyX2FkbWluMUBnbWFpbC5jb20i.ZBnmwg.P2j4mYZgvKw9r8cfDidk4oM8IXg",
+    "url": "{{baseUrl}}/auth/verify-email?user_type=super_admin&token=InN1cGVyX2FkbWluMUBnbWFpbC5jb20i.ZBnmwg.P2j4mYZgvKw9r8cfDidk4oM8IXg",
+    "method": "GET",
+    "sortNum": 0,
+    "created": "2023-03-21T17:18:33.549Z",
+    "modified": "2023-03-21T17:18:33.549Z",
+    "headers": [],
+    "params": [
+      {
+        "name": "user_type",
+        "value": "super_admin",
+        "isPath": false
+      },
+      {
+        "name": "token",
+        "value": "InN1cGVyX2FkbWluMUBnbWFpbC5jb20i.ZBnmwg.P2j4mYZgvKw9r8cfDidk4oM8IXg",
+        "isPath": false
+      }
+    ],
+    "tests": []
+  },
+  {
+    "_id": "daeb8ec9-da7a-4353-9754-0ac1b6dee151",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/addresses/3",
+    "url": "{{baseUrl}}/addresses/3",
+    "method": "PATCH",
+    "sortNum": 0,
+    "created": "2023-03-21T17:23:17.348Z",
+    "modified": "2023-03-21T17:23:17.348Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n  \"trashed\": true\n}",
+      "form": []
+    },
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{token}}"
+    },
+    "tests": []
+  },
+  {
+    "_id": "6e28baf2-cf77-4943-99d6-4c0f2dacbb8b",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/addresses/3",
+    "url": "{{baseUrl}}/addresses/3",
+    "method": "DELETE",
+    "sortNum": 0,
+    "created": "2023-03-21T17:23:39.174Z",
+    "modified": "2023-03-21T17:23:39.174Z",
+    "headers": [],
+    "params": [],
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{super_admin_token}}"
     },
     "tests": []
   }
