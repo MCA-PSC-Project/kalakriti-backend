@@ -63,23 +63,21 @@ CREATE TABLE "customers"(
 	"trashed" BOOLEAN NOT NULL DEFAULT FALSE,
 	"mfa_enabled" BOOLEAN NOT NULL DEFAULT FALSE,
 	"hashed_backup_key" VARCHAR,
-	FOREIGN KEY("dp_id") REFERENCES "media"("id") ON DELETE SET NULL
+	FOREIGN KEY("dp_id") REFERENCES "media"("id") ON DELETE
+	SET NULL
 );
-
 CREATE TABLE "customers_mfa"(
 	"id" SERIAL PRIMARY KEY,
 	"customer_id" INT,
-	"mfa_type" mfa__type DEFAULT 'totp',
+	"mfa_type" mfa__type NOT NULL DEFAULT 'totp',
 	"secret_key" VARCHAR,
-	"is_default" BOOLEAN,
+	"is_default" BOOLEAN CHECK("is_default" != false),
 	"added_at" TIMESTAMPTZ NOT NULL,
 	"updated_at" TIMESTAMPTZ,
 	UNIQUE("customer_id", "mfa_type"),
 	UNIQUE("customer_id", "is_default"),
-	CONSTRAINT "is_default_not_false" CHECK("is_default" != false),
 	FOREIGN KEY("customer_id") REFERENCES "customers"("id") ON DELETE CASCADE
 );
-
 CREATE TABLE "admins"(
 	"id" SERIAL PRIMARY KEY,
 	"first_name" VARCHAR NOT NULL,
@@ -99,31 +97,29 @@ CREATE TABLE "admins"(
 	"is_super_admin" BOOLEAN DEFAULT FALSE,
 	"mfa_enabled" BOOLEAN NOT NULL DEFAULT FALSE,
 	"hashed_backup_key" VARCHAR,
-	FOREIGN KEY("dp_id") REFERENCES "media"("id") ON DELETE SET NULL
+	FOREIGN KEY("dp_id") REFERENCES "media"("id") ON DELETE
+	SET NULL
 );
-
 CREATE TABLE "admins_mfa"(
 	"id" SERIAL PRIMARY KEY,
 	"admin_id" INT,
-	"mfa_type" mfa__type DEFAULT 'totp',
+	"mfa_type" mfa__type NOT NULL DEFAULT 'totp',
 	"secret_key" VARCHAR,
-	"is_default" BOOLEAN,
+	"is_default" BOOLEAN CHECK("is_default" != false),
 	"added_at" TIMESTAMPTZ NOT NULL,
 	"updated_at" TIMESTAMPTZ,
 	UNIQUE("admin_id", "mfa_type"),
 	UNIQUE("admin_id", "is_default"),
-	CONSTRAINT "is_default_not_false" CHECK("is_default" != false),
 	FOREIGN KEY("admin_id") REFERENCES "admins"("id") ON DELETE CASCADE
 );
-
 CREATE TABLE "sellers"(
 	"id" SERIAL PRIMARY KEY,
 	"seller_name" VARCHAR NOT NULL,
 	"email" VARCHAR NOT NULL UNIQUE,
 	"hashed_password" VARCHAR NOT NULL,
 	"mobile_no" VARCHAR(15) UNIQUE,
-	"GSTIN" VARCHAR(15) UNIQUE,
-	"PAN" VARCHAR(10) NOT NULL UNIQUE,
+	"GSTIN" VARCHAR(15) UNIQUE CHECK(LENGTH("GSTIN") = 15),
+	"PAN" VARCHAR(10) NOT NULL UNIQUE CHECK(LENGTH("PAN") = 10),
 	"is_verified" boolean NOT NULL DEFAULT FALSE,
 	"verified_at" TIMESTAMPTZ,
 	"dp_id" INT,
@@ -134,41 +130,41 @@ CREATE TABLE "sellers"(
 	"trashed" boolean NOT NULL DEFAULT FALSE,
 	"mfa_enabled" BOOLEAN NOT NULL DEFAULT FALSE,
 	"hashed_backup_key" VARCHAR,
-	FOREIGN KEY("dp_id") REFERENCES "media"("id") ON DELETE SET NULL,
-	FOREIGN KEY("sign_id") REFERENCES "media"("id") ON DELETE SET NULL
+	FOREIGN KEY("dp_id") REFERENCES "media"("id") ON DELETE
+	SET NULL,
+		FOREIGN KEY("sign_id") REFERENCES "media"("id") ON DELETE
+	SET NULL
 );
-
 CREATE TABLE "sellers_mfa"(
 	"id" SERIAL PRIMARY KEY,
 	"seller_id" INT,
-	"mfa_type" mfa__type DEFAULT 'totp',
+	"mfa_type" mfa__type NOT NULL DEFAULT 'totp',
 	"secret_key" VARCHAR,
-	"is_default" BOOLEAN,
+	"is_default" BOOLEAN CHECK("is_default" != false),
 	"added_at" TIMESTAMPTZ NOT NULL,
 	"updated_at" TIMESTAMPTZ,
 	UNIQUE("seller_id", "mfa_type"),
 	UNIQUE("seller_id", "is_default"),
-	CONSTRAINT "is_default_not_false" CHECK("is_default" != false),
 	FOREIGN KEY("seller_id") REFERENCES "sellers"("id") ON DELETE CASCADE
 );
-
 CREATE TABLE "seller_bank_details"(
 	"id" SERIAL PRIMARY KEY,
 	"seller_id" INT,
 	"account_holder_name" varchar NOT NULL,
 	"account_no" varchar NOT NULL,
-	"IFSC" varchar(11) NOT NULL,
+	"IFSC" varchar(11) NOT NULL CHECK(LENGTH("IFSC") = 11),
 	"account_type" account__type NOT NULL,
-	FOREIGN KEY ("seller_id") REFERENCES "sellers" ("id") ON DELETE SET NULL
+	FOREIGN KEY ("seller_id") REFERENCES "sellers" ("id") ON DELETE CASCADE
 );
 CREATE TABLE "addresses"(
 	"id" SERIAL PRIMARY KEY,
-	"address" VARCHAR NOT NULL,
-	"district" VARCHAR NOT NULL,
-	"city" VARCHAR NOT NULL,
-	"state" VARCHAR NOT NULL,
-	"country" VARCHAR NOT NULL,
-	"pincode" VARCHAR NOT NULL,
+	"address_line1" VARCHAR(500) NOT NULL,
+	"address_line2" VARCHAR(500) NOT NULL,
+	"district" VARCHAR(25) NOT NULL,
+	"city" VARCHAR(25) NOT NULL,
+	"state" VARCHAR(25) NOT NULL,
+	"country" VARCHAR(25) NOT NULL,
+	"pincode" VARCHAR(10) NOT NULL,
 	"landmark" VARCHAR(50),
 	"added_at" TIMESTAMPTZ NOT NULL,
 	"updated_at" TIMESTAMPTZ,
@@ -188,36 +184,47 @@ CREATE TABLE "seller_addresses"(
 	FOREIGN KEY("seller_id") REFERENCES "sellers"("id") ON DELETE CASCADE,
 	FOREIGN KEY("address_id") REFERENCES "addresses"("id") ON DELETE CASCADE
 );
+CREATE TABLE "admin_addresses"(
+	"admin_id" INT,
+	"address_id" INT,
+	PRIMARY KEY("admin_id", "address_id"),
+	FOREIGN KEY("admin_id") REFERENCES "admins"("id") ON DELETE CASCADE,
+	FOREIGN KEY("address_id") REFERENCES "addresses"("id") ON DELETE CASCADE
+);
 CREATE TABLE "categories"(
 	"id" SERIAL PRIMARY KEY,
 	"name" VARCHAR NOT NULL UNIQUE,
-	"added_at" TIMESTAMPTZ NOT NULL,
-	"updated_at" TIMESTAMPTZ,
 	"added_by" INT,
 	"cover_id" INT,
 	"parent_id" INT,
-	FOREIGN KEY("added_by") REFERENCES "admins"("id") ON DELETE SET NULL,
-	FOREIGN KEY("parent_id") REFERENCES "categories"("id") ON DELETE CASCADE,
-	FOREIGN KEY("cover_id") REFERENCES "media"("id") ON DELETE SET NULL
+	"added_at" TIMESTAMPTZ NOT NULL,
+	"updated_at" TIMESTAMPTZ,
+	FOREIGN KEY("added_by") REFERENCES "admins"("id") ON DELETE
+	SET NULL,
+		FOREIGN KEY("parent_id") REFERENCES "categories"("id") ON DELETE CASCADE,
+		FOREIGN KEY("cover_id") REFERENCES "media"("id") ON DELETE
+	SET NULL
 );
 CREATE TABLE "products"(
 	"id" SERIAL PRIMARY KEY,
-	"product_name" VARCHAR NOT NULL,
-	"product_description" VARCHAR NOT NULL,
+	"product_name" VARCHAR(250) NOT NULL,
+	"product_description" VARCHAR(1000) NOT NULL,
 	"category_id" INT,
 	"subcategory_id" INT,
 	"seller_id" INT NOT NULL,
-	"currency" varchar(5) DEFAULT 'INR',
+	"currency" varchar(5) NOT NULL DEFAULT 'INR',
 	"product_status" product__status DEFAULT ('draft'),
 	"min_order_quantity" INT NOT NULL DEFAULT 1,
 	"max_order_quantity" INT NOT NULL,
-	"tags" text [],
+	"tags" text [] CHECK (array_length(tags, 1) <= 15),
 	"added_at" TIMESTAMPTZ NOT NULL,
 	"updated_at" TIMESTAMPTZ,
-	"trashed" BOOLEAN DEFAULT FALSE,
-	FOREIGN KEY("category_id") REFERENCES "categories"("id") ON DELETE SET NULL,
-	FOREIGN KEY("subcategory_id") REFERENCES "categories"("id") ON DELETE SET NULL,
-	FOREIGN KEY("seller_id") REFERENCES "sellers"("id") ON DELETE CASCADE
+	FOREIGN KEY("category_id") REFERENCES "categories"("id") ON DELETE
+	SET NULL,
+		FOREIGN KEY("subcategory_id") REFERENCES "categories"("id") ON DELETE
+	SET NULL,
+		FOREIGN KEY("seller_id") REFERENCES "sellers"("id") ON DELETE CASCADE,
+		CONSTRAINT "order_quantity_check" CHECK("min_order_quantity" <= "max_order_quantity")
 );
 CREATE TABLE "variants" (
 	"id" SERIAL PRIMARY KEY,
@@ -236,12 +243,12 @@ CREATE TABLE "product_items"(
 	"SKU" VARCHAR(50) UNIQUE NOT NULL,
 	"original_price" NUMERIC NOT NULL,
 	"offer_price" NUMERIC NOT NULL,
-	"quantity_in_stock" INT NOT NULL,
+	"quantity_in_stock" INT NOT NULL CHECK("quantity_in_stock" >= 0),
 	"added_at" TIMESTAMPTZ NOT NULL,
 	"updated_at" TIMESTAMPTZ,
 	"product_item_status" product__status DEFAULT ('draft'),
-	"trashed" BOOLEAN DEFAULT FALSE,
-	FOREIGN KEY("product_id") REFERENCES "products"("id") ON DELETE CASCADE
+	FOREIGN KEY("product_id") REFERENCES "products"("id") ON DELETE CASCADE,
+	CONSTRAINT "offer_price_le_original_price" CHECK("offer_price" <= "original_price")
 );
 CREATE TABLE "product_base_item"(
 	"product_id" INT NOT NULL UNIQUE,
@@ -260,11 +267,12 @@ CREATE TABLE "product_item_medias"(
 	-- "id" SERIAL PRIMARY KEY,
 	"media_id" INT NOT NULL,
 	"product_item_id" INT NOT NULL,
-	"display_order" SMALLINT NOT NULL,
+	"display_order" SMALLINT NOT NULL CHECK("display_order" > 0),
 	PRIMARY KEY("media_id", "product_item_id"),
 	UNIQUE("product_item_id", "display_order"),
-	FOREIGN KEY("media_id") REFERENCES "media"("id") ON DELETE SET NULL,
-	FOREIGN KEY("product_item_id") REFERENCES "product_items"("id") ON DELETE CASCADE
+	FOREIGN KEY("media_id") REFERENCES "media"("id") ON DELETE
+	SET NULL,
+		FOREIGN KEY("product_item_id") REFERENCES "product_items"("id") ON DELETE CASCADE
 );
 CREATE TABLE "wishlists"(
 	"customer_id" INT NOT NULL,
@@ -282,7 +290,7 @@ CREATE TABLE "carts"(
 CREATE TABLE "cart_items"(
 	"cart_id" INT NOT NULL,
 	"product_item_id" INT NOT NULL,
-	"quantity" INT NOT NULL DEFAULT 1,
+	"quantity" INT NOT NULL DEFAULT 1 CHECK("quantity" > 0),
 	"added_at" TIMESTAMPTZ NOT NULL,
 	"updated_at" TIMESTAMPTZ,
 	PRIMARY KEY("cart_id", "product_item_id"),
@@ -299,32 +307,36 @@ CREATE TABLE "banners"(
 CREATE TABLE "orders"(
 	"id" SERIAL PRIMARY KEY,
 	"customer_id" INT,
-	"shipping_address_id" INT,
+	"shipping_address_id" INT NOT NULL,
 	"mobile_no" VARCHAR NOT NULL,
 	"order_status" order__status DEFAULT 'initiated',
-	"total_original_price" NUMERIC NOT NULL,
-	"sub_total" NUMERIC NOT NULL,
-	"total_discount" NUMERIC NOT NULL DEFAULT 0,
-	"total_tax" NUMERIC NOT NULL DEFAULT 0,
-	"grand_total" NUMERIC NOT NULL,
+	"total_original_price" NUMERIC NOT NULL CHECK ("total_original_price" >= 0),
+	"sub_total" NUMERIC NOT NULL CHECK ("sub_total" >= 0),
+	"total_discount" NUMERIC NOT NULL DEFAULT 0 CHECK ("total_discount" >= 0),
+	"total_tax" NUMERIC NOT NULL DEFAULT 0 CHECK ("total_tax" >= 0),
+	"grand_total" NUMERIC NOT NULL CHECK ("grand_total" >= 0),
 	"added_at" TIMESTAMPTZ NOT NULL,
 	"updated_at" TIMESTAMPTZ,
-	FOREIGN KEY("customer_id") REFERENCES "customers"("id") ON DELETE SET NULL,
-	FOREIGN KEY("shipping_address_id") REFERENCES "addresses"("id") ON DELETE SET NULL
+	FOREIGN KEY("customer_id") REFERENCES "customers"("id") ON DELETE
+	SET NULL,
+		FOREIGN KEY("shipping_address_id") REFERENCES "addresses"("id"),
+		CONSTRAINT "sub_total_le_total_original_price" CHECK("sub_total" <= "total_original_price")
 );
 CREATE TABLE "order_items"(
 	"id" SERIAL PRIMARY KEY,
-	"order_id" INT,
+	"order_id" INT NOT NULL,
 	"product_item_id" INT,
-	"quantity" INT NOT NULL,
-	"original_price" NUMERIC NOT NULL,
-	"offer_price" NUMERIC NOT NULL,
-	"discount_percent" NUMERIC NOT NULL,
-	"discount" NUMERIC NOT NULL,
-	"tax" NUMERIC NOT NULL,
+	"quantity" INT NOT NULL CHECK("quantity" > 0),
+	"original_price" NUMERIC NOT NULL CHECK ("original_price" >= 0),
+	"offer_price" NUMERIC NOT NULL CHECK ("offer_price" >= 0),
+	"discount_percent" NUMERIC NOT NULL CHECK ("discount_percent" >= 0),
+	"discount" NUMERIC NOT NULL CHECK ("discount" >= 0),
+	"tax" NUMERIC NOT NULL CHECK ("tax" >= 0),
 	UNIQUE("order_id", "product_item_id"),
-	FOREIGN KEY("order_id") REFERENCES "orders"("id") ON DELETE SET NULL,
-	FOREIGN KEY("product_item_id") REFERENCES "product_items"("id") ON DELETE SET NULL
+	FOREIGN KEY("order_id") REFERENCES "orders"("id"),
+	FOREIGN KEY("product_item_id") REFERENCES "product_items"("id") ON DELETE
+	SET NULL,
+		CONSTRAINT "offer_price_le_original_price" CHECK("offer_price" <= "original_price")
 );
 CREATE TABLE "payments"(
 	"id" SERIAL PRIMARY KEY,
@@ -336,28 +348,31 @@ CREATE TABLE "payments"(
 	"payment_status" payment__status,
 	"added_at" TIMESTAMPTZ NOT NULL,
 	"updated_at" TIMESTAMPTZ NOT NULL,
-	FOREIGN KEY("order_id") REFERENCES "orders"("id") ON DELETE SET NULL
+	FOREIGN KEY("order_id") REFERENCES "orders"("id") ON DELETE
+	SET NULL
 );
 CREATE TABLE "product_item_reviews"(
 	"id" SERIAL PRIMARY KEY,
 	"customer_id" INT,
 	"order_item_id" INT,
 	"product_item_id" INT,
-	"rating" NUMERIC(2, 1),
+	"rating" NUMERIC(2, 1) CHECK("rating" <= 5),
 	"review" VARCHAR(500),
 	"added_at" TIMESTAMPTZ NOT NULL,
 	"updated_at" TIMESTAMPTZ,
 	UNIQUE("customer_id", "order_item_id"),
 	UNIQUE("customer_id", "product_item_id"),
-	FOREIGN KEY("customer_id") REFERENCES "customers"("id") ON DELETE SET NULL,
-	FOREIGN KEY("order_item_id") REFERENCES "order_items"("id") ON DELETE SET NULL,
-	FOREIGN KEY("product_item_id") REFERENCES "product_items"("id") ON DELETE CASCADE
+	FOREIGN KEY("customer_id") REFERENCES "customers"("id") ON DELETE
+	SET NULL,
+		FOREIGN KEY("order_item_id") REFERENCES "order_items"("id") ON DELETE
+	SET NULL,
+		FOREIGN KEY("product_item_id") REFERENCES "product_items"("id") ON DELETE CASCADE
 );
 CREATE TABLE "seller_applicant_forms"(
 	"id" SERIAL PRIMARY KEY,
 	"name" VARCHAR NOT NULL,
 	"email" VARCHAR NOT NULL UNIQUE,
-	"mobile_no" VARCHAR NOT NULL UNIQUE,
+	"mobile_no" VARCHAR(15) NOT NULL UNIQUE,
 	"reviewed" BOOLEAN DEFAULT FALSE,
 	"approval_status" approval__status DEFAULT 'pending',
 	"description" VARCHAR,
@@ -381,19 +396,15 @@ CREATE TABLE "products_tsv_store"(
 	PRIMARY KEY("product_id"),
 	FOREIGN KEY ("product_id") REFERENCES "products"("id") ON DELETE CASCADE
 );
-
 ----- Indexes -----
 CREATE INDEX ON "customers" ("email");
 CREATE INDEX ON "sellers" ("email");
 CREATE INDEX ON "admins" ("email");
-
 CREATE INDEX ON "customers" ("mobile_no");
 CREATE INDEX ON "sellers" ("mobile_no");
 CREATE INDEX ON "admins" ("mobile_no");
-
 CREATE INDEX ON "categories" ("name");
 CREATE INDEX ON "product_items" ("SKU");
-
 ----- Inserts -----
 INSERT INTO "variants"("variant")
 VALUES ('BASE');
