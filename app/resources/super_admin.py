@@ -1,4 +1,5 @@
 from datetime import datetime
+import json
 from flask import request, abort
 from flask_restful import Resource
 import psycopg2
@@ -7,7 +8,7 @@ import flask_jwt_extended as f_jwt
 from flask import current_app as app
 
 
-class GetAllAdmins(Resource):
+class Admins(Resource):
     @f_jwt.jwt_required()
     def get(self):
         claims = f_jwt.get_jwt()
@@ -61,6 +62,33 @@ class GetAllAdmins(Resource):
             cursor.close()
         # app.logger.debug(admins_list)
         return admins_list
+
+    # enable/disable admin
+    @f_jwt.jwt_required()
+    def patch(self, admin_id):
+        claims = f_jwt.get_jwt()
+        user_type = claims['user_type']
+        app.logger.debug("user_type= %s", user_type)
+
+        if user_type != "super_admin":
+            abort(403, "Forbidden: only super-admins can enable/disable admin")
+
+        data = request.get_json()
+        enabled = data.get('enabled', None)
+
+        UPDATE_ADMIN_ENABLED_STATUS = '''UPDATE admins SET enabled= %s, updated_at= %s where id= %s'''
+        try:
+            cursor = app_globals.get_cursor()
+            cursor.execute(UPDATE_ADMIN_ENABLED_STATUS,
+                           (enabled, datetime.now(), str(admin_id),))
+            if cursor.rowcount != 1:
+                abort(400, 'Bad Request: update row error')
+        except (Exception, psycopg2.Error) as err:
+            app.logger.debug(err)
+            abort(400, 'Bad Request')
+        finally:
+            cursor.close()
+        return {"message": f"{admin_id} modified"}, 200
 
 
 # Deprecated

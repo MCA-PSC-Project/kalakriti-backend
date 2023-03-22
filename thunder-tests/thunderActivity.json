@@ -1086,12 +1086,12 @@
     "method": "POST",
     "sortNum": 0,
     "created": "2023-03-14T17:30:06.748Z",
-    "modified": "2023-03-22T08:08:05.886Z",
+    "modified": "2023-03-22T13:19:03.253Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n    \"email\": \"admin1@gmail.com\",\n    \"password\": \"abcd@123\"\n}",
+      "raw": "{\n    \"email\": \"super_admin1@gmail.com\",\n    \"password\": \"abcd@123\"\n}",
       "form": []
     },
     "tests": [],
@@ -2431,6 +2431,75 @@
     "auth": {
       "type": "bearer",
       "bearer": "{{seller_token}}"
+    },
+    "tests": []
+  },
+  {
+    "_id": "0bcd6929-cc36-4578-bc1b-27aedcc3f099",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/customers/1/status",
+    "url": "{{baseUrl}}/customers/1/status",
+    "method": "PATCH",
+    "sortNum": 0,
+    "created": "2023-03-22T13:14:30.553Z",
+    "modified": "2023-03-22T13:43:13.568Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n  \"enabled\": true\n}",
+      "form": []
+    },
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{admin_token}}"
+    },
+    "tests": []
+  },
+  {
+    "_id": "27692fb7-9242-4dae-8177-6ac46cceb3af",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/sellers/1/status",
+    "url": "{{baseUrl}}/sellers/1/status",
+    "method": "PATCH",
+    "sortNum": 0,
+    "created": "2023-03-22T13:36:51.571Z",
+    "modified": "2023-03-22T13:43:45.867Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n  \"enabled\": true\n}",
+      "form": []
+    },
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{admin_token}}"
+    },
+    "tests": []
+  },
+  {
+    "_id": "0a3bdbe6-9cf1-45ca-8bd2-46dbc95c34a2",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/admins/1/status",
+    "url": "{{baseUrl}}/admins/1/status",
+    "method": "PATCH",
+    "sortNum": 0,
+    "created": "2023-03-22T13:49:14.078Z",
+    "modified": "2023-03-22T13:53:58.231Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n  \"enabled\": true\n}",
+      "form": []
+    },
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{super_admin_token}}"
     },
     "tests": []
   }

@@ -1,5 +1,4 @@
 from datetime import datetime
-import bcrypt
 from flask import request, abort
 from flask_restful import Resource
 import psycopg2

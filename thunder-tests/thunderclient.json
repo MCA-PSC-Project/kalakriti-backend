@@ -788,9 +788,9 @@
     "name": "get all customers",
     "url": "{{baseUrl}}/customers",
     "method": "GET",
-    "sortNum": 410000,
+    "sortNum": 200000,
     "created": "2023-02-20T16:38:51.069Z",
-    "modified": "2023-03-12T08:05:55.530Z",
+    "modified": "2023-03-22T13:12:04.777Z",
     "headers": [],
     "params": [],
     "auth": {
@@ -803,17 +803,17 @@
     "_id": "854b7821-9d77-498c-a10c-2cc12fd48433",
     "colId": "80d178ef-5176-474a-8708-db78bd45faee",
     "containerId": "b47f348c-ce46-42a9-ae9f-4c0f43d70b24",
-    "name": "enable/disable users",
-    "url": "{{baseUrl}}/users/1/status",
+    "name": "enable/disable customers",
+    "url": "{{baseUrl}}/customers/1/status",
     "method": "PATCH",
-    "sortNum": 420000,
+    "sortNum": 300000,
     "created": "2023-02-20T16:38:51.070Z",
-    "modified": "2023-03-12T07:22:28.349Z",
+    "modified": "2023-03-22T13:43:20.284Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n  \"user_type\": \"customer\",\n  \"enabled\": true\n}",
+      "raw": "{\n  \"enabled\": true\n}",
       "form": []
     },
     "auth": {
@@ -2884,6 +2884,29 @@
     "auth": {
       "type": "bearer",
       "bearer": "{{admin_token}}"
+    },
+    "tests": []
+  },
+  {
+    "_id": "b129d81a-525e-4e52-931a-6b38d1dfd809",
+    "colId": "80d178ef-5176-474a-8708-db78bd45faee",
+    "containerId": "552e547f-e2a9-432c-9a59-02ead18b4956",
+    "name": "enable/disable admins",
+    "url": "{{baseUrl}}/admins/1/status",
+    "method": "PATCH",
+    "sortNum": 505000,
+    "created": "2023-03-22T13:13:10.389Z",
+    "modified": "2023-03-22T13:53:58.223Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n  \"enabled\": true\n}",
+      "form": []
+    },
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{super_admin_token}}"
     },
     "tests": []
   }

@@ -22,8 +22,8 @@ from app.resources.user_profile import CustomerProfile, SellerProfile, AdminProf
 from app.resources.reset import RequestResetEmail, RequestResetPassword, ResetEmail, ResetMobile, ResetPassword
 from app.resources.media import UploadImage, UploadAudio, UploadVideo, UploadFile, DeleteMedia
 from app.resources.categories import Categories
-from app.resources.admin import GetCustomers, EnableDisableUser, GetSellers, PromoteToSeller
-from app.resources.super_admin import GetAllAdmins, PromoteToAdmin
+from app.resources.admin import Customers, PromoteToSeller, Sellers
+from app.resources.super_admin import Admins, PromoteToAdmin
 from app.resources.banners import Banners
 from app.resources.seller_applicant_form import Seller_Applicant_Form
 from app.resources.wishlists import Wishlists
@@ -144,14 +144,17 @@ def create_app(config_name):
                      '/categories/<int:category_id>')
 
     # Admin related endpoints
-    api.add_resource(GetSellers, '/sellers')
-    api.add_resource(GetCustomers, '/customers')
-    api.add_resource(EnableDisableUser, '/users/<int:user_id>/status')
-    api.add_resource(PromoteToSeller, '/admin/sellers/promote')
+    api.add_resource(Customers, '/customers',
+                     '/customers/<int:customer_id>/status')
+    api.add_resource(Sellers, '/sellers',
+                     '/sellers/<int:seller_id>/status')
+
+    api.add_resource(PromoteToSeller, '/admins/sellers/promote')  # Deprecated
 
     # Super_Admin related endpoints
-    api.add_resource(GetAllAdmins, '/admins')
-    api.add_resource(PromoteToAdmin, '/super-admin/admin/promote')
+    api.add_resource(Admins, '/admins', '/admins/<int:admin_id>/status')
+    api.add_resource(
+        PromoteToAdmin, '/super-admins/admins/promote')  # Deprecated
 
     # Banners
     api.add_resource(Banners, '/banners',
