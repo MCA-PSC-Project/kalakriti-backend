@@ -183,12 +183,12 @@
     "method": "PUT",
     "sortNum": 110000,
     "created": "2023-02-20T16:38:51.038Z",
-    "modified": "2023-03-06T12:10:18.782Z",
+    "modified": "2023-03-22T08:06:35.261Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n  \"first_name\": \"Prashant\",\n  \"last_name\": \"Kumar\",\n  \"dob\": \"3/10/2000\",\n  \"gender\": \"male\",\n  \"dp_id\": null\n}",
+      "raw": "{\n  \"first_name\": \"Prashant\",\n  \"last_name\": \"Kumar\",\n  \"dob\": \"3/10/2000\",\n  \"gender\": \"male\"\n}",
       "form": []
     },
     "auth": {
@@ -2141,9 +2141,9 @@
     "name": "Get Seller Profile ",
     "url": "{{baseUrl}}/sellers/profile",
     "method": "GET",
-    "sortNum": 105000,
+    "sortNum": 117500,
     "created": "2023-03-06T10:49:43.061Z",
-    "modified": "2023-03-07T12:46:40.253Z",
+    "modified": "2023-03-22T08:09:13.365Z",
     "headers": [],
     "params": [],
     "auth": {
@@ -2161,12 +2161,12 @@
     "method": "PUT",
     "sortNum": 120000,
     "created": "2023-03-06T10:58:45.861Z",
-    "modified": "2023-03-06T12:31:35.761Z",
+    "modified": "2023-03-22T08:18:55.400Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n  \"seller_name\": \"Prashant\",\n  \"GSTIN\": \"abcde\",\n  \"PAN\": \"3102000\",\n  \"dp_id\": null,\n  \"sign_id\": null\n}",
+      "raw": "{\n  \"seller_name\": \"Prashant\",\n  \"GSTIN\": \"abcdefghij12345\",\n  \"PAN\": \"3102000342\"\n}",
       "form": []
     },
     "auth": {
@@ -2242,9 +2242,9 @@
     "name": "Get Admin Profile ",
     "url": "{{baseUrl}}/admins/profile",
     "method": "GET",
-    "sortNum": 107500,
+    "sortNum": 128750,
     "created": "2023-03-07T12:45:07.015Z",
-    "modified": "2023-03-07T12:50:47.543Z",
+    "modified": "2023-03-22T08:09:18.433Z",
     "headers": [],
     "params": [],
     "auth": {
@@ -2262,12 +2262,12 @@
     "method": "PUT",
     "sortNum": 130000,
     "created": "2023-03-07T12:51:29.832Z",
-    "modified": "2023-03-07T12:52:15.380Z",
+    "modified": "2023-03-22T07:52:04.835Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n  \"first_name\": \"Prashant\",\n  \"last_name\": \"Kumar\",\n  \"dob\": \"3/10/2000\",\n  \"gender\": \"male\",\n  \"dp_id\": null\n}",
+      "raw": "{\n  \"first_name\": \"Prashant\",\n  \"last_name\": \"Kumar\",\n  \"dob\": \"3/10/2000\",\n  \"gender\": \"male\"\n}",
       "form": []
     },
     "auth": {
@@ -2792,6 +2792,98 @@
     "auth": {
       "type": "bearer",
       "bearer": "{{temp_token}}"
+    },
+    "tests": []
+  },
+  {
+    "_id": "0ad12f8a-f081-45f5-8263-ca832727ed2b",
+    "colId": "80d178ef-5176-474a-8708-db78bd45faee",
+    "containerId": "6b5b2313-953f-4b9e-8fc5-6e7c215c1a9e",
+    "name": "update Customer dp",
+    "url": "{{baseUrl}}/customers/profile",
+    "method": "PATCH",
+    "sortNum": 115000,
+    "created": "2023-03-22T07:49:03.329Z",
+    "modified": "2023-03-22T08:16:12.139Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n  \"dp_id\": 6\n}",
+      "form": []
+    },
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{token}}"
+    },
+    "tests": []
+  },
+  {
+    "_id": "2851c0de-2b73-417a-aa08-1c157f222566",
+    "colId": "80d178ef-5176-474a-8708-db78bd45faee",
+    "containerId": "6b5b2313-953f-4b9e-8fc5-6e7c215c1a9e",
+    "name": "update Seller dp",
+    "url": "{{baseUrl}}/sellers/profile",
+    "method": "PATCH",
+    "sortNum": 125000,
+    "created": "2023-03-22T07:49:55.765Z",
+    "modified": "2023-03-22T08:25:07.972Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n  \"dp_id\": 9\n}",
+      "form": []
+    },
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{seller_token}}"
+    },
+    "tests": []
+  },
+  {
+    "_id": "ea7f7e77-e6c8-4473-94ec-192588b9e4d7",
+    "colId": "80d178ef-5176-474a-8708-db78bd45faee",
+    "containerId": "6b5b2313-953f-4b9e-8fc5-6e7c215c1a9e",
+    "name": "update Seller sign",
+    "url": "{{baseUrl}}/sellers/profile",
+    "method": "PATCH",
+    "sortNum": 127500,
+    "created": "2023-03-22T07:50:58.693Z",
+    "modified": "2023-03-22T08:25:16.935Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n  \"sign_id\": 10\n}",
+      "form": []
+    },
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{seller_token}}"
+    },
+    "tests": []
+  },
+  {
+    "_id": "846aa38d-b3f7-40f4-971b-19ab2122f054",
+    "colId": "80d178ef-5176-474a-8708-db78bd45faee",
+    "containerId": "6b5b2313-953f-4b9e-8fc5-6e7c215c1a9e",
+    "name": "update Admin dp",
+    "url": "{{baseUrl}}/admins/profile",
+    "method": "PATCH",
+    "sortNum": 140000,
+    "created": "2023-03-22T07:51:46.685Z",
+    "modified": "2023-03-22T08:15:20.221Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n  \"dp_id\": null\n}",
+      "form": []
+    },
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{admin_token}}"
     },
     "tests": []
   }
