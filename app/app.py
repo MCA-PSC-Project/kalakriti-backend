@@ -13,6 +13,7 @@ from app.resources.address import UserAddress
 from app.resources.auth import LoginAdmin, LoginCustomer, LoginSeller, RefreshToken, RegisterAdmin, RegisterCustomer, RegisterSeller, VerifyEmail
 from app.resources.auth_mfa import MFABackupKey, MFAStatus, SetupTOTPAuthentication, TOTPAuthenticationLogin
 from app.resources.auth_otp import GetMobileOtp, MobileOtpLoginAdmin, MobileOtpLoginCustomer, MobileOtpLoginSeller
+from app.resources.home import Home, NewProducts, PopularProducts, RecommendedProducts
 from app.resources.orders import Orders, UserOrders
 from app.resources.product_items import ProductItems, SellersProductItems
 from app.resources.products import Products, ProductsAllDetails, ProductsByCategory, SellersProducts
@@ -206,6 +207,13 @@ def create_app(config_name):
     # Orders
     api.add_resource(Orders, '/orders', '/orders/<int:order_id>')
     api.add_resource(UserOrders, '/user-orders')
+
+    # TODO: Homepage related endpoints
+    # Home
+    api.add_resource(Home, '/home')
+    api.add_resource(RecommendedProducts, '/recommended-products')
+    api.add_resource(PopularProducts, '/popular-products')
+    api.add_resource(NewProducts, '/new-products')
 
     # to be exceuted at app exit for cleanups
     @atexit.register
