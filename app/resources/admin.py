@@ -8,7 +8,7 @@ import json
 from flask import current_app as app
 
 
-class Customers(Resource):
+class CustomersInfo(Resource):
     @f_jwt.jwt_required()
     def get(self):
         claims = f_jwt.get_jwt()
@@ -92,7 +92,7 @@ class Customers(Resource):
         return {"message": f"{customer_id} modified"}, 200
 
 
-class Sellers(Resource):
+class SellersInfo(Resource):
     # get all sellers
     @f_jwt.jwt_required()
     def get(self):
@@ -175,8 +175,6 @@ class Sellers(Resource):
         return {"message": f"{seller_id} modified"}, 200
 
 # Deprecated
-
-
 class PromoteToSeller(Resource):
     @f_jwt.jwt_required()
     def put(self):

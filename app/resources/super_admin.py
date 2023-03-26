@@ -8,7 +8,7 @@ import flask_jwt_extended as f_jwt
 from flask import current_app as app
 
 
-class Admins(Resource):
+class AdminsInfo(Resource):
     @f_jwt.jwt_required()
     def get(self):
         claims = f_jwt.get_jwt()
