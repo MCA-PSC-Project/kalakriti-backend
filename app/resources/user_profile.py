@@ -147,14 +147,17 @@ class CustomerProfile(Resource):
 
         if user_type != 'customer':
             abort(403, 'Forbidden')
+        data = request.get_json()
+        if 'trashed' not in data.keys():
+            abort(400, 'Bad Request')
+        trashed = data.get('trashed')
 
-        DELETE_USER = 'DELETE FROM customers WHERE id= %s AND trashed= True'
+        MARK_CUSTOMER_AS_TRASHED = 'UPDATE customers SET trashed= %s WHERE id= %s'
         try:
             cursor = app_globals.get_cursor()
-
-            cursor.execute(DELETE_USER, (customer_id,))
+            cursor.execute(MARK_CUSTOMER_AS_TRASHED, (trashed, customer_id,))
             if cursor.rowcount != 1:
-                abort(400, 'Bad Request: delete row error')
+                abort(400, 'Bad Request: update row error')
         except (Exception, psycopg2.Error) as err:
             app.logger.debug(err)
             abort(400, 'Bad Request')
@@ -322,14 +325,17 @@ class SellerProfile(Resource):
 
         if user_type != 'seller':
             abort(403, 'Forbidden')
+        data = request.get_json()
+        if 'trashed' not in data.keys():
+            abort(400, 'Bad Request')
+        trashed = data.get('trashed')
 
-        DELETE_SELLER = 'DELETE FROM sellers WHERE id= %s AND trashed= True'
+        MARK_SELLER_AS_TRASHED = 'UPDATE sellers SET trashed= %s WHERE id= %s'
         try:
             cursor = app_globals.get_cursor()
-
-            cursor.execute(DELETE_SELLER, (seller_id,))
+            cursor.execute(MARK_SELLER_AS_TRASHED, (trashed, seller_id,))
             if cursor.rowcount != 1:
-                abort(400, 'Bad Request: delete row error')
+                abort(400, 'Bad Request: update row error')
         except (Exception, psycopg2.Error) as err:
             app.logger.debug(err)
             abort(400, 'Bad Request')
@@ -474,12 +480,15 @@ class AdminProfile(Resource):
 
         if user_type != 'admin':
             abort(403, 'Forbidden')
+        data = request.get_json()
+        if 'trashed' not in data.keys():
+            abort(400, 'Bad Request')
+        trashed = data.get('trashed')
 
-        DELETE_USER = 'DELETE FROM admins WHERE id= %s AND trashed= True'
+        MARK_ADMIN_AS_TRASHED = 'UPDATE admins SET trashed= %s WHERE id= %s'
         try:
             cursor = app_globals.get_cursor()
-
-            cursor.execute(DELETE_USER, (admin_id,))
+            cursor.execute(MARK_ADMIN_AS_TRASHED, (trashed, admin_id,))
             if cursor.rowcount != 1:
                 abort(400, 'Bad Request: delete row error')
         except (Exception, psycopg2.Error) as err:

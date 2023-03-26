@@ -145,14 +145,15 @@ def create_app(config_name):
 
     # Admin related endpoints
     api.add_resource(CustomersInfo, '/customers',
-                     '/customers/<int:customer_id>/status')
+                     '/customers/<int:customer_id>')
     api.add_resource(SellersInfo, '/sellers',
-                     '/sellers/<int:seller_id>/status')
+                     '/sellers/<int:seller_id>')
 
     api.add_resource(PromoteToSeller, '/admins/sellers/promote')  # Deprecated
 
     # Super_Admin related endpoints
-    api.add_resource(AdminsInfo, '/admins', '/admins/<int:admin_id>/status')
+    api.add_resource(AdminsInfo, '/admins',
+                     '/admins/<int:admin_id>')
     api.add_resource(
         PromoteToAdmin, '/super-admins/admins/promote')  # Deprecated
 

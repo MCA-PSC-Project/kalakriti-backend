@@ -90,7 +90,28 @@ class CustomersInfo(Resource):
         finally:
             cursor.close()
         return {"message": f"{customer_id} modified"}, 200
+    
+    @f_jwt.jwt_required()
+    def delete(self, customer_id):
+        claims = f_jwt.get_jwt()
+        user_type = claims['user_type']
+        app.logger.debug("user_type= %s", user_type)
 
+        if user_type != "admin" and user_type != "super_admin":
+            abort(403, "Forbidden: only super-admins and admins can delete customer account")
+
+        DELETE_CUSTOMER = 'DELETE FROM customers WHERE id= %s AND trashed= True'
+        try:
+            cursor = app_globals.get_cursor()
+            cursor.execute(DELETE_CUSTOMER, (customer_id,))
+            if cursor.rowcount != 1:
+                abort(400, 'Bad Request: delete row error')
+        except (Exception, psycopg2.Error) as err:
+            app.logger.debug(err)
+            abort(400, 'Bad Request')
+        finally:
+            cursor.close()
+        return 200
 
 class SellersInfo(Resource):
     # get all sellers
@@ -173,6 +194,28 @@ class SellersInfo(Resource):
         finally:
             cursor.close()
         return {"message": f"{seller_id} modified"}, 200
+    
+    @f_jwt.jwt_required()
+    def delete(self, seller_id):
+        claims = f_jwt.get_jwt()
+        user_type = claims['user_type']
+        app.logger.debug("user_type= %s", user_type)
+
+        if user_type != "admin" and user_type != "super_admin":
+            abort(403, "Forbidden: only super-admins and admins can delete seller account")
+
+        DELETE_SELLER = 'DELETE FROM sellers WHERE id= %s AND trashed= True'
+        try:
+            cursor = app_globals.get_cursor()
+            cursor.execute(DELETE_SELLER, (seller_id,))
+            if cursor.rowcount != 1:
+                abort(400, 'Bad Request: delete row error')
+        except (Exception, psycopg2.Error) as err:
+            app.logger.debug(err)
+            abort(400, 'Bad Request')
+        finally:
+            cursor.close()
+        return 200
 
 # Deprecated
 class PromoteToSeller(Resource):
