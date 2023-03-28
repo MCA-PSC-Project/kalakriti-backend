@@ -1,0 +1,75 @@
+[
+  {
+    "_id": "54272c7e-fbf6-40c2-abdc-32d096c941c5",
+    "name": "Local",
+    "default": true,
+    "sortNum": 10000,
+    "created": "2023-02-20T16:39:20.436Z",
+    "modified": "2023-02-20T16:39:20.436Z",
+    "data": [
+      {
+        "name": "baseUrl",
+        "value": "http://localhost:5000"
+      }
+    ]
+  },
+  {
+    "_id": "d74fa26a-7586-4245-b00c-a39671e45841",
+    "name": "Dev",
+    "default": false,
+    "sortNum": 20000,
+    "created": "2023-02-20T16:39:20.441Z",
+    "modified": "2023-02-20T16:39:20.441Z",
+    "data": [
+      {
+        "name": "baseUrl",
+        "value": "https://kalakriti-backend.onrender.com"
+      }
+    ]
+  },
+  {
+    "_id": "22012c0a-b7d7-4404-a1e6-11ba90d47c92",
+    "name": "Release",
+    "default": false,
+    "sortNum": 30000,
+    "created": "2023-02-20T16:39:20.445Z",
+    "modified": "2023-02-20T16:39:20.445Z",
+    "data": [
+      {
+        "name": "baseUrl",
+        "value": "https://kalakriti-backend.onrender.com"
+      }
+    ]
+  },
+  {
+    "_id": "5c1081a0-10e2-4059-9303-78df54800229",
+    "name": "(Global Env)",
+    "default": false,
+    "global": true,
+    "sortNum": -2,
+    "created": "2023-02-20T16:51:11.153Z",
+    "modified": "2023-02-20T16:51:11.153Z",
+    "data": [
+      {
+        "name": "token",
+        "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6dHJ1ZSwiaWF0IjoxNjc5ODE4NDYyLCJqdGkiOiI0MWM3ODg2Mi01NDJjLTRhODItYWUwYy01ZWI1YzJhNWJhNTQiLCJ0eXBlIjoiYWNjZXNzIiwic3ViIjoyLCJuYmYiOjE2Nzk4MTg0NjIsImV4cCI6MTY3OTg2MTY2MiwidXNlcl90eXBlIjoiY3VzdG9tZXIifQ.aTLkQ-z8nZoZ7A4aonhxTF4tYMReFce-MsqTI0sTThI"
+      },
+      {
+        "name": "seller_token",
+        "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6dHJ1ZSwiaWF0IjoxNjc5ODE5NTY3LCJqdGkiOiJjNWI0ZTI2NS0xZjVjLTRhOTYtYTZlMy02N2ExMzJhNGQ5MjkiLCJ0eXBlIjoiYWNjZXNzIiwic3ViIjoxLCJuYmYiOjE2Nzk4MTk1NjcsImV4cCI6MTY3OTg2Mjc2NywidXNlcl90eXBlIjoic2VsbGVyIn0.0d099XiNbmtkIMV_etjCg_ijj0YTq2SuOFEJzU023pU"
+      },
+      {
+        "name": "admin_token",
+        "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6dHJ1ZSwiaWF0IjoxNjc5ODE4NDk4LCJqdGkiOiIxMDM2ODMyZS1lYWU2LTRiODctODcwMC0wNjNmODM2NTM5YjkiLCJ0eXBlIjoiYWNjZXNzIiwic3ViIjozLCJuYmYiOjE2Nzk4MTg0OTgsImV4cCI6MTY3OTg2MTY5OCwidXNlcl90eXBlIjoiYWRtaW4ifQ.5N2ATAyjT2P4la3NLk08Erwkj_-tzRBzXIlUn1DH02E"
+      },
+      {
+        "name": "super_admin_token",
+        "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6dHJ1ZSwiaWF0IjoxNjc5ODE4NTEwLCJqdGkiOiI1NzQ5MTgwOS1jNDIzLTRhOTgtYTEyMC1mNjc3NzViMjNjYmQiLCJ0eXBlIjoiYWNjZXNzIiwic3ViIjoyLCJuYmYiOjE2Nzk4MTg1MTAsImV4cCI6MTY3OTg2MTcxMCwidXNlcl90eXBlIjoic3VwZXJfYWRtaW4ifQ.l2sFPHNxMbx3XwNIc5Q4ojIEo9ZG3Njx536YjvWr0BY"
+      },
+      {
+        "name": "temp_token",
+        "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6dHJ1ZSwiaWF0IjoxNjc4OTgzODg4LCJqdGkiOiI0YmQzOTk4Yy04N2Y1LTQ0NTItYjRkOC0wMThkMzRiYWMyODMiLCJ0eXBlIjoiYWNjZXNzIiwic3ViIjotMSwibmJmIjoxNjc4OTgzODg4LCJleHAiOjE2Nzg5ODQ0ODgsInVzZXJfdHlwZSI6ImN1c3RvbWVyX3RlbXAifQ.8wnlXygFP3sGFEo0QANS9J5zX0ySElITmwZXPhlzKLg"
+      }
+    ]
+  }
+]

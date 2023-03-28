@@ -1,0 +1,185 @@
+[
+  {
+    "_id": "80d178ef-5176-474a-8708-db78bd45faee",
+    "colName": "kalakriti",
+    "created": "2023-02-20T16:38:51.019Z",
+    "sortNum": 10000,
+    "folders": [
+      {
+        "_id": "20dae99d-610b-4865-98e2-da1b674f86e0",
+        "name": "Auth",
+        "containerId": "",
+        "created": "2023-02-20T16:38:51.027Z",
+        "sortNum": 2500
+      },
+      {
+        "_id": "6b5b2313-953f-4b9e-8fc5-6e7c215c1a9e",
+        "name": "User Profile",
+        "containerId": "",
+        "created": "2023-02-20T16:38:51.028Z",
+        "sortNum": 3125
+      },
+      {
+        "_id": "4a61adc3-63f1-4474-872a-a902ad27e1a1",
+        "name": "Media",
+        "containerId": "",
+        "created": "2023-02-20T16:38:51.029Z",
+        "sortNum": 30000
+      },
+      {
+        "_id": "9ae95817-3002-4a5d-9fa4-dd1f643a1400",
+        "name": "home",
+        "containerId": "",
+        "created": "2023-02-20T16:38:51.030Z",
+        "sortNum": 40000
+      },
+      {
+        "_id": "67bd2609-a1c1-41da-ab7e-1e5b9002ee51",
+        "name": "categories",
+        "containerId": "",
+        "created": "2023-02-20T16:38:51.031Z",
+        "sortNum": 50000
+      },
+      {
+        "_id": "0cb331e2-2642-40c2-8bd3-b94f9e1586ca",
+        "name": "wishlists",
+        "containerId": "",
+        "created": "2023-02-20T16:38:51.032Z",
+        "sortNum": 60000
+      },
+      {
+        "_id": "6bd7e1f1-03c2-44e9-a246-827e2d8f4f7f",
+        "name": "cart",
+        "containerId": "",
+        "created": "2023-02-20T16:38:51.033Z",
+        "sortNum": 70000
+      },
+      {
+        "_id": "eef7518d-2dea-4f6b-97ae-03dd5ff00451",
+        "name": "Sellers Dashboard",
+        "containerId": "",
+        "created": "2023-02-20T16:38:51.034Z",
+        "sortNum": 80000
+      },
+      {
+        "_id": "6fd7e743-cc8b-4d37-bb40-e47d132e9276",
+        "name": "Sellers Application form",
+        "containerId": "",
+        "created": "2023-02-20T16:38:51.035Z",
+        "sortNum": 90000
+      },
+      {
+        "_id": "b47f348c-ce46-42a9-ae9f-4c0f43d70b24",
+        "name": "Admin",
+        "containerId": "",
+        "created": "2023-02-20T16:38:51.037Z",
+        "sortNum": 100000
+      },
+      {
+        "_id": "552e547f-e2a9-432c-9a59-02ead18b4956",
+        "name": "Super Admin",
+        "containerId": "",
+        "created": "2023-02-20T16:38:51.038Z",
+        "sortNum": 110000
+      },
+      {
+        "_id": "2ffd39e9-6675-40b7-abd0-296aaf9564ad",
+        "name": "Orders",
+        "containerId": "",
+        "created": "2023-02-20T16:38:51.039Z",
+        "sortNum": 120000
+      },
+      {
+        "_id": "d3f02f76-889e-4a8d-88e7-d026529d83a9",
+        "name": "Products",
+        "containerId": "",
+        "created": "2023-02-20T16:38:51.040Z",
+        "sortNum": 51250
+      },
+      {
+        "_id": "3c47a409-79a2-440c-b50c-c521a6ce6beb",
+        "name": "Product Reviews",
+        "containerId": "",
+        "created": "2023-02-20T16:38:51.041Z",
+        "sortNum": 140000
+      },
+      {
+        "_id": "425e5407-d0b4-4763-94d2-413ae5508d5b",
+        "name": "Tags",
+        "containerId": "",
+        "created": "2023-02-20T16:38:51.043Z",
+        "sortNum": 56250
+      },
+      {
+        "_id": "3e702aea-670a-4ca4-8b33-d039296af95a",
+        "name": "search",
+        "containerId": "",
+        "created": "2023-02-20T16:38:51.044Z",
+        "sortNum": 170000
+      },
+      {
+        "_id": "2d38f206-c374-4028-9d9d-4b5097f34dd9",
+        "name": "Coupons",
+        "containerId": "",
+        "created": "2023-02-20T16:38:51.045Z",
+        "sortNum": 180000
+      },
+      {
+        "_id": "6493f350-924c-4cb7-9bd5-2169a6681db2",
+        "name": "Buy",
+        "containerId": "",
+        "created": "2023-02-20T16:38:51.046Z",
+        "sortNum": 190000
+      },
+      {
+        "_id": "c2e78d60-f731-44bf-823c-2edcc1630ae1",
+        "name": "Miscellaneous",
+        "containerId": "",
+        "created": "2023-02-20T16:38:51.047Z",
+        "sortNum": 200000
+      },
+      {
+        "_id": "f688fb68-9864-41a4-b257-bb38efeb6b05",
+        "name": "Banners",
+        "containerId": "",
+        "created": "2023-02-21T14:24:52.184Z",
+        "sortNum": 75000
+      },
+      {
+        "_id": "9525375d-6d7f-486c-8969-7b49f2983b85",
+        "name": "Product Items",
+        "containerId": "",
+        "created": "2023-02-23T13:08:50.714Z",
+        "sortNum": 52500
+      },
+      {
+        "_id": "a30a8ca7-aed2-44b8-9743-cb6771a99005",
+        "name": "addresses",
+        "containerId": "",
+        "created": "2023-03-03T10:18:41.491Z",
+        "sortNum": 115000
+      },
+      {
+        "_id": "9f72ba7a-8196-4f17-a6c8-ca3a4ba3c8b2",
+        "name": "Seller Bank Details",
+        "containerId": "",
+        "created": "2023-03-10T10:52:14.751Z",
+        "sortNum": 95000
+      },
+      {
+        "_id": "df3efec6-c411-4a9a-9790-c86d800854c3",
+        "name": "Auth-mfa",
+        "containerId": "",
+        "created": "2023-03-12T11:59:57.459Z",
+        "sortNum": 2812.5
+      },
+      {
+        "_id": "3ae0d271-930d-4ac2-a094-bf22abd319bb",
+        "name": "Reset",
+        "containerId": "",
+        "created": "2023-03-14T17:04:34.330Z",
+        "sortNum": 2968.8
+      }
+    ]
+  }
+]
