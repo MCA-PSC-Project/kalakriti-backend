@@ -13,17 +13,18 @@ from app.resources.address import UserAddress
 from app.resources.auth import LoginAdmin, LoginCustomer, LoginSeller, RefreshToken, RegisterAdmin, RegisterCustomer, RegisterSeller, VerifyEmail
 from app.resources.auth_mfa import MFABackupKey, MFAStatus, SetupTOTPAuthentication, TOTPAuthenticationLogin
 from app.resources.auth_otp import GetMobileOtp, MobileOtpLoginAdmin, MobileOtpLoginCustomer, MobileOtpLoginSeller
+from app.resources.home import Home, NewProducts, PopularProducts, RecommendedProducts
 from app.resources.orders import Orders, UserOrders
 from app.resources.product_items import ProductItems, SellersProductItems
 from app.resources.products import Products, ProductsAllDetails, ProductsByCategory, SellersProducts
 from app.resources.search import Search, TopSearches
 from app.resources.tags import Tags
-from app.resources.users import CustomerProfile, SellerProfile, AdminProfile
+from app.resources.user_profile import CustomerProfile, SellerProfile, AdminProfile
 from app.resources.reset import RequestResetEmail, RequestResetPassword, ResetEmail, ResetMobile, ResetPassword
 from app.resources.media import UploadImage, UploadAudio, UploadVideo, UploadFile, DeleteMedia
 from app.resources.categories import Categories
-from app.resources.admin import GetCustomers, EnableDisableUser, GetSellers, PromoteToSeller
-from app.resources.super_admin import GetAllAdmins, PromoteToAdmin
+from app.resources.admin import CustomersInfo, PromoteToSeller, SellersInfo
+from app.resources.super_admin import AdminsInfo, PromoteToAdmin
 from app.resources.banners import Banners
 from app.resources.seller_applicant_form import Seller_Applicant_Form
 from app.resources.wishlists import Wishlists
@@ -144,14 +145,18 @@ def create_app(config_name):
                      '/categories/<int:category_id>')
 
     # Admin related endpoints
-    api.add_resource(GetSellers, '/sellers')
-    api.add_resource(GetCustomers, '/customers')
-    api.add_resource(EnableDisableUser, '/users/<int:user_id>/status')
-    api.add_resource(PromoteToSeller, '/admin/sellers/promote')
+    api.add_resource(CustomersInfo, '/customers',
+                     '/customers/<int:customer_id>')
+    api.add_resource(SellersInfo, '/sellers',
+                     '/sellers/<int:seller_id>')
+
+    api.add_resource(PromoteToSeller, '/admins/sellers/promote')  # Deprecated
 
     # Super_Admin related endpoints
-    api.add_resource(GetAllAdmins, '/admins')
-    api.add_resource(PromoteToAdmin, '/super-admin/admin/promote')
+    api.add_resource(AdminsInfo, '/admins',
+                     '/admins/<int:admin_id>')
+    api.add_resource(
+        PromoteToAdmin, '/super-admins/admins/promote')  # Deprecated
 
     # Banners
     api.add_resource(Banners, '/banners',
@@ -202,6 +207,13 @@ def create_app(config_name):
     # Orders
     api.add_resource(Orders, '/orders', '/orders/<int:order_id>')
     api.add_resource(UserOrders, '/user-orders')
+
+    # TODO: Homepage related endpoints
+    # Home
+    api.add_resource(Home, '/home')
+    api.add_resource(RecommendedProducts, '/recommended-products')
+    api.add_resource(PopularProducts, '/popular-products')
+    api.add_resource(NewProducts, '/new-products')
 
     # to be exceuted at app exit for cleanups
     @atexit.register

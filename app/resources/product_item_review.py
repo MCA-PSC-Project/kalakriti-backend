@@ -16,7 +16,7 @@ class Product_item_review(Resource):
         claims = f_jwt.get_jwt()
         user_type = claims['user_type']
         app.logger.debug("user_type= %s", user_type)
-        # todo: check seller
+        # TODO: check seller
 
         data = request.get_json()
         order_item_id = data.get("order_item_id", None)

@@ -1,5 +1,4 @@
 from datetime import datetime
-import bcrypt
 from flask import request, abort
 from flask_restful import Resource
 import psycopg2
@@ -7,6 +6,7 @@ import app.app_globals as app_globals
 import flask_jwt_extended as f_jwt
 import json
 from flask import current_app as app
+import app.resources.media as media
 
 
 class CustomerProfile(Resource):
@@ -64,7 +64,7 @@ class CustomerProfile(Resource):
         # app.logger.debug(customer_profile_dict)
         return customer_profile_dict
 
-    @ f_jwt.jwt_required()
+    @f_jwt.jwt_required()
     def put(self):
         customer_id = f_jwt.get_jwt_identity()
         app.logger.debug("customer_id= %s", customer_id)
@@ -80,14 +80,14 @@ class CustomerProfile(Resource):
         # app.logger.debug(customer_dict)
 
         UPDATE_CUSTOMER_PROFILE = '''UPDATE customers SET first_name= %s, last_name= %s, dob= %s,
-        gender= %s, dp_id= %s, updated_at= %s WHERE id= %s'''
+        gender= %s, updated_at= %s WHERE id= %s'''
         try:
             cursor = app_globals.get_cursor()
             cursor.execute(
                 UPDATE_CUSTOMER_PROFILE, (customer_dict.get('first_name'), customer_dict.get('last_name'),
                                           customer_dict.get(
-                    'dob'), customer_dict.get('gender'),
-                    customer_dict.get('dp_id'), datetime.now(), customer_id,))
+                                              'dob'), customer_dict.get('gender'),
+                                          datetime.now(), customer_id,))
             if cursor.rowcount != 1:
                 abort(400, 'Bad Request: update customers row error')
         except (Exception, psycopg2.Error) as err:
@@ -97,8 +97,9 @@ class CustomerProfile(Resource):
             cursor.close()
         return {"message": f"customer_id {customer_id} modified."}, 200
 
-    @ f_jwt.jwt_required()
-    def delete(self):
+    # for dp update
+    @f_jwt.jwt_required()
+    def patch(self):
         customer_id = f_jwt.get_jwt_identity()
         app.logger.debug("customer_id= %s", customer_id)
         claims = f_jwt.get_jwt()
@@ -108,13 +109,55 @@ class CustomerProfile(Resource):
         if user_type != 'customer':
             abort(403, 'Forbidden')
 
-        DELETE_USER = 'DELETE FROM customers WHERE id= %s AND trashed= True'
+        data = request.get_json()
+        customer_dict = json.loads(json.dumps(data))
+        # app.logger.debug(customer_dict)
+
+        UPDATE_CUSTOMER_PROFILE = '''UPDATE customers SET dp_id= %s, updated_at= %s WHERE id= %s 
+        RETURNING (SELECT dp_id FROM customers WHERE id =  %s)'''
         try:
             cursor = app_globals.get_cursor()
-
-            cursor.execute(DELETE_USER, (customer_id,))
+            cursor.execute(
+                UPDATE_CUSTOMER_PROFILE, (customer_dict.get('dp_id'), datetime.now(), customer_id, customer_id,))
             if cursor.rowcount != 1:
-                abort(400, 'Bad Request: delete row error')
+                abort(400, 'Bad Request: update customers row error')
+            old_dp_id = cursor.fetchone()[0]
+            app.logger.debug("old_dp_id= %s", old_dp_id)
+            if old_dp_id and old_dp_id != customer_dict.get('dp_id'):
+                if media.delete_media_by_id(old_dp_id):
+                    app.logger.debug(
+                        "deleted media from bucket where id= %s", old_dp_id)
+                else:
+                    app.logger.debug(
+                        "error occurred in deleting media where id= %s", old_dp_id)
+        except (Exception, psycopg2.Error) as err:
+            app.logger.debug(err)
+            abort(400, 'Bad Request')
+        finally:
+            cursor.close()
+        return {"message": f"customer_id {customer_id} modified."}, 200
+
+    @f_jwt.jwt_required()
+    def delete(self):
+        customer_id = f_jwt.get_jwt_identity()
+        app.logger.debug("customer_id= %s", customer_id)
+        claims = f_jwt.get_jwt()
+        user_type = claims['user_type']
+        app.logger.debug("user_type= %s", user_type)
+
+        if user_type != 'customer':
+            abort(403, 'Forbidden')
+        data = request.get_json()
+        if 'trashed' not in data.keys():
+            abort(400, 'Bad Request')
+        trashed = data.get('trashed')
+
+        MARK_CUSTOMER_AS_TRASHED = 'UPDATE customers SET trashed= %s WHERE id= %s'
+        try:
+            cursor = app_globals.get_cursor()
+            cursor.execute(MARK_CUSTOMER_AS_TRASHED, (trashed, customer_id,))
+            if cursor.rowcount != 1:
+                abort(400, 'Bad Request: update row error')
         except (Exception, psycopg2.Error) as err:
             app.logger.debug(err)
             abort(400, 'Bad Request')
@@ -124,7 +167,7 @@ class CustomerProfile(Resource):
 
 
 class SellerProfile(Resource):
-    @ f_jwt.jwt_required()
+    @f_jwt.jwt_required()
     def get(self):
         seller_id = f_jwt.get_jwt_identity()
         app.logger.debug("seller_id= %s", seller_id)
@@ -190,7 +233,7 @@ class SellerProfile(Resource):
         # app.logger.debug(seller_profile_dict)
         return seller_profile_dict
 
-    @ f_jwt.jwt_required()
+    @f_jwt.jwt_required()
     def put(self):
         seller_id = f_jwt.get_jwt_identity()
         app.logger.debug("seller_id= %s", seller_id)
@@ -205,16 +248,13 @@ class SellerProfile(Resource):
         seller_dict = json.loads(json.dumps(data))
         # app.logger.debug(seller_dict)
 
-        UPDATE_SELLER_PROFILE = '''UPDATE sellers SET seller_name= %s, "GSTIN"= %s, "PAN"= %s,
-        dp_id= %s, sign_id= %s, updated_at= %s
-        WHERE id= %s'''
+        UPDATE_SELLER_PROFILE = '''UPDATE sellers SET seller_name= %s, "GSTIN"= %s, "PAN"= %s, 
+        updated_at= %s WHERE id= %s'''
         try:
             cursor = app_globals.get_cursor()
             cursor.execute(
                 UPDATE_SELLER_PROFILE, (seller_dict.get('seller_name'), seller_dict.get('GSTIN'),
-                                        seller_dict.get(
-                    'PAN'), seller_dict.get('dp_id'),
-                    seller_dict.get('sign_id'), datetime.now(), seller_id,))
+                                        seller_dict.get('PAN'), datetime.now(), seller_id))
             if cursor.rowcount != 1:
                 abort(400, 'Bad Request: update sellers row error')
         except (Exception, psycopg2.Error) as err:
@@ -224,8 +264,9 @@ class SellerProfile(Resource):
             cursor.close()
         return {"message": f"seller_id {seller_id} modified."}, 200
 
-    @ f_jwt.jwt_required()
-    def delete(self):
+    # for dp or sign update
+    @f_jwt.jwt_required()
+    def patch(self):
         seller_id = f_jwt.get_jwt_identity()
         app.logger.debug("seller_id= %s", seller_id)
         claims = f_jwt.get_jwt()
@@ -235,13 +276,66 @@ class SellerProfile(Resource):
         if user_type != 'seller':
             abort(403, 'Forbidden')
 
-        DELETE_USER = 'DELETE FROM sellers WHERE id= %s AND trashed= True'
+        data = request.get_json()
+        seller_dict = json.loads(json.dumps(data))
+        # app.logger.debug(seller_dict)
+        dp_id = seller_dict.get("dp_id", None)
+        sign_id = seller_dict.get("sign_id", None)
+        if (not dp_id) and sign_id:
+            column_name = 'sign_id'
+            column_value = sign_id
+        elif (not sign_id) and dp_id:
+            column_name = 'dp_id'
+            column_value = dp_id
+        else:
+            app.logger.debug("only either of dp_id or sign_id allowed!")
+            abort(400, 'Bad Request')
+
+        UPDATE_SELLER_PROFILE = '''UPDATE sellers SET {0}= %s, updated_at= %s WHERE id= %s 
+        RETURNING (SELECT {0} FROM sellers WHERE id =  %s)'''.format(column_name)
         try:
             cursor = app_globals.get_cursor()
-
-            cursor.execute(DELETE_USER, (seller_id,))
+            cursor.execute(
+                UPDATE_SELLER_PROFILE, (column_value, datetime.now(), seller_id, seller_id,))
             if cursor.rowcount != 1:
-                abort(400, 'Bad Request: delete row error')
+                abort(400, 'Bad Request: update sellers row error')
+            old_column_value = cursor.fetchone()[0]
+            app.logger.debug("old_%s = %s", column_name, old_column_value)
+            if old_column_value and old_column_value != column_value:
+                if media.delete_media_by_id(old_column_value):
+                    app.logger.debug(
+                        "deleted media from bucket where id= %s", old_column_value)
+                else:
+                    app.logger.debug(
+                        "error occurred in deleting media where id= %s", old_column_value)
+        except (Exception, psycopg2.Error) as err:
+            app.logger.debug(err)
+            abort(400, 'Bad Request')
+        finally:
+            cursor.close()
+        return {"message": f"seller_id {seller_id} modified."}, 200
+
+    @f_jwt.jwt_required()
+    def delete(self):
+        seller_id = f_jwt.get_jwt_identity()
+        app.logger.debug("seller_id= %s", seller_id)
+        claims = f_jwt.get_jwt()
+        user_type = claims['user_type']
+        app.logger.debug("user_type= %s", user_type)
+
+        if user_type != 'seller':
+            abort(403, 'Forbidden')
+        data = request.get_json()
+        if 'trashed' not in data.keys():
+            abort(400, 'Bad Request')
+        trashed = data.get('trashed')
+
+        MARK_SELLER_AS_TRASHED = 'UPDATE sellers SET trashed= %s WHERE id= %s'
+        try:
+            cursor = app_globals.get_cursor()
+            cursor.execute(MARK_SELLER_AS_TRASHED, (trashed, seller_id,))
+            if cursor.rowcount != 1:
+                abort(400, 'Bad Request: update row error')
         except (Exception, psycopg2.Error) as err:
             app.logger.debug(err)
             abort(400, 'Bad Request')
@@ -251,7 +345,7 @@ class SellerProfile(Resource):
 
 
 class AdminProfile(Resource):
-    @ f_jwt.jwt_required()
+    @f_jwt.jwt_required()
     def get(self):
         admin_id = f_jwt.get_jwt_identity()
         app.logger.debug("admin_id= %s", admin_id)
@@ -305,7 +399,7 @@ class AdminProfile(Resource):
         # app.logger.debug(admin_profile_dict)
         return admin_profile_dict
 
-    @ f_jwt.jwt_required()
+    @f_jwt.jwt_required()
     def put(self):
         admin_id = f_jwt.get_jwt_identity()
         app.logger.debug("admin_id= %s", admin_id)
@@ -320,15 +414,13 @@ class AdminProfile(Resource):
         admin_dict = json.loads(json.dumps(data))
         # app.logger.debug(admin_dict)
 
-        UPDATE_CUSTOMER_PROFILE = '''UPDATE admins SET first_name= %s, last_name= %s, dob= %s,
-        gender= %s, dp_id= %s, updated_at= %s WHERE id= %s'''
+        UPDATE_ADMIN_PROFILE = '''UPDATE admins SET first_name= %s, last_name= %s, dob= %s,
+        gender= %s, updated_at= %s WHERE id= %s'''
         try:
             cursor = app_globals.get_cursor()
             cursor.execute(
-                UPDATE_CUSTOMER_PROFILE, (admin_dict.get('first_name'), admin_dict.get('last_name'),
-                                          admin_dict.get(
-                    'dob'), admin_dict.get('gender'),
-                    admin_dict.get('dp_id'), datetime.now(), admin_id,))
+                UPDATE_ADMIN_PROFILE, (admin_dict.get('first_name'), admin_dict.get('last_name'),
+                                       admin_dict.get('dob'), admin_dict.get('gender'), datetime.now(), admin_id,))
             if cursor.rowcount != 1:
                 abort(400, 'Bad Request: update admins row error')
         except (Exception, psycopg2.Error) as err:
@@ -338,8 +430,9 @@ class AdminProfile(Resource):
             cursor.close()
         return {"message": f"admin_id {admin_id} modified."}, 200
 
-    @ f_jwt.jwt_required()
-    def delete(self):
+    # for dp update
+    @f_jwt.jwt_required()
+    def patch(self):
         admin_id = f_jwt.get_jwt_identity()
         app.logger.debug("admin_id= %s", admin_id)
         claims = f_jwt.get_jwt()
@@ -349,11 +442,53 @@ class AdminProfile(Resource):
         if user_type != 'admin':
             abort(403, 'Forbidden')
 
-        DELETE_USER = 'DELETE FROM admins WHERE id= %s AND trashed= True'
+        data = request.get_json()
+        admin_dict = json.loads(json.dumps(data))
+        # app.logger.debug(admin_dict)
+
+        UPDATE_ADMIN_PROFILE = '''UPDATE admins SET dp_id= %s, updated_at= %s WHERE id= %s 
+        RETURNING (SELECT dp_id FROM admins WHERE id =  %s)'''
         try:
             cursor = app_globals.get_cursor()
+            cursor.execute(
+                UPDATE_ADMIN_PROFILE, (admin_dict.get('dp_id'), datetime.now(), admin_id, admin_id,))
+            if cursor.rowcount != 1:
+                abort(400, 'Bad Request: update admins row error')
+            old_dp_id = cursor.fetchone()[0]
+            app.logger.debug("old_dp_id= %s", old_dp_id)
+            if old_dp_id and old_dp_id != admin_dict.get('dp_id'):
+                if media.delete_media_by_id(old_dp_id):
+                    app.logger.debug(
+                        "deleted media from bucket where id= %s", old_dp_id)
+                else:
+                    app.logger.debug(
+                        "error occurred in deleting media where id= %s", old_dp_id)
+        except (Exception, psycopg2.Error) as err:
+            app.logger.debug(err)
+            abort(400, 'Bad Request')
+        finally:
+            cursor.close()
+        return {"message": f"admin_id {admin_id} modified."}, 200
 
-            cursor.execute(DELETE_USER, (admin_id,))
+    @f_jwt.jwt_required()
+    def delete(self):
+        admin_id = f_jwt.get_jwt_identity()
+        app.logger.debug("admin_id= %s", admin_id)
+        claims = f_jwt.get_jwt()
+        user_type = claims['user_type']
+        app.logger.debug("user_type= %s", user_type)
+
+        if user_type != 'admin':
+            abort(403, 'Forbidden')
+        data = request.get_json()
+        if 'trashed' not in data.keys():
+            abort(400, 'Bad Request')
+        trashed = data.get('trashed')
+
+        MARK_ADMIN_AS_TRASHED = 'UPDATE admins SET trashed= %s WHERE id= %s'
+        try:
+            cursor = app_globals.get_cursor()
+            cursor.execute(MARK_ADMIN_AS_TRASHED, (trashed, admin_id,))
             if cursor.rowcount != 1:
                 abort(400, 'Bad Request: delete row error')
         except (Exception, psycopg2.Error) as err:

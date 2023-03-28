@@ -8,61 +8,7 @@ import json
 from flask import current_app as app
 
 
-class GetSellers(Resource):
-    @f_jwt.jwt_required()
-    def get(self):
-        claims = f_jwt.get_jwt()
-        user_type = claims['user_type']
-        app.logger.debug("user_type= %s", user_type)
-
-        if user_type != "admin" and user_type != "super_admin":
-            abort(403, "Forbidden: only super-admins and admins can view all sellers")
-
-        sellers_list = []
-
-        GET_SELLERS_PROFILES = '''SELECT s.seller_name, s.email, s.mobile_no,
-        s."GSTIN", s."PAN", s.enabled,
-        m.id AS media_id, m.name AS media_name, m.path
-        FROM sellers s
-        LEFT JOIN media m ON s.id = m.id
-        ORDER BY s.id DESC'''
-
-        try:
-            cursor = app_globals.get_named_tuple_cursor()
-            cursor.execute(GET_SELLERS_PROFILES, ())
-            rows = cursor.fetchall()
-            if not rows:
-                return []
-            for row in rows:
-                seller_profile_dict = {}
-                seller_profile_dict['seller_name'] = row.seller_name
-                seller_profile_dict['email'] = row.email
-                seller_profile_dict['mobile_no'] = row.mobile_no
-                seller_profile_dict['GSTIN'] = row.GSTIN
-                seller_profile_dict['PAN'] = row.PAN
-                seller_profile_dict['enabled'] = row.enabled
-
-                dp_media_dict = {}
-                dp_media_dict['id'] = row.media_id
-                dp_media_dict['name'] = row.media_name
-                path = row.path
-                if path is not None:
-                    dp_media_dict['path'] = "{}/{}".format(
-                        app.config["S3_LOCATION"], path)
-                else:
-                    dp_media_dict['path'] = None
-                seller_profile_dict.update({"dp": dp_media_dict})
-                sellers_list.append(seller_profile_dict)
-        except (Exception, psycopg2.Error) as err:
-            app.logger.debug(err)
-            abort(400, 'Bad Request')
-        finally:
-            cursor.close()
-        # app.logger.debug(sellers_list)
-        return sellers_list
-
-
-class GetCustomers(Resource):
+class CustomersInfo(Resource):
     @f_jwt.jwt_required()
     def get(self):
         claims = f_jwt.get_jwt()
@@ -117,31 +63,25 @@ class GetCustomers(Resource):
         # app.logger.debug(customers_list)
         return customers_list
 
-
-class EnableDisableUser(Resource):
+    # enable/disable customer
     @f_jwt.jwt_required()
-    def patch(self, user_id):
+    def patch(self, customer_id):
         claims = f_jwt.get_jwt()
         user_type = claims['user_type']
         app.logger.debug("user_type= %s", user_type)
 
         if user_type != "admin" and user_type != "super_admin":
-            abort(403, "Forbidden: only super-admins and admins can enable/disable user")
+            abort(
+                403, "Forbidden: only super-admins and admins can enable/disable customer")
 
         data = request.get_json()
-        user_dict = json.loads(json.dumps(data))
-        # app.logger.debug(user_dict)
+        enabled = data.get('enabled', None)
 
-        user_type = user_dict.get('user_type', None)
-        if user_type not in ['customer', 'seller', 'admin']:
-            abort(400, 'Bad request')
-
-        UPDATE_USER_ENABLED_STATUS = '''UPDATE {} SET enabled= %s, updated_at= %s where id= %s'''.format(
-            user_type+'s')
+        UPDATE_CUSTOMER_ENABLED_STATUS = '''UPDATE customers SET enabled= %s, updated_at= %s where id= %s'''
         try:
             cursor = app_globals.get_cursor()
-            cursor.execute(
-                UPDATE_USER_ENABLED_STATUS, (user_dict.get('enabled'), datetime.now(), user_id,))
+            cursor.execute(UPDATE_CUSTOMER_ENABLED_STATUS,
+                           (enabled, datetime.now(), customer_id,))
             if cursor.rowcount != 1:
                 abort(400, 'Bad Request: update row error')
         except (Exception, psycopg2.Error) as err:
@@ -149,8 +89,133 @@ class EnableDisableUser(Resource):
             abort(400, 'Bad Request')
         finally:
             cursor.close()
-        return {"message": f"{user_type}_id {user_id} modified"}, 200
+        return {"message": f"{customer_id} modified"}, 200
+    
+    @f_jwt.jwt_required()
+    def delete(self, customer_id):
+        claims = f_jwt.get_jwt()
+        user_type = claims['user_type']
+        app.logger.debug("user_type= %s", user_type)
 
+        if user_type != "admin" and user_type != "super_admin":
+            abort(403, "Forbidden: only super-admins and admins can delete customer account")
+
+        DELETE_CUSTOMER = 'DELETE FROM customers WHERE id= %s AND trashed= True'
+        try:
+            cursor = app_globals.get_cursor()
+            cursor.execute(DELETE_CUSTOMER, (customer_id,))
+            if cursor.rowcount != 1:
+                abort(400, 'Bad Request: delete row error')
+        except (Exception, psycopg2.Error) as err:
+            app.logger.debug(err)
+            abort(400, 'Bad Request')
+        finally:
+            cursor.close()
+        return 200
+
+class SellersInfo(Resource):
+    # get all sellers
+    @f_jwt.jwt_required()
+    def get(self):
+        claims = f_jwt.get_jwt()
+        user_type = claims['user_type']
+        app.logger.debug("user_type= %s", user_type)
+
+        if user_type != "admin" and user_type != "super_admin":
+            abort(403, "Forbidden: only super-admins and admins can view all sellers")
+
+        sellers_list = []
+
+        GET_SELLERS_PROFILES = '''SELECT s.seller_name, s.email, s.mobile_no,
+        s."GSTIN", s."PAN", s.enabled,
+        m.id AS media_id, m.name AS media_name, m.path
+        FROM sellers s
+        LEFT JOIN media m ON s.id = m.id
+        ORDER BY s.id DESC'''
+
+        try:
+            cursor = app_globals.get_named_tuple_cursor()
+            cursor.execute(GET_SELLERS_PROFILES, ())
+            rows = cursor.fetchall()
+            if not rows:
+                return []
+            for row in rows:
+                seller_profile_dict = {}
+                seller_profile_dict['seller_name'] = row.seller_name
+                seller_profile_dict['email'] = row.email
+                seller_profile_dict['mobile_no'] = row.mobile_no
+                seller_profile_dict['GSTIN'] = row.GSTIN
+                seller_profile_dict['PAN'] = row.PAN
+                seller_profile_dict['enabled'] = row.enabled
+
+                dp_media_dict = {}
+                dp_media_dict['id'] = row.media_id
+                dp_media_dict['name'] = row.media_name
+                path = row.path
+                if path is not None:
+                    dp_media_dict['path'] = "{}/{}".format(
+                        app.config["S3_LOCATION"], path)
+                else:
+                    dp_media_dict['path'] = None
+                seller_profile_dict.update({"dp": dp_media_dict})
+                sellers_list.append(seller_profile_dict)
+        except (Exception, psycopg2.Error) as err:
+            app.logger.debug(err)
+            abort(400, 'Bad Request')
+        finally:
+            cursor.close()
+        # app.logger.debug(sellers_list)
+        return sellers_list
+
+    # enable/disable seller
+    @f_jwt.jwt_required()
+    def patch(self, seller_id):
+        claims = f_jwt.get_jwt()
+        user_type = claims['user_type']
+        app.logger.debug("user_type= %s", user_type)
+
+        if user_type != "admin" and user_type != "super_admin":
+            abort(
+                403, "Forbidden: only super-admins and admins can enable/disable seller")
+
+        data = request.get_json()
+        enabled = data.get('enabled', None)
+
+        UPDATE_SELLER_ENABLED_STATUS = '''UPDATE sellers SET enabled= %s, updated_at= %s where id= %s'''
+        try:
+            cursor = app_globals.get_cursor()
+            cursor.execute(UPDATE_SELLER_ENABLED_STATUS,
+                           (enabled, datetime.now(), seller_id,))
+            if cursor.rowcount != 1:
+                abort(400, 'Bad Request: update row error')
+        except (Exception, psycopg2.Error) as err:
+            app.logger.debug(err)
+            abort(400, 'Bad Request')
+        finally:
+            cursor.close()
+        return {"message": f"{seller_id} modified"}, 200
+    
+    @f_jwt.jwt_required()
+    def delete(self, seller_id):
+        claims = f_jwt.get_jwt()
+        user_type = claims['user_type']
+        app.logger.debug("user_type= %s", user_type)
+
+        if user_type != "admin" and user_type != "super_admin":
+            abort(403, "Forbidden: only super-admins and admins can delete seller account")
+
+        DELETE_SELLER = 'DELETE FROM sellers WHERE id= %s AND trashed= True'
+        try:
+            cursor = app_globals.get_cursor()
+            cursor.execute(DELETE_SELLER, (seller_id,))
+            if cursor.rowcount != 1:
+                abort(400, 'Bad Request: delete row error')
+        except (Exception, psycopg2.Error) as err:
+            app.logger.debug(err)
+            abort(400, 'Bad Request')
+        finally:
+            cursor.close()
+        return 200
 
 # Deprecated
 class PromoteToSeller(Resource):

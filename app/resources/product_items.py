@@ -90,7 +90,7 @@ class ProductItems(Resource):
 
 
 class SellersProductItems(Resource):
-    # todo: work on medias and tags
+    # TODO: work on medias and tags
     @f_jwt.jwt_required()
     def post(self):
         user_id = f_jwt.get_jwt_identity()
@@ -364,7 +364,7 @@ class SellersProductItems(Resource):
         return {"message": f"product_item_id {product_item_id} modified."}, 200
 
     # mark/unmark product item as trashed (partially delete)
-    # todo: check product_item_id is not base item
+    # TODO: check product_item_id is not base item
     @ f_jwt.jwt_required()
     def patch(self, product_item_id):
         user_id = f_jwt.get_jwt_identity()
@@ -412,7 +412,7 @@ class SellersProductItems(Resource):
         return {"message": f"product_item_id {product_item_id} modified."}, 200
 
     # delete trashed product item
-    # todo: check product_item_id is not base item
+    # TODO: check product_item_id is not base item
     @ f_jwt.jwt_required()
     def delete(self, product_item_id):
         user_id = f_jwt.get_jwt_identity()
