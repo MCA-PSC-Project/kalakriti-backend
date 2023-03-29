@@ -2638,5 +2638,46 @@
     "headers": [],
     "params": [],
     "tests": []
+  },
+  {
+    "_id": "fb17f140-2f71-44a4-9f95-32b9f6863f9f",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/sellers/product-items",
+    "url": "{{baseUrl}}/sellers/product-items",
+    "method": "POST",
+    "sortNum": 0,
+    "created": "2023-03-29T18:20:47.684Z",
+    "modified": "2023-03-29T18:20:47.684Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n  \"product_id\": 1,\n  \"variant\": \"COLOR\",\n  \"variant_value\": \"BLACK\",\n  \"product_variant_name\": \"black_COLOR_VARIANT\",\n  \"SKU\": \"black-colorfv\",\n  \"original_price\": 1000,\n  \"offer_price\": 500,\n  \"quantity_in_stock\": 20,\n  \"media_ids\": [\n    {\n      \"media_id\": 1,\n      \"display_order\": 2\n    },\n    {\n      \"media_id\": 2,\n      \"display_order\": 1\n    }\n  ]\n}",
+      "form": []
+    },
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{seller_token}}"
+    },
+    "tests": []
+  },
+  {
+    "_id": "39863a0d-84b7-4260-b8d0-aebe638d1301",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/uploads/media",
+    "url": "{{baseUrl}}/uploads/media",
+    "method": "GET",
+    "sortNum": 0,
+    "created": "2023-03-29T18:36:47.747Z",
+    "modified": "2023-03-29T18:56:11.957Z",
+    "headers": [],
+    "params": [],
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{admin_token}}"
+    },
+    "tests": []
   }
 ]

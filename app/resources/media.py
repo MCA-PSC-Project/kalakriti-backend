@@ -328,3 +328,21 @@ class UploadFile(Resource):
             return media_dict, 201
         else:
             abort(404)
+
+
+class BucketFiles(Resource):
+    @f_jwt.jwt_required()
+    def get(self):
+        claims = f_jwt.get_jwt()
+        user_type = claims['user_type']
+        app.logger.debug("user_type= %s", user_type)
+
+        if user_type != "admin" and user_type != "super_admin":
+            abort(403, "Forbidden: only super-admins and admins can view all sellers")
+            
+        bucket_name = app.config['S3_BUCKET']
+        objects = app_globals.s3.list_objects_v2(Bucket=bucket_name)
+        object_keys = []
+        for object in objects['Contents']:
+            object_keys.append(object['Key'])
+        return object_keys

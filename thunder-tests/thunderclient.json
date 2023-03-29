@@ -374,19 +374,19 @@
     "_id": "6a9352bd-2261-4a67-bf56-4caeb810c362",
     "colId": "80d178ef-5176-474a-8708-db78bd45faee",
     "containerId": "4a61adc3-63f1-4474-872a-a902ad27e1a1",
-    "name": "Get All Files",
-    "url": "http://localhost:6898/uploads",
+    "name": "Get All Medias in bucket",
+    "url": "{{baseUrl}}/uploads/media",
     "method": "GET",
-    "sortNum": 180000,
+    "sortNum": 165000,
     "created": "2023-02-20T16:38:51.045Z",
-    "modified": "2023-02-20T16:38:51.045Z",
+    "modified": "2023-03-29T18:56:11.950Z",
     "headers": [],
     "params": [],
     "auth": {
       "type": "bearer",
-      "bearer": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MjE5NTAwMzcsImlkIjoxLCJ0eXBlIjoiMiJ9.zao3vOHPWjvxh-LwnP5RuZqPqMD2ShZSMvveMD4j0Lw"
+      "bearer": "{{admin_token}}"
     },
-    "docs": ""
+    "tests": []
   },
   {
     "_id": "0caeb856-ecfb-44c5-943c-e59237d928d0",
@@ -1764,12 +1764,12 @@
     "method": "POST",
     "sortNum": 15000,
     "created": "2023-02-23T11:07:04.114Z",
-    "modified": "2023-03-12T07:46:00.202Z",
+    "modified": "2023-03-29T18:20:47.706Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n  \"product_id\": 3,\n  \"variant\": \"COLOR\",\n  \"variant_value\": \"BLACK\",\n  \"product_variant_name\": \"black_COLOR_VARIANT\",\n  \"SKU\": \"black-colorfv\",\n  \"original_price\": 1000,\n  \"offer_price\": 500,\n  \"quantity_in_stock\": 20,\n  \"media_ids\": [\n    {\n      \"media_id\": 1,\n      \"display_order\": 2\n    },\n    {\n      \"media_id\": 2,\n      \"display_order\": 1\n    }\n  ]\n}",
+      "raw": "{\n  \"product_id\": 1,\n  \"variant\": \"COLOR\",\n  \"variant_value\": \"BLACK\",\n  \"product_variant_name\": \"black_COLOR_VARIANT\",\n  \"SKU\": \"black-colorfv\",\n  \"original_price\": 1000,\n  \"offer_price\": 500,\n  \"quantity_in_stock\": 20,\n  \"media_ids\": [\n    {\n      \"media_id\": 1,\n      \"display_order\": 2\n    },\n    {\n      \"media_id\": 2,\n      \"display_order\": 1\n    }\n  ]\n}",
       "form": []
     },
     "auth": {
