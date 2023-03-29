@@ -206,7 +206,7 @@
     "method": "POST",
     "sortNum": 120000,
     "created": "2023-02-20T16:38:51.039Z",
-    "modified": "2023-03-05T07:18:17.329Z",
+    "modified": "2023-03-29T19:31:26.875Z",
     "headers": [],
     "params": [],
     "body": {
@@ -222,7 +222,7 @@
     },
     "auth": {
       "type": "bearer",
-      "bearer": "{{token}}"
+      "bearer": "{{admin_token}}"
     },
     "tests": []
   },
@@ -343,43 +343,15 @@
     "docs": ""
   },
   {
-    "_id": "fac6ad0c-af47-4bd4-b9b4-b7e2dec7a578",
-    "colId": "80d178ef-5176-474a-8708-db78bd45faee",
-    "containerId": "4a61adc3-63f1-4474-872a-a902ad27e1a1",
-    "name": "Upload  file to object store",
-    "url": "{{baseUrl}}/uploads/banners",
-    "method": "POST",
-    "sortNum": 170000,
-    "created": "2023-02-20T16:38:51.044Z",
-    "modified": "2023-02-20T16:38:51.044Z",
-    "headers": [],
-    "params": [],
-    "body": {
-      "form": [],
-      "files": [
-        {
-          "name": "file",
-          "value": "/home/h4rdw1r3/Pictures/design-build-deliver-m.png"
-        }
-      ],
-      "type": "formdata"
-    },
-    "auth": {
-      "type": "bearer",
-      "bearer": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MjM5Mjc2MzUsImlkIjo4NCwidHlwZSI6IjAifQ.JJmyQSuH89n8MiFd1CvCWizTZ4P1JpZLfNN6AyYcBak"
-    },
-    "docs": ""
-  },
-  {
     "_id": "6a9352bd-2261-4a67-bf56-4caeb810c362",
     "colId": "80d178ef-5176-474a-8708-db78bd45faee",
     "containerId": "4a61adc3-63f1-4474-872a-a902ad27e1a1",
     "name": "Get All Medias in bucket",
-    "url": "{{baseUrl}}/uploads/media",
+    "url": "{{baseUrl}}/uploads/media/all",
     "method": "GET",
     "sortNum": 165000,
     "created": "2023-02-20T16:38:51.045Z",
-    "modified": "2023-03-29T18:56:11.950Z",
+    "modified": "2023-03-29T19:28:59.099Z",
     "headers": [],
     "params": [],
     "auth": {
@@ -387,20 +359,6 @@
       "bearer": "{{admin_token}}"
     },
     "tests": []
-  },
-  {
-    "_id": "0caeb856-ecfb-44c5-943c-e59237d928d0",
-    "colId": "80d178ef-5176-474a-8708-db78bd45faee",
-    "containerId": "4a61adc3-63f1-4474-872a-a902ad27e1a1",
-    "name": "Get File",
-    "url": "{{baseUrl}}/media/banners/84be3721-06b0-4b81-a159-1ca0b8340a9e.png",
-    "method": "GET",
-    "sortNum": 190000,
-    "created": "2023-02-20T16:38:51.046Z",
-    "modified": "2023-02-20T16:38:51.046Z",
-    "headers": [],
-    "params": [],
-    "docs": ""
   },
   {
     "_id": "2df2231e-2cc7-4d4d-aa9f-8817ca7a98d5",
@@ -3073,6 +3031,24 @@
       "raw": "{\n\t\"name\": \"s2\",\n\t\"parent_id\" : 2,\n\t\"cover_id\" : null\n}",
       "form": []
     },
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{admin_token}}"
+    },
+    "tests": []
+  },
+  {
+    "_id": "6e933ae9-cb3c-4c77-b98a-bfa85eccaca2",
+    "colId": "80d178ef-5176-474a-8708-db78bd45faee",
+    "containerId": "4a61adc3-63f1-4474-872a-a902ad27e1a1",
+    "name": "Delete All Medias in bucket ",
+    "url": "{{baseUrl}}/uploads/media/all",
+    "method": "DELETE",
+    "sortNum": 175000,
+    "created": "2023-03-29T19:26:45.060Z",
+    "modified": "2023-03-29T19:29:34.113Z",
+    "headers": [],
+    "params": [],
     "auth": {
       "type": "bearer",
       "bearer": "{{admin_token}}"

@@ -330,7 +330,7 @@ class UploadFile(Resource):
             abort(404)
 
 
-class BucketFiles(Resource):
+class BucketObjects(Resource):
     @f_jwt.jwt_required()
     def get(self):
         claims = f_jwt.get_jwt()
@@ -339,10 +339,39 @@ class BucketFiles(Resource):
 
         if user_type != "admin" and user_type != "super_admin":
             abort(403, "Forbidden: only super-admins and admins can view all sellers")
-            
+
         bucket_name = app.config['S3_BUCKET']
         objects = app_globals.s3.list_objects_v2(Bucket=bucket_name)
-        object_keys = []
-        for object in objects['Contents']:
-            object_keys.append(object['Key'])
-        return object_keys
+        object_details = []
+        for object in objects.get('Contents'):
+            object_details.append(
+                {"file_name": object.get('Key'), "size": object.get('Size')})
+        return object_details
+
+    @f_jwt.jwt_required()
+    def delete(self):
+        """
+        This function deletes all files from S3 bucket
+        :return: None
+        """
+        claims = f_jwt.get_jwt()
+        user_type = claims['user_type']
+        app.logger.debug("user_type= %s", user_type)
+
+        if user_type != "admin" and user_type != "super_admin":
+            abort(403, "Forbidden: only super-admins and admins can view all sellers")
+        
+        bucket_name = app.config['S3_BUCKET']
+        # First we list all files
+        response = app_globals.s3.list_objects_v2(Bucket=bucket_name)
+        files = response.get("Contents")
+        files_to_delete = []
+        # We will create Key array to pass to delete_objects function
+        for file in files:
+            files_to_delete.append({"Key": file.get("Key")})
+        # This will delete all files in a folder
+        response = app_globals.s3.delete_objects(
+            Bucket=bucket_name, Delete={"Objects": files_to_delete}
+        )
+        app.logger.debug(response)
+        return response

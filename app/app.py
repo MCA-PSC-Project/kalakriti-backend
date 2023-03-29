@@ -21,7 +21,7 @@ from app.resources.search import Search, TopSearches
 from app.resources.tags import Tags
 from app.resources.user_profile import CustomerProfile, SellerProfile, AdminProfile
 from app.resources.reset import RequestResetEmail, RequestResetPassword, ResetEmail, ResetMobile, ResetPassword
-from app.resources.media import BucketFiles, UploadImage, UploadAudio, UploadVideo, UploadFile, DeleteMedia
+from app.resources.media import BucketObjects, UploadImage, UploadAudio, UploadVideo, UploadFile, DeleteMedia
 from app.resources.categories import Categories
 from app.resources.admin import CustomersInfo, PromoteToSeller, SellersInfo
 from app.resources.super_admin import AdminsInfo, PromoteToAdmin
@@ -100,7 +100,7 @@ def create_app(config_name):
     api.add_resource(UploadFile, '/uploads/file')
     # only for testing purpose
     api.add_resource(DeleteMedia, '/uploads/media/<int:media_id>')
-    api.add_resource(BucketFiles, '/uploads/media')
+    api.add_resource(BucketObjects, '/uploads/media/all')
 
     # Auth
     api.add_resource(RegisterCustomer, '/customers/auth/register')
