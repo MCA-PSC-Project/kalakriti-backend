@@ -62,11 +62,11 @@
     "colId": "80d178ef-5176-474a-8708-db78bd45faee",
     "containerId": "20dae99d-610b-4865-98e2-da1b674f86e0",
     "name": "verify email",
-    "url": "{{baseUrl}}/auth/verify-email?user_type=admin&token=ImFkbWluX2RlbEBnbWFpbC5jb20i.ZB_-rg.PM7G3nReii1LdX5M61QS13vQHFE",
+    "url": "{{baseUrl}}/auth/verify-email?user_type=admin&token=InN1cGVyX2FkbWluMUBnbWFpbC5jb20i.ZCR9tA.EEKtN4IjUP2gJ4Sg9pQFtPnJ4yA",
     "method": "GET",
     "sortNum": 40000,
     "created": "2023-02-20T16:38:51.031Z",
-    "modified": "2023-03-26T08:13:58.908Z",
+    "modified": "2023-03-29T18:04:59.035Z",
     "headers": [],
     "params": [
       {
@@ -76,7 +76,7 @@
       },
       {
         "name": "token",
-        "value": "ImFkbWluX2RlbEBnbWFpbC5jb20i.ZB_-rg.PM7G3nReii1LdX5M61QS13vQHFE",
+        "value": "InN1cGVyX2FkbWluMUBnbWFpbC5jb20i.ZCR9tA.EEKtN4IjUP2gJ4Sg9pQFtPnJ4yA",
         "isPath": false
       }
     ],
@@ -509,7 +509,7 @@
     "method": "POST",
     "sortNum": 250000,
     "created": "2023-02-20T16:38:51.052Z",
-    "modified": "2023-03-29T17:15:11.646Z",
+    "modified": "2023-03-29T18:09:50.810Z",
     "headers": [],
     "params": [],
     "body": {
@@ -551,11 +551,11 @@
     "colId": "80d178ef-5176-474a-8708-db78bd45faee",
     "containerId": "67bd2609-a1c1-41da-ab7e-1e5b9002ee51",
     "name": "Delete category",
-    "url": "{{baseUrl}}/categories/2",
+    "url": "{{baseUrl}}/categories/4",
     "method": "DELETE",
     "sortNum": 280000,
     "created": "2023-02-20T16:38:51.055Z",
-    "modified": "2023-03-29T17:31:47.211Z",
+    "modified": "2023-03-29T18:12:22.174Z",
     "headers": [],
     "params": [],
     "auth": {
@@ -1032,11 +1032,11 @@
     "colId": "80d178ef-5176-474a-8708-db78bd45faee",
     "containerId": "d3f02f76-889e-4a8d-88e7-d026529d83a9",
     "name": "get product by id",
-    "url": "{{baseUrl}}/products/5",
+    "url": "{{baseUrl}}/products/1",
     "method": "GET",
     "sortNum": 530000,
     "created": "2023-02-20T16:38:51.081Z",
-    "modified": "2023-03-10T10:07:48.401Z",
+    "modified": "2023-03-29T18:13:32.656Z",
     "headers": [],
     "params": [],
     "tests": []
@@ -1068,12 +1068,12 @@
     "method": "POST",
     "sortNum": 535000,
     "created": "2023-02-20T16:38:51.083Z",
-    "modified": "2023-03-29T17:15:26.114Z",
+    "modified": "2023-03-29T18:08:43.056Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n  \"product_name\": \"madhubani\",\n  \"product_description\": \"dxvxk\",\n  \"category_id\": 1,\n  \"subcategory_id\": null,\n  \"currency\": \"INR\",\n  \"min_order_quantity\": 2,\n  \"max_order_quantity\": 10,\n  \"product_items\": [\n    {\n      \"variant\": \"BASE\",\n      \"variant_value\": \"BASE\",\n      \"product_variant_name\": \"BASE\",\n      \"SKU\": \"abcdefghijk\",\n      \"original_price\": 1000,\n      \"offer_price\": 500,\n      \"quantity_in_stock\": 10\n    }\n  ]\n}",
+      "raw": "{\n  \"product_name\": \"madhubani\",\n  \"product_description\": \"dxvxk\",\n  \"category_id\": 1,\n  \"subcategory_id\": 2,\n  \"currency\": \"INR\",\n  \"min_order_quantity\": 2,\n  \"max_order_quantity\": 10,\n  \"product_items\": [\n    {\n      \"variant\": \"BASE\",\n      \"variant_value\": \"BASE\",\n      \"product_variant_name\": \"BASE\",\n      \"SKU\": \"abcdefghijkl\",\n      \"original_price\": 1000,\n      \"offer_price\": 500,\n      \"quantity_in_stock\": 10\n    }\n  ]\n}",
       "form": []
     },
     "auth": {
@@ -1087,16 +1087,16 @@
     "colId": "80d178ef-5176-474a-8708-db78bd45faee",
     "containerId": "d3f02f76-889e-4a8d-88e7-d026529d83a9",
     "name": "update product",
-    "url": "{{baseUrl}}/sellers/products/31",
+    "url": "{{baseUrl}}/sellers/products/1",
     "method": "PUT",
     "sortNum": 537500,
     "created": "2023-02-20T16:38:51.084Z",
-    "modified": "2023-03-01T04:09:26.443Z",
+    "modified": "2023-03-29T18:13:23.994Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n  \"product_name\": \"famous madhubani painting\",\n  \"product_description\": \"paintings from madhubani\",\n  \"category_id\": 5,\n  \"subcategory_id\": 7,\n  \"currency\": \"INR\",\n  \"min_order_quantity\": 1,\n  \"max_order_quantity\": 5\n}",
+      "raw": "{\n  \"product_name\": \"famous madhubani painting\",\n  \"product_description\": \"paintings from madhubani\",\n  \"category_id\": 1,\n  \"subcategory_id\": null,\n  \"currency\": \"INR\",\n  \"min_order_quantity\": 1,\n  \"max_order_quantity\": 5\n}",
       "form": []
     },
     "auth": {
@@ -1134,16 +1134,16 @@
     "colId": "80d178ef-5176-474a-8708-db78bd45faee",
     "containerId": "d3f02f76-889e-4a8d-88e7-d026529d83a9",
     "name": "GET products by subcategory",
-    "url": "{{baseUrl}}/categories/products?subcategory_id=5",
+    "url": "{{baseUrl}}/categories/products?subcategory_id=2",
     "method": "GET",
     "sortNum": 265000,
     "created": "2023-02-20T16:38:51.086Z",
-    "modified": "2023-03-11T14:42:29.782Z",
+    "modified": "2023-03-29T18:09:21.201Z",
     "headers": [],
     "params": [
       {
         "name": "subcategory_id",
-        "value": "5",
+        "value": "2",
         "isPath": false
       }
     ],
@@ -1907,16 +1907,16 @@
     "colId": "80d178ef-5176-474a-8708-db78bd45faee",
     "containerId": "d3f02f76-889e-4a8d-88e7-d026529d83a9",
     "name": "GET products by category",
-    "url": "{{baseUrl}}/categories/products?category_id=3",
+    "url": "{{baseUrl}}/categories/products?category_id=1",
     "method": "GET",
     "sortNum": 132500,
     "created": "2023-03-01T04:15:52.734Z",
-    "modified": "2023-03-11T14:41:50.704Z",
+    "modified": "2023-03-29T18:09:15.408Z",
     "headers": [],
     "params": [
       {
         "name": "category_id",
-        "value": "3",
+        "value": "1",
         "isPath": false
       }
     ],
@@ -3053,6 +3053,29 @@
     "auth": {
       "type": "bearer",
       "bearer": "{{super_admin_token}}"
+    },
+    "tests": []
+  },
+  {
+    "_id": "88203cb8-b385-4852-a604-f0ea45f7c93e",
+    "colId": "80d178ef-5176-474a-8708-db78bd45faee",
+    "containerId": "67bd2609-a1c1-41da-ab7e-1e5b9002ee51",
+    "name": "Create Subcategory ",
+    "url": "{{baseUrl}}/categories",
+    "method": "POST",
+    "sortNum": 260000,
+    "created": "2023-03-29T18:07:08.588Z",
+    "modified": "2023-03-29T18:10:19.820Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n\t\"name\": \"s2\",\n\t\"parent_id\" : 2,\n\t\"cover_id\" : null\n}",
+      "form": []
+    },
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{admin_token}}"
     },
     "tests": []
   }

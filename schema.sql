@@ -209,7 +209,7 @@ CREATE TABLE "products"(
 	"id" SERIAL PRIMARY KEY,
 	"product_name" VARCHAR(250) NOT NULL,
 	"product_description" VARCHAR(1000) NOT NULL,
-	"category_id" INT,
+	"category_id" INT NOT NULL,
 	"subcategory_id" INT,
 	"seller_id" INT NOT NULL,
 	"currency" varchar(5) NOT NULL DEFAULT 'INR',
@@ -219,12 +219,10 @@ CREATE TABLE "products"(
 	"tags" text [] CHECK (array_length(tags, 1) <= 15),
 	"added_at" TIMESTAMPTZ NOT NULL,
 	"updated_at" TIMESTAMPTZ,
-	FOREIGN KEY("category_id") REFERENCES "categories"("id") ON DELETE
-	SET NULL,
-		FOREIGN KEY("subcategory_id") REFERENCES "categories"("id") ON DELETE
-	SET NULL,
-		FOREIGN KEY("seller_id") REFERENCES "sellers"("id") ON DELETE CASCADE,
-		CONSTRAINT "order_quantity_check" CHECK("min_order_quantity" <= "max_order_quantity")
+	FOREIGN KEY("category_id") REFERENCES "categories"("id") ON DELETE RESTRICT,
+	FOREIGN KEY("subcategory_id") REFERENCES "categories"("id") ON DELETE RESTRICT,
+	FOREIGN KEY("seller_id") REFERENCES "sellers"("id") ON DELETE CASCADE,
+	CONSTRAINT "order_quantity_check" CHECK("min_order_quantity" <= "max_order_quantity")
 );
 CREATE TABLE "variants" (
 	"id" SERIAL PRIMARY KEY,

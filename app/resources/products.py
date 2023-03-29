@@ -511,15 +511,15 @@ class SellersProducts(Resource):
         user_type = claims['user_type']
         app.logger.debug("user_type= %s", user_type)
 
+        if user_type != "seller" and user_type != "admin" and user_type != "super_admin":
+            abort(400, "only seller, super-admins and admins can update product")
+
         app.logger.debug("product_id= %s", product_id)
         data = request.get_json()
         product_dict = json.loads(json.dumps(data))
         # app.logger.debug(product_dict)
 
         current_time = datetime.now()
-
-        if user_type != "seller" and user_type != "admin" and user_type != "super_admin":
-            abort(400, "only seller, super-admins and admins can update product")
 
         UPDATE_PRODUCT = '''UPDATE products SET product_name= %s, product_description= %s,
         category_id= %s, subcategory_id= %s, currency= %s, min_order_quantity= %s, max_order_quantity= %s,
