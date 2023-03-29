@@ -150,7 +150,6 @@ class SellersProductItems(Resource):
                     "media_id"), product_item_id, media_id_dict.get("display_order"))
                 values_tuple_list.append(values_tuple)
             app.logger.debug("values_tuple_list= %s", values_tuple_list)
-
             psycopg2.extras.execute_batch(
                 cursor, INSERT_MEDIAS, values_tuple_list)
         except (Exception, psycopg2.Error) as err:

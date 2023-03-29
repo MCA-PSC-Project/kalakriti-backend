@@ -1755,7 +1755,7 @@
     "method": "POST",
     "sortNum": 0,
     "created": "2023-03-22T07:03:24.417Z",
-    "modified": "2023-03-29T19:31:19.903Z",
+    "modified": "2023-03-29T19:42:50.920Z",
     "headers": [],
     "params": [],
     "body": {
@@ -2314,12 +2314,12 @@
     "method": "POST",
     "sortNum": 0,
     "created": "2023-03-29T17:14:14.734Z",
-    "modified": "2023-03-29T18:08:43.081Z",
+    "modified": "2023-03-29T19:52:16.413Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n  \"product_name\": \"madhubani\",\n  \"product_description\": \"dxvxk\",\n  \"category_id\": 1,\n  \"subcategory_id\": 2,\n  \"currency\": \"INR\",\n  \"min_order_quantity\": 2,\n  \"max_order_quantity\": 10,\n  \"product_items\": [\n    {\n      \"variant\": \"BASE\",\n      \"variant_value\": \"BASE\",\n      \"product_variant_name\": \"BASE\",\n      \"SKU\": \"abcdefghijkl\",\n      \"original_price\": 1000,\n      \"offer_price\": 500,\n      \"quantity_in_stock\": 10\n    }\n  ]\n}",
+      "raw": "{\n  \"product_name\": \"madhubani\",\n  \"product_description\": \"dxvxk\",\n  \"category_id\": 1,\n  \"subcategory_id\": 2,\n  \"currency\": \"INR\",\n  \"min_order_quantity\": 2,\n  \"max_order_quantity\": 10,\n  \"product_items\": [\n    {\n      \"variant\": \"BASE\",\n      \"variant_value\": \"BASE\",\n      \"product_variant_name\": \"BASE\",\n      \"SKU\": \"abcdefghijklm\",\n      \"original_price\": 1000,\n      \"offer_price\": 500,\n      \"quantity_in_stock\": 10,\n      \"media_ids\": [\n        {\n          \"media_id\": 3,\n          \"display_order\": 2\n        },\n        {\n          \"media_id\": 4,\n          \"display_order\": 1\n        }\n      ]\n    }\n  ]\n}",
       "form": []
     },
     "auth": {
@@ -2648,12 +2648,12 @@
     "method": "POST",
     "sortNum": 0,
     "created": "2023-03-29T18:20:47.684Z",
-    "modified": "2023-03-29T18:20:47.684Z",
+    "modified": "2023-03-29T19:46:44.832Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n  \"product_id\": 1,\n  \"variant\": \"COLOR\",\n  \"variant_value\": \"BLACK\",\n  \"product_variant_name\": \"black_COLOR_VARIANT\",\n  \"SKU\": \"black-colorfv\",\n  \"original_price\": 1000,\n  \"offer_price\": 500,\n  \"quantity_in_stock\": 20,\n  \"media_ids\": [\n    {\n      \"media_id\": 1,\n      \"display_order\": 2\n    },\n    {\n      \"media_id\": 2,\n      \"display_order\": 1\n    }\n  ]\n}",
+      "raw": "{\n  \"product_id\": 1,\n  \"variant\": \"COLOR\",\n  \"variant_value\": \"BLACK\",\n  \"product_variant_name\": \"black_COLOR_VARIANT\",\n  \"SKU\": \"black-colorfv\",\n  \"original_price\": 1000,\n  \"offer_price\": 500,\n  \"quantity_in_stock\": 20,\n  \"media_ids\": [\n    {\n      \"media_id\": 3,\n      \"display_order\": 2\n    },\n    {\n      \"media_id\": 4,\n      \"display_order\": 1\n    }\n  ]\n}",
       "form": []
     },
     "auth": {
@@ -2714,6 +2714,62 @@
       "type": "bearer",
       "bearer": "{{admin_token}}"
     },
+    "tests": []
+  },
+  {
+    "_id": "c1e93b09-ffd5-4f1a-9f1f-4b4cd28e918f",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/product-items/1",
+    "url": "{{baseUrl}}/product-items/1",
+    "method": "GET",
+    "sortNum": 0,
+    "created": "2023-03-29T19:46:27.814Z",
+    "modified": "2023-03-29T19:46:27.814Z",
+    "headers": [],
+    "params": [],
+    "tests": []
+  },
+  {
+    "_id": "db0ee2e3-890b-4bc6-ae04-ed7508a63b32",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/products/2",
+    "url": "{{baseUrl}}/products/2",
+    "method": "GET",
+    "sortNum": 0,
+    "created": "2023-03-29T19:52:39.945Z",
+    "modified": "2023-03-29T19:52:39.945Z",
+    "headers": [],
+    "params": [],
+    "tests": []
+  },
+  {
+    "_id": "0eaf1bd5-726d-4ef4-8bb7-52562ad55b04",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/products/3",
+    "url": "{{baseUrl}}/products/3",
+    "method": "GET",
+    "sortNum": 0,
+    "created": "2023-03-29T19:52:45.093Z",
+    "modified": "2023-03-29T19:52:45.093Z",
+    "headers": [],
+    "params": [],
+    "tests": []
+  },
+  {
+    "_id": "270a9547-80fb-4571-8b8b-778376d04ced",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/products/4",
+    "url": "{{baseUrl}}/products/4",
+    "method": "GET",
+    "sortNum": 0,
+    "created": "2023-03-29T19:53:07.539Z",
+    "modified": "2023-03-29T19:53:07.539Z",
+    "headers": [],
+    "params": [],
     "tests": []
   }
 ]
