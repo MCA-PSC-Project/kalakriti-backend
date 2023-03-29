@@ -578,12 +578,12 @@
     "method": "POST",
     "sortNum": 0,
     "created": "2023-03-14T17:30:06.748Z",
-    "modified": "2023-03-26T08:15:10.054Z",
+    "modified": "2023-03-29T17:14:45.483Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n    \"email\": \"super_admin1@gmail.com\",\n    \"password\": \"abcd@123\"\n}",
+      "raw": "{\n    \"email\": \"admin1@gmail.com\",\n    \"password\": \"abcd@123\"\n}",
       "form": []
     },
     "tests": [],
@@ -2299,6 +2299,102 @@
       "raw": "{\n  \"enabled\": true\n}",
       "form": []
     },
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{admin_token}}"
+    },
+    "tests": []
+  },
+  {
+    "_id": "6070aeef-36c7-4cb1-82d7-bf0781633143",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/sellers/products",
+    "url": "{{baseUrl}}/sellers/products",
+    "method": "POST",
+    "sortNum": 0,
+    "created": "2023-03-29T17:14:14.734Z",
+    "modified": "2023-03-29T17:15:26.129Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n  \"product_name\": \"madhubani\",\n  \"product_description\": \"dxvxk\",\n  \"category_id\": 1,\n  \"subcategory_id\": null,\n  \"currency\": \"INR\",\n  \"min_order_quantity\": 2,\n  \"max_order_quantity\": 10,\n  \"product_items\": [\n    {\n      \"variant\": \"BASE\",\n      \"variant_value\": \"BASE\",\n      \"product_variant_name\": \"BASE\",\n      \"SKU\": \"abcdefghijk\",\n      \"original_price\": 1000,\n      \"offer_price\": 500,\n      \"quantity_in_stock\": 10\n    }\n  ]\n}",
+      "form": []
+    },
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{seller_token}}"
+    },
+    "tests": []
+  },
+  {
+    "_id": "53b4793d-5afc-4494-b906-adcacfada3a3",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/categories",
+    "url": "{{baseUrl}}/categories",
+    "method": "GET",
+    "sortNum": 0,
+    "created": "2023-03-29T17:14:27.253Z",
+    "modified": "2023-03-29T17:14:27.253Z",
+    "headers": [],
+    "params": [],
+    "tests": []
+  },
+  {
+    "_id": "aa8a41ce-ed76-4ab0-8d9b-978c1fb9d6c1",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/categories",
+    "url": "{{baseUrl}}/categories",
+    "method": "POST",
+    "sortNum": 0,
+    "created": "2023-03-29T17:14:34.801Z",
+    "modified": "2023-03-29T17:15:11.653Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n\t\"name\": \"c2\",\n\t\"parent_id\" : null,\n\t\"cover_id\" : null\n}",
+      "form": []
+    },
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{admin_token}}"
+    },
+    "tests": []
+  },
+  {
+    "_id": "20e7e62e-dab0-4ac7-a95d-e21beabcb832",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/categories/1",
+    "url": "{{baseUrl}}/categories/1",
+    "method": "DELETE",
+    "sortNum": 0,
+    "created": "2023-03-29T17:24:02.850Z",
+    "modified": "2023-03-29T17:24:02.850Z",
+    "headers": [],
+    "params": [],
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{admin_token}}"
+    },
+    "tests": []
+  },
+  {
+    "_id": "da9a72fe-62be-426d-b640-5859ea4c9f96",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/categories/2",
+    "url": "{{baseUrl}}/categories/2",
+    "method": "DELETE",
+    "sortNum": 0,
+    "created": "2023-03-29T17:31:46.988Z",
+    "modified": "2023-03-29T17:31:46.988Z",
+    "headers": [],
+    "params": [],
     "auth": {
       "type": "bearer",
       "bearer": "{{admin_token}}"

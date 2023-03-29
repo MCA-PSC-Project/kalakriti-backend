@@ -160,12 +160,18 @@ class Categories(Resource):
         app.logger.debug("user_type= %s", user_type)
 
         if user_type != "admin" and user_type != "super_admin":
-            abort(403, 'Forbidden: only super-admins and admins can create category')
-
-        DELETE_CATEGORY = 'DELETE FROM categories WHERE id= %s'
+            abort(403, 'Forbidden: only super-admins and admins can delete category')
 
         try:
             cursor = app_globals.get_cursor()
+            # for deleting a category only when no product is referencing it 
+            COUNT_CATEGORY_REFERENCES='''SELECT COUNT(id) FROM products WHERE category_id= %s'''
+            cursor.execute(COUNT_CATEGORY_REFERENCES, (category_id,))
+            count=cursor.fetchone()[0]
+
+            if count > 0:
+                abort(400, "some products are using this category id")
+            DELETE_CATEGORY = 'DELETE FROM categories WHERE id= %s'
             cursor.execute(DELETE_CATEGORY, (category_id,))
             if cursor.rowcount != 1:
                 abort(400, 'Bad Request: delete row error')
@@ -174,4 +180,5 @@ class Categories(Resource):
             abort(400, 'Bad Request')
         finally:
             cursor.close()
+            # app.logger.debug('cursor closed')
         return 200
