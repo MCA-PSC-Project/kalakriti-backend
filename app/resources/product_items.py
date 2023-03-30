@@ -90,7 +90,7 @@ class ProductItems(Resource):
 
 
 class SellersProductItems(Resource):
-    # TODO: work on medias and tags
+    # TODO: work on medias
     @f_jwt.jwt_required()
     def post(self):
         user_id = f_jwt.get_jwt_identity()
@@ -390,17 +390,31 @@ class SellersProductItems(Resource):
                     400, "only seller, super-admins and admins can trash a product_item")
             value = data['trashed']
             # app.logger.debug("trashed= %s", value)
-            UPDATE_PRODUCT_ITEM_TRASHED_VALUE = '''UPDATE product_items SET trashed= %s, updated_at= %s
+            # check product_item_id is not base item
+            try:
+                CHECK_ITEM_IS_BASE = '''SELECT COUNT(product_item_id) FROM product_base_item WHERE product_item_id = %s'''
+                cursor = app_globals.get_cursor()
+                cursor.execute(CHECK_ITEM_IS_BASE, (product_item_id,))
+                count = cursor.fetchone()[0]
+                if count != 0:
+                    app.logger.debug("error: cannot trash a base product item")
+                    abort(400, 'Bad Request')
+            except (Exception, psycopg2.Error) as err:
+                app.logger.debug(err)
+                abort(400, 'Bad Request')
+            finally:
+                cursor.close()
+
+            UPDATE_PRODUCT_ITEM_TRASHED_VALUE = '''UPDATE product_items SET product_item_status= %s, updated_at= %s
             WHERE id= %s'''
             PATCH_PRODUCT_ITEM = UPDATE_PRODUCT_ITEM_TRASHED_VALUE
         else:
             abort(400, "Bad Request")
-        current_time = datetime.now()
 
         try:
             cursor = app_globals.get_cursor()
             cursor.execute(
-                PATCH_PRODUCT_ITEM, (value, current_time, product_item_id,))
+                PATCH_PRODUCT_ITEM, ('trashed' if value else 'unpublished', datetime.now(), product_item_id,))
             if cursor.rowcount != 1:
                 abort(400, 'Bad Request: update row error')
         except (Exception, psycopg2.Error) as err:
@@ -411,7 +425,6 @@ class SellersProductItems(Resource):
         return {"message": f"product_item_id {product_item_id} modified."}, 200
 
     # delete trashed product item
-    # TODO: check product_item_id is not base item
     @ f_jwt.jwt_required()
     def delete(self, product_item_id):
         user_id = f_jwt.get_jwt_identity()
@@ -433,13 +446,11 @@ class SellersProductItems(Resource):
                 SELECT piv.variant_value_id FROM product_item_values piv 
                 WHERE piv.product_item_id = %s
             )'''
-
             cursor.execute(DELETE_VARIANT_VALUE, (product_item_id,))
             if cursor.rowcount != 1:
                 abort(400, 'Bad Request: delete variant value row error')
 
-            DELETE_TRASHED_PRODUCT_ITEM = 'DELETE FROM product_items WHERE id= %s AND trashed= true'
-
+            DELETE_TRASHED_PRODUCT_ITEM = '''DELETE FROM product_items WHERE id= %s AND product_item_status= 'trashed' '''
             cursor.execute(DELETE_TRASHED_PRODUCT_ITEM, (product_item_id,))
             if cursor.rowcount != 1:
                 abort(400, 'Bad Request: delete trashed product item row error')

@@ -2812,5 +2812,106 @@
       "bearer": "{{token}}"
     },
     "tests": []
+  },
+  {
+    "_id": "8111d4be-c0be-4356-ba42-91d8289b0528",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/products/1/tags",
+    "url": "{{baseUrl}}/products/1/tags",
+    "method": "GET",
+    "sortNum": 0,
+    "created": "2023-03-30T16:31:38.933Z",
+    "modified": "2023-03-30T16:31:38.933Z",
+    "headers": [],
+    "params": [],
+    "tests": []
+  },
+  {
+    "_id": "cf01c88c-1a53-4116-ad7e-b74fc6f2bdea",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/products/1/tags",
+    "url": "{{baseUrl}}/products/1/tags",
+    "method": "PUT",
+    "sortNum": 0,
+    "created": "2023-03-30T16:32:09.592Z",
+    "modified": "2023-03-30T16:34:00.336Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "[\n\t\"art\",\n\t\"painting\",\n\t\"drawing\",\n\t\"beautiful art\",\n\t\"extraordinary\"\n]",
+      "form": []
+    },
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{seller_token}}"
+    },
+    "tests": []
+  },
+  {
+    "_id": "0e31b032-0c84-4acd-b44a-a587b4726845",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/sellers/product-items/6",
+    "url": "{{baseUrl}}/sellers/product-items/6",
+    "method": "PATCH",
+    "sortNum": 0,
+    "created": "2023-03-30T16:54:55.675Z",
+    "modified": "2023-03-30T16:54:55.675Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n  \"trashed\": true\n}",
+      "form": []
+    },
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{seller_token}}"
+    },
+    "tests": []
+  },
+  {
+    "_id": "fadd5336-a786-463b-b6af-85c04e415644",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/sellers/product-items/5",
+    "url": "{{baseUrl}}/sellers/product-items/5",
+    "method": "PATCH",
+    "sortNum": 0,
+    "created": "2023-03-30T16:55:28.961Z",
+    "modified": "2023-03-30T17:01:46.822Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n  \"trashed\": true\n}",
+      "form": []
+    },
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{seller_token}}"
+    },
+    "tests": []
+  },
+  {
+    "_id": "9b77b9a0-db4d-4148-9c9d-0ce5e0e116b9",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/sellers/product-items/5",
+    "url": "{{baseUrl}}/sellers/product-items/5",
+    "method": "DELETE",
+    "sortNum": 0,
+    "created": "2023-03-30T17:03:11.796Z",
+    "modified": "2023-03-30T17:03:11.796Z",
+    "headers": [],
+    "params": [],
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{admin_token}}"
+    },
+    "tests": []
   }
 ]
