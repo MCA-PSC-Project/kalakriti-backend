@@ -90,7 +90,6 @@ class ProductItems(Resource):
 
 
 class SellersProductItems(Resource):
-    # TODO: work on medias
     @f_jwt.jwt_required()
     def post(self):
         user_id = f_jwt.get_jwt_identity()

@@ -284,7 +284,7 @@ class Products(Resource):
 
 
 class SellersProducts(Resource):
-    # TODO: work on medias and tags
+    # TODO: work on medias
     @f_jwt.jwt_required()
     def post(self):
         seller_id = f_jwt.get_jwt_identity()
