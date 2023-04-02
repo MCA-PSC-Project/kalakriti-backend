@@ -263,8 +263,8 @@ CREATE TABLE "product_item_values"(
 );
 CREATE TABLE "product_item_medias"(
 	-- "id" SERIAL PRIMARY KEY,
-	"media_id" INT NOT NULL,
 	"product_item_id" INT NOT NULL,
+	"media_id" INT NOT NULL,
 	"display_order" SMALLINT NOT NULL CHECK("display_order" > 0),
 	PRIMARY KEY("media_id", "product_item_id"),
 	UNIQUE("product_item_id", "display_order"),

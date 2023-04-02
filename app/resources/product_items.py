@@ -7,6 +7,8 @@ import flask_jwt_extended as f_jwt
 import json
 from flask import current_app as app
 
+from app.resources.media import delete_medias_by_ids
+
 
 class ProductItems(Resource):
     def get(self, product_item_id):
@@ -430,16 +432,29 @@ class SellersProductItems(Resource):
         claims = f_jwt.get_jwt()
         user_type = claims['user_type']
         app.logger.debug("user_type= %s", user_type)
-
-        app.logger.debug("product_id=%s", product_item_id)
+        app.logger.debug("product_item_id=%s", product_item_id)
 
         if user_type != "admin" and user_type != "super_admin":
             abort(400, "only super-admins and admins can delete product item")
 
         app_globals.db_conn.autocommit = False
         try:
-            cursor = app_globals.get_cursor()
+            cursor = app_globals.get_named_tuple_cursor()
+            # For deleting medias
+            media_ids = []
+            GET_MEDIA_IDS = '''SELECT media_id FROM product_item_medias WHERE product_item_id = %s'''
+            cursor.execute(GET_MEDIA_IDS, (product_item_id,))
+            rows = cursor.fetchall()
+            if not rows:
+                abort(400, 'Bad Request')
+            for row in rows:
+                media_ids.append(row.media_id)
+            response = delete_medias_by_ids(tuple(media_ids))
+            if not response:
+                app.logger.debug("Error deleting medias from bucket")
+                abort(400, 'Bad Request')
 
+            # For deleting variants
             DELETE_VARIANT_VALUE = '''DELETE FROM variant_values vv WHERE vv.id = (
                 SELECT piv.variant_value_id FROM product_item_values piv 
                 WHERE piv.product_item_id = %s
@@ -448,6 +463,7 @@ class SellersProductItems(Resource):
             if cursor.rowcount != 1:
                 abort(400, 'Bad Request: delete variant value row error')
 
+            # For deleting trashed product item
             DELETE_TRASHED_PRODUCT_ITEM = '''DELETE FROM product_items WHERE id= %s AND product_item_status= 'trashed' '''
             cursor.execute(DELETE_TRASHED_PRODUCT_ITEM, (product_item_id,))
             if cursor.rowcount != 1:
