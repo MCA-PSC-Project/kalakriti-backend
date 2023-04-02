@@ -14,7 +14,7 @@ from app.resources.auth import LoginAdmin, LoginCustomer, LoginSeller, RefreshTo
 from app.resources.auth_mfa import MFABackupKey, MFAStatus, SetupTOTPAuthentication, TOTPAuthenticationLogin
 from app.resources.auth_otp import GetMobileOtp, MobileOtpLoginAdmin, MobileOtpLoginCustomer, MobileOtpLoginSeller
 from app.resources.home import Home, NewProducts, PopularProducts, RecommendedProducts
-from app.resources.orders import Orders, UserOrders
+from app.resources.orders import Orders, CustomerOrders
 from app.resources.product_items import ProductItems, SellersProductBaseItem, SellersProductItems
 from app.resources.products import Products, ProductsAllDetails, ProductsByCategory, SellersProducts
 from app.resources.search import Search, TopSearches
@@ -29,7 +29,7 @@ from app.resources.banners import Banners
 from app.resources.seller_applicant_form import Seller_Applicant_Form
 from app.resources.wishlists import Wishlists
 from app.resources.carts import Carts
-from app.resources.product_item_review import Product_item_review, GetUserReviewOnProduct
+from app.resources.product_item_review import Product_item_review, GetCustomerReviewOnProduct
 from app.resources.seller_bank_details import Seller_Bank_Details
 
 import app.app_globals as app_globals
@@ -199,7 +199,7 @@ def create_app(config_name):
     api.add_resource(Product_item_review, '/product-reviews',
                      '/product-reviews/<int:review_id>',
                      '/product-reviews/<int:product_id>/product-id')  # products table id
-    api.add_resource(GetUserReviewOnProduct,
+    api.add_resource(GetCustomerReviewOnProduct,
                      '/product-review/<int:product_item_id>')
 
     # Search
@@ -208,7 +208,7 @@ def create_app(config_name):
 
     # Orders
     api.add_resource(Orders, '/orders', '/orders/<int:order_id>')
-    api.add_resource(UserOrders, '/user-orders')
+    api.add_resource(CustomerOrders, '/customer-orders')
 
     # TODO: Homepage related endpoints
     # Home

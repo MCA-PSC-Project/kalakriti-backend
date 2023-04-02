@@ -1995,11 +1995,11 @@
     "colId": "80d178ef-5176-474a-8708-db78bd45faee",
     "containerId": "2ffd39e9-6675-40b7-abd0-296aaf9564ad",
     "name": "get orders of a user",
-    "url": "{{baseUrl}}/user-orders",
+    "url": "{{baseUrl}}/customer-orders",
     "method": "GET",
     "sortNum": 530000,
     "created": "2023-03-04T13:37:50.603Z",
-    "modified": "2023-03-05T07:34:18.026Z",
+    "modified": "2023-04-02T10:08:52.029Z",
     "headers": [],
     "params": [],
     "auth": {

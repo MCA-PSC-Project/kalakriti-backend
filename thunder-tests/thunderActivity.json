@@ -2714,5 +2714,23 @@
       "bearer": "{{seller_token}}"
     },
     "tests": []
+  },
+  {
+    "_id": "3d39b3de-2127-48d3-943e-1d428177463c",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/customer-orders",
+    "url": "{{baseUrl}}/customer-orders",
+    "method": "GET",
+    "sortNum": 0,
+    "created": "2023-04-02T10:08:51.835Z",
+    "modified": "2023-04-02T10:08:51.835Z",
+    "headers": [],
+    "params": [],
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{token}}"
+    },
+    "tests": []
   }
 ]
