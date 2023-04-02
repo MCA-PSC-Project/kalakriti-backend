@@ -15,7 +15,7 @@ from app.resources.auth_mfa import MFABackupKey, MFAStatus, SetupTOTPAuthenticat
 from app.resources.auth_otp import GetMobileOtp, MobileOtpLoginAdmin, MobileOtpLoginCustomer, MobileOtpLoginSeller
 from app.resources.home import Home, NewProducts, PopularProducts, RecommendedProducts
 from app.resources.orders import Orders, UserOrders
-from app.resources.product_items import ProductItems, SellersProductItems
+from app.resources.product_items import ProductItems, SellersProductBaseItem, SellersProductItems
 from app.resources.products import Products, ProductsAllDetails, ProductsByCategory, SellersProducts
 from app.resources.search import Search, TopSearches
 from app.resources.tags import Tags
@@ -171,6 +171,7 @@ def create_app(config_name):
                      '/sellers/products/<int:product_id>')
     api.add_resource(SellersProductItems, '/sellers/product-items',
                      '/sellers/product-items/<int:product_item_id>')
+    api.add_resource(SellersProductBaseItem, '/sellers/products/base-item')
     api.add_resource(ProductsAllDetails,
                      '/products/<int:product_id>/all-details')
 

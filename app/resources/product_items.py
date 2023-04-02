@@ -362,7 +362,6 @@ class SellersProductItems(Resource):
         return {"message": f"product_item_id {product_item_id} modified."}, 200
 
     # mark/unmark product item as trashed (partially delete)
-    # TODO: check product_item_id is not base item
     @ f_jwt.jwt_required()
     def patch(self, product_item_id):
         user_id = f_jwt.get_jwt_identity()
@@ -465,3 +464,41 @@ class SellersProductItems(Resource):
         app_globals.db_conn.autocommit = True
         app.logger.debug("autocommit switched back from off to on")
         return 200
+
+
+class SellersProductBaseItem(Resource):
+    @f_jwt.jwt_required()
+    def patch(self):
+        user_id = f_jwt.get_jwt_identity()
+        app.logger.debug("user_id= %s", user_id)
+        claims = f_jwt.get_jwt()
+        user_type = claims['user_type']
+        app.logger.debug("user_type= %s", user_type)
+
+        if user_type != "seller" and user_type != "admin" and user_type != "super_admin":
+            abort(
+                400, "only seller, super-admins and admins can change base item of a product")
+        data = request.get_json()
+        product_id = data.get('product_id')
+        product_item_id = data.get('product_item_id')
+
+        try:
+            cursor = app_globals.get_cursor()
+            CHECK_ITEM_EXISTS = '''SELECT true FROM product_items WHERE id = %s AND product_id = %s'''
+            cursor.execute(CHECK_ITEM_EXISTS, (product_item_id, product_id,))
+            row = cursor.fetchone()
+            if row is None:
+                app.logger.debug(
+                    "No row with given product_id and product_item_id exists")
+                abort(400, 'Bad Request')
+            CHANGE_BASE_ITEM = '''UPDATE product_base_item SET product_item_id = %s WHERE product_id = %s'''
+            cursor.execute(
+                CHANGE_BASE_ITEM, (product_item_id, product_id,))
+            if cursor.rowcount != 1:
+                abort(400, 'Bad Request: update row error')
+        except (Exception, psycopg2.Error) as err:
+            app.logger.debug(err)
+            abort(400, 'Bad Request')
+        finally:
+            cursor.close()
+        return {"message": f"Base item modified successfully."}, 200
