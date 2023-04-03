@@ -12,8 +12,12 @@ class Config(object):
     JWT_REFRESH_TOKEN_EXPIRES = datetime.timedelta(days=30)
     DATABASE_URI = os.getenv("DATABASE_URI")
     if DATABASE_URI == None:
-        DATABASE_URI = os.getenv("LOCAL_DATABASE_URI", "Not found")
+        DATABASE_URI = os.getenv("LOCAL_DATABASE_URI", None)
 
+    REDIS_URL=os.getenv("REDIS_URL")
+    if REDIS_URL == None:
+        REDIS_URL=os.getenv("LOCAL_REDIS_URL", None)
+        
     EMAIL_SECURITY_PASSWORD_SALT = os.getenv('EMAIL_SECURITY_PASSWORD_SALT')
     # Mail Settings
     MAIL_DEFAULT_SENDER = "kalakriti.email@gmail.com"
