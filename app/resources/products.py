@@ -32,7 +32,7 @@ class ProductsByCategory(Resource):
 
         try:
             cursor = app_globals.get_named_tuple_cursor()
-            GET_PRODUCTS_BY_CATEGORY = '''SELECT p.id AS product_id, p.product_name, p.product_description, 
+            GET_PRODUCTS_BY_CATEGORY = '''SELECT p.id AS product_id, p.product_name, 
             p.currency, p.product_status, p.min_order_quantity, p.max_order_quantity,
             p.added_at, p.updated_at, 
             s.id AS seller_id, s.seller_name, s.email,
@@ -53,7 +53,6 @@ class ProductsByCategory(Resource):
                 product_dict = {}
                 product_dict['id'] = row.product_id
                 product_dict['product_name'] = row.product_name
-                product_dict['product_description'] = row.product_description
                 product_dict['currency'] = row.currency
                 product_dict['product_status'] = row.product_status
                 product_dict['min_order_quantity'] = row.min_order_quantity
@@ -114,10 +113,11 @@ class ProductsByCategory(Resource):
                 media_dict = {}
                 GET_BASE_MEDIA = '''SELECT m.id AS media_id, m.name, m.path
                 FROM media m
-                WHERE m.id = (SELECT pim.media_id From product_item_medias pim
-                WHERE pim.product_item_id = %s 
-                ORDER BY pim.display_order LIMIT 1) 
-                '''
+                WHERE m.id = (
+                    SELECT pim.media_id From product_item_medias pim
+                    WHERE pim.product_item_id = %s 
+                    ORDER BY pim.display_order LIMIT 1
+                )'''
                 cursor.execute(
                     GET_BASE_MEDIA, (product_dict['base_product_item_id'],))
                 row = cursor.fetchone()

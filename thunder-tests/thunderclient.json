@@ -1238,12 +1238,18 @@
     "method": "GET",
     "sortNum": 700000,
     "created": "2023-02-20T16:38:51.098Z",
-    "modified": "2023-02-24T15:26:20.637Z",
+    "modified": "2023-04-03T10:58:11.910Z",
     "headers": [],
     "params": [
       {
         "name": "query",
         "value": "art",
+        "isPath": false
+      },
+      {
+        "name": "product_status",
+        "value": "draft",
+        "isDisabled": true,
         "isPath": false
       }
     ],
@@ -1633,11 +1639,11 @@
     "colId": "80d178ef-5176-474a-8708-db78bd45faee",
     "containerId": "d3f02f76-889e-4a8d-88e7-d026529d83a9",
     "name": "update product status",
-    "url": "{{baseUrl}}/sellers/products/5",
+    "url": "{{baseUrl}}/sellers/products/1",
     "method": "PATCH",
     "sortNum": 735000,
     "created": "2023-02-22T14:05:51.975Z",
-    "modified": "2023-04-03T05:49:22.091Z",
+    "modified": "2023-04-03T10:57:58.265Z",
     "headers": [],
     "params": [],
     "body": {
@@ -1794,11 +1800,11 @@
     "colId": "80d178ef-5176-474a-8708-db78bd45faee",
     "containerId": "9525375d-6d7f-486c-8969-7b49f2983b85",
     "name": "update product item status ",
-    "url": "{{baseUrl}}/sellers/product-items/9",
+    "url": "{{baseUrl}}/sellers/product-items/1",
     "method": "PATCH",
     "sortNum": 30000,
     "created": "2023-02-23T13:11:26.774Z",
-    "modified": "2023-04-03T10:23:03.521Z",
+    "modified": "2023-04-03T10:53:04.894Z",
     "headers": [],
     "params": [],
     "body": {
