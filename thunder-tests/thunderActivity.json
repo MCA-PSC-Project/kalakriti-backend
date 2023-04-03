@@ -155,7 +155,7 @@
     "method": "POST",
     "sortNum": 0,
     "created": "2023-03-14T17:30:06.748Z",
-    "modified": "2023-04-02T09:38:57.595Z",
+    "modified": "2023-04-03T05:09:13.912Z",
     "headers": [],
     "params": [],
     "body": {
@@ -1546,12 +1546,12 @@
     "method": "POST",
     "sortNum": 0,
     "created": "2023-03-29T17:14:14.734Z",
-    "modified": "2023-03-29T19:52:16.413Z",
+    "modified": "2023-04-03T05:12:12.949Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n  \"product_name\": \"madhubani\",\n  \"product_description\": \"dxvxk\",\n  \"category_id\": 1,\n  \"subcategory_id\": 2,\n  \"currency\": \"INR\",\n  \"min_order_quantity\": 2,\n  \"max_order_quantity\": 10,\n  \"product_items\": [\n    {\n      \"variant\": \"BASE\",\n      \"variant_value\": \"BASE\",\n      \"product_variant_name\": \"BASE\",\n      \"SKU\": \"abcdefghijklm\",\n      \"original_price\": 1000,\n      \"offer_price\": 500,\n      \"quantity_in_stock\": 10,\n      \"media_ids\": [\n        {\n          \"media_id\": 3,\n          \"display_order\": 2\n        },\n        {\n          \"media_id\": 4,\n          \"display_order\": 1\n        }\n      ]\n    }\n  ]\n}",
+      "raw": "{\n  \"product_name\": \"madhubani\",\n  \"product_description\": \"dxvxk\",\n  \"category_id\": 1,\n  \"subcategory_id\": 2,\n  \"currency\": \"INR\",\n  \"min_order_quantity\": 2,\n  \"max_order_quantity\": 10,\n  \"product_items\": [\n    {\n      \"variant\": \"BASE\",\n      \"variant_value\": \"BASE\",\n      \"product_variant_name\": \"BASE\",\n      \"SKU\": \"123\",\n      \"original_price\": 1000,\n      \"offer_price\": 500,\n      \"quantity_in_stock\": 10,\n      \"media_ids\": [\n        {\n          \"media_id\": 6,\n          \"display_order\": 2\n        },\n        {\n          \"media_id\": 9,\n          \"display_order\": 1\n        }\n      ]\n    }\n  ]\n}",
       "form": []
     },
     "auth": {
@@ -1880,12 +1880,12 @@
     "method": "POST",
     "sortNum": 0,
     "created": "2023-03-29T18:20:47.684Z",
-    "modified": "2023-04-02T09:42:53.302Z",
+    "modified": "2023-04-03T05:14:27.286Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n  \"product_id\": 4,\n  \"variant\": \"COLOR\",\n  \"variant_value\": \"BLACK\",\n  \"product_variant_name\": \"black_COLOR_VARIANT\",\n  \"SKU\": \"black-colorfv\",\n  \"original_price\": 1000,\n  \"offer_price\": 500,\n  \"quantity_in_stock\": 20,\n  \"media_ids\": [\n    {\n      \"media_id\": 3,\n      \"display_order\": 2\n    },\n    {\n      \"media_id\": 4,\n      \"display_order\": 1\n    }\n  ]\n}",
+      "raw": "{\n  \"product_id\": 5,\n  \"variant\": \"COLOR\",\n  \"variant_value\": \"BLACK\",\n  \"product_variant_name\": \"black_COLOR_VARIANT\",\n  \"SKU\": \"black-colorfv-yz\",\n  \"original_price\": 1000,\n  \"offer_price\": 500,\n  \"quantity_in_stock\": 20,\n  \"media_ids\": [\n    {\n      \"media_id\": 7,\n      \"display_order\": 2\n    },\n    {\n      \"media_id\": 8,\n      \"display_order\": 1\n    }\n  ]\n}",
       "form": []
     },
     "auth": {
@@ -2199,6 +2199,107 @@
     "modified": "2023-04-02T11:54:17.790Z",
     "headers": [],
     "params": [],
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{admin_token}}"
+    },
+    "tests": []
+  },
+  {
+    "_id": "2e59f0ca-159b-4ad3-8467-13248c18ae9d",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/products/5",
+    "url": "{{baseUrl}}/products/5",
+    "method": "GET",
+    "sortNum": 0,
+    "created": "2023-04-03T05:12:59.090Z",
+    "modified": "2023-04-03T05:12:59.090Z",
+    "headers": [],
+    "params": [],
+    "tests": []
+  },
+  {
+    "_id": "14bde7a7-9861-4d1d-8b55-add8142b5852",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/sellers/products/5",
+    "url": "{{baseUrl}}/sellers/products/5",
+    "method": "DELETE",
+    "sortNum": 0,
+    "created": "2023-04-03T05:31:46.061Z",
+    "modified": "2023-04-03T05:31:46.061Z",
+    "headers": [],
+    "params": [],
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{admin_token}}"
+    },
+    "tests": []
+  },
+  {
+    "_id": "04bae48a-2d7f-41c6-9dbc-b0df4f8c7ab1",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/sellers/products/5",
+    "url": "{{baseUrl}}/sellers/products/5",
+    "method": "PATCH",
+    "sortNum": 0,
+    "created": "2023-04-03T05:33:28.842Z",
+    "modified": "2023-04-03T05:51:11.602Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n  \"trashed\": true\n}",
+      "form": []
+    },
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{seller_token}}"
+    },
+    "tests": []
+  },
+  {
+    "_id": "cbeb3c88-9ee3-4014-887e-8fce1acc842d",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/sellers/product-items/16",
+    "url": "{{baseUrl}}/sellers/product-items/16",
+    "method": "PATCH",
+    "sortNum": 0,
+    "created": "2023-04-03T05:38:18.657Z",
+    "modified": "2023-04-03T05:38:18.657Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n  \"product_item_status\": \"published\"\n}",
+      "form": []
+    },
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{admin_token}}"
+    },
+    "tests": []
+  },
+  {
+    "_id": "7ed47501-f93c-4f72-9220-55a9aae042bf",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/sellers/product-items/11",
+    "url": "{{baseUrl}}/sellers/product-items/11",
+    "method": "PATCH",
+    "sortNum": 0,
+    "created": "2023-04-03T05:38:38.028Z",
+    "modified": "2023-04-03T05:44:23.577Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n  \"product_item_status\": \"published\"\n}",
+      "form": []
+    },
     "auth": {
       "type": "bearer",
       "bearer": "{{admin_token}}"

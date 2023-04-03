@@ -388,7 +388,7 @@ class SellersProductItems(Resource):
             if user_type != "seller" and user_type != "admin" and user_type != "super_admin":
                 abort(
                     400, "only seller, super-admins and admins can trash a product_item")
-            value = data['trashed']
+            value = 'trashed' if data['trashed'] else 'unpublished'
             # app.logger.debug("trashed= %s", value)
             # check product_item_id is not base item
             try:
@@ -414,7 +414,7 @@ class SellersProductItems(Resource):
         try:
             cursor = app_globals.get_cursor()
             cursor.execute(
-                PATCH_PRODUCT_ITEM, ('trashed' if value else 'unpublished', datetime.now(), product_item_id,))
+                PATCH_PRODUCT_ITEM, (value, datetime.now(), product_item_id,))
             if cursor.rowcount != 1:
                 abort(400, 'Bad Request: update row error')
         except (Exception, psycopg2.Error) as err:

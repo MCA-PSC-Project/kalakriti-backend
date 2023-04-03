@@ -7,6 +7,8 @@ import flask_jwt_extended as f_jwt
 import json
 from flask import current_app as app
 
+from app.resources.media import delete_medias_by_ids
+
 
 class ProductsByCategory(Resource):
     def get(self):
@@ -515,7 +517,7 @@ class SellersProducts(Resource):
         return products_list
 
     # update product only
-    @ f_jwt.jwt_required()
+    @f_jwt.jwt_required()
     def put(self, product_id):
         user_id = f_jwt.get_jwt_identity()
         app.logger.debug("user_id= %s", user_id)
@@ -563,7 +565,7 @@ class SellersProducts(Resource):
         return {"message": f"product_id {product_id} modified."}, 200
 
     # update product_status or mark/unmark product as trashed (partially delete)
-    @ f_jwt.jwt_required()
+    @f_jwt.jwt_required()
     def patch(self, product_id):
         user_id = f_jwt.get_jwt_identity()
         app.logger.debug("user_id= %s", user_id)
@@ -586,9 +588,9 @@ class SellersProducts(Resource):
         elif 'trashed' in data.keys():
             if user_type != "seller" and user_type != "admin" and user_type != "super_admin":
                 abort(400, "only seller, super-admins and admins can trash a product")
-            value = data['trashed']
+            value = 'trashed' if data['trashed'] else 'unpublished'
             # app.logger.debug("trashed= %s", value)
-            UPDATE_PRODUCT_TRASHED_VALUE = '''UPDATE products SET trashed= %s, updated_at= %s
+            UPDATE_PRODUCT_TRASHED_VALUE = '''UPDATE products SET product_status= %s, updated_at= %s
             WHERE id= %s'''
             PATCH_PRODUCT = UPDATE_PRODUCT_TRASHED_VALUE
         else:
@@ -609,7 +611,7 @@ class SellersProducts(Resource):
         return {"message": f"product_id {product_id} modified."}, 200
 
     # delete trashed product
-    @ f_jwt.jwt_required()
+    @f_jwt.jwt_required()
     def delete(self, product_id):
         user_id = f_jwt.get_jwt_identity()
         app.logger.debug("user_id= %s", user_id)
@@ -624,19 +626,36 @@ class SellersProducts(Resource):
 
         app_globals.db_conn.autocommit = False
         try:
-            cursor = app_globals.get_cursor()
+            cursor = app_globals.get_named_tuple_cursor()
+            # For deleting medias
+            media_ids = []
+            GET_MEDIA_IDS = '''SELECT media_id FROM product_item_medias WHERE product_item_id IN (
+                    SELECT pi.id FROM product_items pi WHERE pi.product_id = %s
+            )'''
+            cursor.execute(GET_MEDIA_IDS, (product_id,))
+            rows = cursor.fetchall()
+            if not rows:
+                abort(400, 'Bad Request')
+            for row in rows:
+                media_ids.append(row.media_id)
+            response = delete_medias_by_ids(tuple(media_ids))
+            if not response:
+                app.logger.debug("Error deleting medias from bucket")
+                abort(400, 'Bad Request')
+
+            # For deleting variants of product
             DELETE_VARIANT_VALUE = '''DELETE FROM variant_values vv WHERE vv.id IN (
                 SELECT piv.variant_value_id FROM product_item_values piv 
                 WHERE piv.product_item_id IN (
                     SELECT pi.id FROM product_items pi WHERE pi.product_id = %s
                 )
             )'''
-
             cursor.execute(DELETE_VARIANT_VALUE, (product_id,))
             if not cursor.rowcount > 0:
                 abort(400, 'Bad Request: delete variant values row error')
 
-            DELETE_TRASHED_PRODUCT = 'DELETE FROM products WHERE id= %s AND trashed= true'
+            # For deleting trashed product
+            DELETE_TRASHED_PRODUCT = '''DELETE FROM products WHERE id= %s AND product_status='trashed' '''
             cursor.execute(DELETE_TRASHED_PRODUCT, (product_id,))
             # app.logger.debug("row_counts= %s", cursor.rowcount)
             if cursor.rowcount != 1:
