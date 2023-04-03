@@ -7,6 +7,8 @@ import flask_jwt_extended as f_jwt
 import json
 from flask import current_app as app
 
+from app.resources.media import delete_media_by_id
+
 
 class Banners(Resource):
     @f_jwt.jwt_required()
@@ -65,7 +67,7 @@ class Banners(Resource):
                         app.config["S3_LOCATION"], path)
                 else:
                     banner_media_dict['path'] = None
-                banners_dict.update({"dp": banner_media_dict})
+                banners_dict.update({"media": banner_media_dict})
                 banners_list.append(banners_dict)
         except (Exception, psycopg2.Error) as err:
             app.logger.debug(err)
@@ -88,15 +90,24 @@ class Banners(Resource):
         if user_type != "admin" and user_type != "super_admin":
             abort(403, 'Forbidden: only super-admins and admins can update banner')
 
-        UPDATE_BANNER = 'UPDATE banners SET media_id= %s, redirect_type= %s, redirect_url= %s WHERE id= %s'
-
+        UPDATE_BANNER = '''UPDATE banners SET media_id = %s, redirect_type = %s, redirect_url = %s WHERE id = %s
+        RETURNING (SELECT media_id FROM banners WHERE id =  %s)'''
         try:
             cursor = app_globals.get_cursor()
             cursor.execute(
                 UPDATE_BANNER, (banner_dict['media_id'], banner_dict['redirect_type'],
-                                banner_dict['redirect_url'], banner_id,))
+                                banner_dict['redirect_url'], banner_id, banner_id,))
             if cursor.rowcount != 1:
                 abort(400, 'Bad Request: update row error')
+            old_media_id = cursor.fetchone()[0]
+            app.logger.debug("old_media_id= %s", old_media_id)
+            if old_media_id and old_media_id != banner_dict.get('media_id'):
+                if delete_media_by_id(old_media_id):
+                    app.logger.debug(
+                        "deleted media from bucket where id= %s", old_media_id)
+                else:
+                    app.logger.debug(
+                        "error occurred in deleting media where id= %s", old_media_id)
         except (Exception, psycopg2.Error) as err:
             app.logger.debug(err)
             abort(400, 'Bad Request')
@@ -113,13 +124,22 @@ class Banners(Resource):
         if user_type != "admin" and user_type != "super_admin":
             abort(403, 'Forbidden: only super-admins and admins can delete banner')
 
-        DELETE_BANNER = 'DELETE FROM banners WHERE id= %s'
+        DELETE_BANNER = '''DELETE FROM banners WHERE id = %s 
+        RETURNING (SELECT media_id FROM banners WHERE id =  %s)'''
 
         try:
             cursor = app_globals.get_cursor()
-            cursor.execute(DELETE_BANNER, (banner_id,))
+            cursor.execute(DELETE_BANNER, (banner_id, banner_id,))
             if cursor.rowcount != 1:
                 abort(400, 'Bad Request: delete row error')
+            old_media_id = cursor.fetchone()[0]
+            app.logger.debug("old_media_id= %s", old_media_id)
+            if delete_media_by_id(old_media_id):
+                app.logger.debug(
+                    "deleted media from bucket where id= %s", old_media_id)
+            else:
+                app.logger.debug(
+                    "error occurred in deleting media where id= %s", old_media_id)
         except (Exception, psycopg2.Error) as err:
             app.logger.debug(err)
             abort(400, 'Bad Request')

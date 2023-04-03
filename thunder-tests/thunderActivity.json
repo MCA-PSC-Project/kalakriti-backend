@@ -2305,5 +2305,87 @@
       "bearer": "{{admin_token}}"
     },
     "tests": []
+  },
+  {
+    "_id": "aac6af73-269a-468f-b296-1978408a4f8b",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/banners",
+    "url": "{{baseUrl}}/banners",
+    "method": "POST",
+    "sortNum": 0,
+    "created": "2023-04-03T06:00:22.218Z",
+    "modified": "2023-04-03T06:03:02.390Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n\t\"media_id\" : 11,\n\t\"redirect_type\" : \"rt\" ,\n\t\"redirect_url\" : \"www.example1.com\"\n}",
+      "form": []
+    },
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{admin_token}}"
+    },
+    "tests": []
+  },
+  {
+    "_id": "00c70a10-02f9-4182-af33-2fc691e169ed",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/banners",
+    "url": "{{baseUrl}}/banners",
+    "method": "GET",
+    "sortNum": 0,
+    "created": "2023-04-03T06:00:26.384Z",
+    "modified": "2023-04-03T06:00:26.384Z",
+    "headers": [],
+    "params": [],
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{token}}"
+    },
+    "tests": []
+  },
+  {
+    "_id": "4b2809c3-e788-43ec-9a12-87866f6be32c",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/banners/1",
+    "url": "{{baseUrl}}/banners/1",
+    "method": "PUT",
+    "sortNum": 0,
+    "created": "2023-04-03T06:01:23.283Z",
+    "modified": "2023-04-03T06:12:46.786Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n\t\"media_id\" : 11,\n\t\"redirect_type\" : \"rtype_updated\" ,\n\t\"redirect_url\" : \"www.example.com\"\n}",
+      "form": []
+    },
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{admin_token}}"
+    },
+    "tests": []
+  },
+  {
+    "_id": "f921e2ee-0c34-4b70-bd3b-fb487499eac9",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/banners/1",
+    "url": "{{baseUrl}}/banners/1",
+    "method": "DELETE",
+    "sortNum": 0,
+    "created": "2023-04-03T06:14:01.255Z",
+    "modified": "2023-04-03T06:14:01.255Z",
+    "headers": [],
+    "params": [],
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{admin_token}}"
+    },
+    "tests": []
   }
 ]

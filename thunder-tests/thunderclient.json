@@ -1474,12 +1474,12 @@
     "method": "POST",
     "sortNum": 810000,
     "created": "2023-02-21T14:25:16.253Z",
-    "modified": "2023-03-07T14:36:32.697Z",
+    "modified": "2023-04-03T06:03:02.378Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n\t\"media_id\" : 1,\n\t\"redirect_type\" : \"rt\" ,\n\t\"redirect_url\" : \"www.example1.com\"\n}",
+      "raw": "{\n\t\"media_id\" : 11,\n\t\"redirect_type\" : \"rt\" ,\n\t\"redirect_url\" : \"www.example1.com\"\n}",
       "form": []
     },
     "auth": {
@@ -1511,16 +1511,16 @@
     "colId": "80d178ef-5176-474a-8708-db78bd45faee",
     "containerId": "f688fb68-9864-41a4-b257-bb38efeb6b05",
     "name": "Update Banner",
-    "url": "{{baseUrl}}/banners/3",
+    "url": "{{baseUrl}}/banners/1",
     "method": "PUT",
     "sortNum": 830000,
     "created": "2023-02-21T14:30:44.614Z",
-    "modified": "2023-03-08T17:08:31.192Z",
+    "modified": "2023-04-03T06:12:46.762Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n\t\"media_id\" : 1,\n\t\"redirect_type\" : \"rtype_updated\" ,\n\t\"redirect_url\" : \"www.example.com\"\n}",
+      "raw": "{\n\t\"media_id\" : 11,\n\t\"redirect_type\" : \"rtype_updated\" ,\n\t\"redirect_url\" : \"www.example.com\"\n}",
       "form": []
     },
     "auth": {
@@ -1534,11 +1534,11 @@
     "colId": "80d178ef-5176-474a-8708-db78bd45faee",
     "containerId": "f688fb68-9864-41a4-b257-bb38efeb6b05",
     "name": "Delete Banner",
-    "url": "{{baseUrl}}/banners/3",
+    "url": "{{baseUrl}}/banners/1",
     "method": "DELETE",
     "sortNum": 840000,
     "created": "2023-02-21T14:33:12.257Z",
-    "modified": "2023-03-08T17:08:42.865Z",
+    "modified": "2023-04-03T06:14:01.909Z",
     "headers": [],
     "params": [],
     "auth": {
