@@ -12,21 +12,25 @@ from app.resources.media import delete_medias_by_ids
 
 class ProductItems(Resource):
     def get(self, product_item_id):
+        args = request.args  # retrieve args from query string
+        product_item_status = args.get('product_item_status', None)
+        if not product_item_status:
+            product_item_status = 'published'
+
         product_item_dict = {}
         try:
             cursor = app_globals.get_named_tuple_cursor()
 
             GET_PRODUCT_ITEM = '''SELECT pi.id AS product_item_id, pi.product_id, pi.product_variant_name, pi."SKU", 
-            pi.original_price, pi.offer_price, pi.quantity_in_stock, pi.added_at, pi.updated_at,
+            pi.original_price, pi.offer_price, pi.quantity_in_stock, pi.added_at, pi.updated_at, pi.product_item_status,
             (SELECT v.variant AS variant FROM variants v WHERE v.id = 
             (SELECT vv.variant_id FROM variant_values vv WHERE vv.id = piv.variant_value_id)),
             (SELECT vv.variant_value AS variant_value FROM variant_values vv WHERE vv.id = piv.variant_value_id)
             FROM product_items pi 
             JOIN product_item_values piv ON pi.id = piv.product_item_id
-            WHERE pi.id=%s
-            '''
+            WHERE pi.id=%s AND product_item_status= %s'''
 
-            cursor.execute(GET_PRODUCT_ITEM, (product_item_id,))
+            cursor.execute(GET_PRODUCT_ITEM, (product_item_id, product_item_status,))
             row = cursor.fetchone()
             if not row:
                 app.logger.debug("No row")
@@ -48,6 +52,7 @@ class ProductItems(Resource):
                 json.dumps({'added_at': row.added_at}, default=str)))
             product_item_dict.update(json.loads(
                 json.dumps({'updated_at': row.updated_at}, default=str)))
+            product_item_dict['product_item_status'] = row.product_item_status
 
             product_item_dict['variant'] = row.variant
             product_item_dict['variant_value'] = row.variant_value

@@ -1743,13 +1743,20 @@
     "colId": "80d178ef-5176-474a-8708-db78bd45faee",
     "containerId": "9525375d-6d7f-486c-8969-7b49f2983b85",
     "name": "get product item by id",
-    "url": "{{baseUrl}}/product-items/1",
+    "url": "{{baseUrl}}/product-items/7",
     "method": "GET",
     "sortNum": 10000,
     "created": "2023-02-23T11:46:39.450Z",
-    "modified": "2023-03-10T10:26:49.497Z",
+    "modified": "2023-04-03T08:57:20.591Z",
     "headers": [],
-    "params": [],
+    "params": [
+      {
+        "name": "product_item_status",
+        "value": "draft",
+        "isDisabled": true,
+        "isPath": false
+      }
+    ],
     "tests": []
   },
   {

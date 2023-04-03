@@ -2756,5 +2756,87 @@
       "bearer": "{{admin_token}}"
     },
     "tests": []
+  },
+  {
+    "_id": "1cee2ba0-3cf3-4203-8771-b764a4750c1d",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/product-items/7",
+    "url": "{{baseUrl}}/product-items/7",
+    "method": "GET",
+    "sortNum": 0,
+    "created": "2023-04-03T08:56:22.750Z",
+    "modified": "2023-04-03T08:57:20.598Z",
+    "headers": [],
+    "params": [
+      {
+        "name": "product_item_status",
+        "value": "draft",
+        "isDisabled": true,
+        "isPath": false
+      }
+    ],
+    "tests": []
+  },
+  {
+    "_id": "61a8e28e-9df8-4acb-b9c8-7457948b78a0",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/product-items/9",
+    "url": "{{baseUrl}}/product-items/9",
+    "method": "GET",
+    "sortNum": 0,
+    "created": "2023-04-03T08:56:26.886Z",
+    "modified": "2023-04-03T08:57:10.494Z",
+    "headers": [],
+    "params": [
+      {
+        "name": "product_item_status",
+        "value": "draft",
+        "isDisabled": true,
+        "isPath": false
+      }
+    ],
+    "tests": []
+  },
+  {
+    "_id": "0f48d467-5f47-4fe0-9de8-045642a9e50c",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/product-items/9?product_item_status=published",
+    "url": "{{baseUrl}}/product-items/9?product_item_status=published",
+    "method": "GET",
+    "sortNum": 0,
+    "created": "2023-04-03T08:56:56.498Z",
+    "modified": "2023-04-03T08:56:56.498Z",
+    "headers": [],
+    "params": [
+      {
+        "name": "product_item_status",
+        "value": "published",
+        "isPath": false
+      }
+    ],
+    "tests": []
+  },
+  {
+    "_id": "fc758c53-6337-4d46-a9fe-4b9fa9dedc69",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/product-items/9?product_item_status=draft",
+    "url": "{{baseUrl}}/product-items/9?product_item_status=draft",
+    "method": "GET",
+    "sortNum": 0,
+    "created": "2023-04-03T08:57:02.438Z",
+    "modified": "2023-04-03T08:57:02.438Z",
+    "headers": [],
+    "params": [
+      {
+        "name": "product_item_status",
+        "value": "draft",
+        "isPath": false
+      }
+    ],
+    "tests": []
   }
 ]
