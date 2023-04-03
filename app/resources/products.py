@@ -296,7 +296,6 @@ class Products(Resource):
 
 
 class SellersProducts(Resource):
-    # TODO: work on medias
     @f_jwt.jwt_required()
     def post(self):
         seller_id = f_jwt.get_jwt_identity()
@@ -398,11 +397,14 @@ class SellersProducts(Resource):
         claims = f_jwt.get_jwt()
         user_type = claims['user_type']
         app.logger.debug("user_type= %s", user_type)
+        args = request.args  # retrieve args from query string
+        product_status = args.get('product_status', None)
+        if not product_status:
+            product_status = 'published'
 
         if user_type == "seller":
             seller_user_id = user_id
         elif user_type == "admin" or user_type == "super_admin":
-            args = request.args  # retrieve args from query string
             seller_user_id = args.get('seller_user_id', None)
             app.logger.debug("?seller_user_id=%s", seller_user_id)
         else:
@@ -418,10 +420,11 @@ class SellersProducts(Resource):
             FROM products p 
             JOIN sellers s ON p.seller_id = s.id 
             JOIN product_base_item pbi ON p.id = pbi.product_id
-            WHERE p.seller_id = %s
+            WHERE p.seller_id = %s AND p.product_status = %s
             ORDER BY p.id DESC'''
 
-            cursor.execute(GET_PRODUCTS_BY_SELLER, (seller_user_id,))
+            cursor.execute(GET_PRODUCTS_BY_SELLER,
+                           (seller_user_id, product_status,))
             rows = cursor.fetchall()
             if not rows:
                 return {}
@@ -448,19 +451,19 @@ class SellersProducts(Resource):
 
                 product_dict['base_product_item_id'] = row.base_product_item_id
 
+                product_item_status = product_status
                 GET_PRODUCT_BASE_ITEM = '''SELECT pi.id AS product_item_id, pi.product_id, pi.product_variant_name, pi."SKU",
-                pi.original_price, pi.offer_price, pi.quantity_in_stock, pi.added_at, pi.updated_at,
+                pi.original_price, pi.offer_price, pi.quantity_in_stock, pi.added_at, pi.updated_at, pi.product_item_status,
                 (SELECT v.variant AS variant FROM variants v WHERE v.id = 
                 (SELECT vv.variant_id FROM variant_values vv WHERE vv.id = piv.variant_value_id)),
                 (SELECT vv.variant_value AS variant_value FROM variant_values vv WHERE vv.id = piv.variant_value_id)
                 FROM product_items pi 
                 JOIN product_item_values piv ON pi.id = piv.product_item_id
-                WHERE pi.id= %s
-                '''
+                WHERE pi.id = %s AND product_item_status = %s'''
 
                 base_product_item_dict = {}
                 cursor.execute(GET_PRODUCT_BASE_ITEM,
-                               (product_dict['base_product_item_id'],))
+                               (product_dict['base_product_item_id'], product_item_status,))
                 row = cursor.fetchone()
                 if not row:
                     app.logger.debug("No base product item row")
@@ -483,6 +486,7 @@ class SellersProducts(Resource):
                     json.dumps({'added_at': row.added_at}, default=str)))
                 base_product_item_dict.update(json.loads(
                     json.dumps({'updated_at': row.updated_at}, default=str)))
+                base_product_item_dict['product_item_status'] = row.product_item_status
 
                 base_product_item_dict['variant'] = row.variant
                 base_product_item_dict['variant_value'] = row.variant_value

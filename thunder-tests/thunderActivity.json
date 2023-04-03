@@ -2606,5 +2606,78 @@
       }
     ],
     "tests": []
+  },
+  {
+    "_id": "efeafd02-9742-4c73-b028-205e66cdf6a8",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/sellers/products",
+    "url": "{{baseUrl}}/sellers/products",
+    "method": "GET",
+    "sortNum": 0,
+    "created": "2023-04-03T08:38:19.884Z",
+    "modified": "2023-04-03T08:40:01.770Z",
+    "headers": [],
+    "params": [
+      {
+        "name": "product_status",
+        "value": "draft",
+        "isDisabled": true,
+        "isPath": false
+      }
+    ],
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{seller_token}}"
+    },
+    "tests": []
+  },
+  {
+    "_id": "a9169dc9-1a27-4115-9176-1ed4e9463014",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/sellers/products?product_status=published",
+    "url": "{{baseUrl}}/sellers/products?product_status=published",
+    "method": "GET",
+    "sortNum": 0,
+    "created": "2023-04-03T08:38:54.003Z",
+    "modified": "2023-04-03T08:38:54.003Z",
+    "headers": [],
+    "params": [
+      {
+        "name": "product_status",
+        "value": "published",
+        "isPath": false
+      }
+    ],
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{seller_token}}"
+    },
+    "tests": []
+  },
+  {
+    "_id": "98dba48a-cc9d-4249-bc25-cb120df41608",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/sellers/products?product_status=draft",
+    "url": "{{baseUrl}}/sellers/products?product_status=draft",
+    "method": "GET",
+    "sortNum": 0,
+    "created": "2023-04-03T08:39:17.269Z",
+    "modified": "2023-04-03T08:39:17.269Z",
+    "headers": [],
+    "params": [
+      {
+        "name": "product_status",
+        "value": "draft",
+        "isPath": false
+      }
+    ],
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{seller_token}}"
+    },
+    "tests": []
   }
 ]

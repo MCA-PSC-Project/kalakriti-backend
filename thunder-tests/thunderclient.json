@@ -1015,9 +1015,16 @@
     "method": "GET",
     "sortNum": 540000,
     "created": "2023-02-20T16:38:51.082Z",
-    "modified": "2023-02-22T18:13:56.841Z",
+    "modified": "2023-04-03T08:40:01.759Z",
     "headers": [],
-    "params": [],
+    "params": [
+      {
+        "name": "product_status",
+        "value": "draft",
+        "isDisabled": true,
+        "isPath": false
+      }
+    ],
     "auth": {
       "type": "bearer",
       "bearer": "{{seller_token}}"
