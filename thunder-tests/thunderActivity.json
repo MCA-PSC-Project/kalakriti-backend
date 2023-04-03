@@ -2838,5 +2838,160 @@
       }
     ],
     "tests": []
+  },
+  {
+    "_id": "4b7d20ca-0539-46ed-b015-8ed67c52a153",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/new-products",
+    "url": "{{baseUrl}}/new-products",
+    "method": "GET",
+    "sortNum": 0,
+    "created": "2023-04-03T09:20:28.126Z",
+    "modified": "2023-04-03T09:22:07.488Z",
+    "headers": [],
+    "params": [
+      {
+        "name": "limit",
+        "value": "5",
+        "isDisabled": true,
+        "isPath": false
+      },
+      {
+        "name": "product_status",
+        "value": "draft",
+        "isDisabled": true,
+        "isPath": false
+      }
+    ],
+    "tests": []
+  },
+  {
+    "_id": "7707a1fa-b70f-4f30-9579-9b76185c9f3c",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/new-products?limit=5&product_status=published",
+    "url": "{{baseUrl}}/new-products?limit=5&product_status=published",
+    "method": "GET",
+    "sortNum": 0,
+    "created": "2023-04-03T09:20:51.037Z",
+    "modified": "2023-04-03T09:20:51.037Z",
+    "headers": [],
+    "params": [
+      {
+        "name": "limit",
+        "value": "5",
+        "isPath": false
+      },
+      {
+        "name": "product_status",
+        "value": "published",
+        "isPath": false
+      }
+    ],
+    "tests": []
+  },
+  {
+    "_id": "ddb0f32f-3a2a-4ccb-a197-5b8bb33dc142",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/new-products?limit=5&product_status=draft",
+    "url": "{{baseUrl}}/new-products?limit=5&product_status=draft",
+    "method": "GET",
+    "sortNum": 0,
+    "created": "2023-04-03T09:21:01.381Z",
+    "modified": "2023-04-03T09:21:01.381Z",
+    "headers": [],
+    "params": [
+      {
+        "name": "limit",
+        "value": "5",
+        "isPath": false
+      },
+      {
+        "name": "product_status",
+        "value": "draft",
+        "isPath": false
+      }
+    ],
+    "tests": []
+  },
+  {
+    "_id": "377e307f-f17a-46c7-a143-65cd80e8b29d",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/new-products?limit=5",
+    "url": "{{baseUrl}}/new-products?limit=5",
+    "method": "GET",
+    "sortNum": 0,
+    "created": "2023-04-03T09:21:57.337Z",
+    "modified": "2023-04-03T09:21:57.337Z",
+    "headers": [],
+    "params": [
+      {
+        "name": "limit",
+        "value": "5",
+        "isPath": false
+      },
+      {
+        "name": "product_status",
+        "value": "draft",
+        "isDisabled": true,
+        "isPath": false
+      }
+    ],
+    "tests": []
+  },
+  {
+    "_id": "6a19ca94-01b5-4e39-9364-16882ad27eda",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/new-products?product_status=draft",
+    "url": "{{baseUrl}}/new-products?product_status=draft",
+    "method": "GET",
+    "sortNum": 0,
+    "created": "2023-04-03T09:23:04.549Z",
+    "modified": "2023-04-03T09:23:04.549Z",
+    "headers": [],
+    "params": [
+      {
+        "name": "limit",
+        "value": "5",
+        "isDisabled": true,
+        "isPath": false
+      },
+      {
+        "name": "product_status",
+        "value": "draft",
+        "isPath": false
+      }
+    ],
+    "tests": []
+  },
+  {
+    "_id": "06aab9a7-1d0a-4715-bc52-438cc7610bc8",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/new-products?limit=10",
+    "url": "{{baseUrl}}/new-products?limit=10",
+    "method": "GET",
+    "sortNum": 0,
+    "created": "2023-04-03T09:23:25.015Z",
+    "modified": "2023-04-03T09:23:25.015Z",
+    "headers": [],
+    "params": [
+      {
+        "name": "limit",
+        "value": "10",
+        "isPath": false
+      },
+      {
+        "name": "product_status",
+        "value": "draft",
+        "isDisabled": true,
+        "isPath": false
+      }
+    ],
+    "tests": []
   }
 ]
