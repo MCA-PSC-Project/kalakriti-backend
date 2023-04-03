@@ -15,9 +15,11 @@ class ProductsByCategory(Resource):
         args = request.args  # retrieve args from query string
         category_id = args.get('category_id', None)
         subcategory_id = args.get('subcategory_id', None)
-
+        product_status = args.get('product_status', None)
+        if not product_status:
+            product_status = 'published'
         if not category_id and not subcategory_id:
-            abort(400, 'Bad Request.Provide either category_id or subcategory_id')
+            abort(400, 'Bad Request: Provide either category_id or subcategory_id')
         elif not category_id:
             app.logger.debug("?subcategory_id=%s", subcategory_id)
             category_id = subcategory_id
@@ -38,10 +40,11 @@ class ProductsByCategory(Resource):
             FROM products p 
             JOIN sellers s ON p.seller_id = s.id 
             JOIN product_base_item pbi ON p.id = pbi.product_id
-            WHERE {} IN (SELECT id FROM categories ct WHERE ct.id = %s)
+            WHERE {} IN (SELECT id FROM categories ct WHERE ct.id = %s) AND p.product_status = %s 
             ORDER BY p.id DESC'''.format(column_name)
 
-            cursor.execute(GET_PRODUCTS_BY_CATEGORY, (category_id,))
+            cursor.execute(GET_PRODUCTS_BY_CATEGORY,
+                           (category_id, product_status,))
             rows = cursor.fetchall()
             if not rows:
                 return {}
@@ -68,19 +71,19 @@ class ProductsByCategory(Resource):
 
                 product_dict['base_product_item_id'] = row.base_product_item_id
 
+                product_item_status = product_status
                 GET_PRODUCT_BASE_ITEM = '''SELECT pi.id AS product_item_id, pi.product_id, pi.product_variant_name, pi."SKU",
-                pi.original_price, pi.offer_price, pi.quantity_in_stock, pi.added_at, pi.updated_at,
+                pi.original_price, pi.offer_price, pi.quantity_in_stock, pi.added_at, pi.updated_at, pi.product_item_status,
                 (SELECT v.variant AS variant FROM variants v WHERE v.id = 
                 (SELECT vv.variant_id FROM variant_values vv WHERE vv.id = piv.variant_value_id)),
                 (SELECT vv.variant_value AS variant_value FROM variant_values vv WHERE vv.id = piv.variant_value_id)
                 FROM product_items pi 
                 JOIN product_item_values piv ON pi.id = piv.product_item_id
-                WHERE pi.id= %s
-                '''
+                WHERE pi.id= %s AND pi.product_item_status = %s '''
 
                 base_product_item_dict = {}
                 cursor.execute(GET_PRODUCT_BASE_ITEM,
-                               (product_dict['base_product_item_id'],))
+                               (product_dict['base_product_item_id'], product_item_status,))
                 row = cursor.fetchone()
                 if not row:
                     app.logger.debug("No base product item row")
@@ -103,6 +106,7 @@ class ProductsByCategory(Resource):
                     json.dumps({'added_at': row.added_at}, default=str)))
                 base_product_item_dict.update(json.loads(
                     json.dumps({'updated_at': row.updated_at}, default=str)))
+                base_product_item_dict['product_item_status'] = row.product_item_status
 
                 base_product_item_dict['variant'] = row.variant
                 base_product_item_dict['variant_value'] = row.variant_value
@@ -149,6 +153,10 @@ class ProductsByCategory(Resource):
 
 class Products(Resource):
     def get(self, product_id):
+        args = request.args  # retrieve args from query string
+        product_status = args.get('product_status', None)
+        if not product_status:
+            product_status = 'published'
         product_dict = {}
         try:
             cursor = app_globals.get_named_tuple_cursor()
@@ -164,9 +172,9 @@ class Products(Resource):
             LEFT JOIN categories sct ON p.subcategory_id = sct.id
             JOIN sellers s ON p.seller_id = s.id 
             JOIN product_base_item pbi ON p.id = pbi.product_id
-            WHERE p.id= %s'''
+            WHERE p.id = %s AND p.product_status = %s'''
 
-            cursor.execute(GET_PRODUCT, (product_id,))
+            cursor.execute(GET_PRODUCT, (product_id, product_status,))
             row = cursor.fetchone()
             if row is None:
                 abort(400, 'Bad Request')
@@ -203,19 +211,20 @@ class Products(Resource):
 
             product_dict['base_product_item_id'] = row.base_product_item_id
 
+            product_item_status = product_status
             product_items_list = []
             GET_PRODUCT_ITEMS = '''SELECT pi.id AS product_item_id, pi.product_id, pi.product_variant_name, pi."SKU", 
-            pi.original_price, pi.offer_price, pi.quantity_in_stock, pi.added_at, pi.updated_at,
+            pi.original_price, pi.offer_price, pi.quantity_in_stock, pi.added_at, pi.updated_at, product_item_status,
             (SELECT v.variant AS variant FROM variants v WHERE v.id = 
             (SELECT vv.variant_id FROM variant_values vv WHERE vv.id = piv.variant_value_id)),
             (SELECT vv.variant_value AS variant_value FROM variant_values vv WHERE vv.id = piv.variant_value_id)
             FROM product_items pi 
             JOIN product_item_values piv ON pi.id = piv.product_item_id
-            WHERE pi.product_id=%s
-            ORDER BY pi.id
-            '''
+            WHERE pi.product_id = %s AND pi.product_item_status = %s
+            ORDER BY pi.id'''
 
-            cursor.execute(GET_PRODUCT_ITEMS, (product_id,))
+            cursor.execute(GET_PRODUCT_ITEMS,
+                           (product_id, product_item_status,))
             rows = cursor.fetchall()
             if not rows:
                 app.logger.debug("No rows")
@@ -237,6 +246,7 @@ class Products(Resource):
                     json.dumps({'added_at': row.added_at}, default=str)))
                 product_item_dict.update(json.loads(
                     json.dumps({'updated_at': row.updated_at}, default=str)))
+                product_item_dict['product_item_status'] = row.product_item_status
 
                 product_item_dict['variant'] = row.variant
                 product_item_dict['variant_value'] = row.variant_value
