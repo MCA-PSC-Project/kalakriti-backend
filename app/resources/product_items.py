@@ -30,7 +30,8 @@ class ProductItems(Resource):
             JOIN product_item_values piv ON pi.id = piv.product_item_id
             WHERE pi.id=%s AND product_item_status= %s'''
 
-            cursor.execute(GET_PRODUCT_ITEM, (product_item_id, product_item_status,))
+            cursor.execute(GET_PRODUCT_ITEM,
+                           (product_item_id, product_item_status,))
             row = cursor.fetchone()
             if not row:
                 app.logger.debug("No row")
@@ -317,7 +318,7 @@ class SellersProductItems(Resource):
 
             GET_VARIANT_VALUE_ID = '''SELECT variant_value_id FROM product_item_values WHERE product_item_id= %s'''
             cursor.execute(
-                GET_VARIANT_VALUE_ID, (str(product_item_id),))
+                GET_VARIANT_VALUE_ID, (product_item_id,))
             row = cursor.fetchone()
             if not row:
                 # app.logger.debug("variant_value_id not found!")
@@ -345,14 +346,14 @@ class SellersProductItems(Resource):
                 abort(400, 'Bad Request: update variant_values row error')
 
             UPDATE_PRODUCT_ITEM = '''UPDATE product_items SET product_variant_name= %s, 
-            "SKU"= %s, original_price= %s, offer_price= %s, quantity_in_stock= %s, updated_at= %s 
+            "SKU"= %s, original_price= %s, offer_price= %s, updated_at= %s 
             WHERE id= %s'''
 
             cursor.execute(
                 UPDATE_PRODUCT_ITEM, (product_item_dict.get('product_variant_name'), product_item_dict.get('SKU'),
                                       product_item_dict.get(
                                           'original_price'), product_item_dict.get('offer_price'),
-                                      product_item_dict.get('quantity_in_stock'), current_time, str(product_item_id),))
+                                      current_time, product_item_id,))
             if cursor.rowcount != 1:
                 abort(400, 'Bad Request: update product_items row error')
         except (Exception, psycopg2.Error) as err:
@@ -380,19 +381,27 @@ class SellersProductItems(Resource):
         app.logger.debug("product_item_id= %s", product_item_id)
         data = request.get_json()
 
-        if 'product_item_status' in data.keys():
-            if user_type != "admin" and user_type != "super_admin":
+        if 'quantity_in_stock' in data.keys():
+            if user_type != "seller":
+                abort(400, "only seller is allowed change quantity")
+            value = data['quantity_in_stock']
+            # app.logger.debug("quantity_in_stock= %s", value)
+            UPDATE_PRODUCT_ITEM_QUANTITY = '''UPDATE product_items SET quantity_in_stock= %s, updated_at= %s
+            WHERE id= %s'''
+            PATCH_PRODUCT_ITEM = UPDATE_PRODUCT_ITEM_QUANTITY
+        elif 'product_item_status' in data.keys():
+            if user_type != "seller" and user_type != "admin" and user_type != "super_admin":
                 abort(
-                    400, "only super-admins and admins are allowed to update product_item status")
+                    400, "only sellers, super-admins and admins are allowed to update product item status")
             value = data['product_item_status']
             # app.logger.debug("product_status= %s", value)
-            UPDATE_PRODUCT_ITEM_STATUS = '''UPDATE product_items SET product_item_status= %s, updated_at= %s
+            UPDATE_PRODUCT_ITEM_QUANTITY = '''UPDATE product_items SET product_item_status= %s, updated_at= %s
             WHERE id= %s'''
-            PATCH_PRODUCT_ITEM = UPDATE_PRODUCT_ITEM_STATUS
+            PATCH_PRODUCT_ITEM = UPDATE_PRODUCT_ITEM_QUANTITY
         elif 'trashed' in data.keys():
             if user_type != "seller" and user_type != "admin" and user_type != "super_admin":
                 abort(
-                    400, "only seller, super-admins and admins can trash a product_item")
+                    400, "only sellers, super-admins and admins can trash a product item")
             value = 'trashed' if data['trashed'] else 'unpublished'
             # app.logger.debug("trashed= %s", value)
             # check product_item_id is not base item

@@ -1771,16 +1771,16 @@
     "colId": "80d178ef-5176-474a-8708-db78bd45faee",
     "containerId": "9525375d-6d7f-486c-8969-7b49f2983b85",
     "name": "update product item",
-    "url": "{{baseUrl}}/sellers/product-items/18",
+    "url": "{{baseUrl}}/sellers/product-items/9",
     "method": "PUT",
     "sortNum": 20000,
     "created": "2023-02-23T12:04:45.230Z",
-    "modified": "2023-02-24T14:42:06.934Z",
+    "modified": "2023-04-03T10:11:01.544Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n  \"variant\": \"MATERIAL\",\n  \"variant_value\": \"LIGHT_GREEN\",\n  \"product_variant_name\": \"LIGHT_GREEN_COLOR_VARIANT\",\n  \"SKU\": \"dgreen-colorf6\",\n  \"original_price\": 5000,\n  \"offer_price\": 2000,\n  \"quantity_in_stock\": 25\n}",
+      "raw": "{\n  \"variant\": \"MATERIAL\",\n  \"variant_value\": \"LIGHT_GREEN\",\n  \"product_variant_name\": \"LIGHT_GREEN_COLOR_VARIANT\",\n  \"SKU\": \"dgreen-colorf6\",\n  \"original_price\": 5000,\n  \"offer_price\": 2000\n}",
       "form": []
     },
     "auth": {
@@ -1794,11 +1794,11 @@
     "colId": "80d178ef-5176-474a-8708-db78bd45faee",
     "containerId": "9525375d-6d7f-486c-8969-7b49f2983b85",
     "name": "update product item status ",
-    "url": "{{baseUrl}}/sellers/product-items/11",
+    "url": "{{baseUrl}}/sellers/product-items/9",
     "method": "PATCH",
     "sortNum": 30000,
     "created": "2023-02-23T13:11:26.774Z",
-    "modified": "2023-04-03T05:44:23.568Z",
+    "modified": "2023-04-03T10:23:03.521Z",
     "headers": [],
     "params": [],
     "body": {
@@ -1817,11 +1817,11 @@
     "colId": "80d178ef-5176-474a-8708-db78bd45faee",
     "containerId": "9525375d-6d7f-486c-8969-7b49f2983b85",
     "name": "mark/unmark product item as trashed",
-    "url": "{{baseUrl}}/sellers/product-items/11",
+    "url": "{{baseUrl}}/sellers/product-items/9",
     "method": "PATCH",
     "sortNum": 40000,
     "created": "2023-02-23T13:11:37.223Z",
-    "modified": "2023-04-03T05:44:14.207Z",
+    "modified": "2023-04-03T10:23:39.346Z",
     "headers": [],
     "params": [],
     "body": {
@@ -3096,6 +3096,29 @@
     "body": {
       "type": "json",
       "raw": "{\n  \"product_id\": 4,\n  \"product_item_id\": 7\n}",
+      "form": []
+    },
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{seller_token}}"
+    },
+    "tests": []
+  },
+  {
+    "_id": "fd32d310-7da2-4bce-860b-1f5e0ac3a1a3",
+    "colId": "80d178ef-5176-474a-8708-db78bd45faee",
+    "containerId": "9525375d-6d7f-486c-8969-7b49f2983b85",
+    "name": "update product item quantity",
+    "url": "{{baseUrl}}/sellers/product-items/9",
+    "method": "PATCH",
+    "sortNum": 25000,
+    "created": "2023-04-03T10:11:49.929Z",
+    "modified": "2023-04-03T10:22:49.544Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n  \"quantity_in_stock\": 25\n}",
       "form": []
     },
     "auth": {
