@@ -474,12 +474,12 @@
     "method": "POST",
     "sortNum": 250000,
     "created": "2023-02-20T16:38:51.052Z",
-    "modified": "2023-03-29T18:09:50.810Z",
+    "modified": "2023-04-03T15:35:32.326Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n\t\"name\": \"c2\",\n\t\"parent_id\" : null,\n\t\"cover_id\" : null\n}",
+      "raw": "{\n\t\"name\": \"c3\",\n\t\"parent_id\" : null,\n\t\"cover_id\" : null\n}",
       "form": []
     },
     "auth": {

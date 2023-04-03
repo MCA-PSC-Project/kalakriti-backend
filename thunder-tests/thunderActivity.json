@@ -1583,12 +1583,12 @@
     "method": "POST",
     "sortNum": 0,
     "created": "2023-03-29T17:14:34.801Z",
-    "modified": "2023-03-29T18:10:19.828Z",
+    "modified": "2023-04-03T15:35:32.342Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n\t\"name\": \"s2\",\n\t\"parent_id\" : 2,\n\t\"cover_id\" : null\n}",
+      "raw": "{\n\t\"name\": \"c3\",\n\t\"parent_id\" : null,\n\t\"cover_id\" : null\n}",
       "form": []
     },
     "auth": {

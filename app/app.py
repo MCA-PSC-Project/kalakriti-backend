@@ -79,8 +79,8 @@ def create_app(config_name):
         app.logger.fatal('Database connection error')
     app_globals.db_conn.autocommit = True
 
-    redis_client = redis.Redis.from_url(url=app.config['REDIS_URL'])
-    if not redis_client.ping():
+    app_globals.redis_client = redis.Redis.from_url(url=app.config['REDIS_URL'])
+    if not app_globals.redis_client.ping():
         app.logger.fatal("Redis connection error")
 
     jwt = flask_jwt_extended.JWTManager(app)
@@ -92,7 +92,6 @@ def create_app(config_name):
         aws_access_key_id=app.config['S3_KEY'],
         aws_secret_access_key=app.config['S3_SECRET']
     )
-
     response = app_globals.s3.list_buckets()
     print('Existing buckets:')
     for bucket in response['Buckets']:
@@ -230,5 +229,5 @@ def create_app(config_name):
         # app.logger.debug(app_globals.db_conn_pool)
         if app_globals.db_conn_pool:
             app_globals.db_conn_pool.closeall()
-        app.logger.debug("Connection pool closed")
+        app.logger.debug("db connection pool closed")
     return app

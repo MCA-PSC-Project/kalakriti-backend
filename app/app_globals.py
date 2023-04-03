@@ -4,6 +4,7 @@ from flask import current_app as app
 
 global db_conn_pool
 global db_conn
+global redis_client
 global mail
 global s3
 
