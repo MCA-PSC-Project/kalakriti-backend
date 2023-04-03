@@ -632,7 +632,6 @@ class SellersProducts(Resource):
         claims = f_jwt.get_jwt()
         user_type = claims['user_type']
         app.logger.debug("user_type= %s", user_type)
-
         app.logger.debug("product_id=%s", product_id)
 
         if user_type != "admin" and user_type != "super_admin":
@@ -689,7 +688,18 @@ class SellersProducts(Resource):
 
 
 class ProductsAllDetails(Resource):
+    @f_jwt.jwt_required()
     def get(self, product_id):
+        user_id = f_jwt.get_jwt_identity()
+        app.logger.debug("user_id= %s", user_id)
+        claims = f_jwt.get_jwt()
+        user_type = claims['user_type']
+        app.logger.debug("user_type= %s", user_type)
+        app.logger.debug("product_id=%s", product_id)
+
+        if user_type != "admin" and user_type != "super_admin":
+            abort(400, "only super-admins and admins can see all details of a product")
+
         product_dict = {}
         try:
             cursor = app_globals.get_named_tuple_cursor()
@@ -746,15 +756,14 @@ class ProductsAllDetails(Resource):
 
             product_items_list = []
             GET_PRODUCT_ITEMS = '''SELECT pi.id AS product_item_id, pi.product_id, pi.product_variant_name, pi."SKU", 
-            pi.original_price, pi.offer_price, pi.quantity_in_stock, pi.added_at, pi.updated_at,
+            pi.original_price, pi.offer_price, pi.quantity_in_stock, pi.added_at, pi.updated_at, pi.product_item_status,
             (SELECT v.variant AS variant FROM variants v WHERE v.id = 
             (SELECT vv.variant_id FROM variant_values vv WHERE vv.id = piv.variant_value_id)),
             (SELECT vv.variant_value AS variant_value FROM variant_values vv WHERE vv.id = piv.variant_value_id)
             FROM product_items pi 
             JOIN product_item_values piv ON pi.id = piv.product_item_id
-            WHERE pi.product_id=%s
-            ORDER BY pi.id
-            '''
+            WHERE pi.product_id = %s
+            ORDER BY pi.id'''
 
             cursor.execute(GET_PRODUCT_ITEMS, (product_id,))
             rows = cursor.fetchall()
@@ -778,6 +787,7 @@ class ProductsAllDetails(Resource):
                     json.dumps({'added_at': row.added_at}, default=str)))
                 product_item_dict.update(json.loads(
                     json.dumps({'updated_at': row.updated_at}, default=str)))
+                product_item_dict['product_item_status'] = row.product_item_status
 
                 product_item_dict['variant'] = row.variant
                 product_item_dict['variant_value'] = row.variant_value
