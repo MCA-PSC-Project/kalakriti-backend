@@ -29,6 +29,13 @@ class NewProducts(Resource):
         product_status = args.get('product_status', None)
         if not product_status:
             product_status = 'published'
+            try:
+                response = app_globals.redis_client.get('new_products_list')
+                if response:
+                    return json.loads(response.decode('utf-8'))
+            except Exception as err:
+                app.logger.debug(err)
+
         limit= args.get('limit', None)
         if not limit:
             limit=10
@@ -118,8 +125,7 @@ class NewProducts(Resource):
                 FROM media m
                 WHERE m.id = (SELECT pim.media_id From product_item_medias pim
                 WHERE pim.product_item_id = %s 
-                ORDER BY pim.display_order LIMIT 1) 
-                '''
+                ORDER BY pim.display_order LIMIT 1) '''
                 cursor.execute(
                     GET_BASE_MEDIA, (product_dict['base_product_item_id'],))
                 row = cursor.fetchone()
@@ -132,7 +138,7 @@ class NewProducts(Resource):
                     continue
                 media_dict['id'] = row.media_id
                 media_dict['name'] = row.name
-                # media_dict['path'] = row.path
+                # media_dict['path'] = row.pathp
                 path = row.path
                 if path is not None:
                     media_dict['path'] = "{}/{}".format(
@@ -149,4 +155,8 @@ class NewProducts(Resource):
         finally:
             cursor.close()
         # app.logger.debug(products_list)
+        if product_status == 'published':
+            app_globals.redis_client.set(
+                'new_products_list', json.dumps(products_list))
+            app_globals.redis_client.expire('new_products_list', 60)  # seconds
         return products_list
