@@ -21,7 +21,7 @@ class GetMobileOtp(Resource):
         UPSERT_MOBILE_OTP = '''INSERT INTO mobile_otp(mobile_no, motp, expiry_at)
         VALUES(%s, %s, %s)
         ON CONFLICT (mobile_no)
-        DO UPDATE set motp = %s, expiry_at = %s'''
+        DO UPDATE SET motp = %s, expiry_at = %s'''
         try:
             cursor = app_globals.get_cursor()
             cursor.execute(UPSERT_MOBILE_OTP, (mobile_no, generated_motp, now_plus_10_mins,

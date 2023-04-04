@@ -8,7 +8,7 @@ class Config(object):
     CSRF_ENABLED = True
     # gets variables from environment
     SECRET_KEY = os.getenv('SECRET_KEY')
-    JWT_ACCESS_TOKEN_EXPIRES = datetime.timedelta(hours=12)
+    JWT_ACCESS_TOKEN_EXPIRES = datetime.timedelta(hours=18)
     JWT_REFRESH_TOKEN_EXPIRES = datetime.timedelta(days=30)
     DATABASE_URI = os.getenv("DATABASE_URI")
     if DATABASE_URI == None:

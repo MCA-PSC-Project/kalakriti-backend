@@ -282,7 +282,7 @@ class Products(Resource):
                             media_dict['path'] = None
                         media_dict['display_order'] = row.display_order
                         media_list.append(media_dict)
-                    product_item_dict.update({"medias": media_list})
+                    product_item_dict.update({"media_list": media_list})
 
                 product_items_list.append(product_item_dict)
             product_dict.update({'product_items': product_items_list})
@@ -366,14 +366,14 @@ class SellersProducts(Resource):
                            (product_id, product_item_id,))
             # product_base_item_id = cursor.fetchone()[0]
 
-            INSERT_MEDIAS = '''INSERT INTO product_item_medias(media_id, product_item_id, display_order)
+            INSERT_MEDIAS = '''INSERT INTO product_item_medias(product_item_id, media_id, display_order)
             VALUES(%s, %s, %s)'''
 
-            media_id_list = product_item_dict.get("media_ids")
+            media_list = product_item_dict.get("media_list")
             values_tuple_list = []
-            for media_id_dict in media_id_list:
-                values_tuple = (media_id_dict.get(
-                    "media_id"), product_item_id, media_id_dict.get("display_order"))
+            for media_dict in media_list:
+                values_tuple = (media_dict.get(
+                    "media_id"), product_item_id, media_dict.get("display_order"))
                 values_tuple_list.append(values_tuple)
             app.logger.debug("values_tuple_list= %s", values_tuple_list)
             psycopg2.extras.execute_batch(
@@ -610,7 +610,6 @@ class SellersProducts(Resource):
         else:
             abort(400, "Bad Request")
         current_time = datetime.now()
-
         try:
             cursor = app_globals.get_cursor()
             cursor.execute(
@@ -822,7 +821,7 @@ class ProductsAllDetails(Resource):
                     media_dict['display_order'] = row.display_order
                     media_dict['pim_media_id'] = row.pim_media_id
                     media_list.append(media_dict)
-                product_item_dict.update({"medias": media_list})
+                product_item_dict.update({"media_list": media_list})
 
                 product_items_list.append(product_item_dict)
             product_dict.update({'product_items': product_items_list})

@@ -86,7 +86,7 @@ class ProductItems(Resource):
                     media_dict['path'] = None
                 media_dict['display_order'] = row.display_order
                 media_list.append(media_dict)
-            product_item_dict.update({"medias": media_list})
+            product_item_dict.update({"media_list": media_list})
 
         except (Exception, psycopg2.Error) as err:
             app.logger.debug(err)
@@ -147,14 +147,14 @@ class SellersProductItems(Resource):
                            (product_item_id, variant_value_id,))
             # product_item_value_id = cursor.fetchone()[0]
 
-            INSERT_MEDIAS = '''INSERT INTO product_item_medias(media_id, product_item_id, display_order)
+            INSERT_MEDIAS = '''INSERT INTO product_item_medias(product_item_id, media_id, display_order)
             VALUES(%s, %s, %s)'''
 
-            media_id_list = product_item_dict.get("media_ids")
+            media_id_list = product_item_dict.get("media_list")
             values_tuple_list = []
-            for media_id_dict in media_id_list:
-                values_tuple = (media_id_dict.get(
-                    "media_id"), product_item_id, media_id_dict.get("display_order"))
+            for media_dict in media_id_list:
+                values_tuple = (product_item_id, media_dict.get(
+                    "media_id"),  media_dict.get("display_order"))
                 values_tuple_list.append(values_tuple)
             app.logger.debug("values_tuple_list= %s", values_tuple_list)
             psycopg2.extras.execute_batch(
@@ -377,7 +377,6 @@ class SellersProductItems(Resource):
         claims = f_jwt.get_jwt()
         user_type = claims['user_type']
         app.logger.debug("user_type= %s", user_type)
-
         app.logger.debug("product_item_id= %s", product_item_id)
         data = request.get_json()
 
@@ -398,6 +397,53 @@ class SellersProductItems(Resource):
             UPDATE_PRODUCT_ITEM_QUANTITY = '''UPDATE product_items SET product_item_status= %s, updated_at= %s
             WHERE id= %s'''
             PATCH_PRODUCT_ITEM = UPDATE_PRODUCT_ITEM_QUANTITY
+        elif 'media_list' in data.keys():
+            if user_type != "seller":
+                abort(400, "only seller is allowed update medias")
+            media_list = data['media_list']
+            try:
+                GET_MEDIA_IDS = '''SELECT media_id FROM product_item_medias WHERE product_item_id = %s'''
+                cursor = app_globals.get_named_tuple_cursor()
+                cursor.execute(GET_MEDIA_IDS, (product_item_id,))
+                rows = cursor.fetchall()
+                old_media_ids_set = set()
+                for row in rows:
+                    old_media_ids_set.add(row.media_id)
+                app.logger.debug('old_media_ids_set= %s', old_media_ids_set)
+
+                values_tuple_list = []
+                new_media_ids_set = set()
+                for media_dict in media_list:
+                    media_id = media_dict.get("media_id")
+                    new_media_ids_set.add(media_id)
+                    display_order = media_dict.get("display_order")
+                    values_tuple = (product_item_id, media_id,
+                                    display_order, display_order,)
+                    values_tuple_list.append(values_tuple)
+                app.logger.debug('new_media_ids_set= %s', new_media_ids_set)
+                media_ids_to_be_deleted_set = old_media_ids_set - new_media_ids_set
+                app.logger.debug('media_ids_to_be_deleted_set= %s',
+                                 media_ids_to_be_deleted_set)
+                # if set is not empty
+                if media_ids_to_be_deleted_set:
+                    response = delete_medias_by_ids(
+                        tuple(media_ids_to_be_deleted_set))
+                    if not response:
+                        app.logger.debug("Error deleting medias from bucket")
+                        abort(400, 'Bad Request')
+
+                app.logger.debug("values_tuple_list= %s", values_tuple_list)
+                UPDATE_MEDIAS = '''INSERT INTO product_item_medias(product_item_id, media_id, display_order)
+                VALUES(%s, %s, %s) ON CONFLICT (product_item_id, media_id), (product_item_id, display_order)
+                DO UPDATE SET display_order = %s'''
+                psycopg2.extras.execute_batch(
+                    cursor, UPDATE_MEDIAS, values_tuple_list)
+            except (Exception, psycopg2.Error) as err:
+                app.logger.debug(err)
+                abort(400, 'Bad Request')
+            finally:
+                cursor.close()
+            return {"message": f"product_item_id {product_item_id} modified."}, 200
         elif 'trashed' in data.keys():
             if user_type != "seller" and user_type != "admin" and user_type != "super_admin":
                 abort(

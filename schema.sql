@@ -268,9 +268,8 @@ CREATE TABLE "product_item_medias"(
 	"display_order" SMALLINT NOT NULL CHECK("display_order" > 0),
 	PRIMARY KEY("media_id", "product_item_id"),
 	UNIQUE("product_item_id", "display_order"),
-	FOREIGN KEY("media_id") REFERENCES "media"("id") ON DELETE
-	SET NULL,
-		FOREIGN KEY("product_item_id") REFERENCES "product_items"("id") ON DELETE CASCADE
+	FOREIGN KEY("media_id") REFERENCES "media"("id") ON DELETE CASCADE,
+	FOREIGN KEY("product_item_id") REFERENCES "product_items"("id") ON DELETE CASCADE
 );
 CREATE TABLE "wishlists"(
 	"customer_id" INT NOT NULL,

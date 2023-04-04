@@ -1884,7 +1884,7 @@
     "method": "PATCH",
     "sortNum": 0,
     "created": "2023-04-03T05:38:18.657Z",
-    "modified": "2023-04-04T17:57:59.452Z",
+    "modified": "2023-04-04T17:58:05.369Z",
     "headers": [],
     "params": [],
     "body": {
@@ -1894,7 +1894,7 @@
     },
     "auth": {
       "type": "bearer",
-      "bearer": "{{admin_token}}"
+      "bearer": "{{seller_token}}"
     },
     "tests": []
   },
