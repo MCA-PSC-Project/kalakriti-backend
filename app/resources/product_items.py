@@ -401,6 +401,8 @@ class SellersProductItems(Resource):
             if user_type != "seller":
                 abort(400, "only seller is allowed update medias")
             media_list = data['media_list']
+            # before beginning transaction autocommit must be off
+            app_globals.db_conn.autocommit = False
             try:
                 GET_MEDIA_IDS = '''SELECT media_id FROM product_item_medias WHERE product_item_id = %s'''
                 cursor = app_globals.get_named_tuple_cursor()
@@ -417,8 +419,7 @@ class SellersProductItems(Resource):
                     media_id = media_dict.get("media_id")
                     new_media_ids_set.add(media_id)
                     display_order = media_dict.get("display_order")
-                    values_tuple = (product_item_id, media_id,
-                                    display_order, display_order,)
+                    values_tuple = (product_item_id, media_id, display_order)
                     values_tuple_list.append(values_tuple)
                 app.logger.debug('new_media_ids_set= %s', new_media_ids_set)
                 media_ids_to_be_deleted_set = old_media_ids_set - new_media_ids_set
@@ -426,23 +427,31 @@ class SellersProductItems(Resource):
                                  media_ids_to_be_deleted_set)
                 # if set is not empty
                 if media_ids_to_be_deleted_set:
-                    response = delete_medias_by_ids(
+                    result = delete_medias_by_ids(
                         tuple(media_ids_to_be_deleted_set))
-                    if not response:
+                    if not result:
                         app.logger.debug("Error deleting medias from bucket")
                         abort(400, 'Bad Request')
 
+                DELETE_ITEM_OLD_MEDIAS = '''DELETE FROM product_item_medias WHERE product_item_id = %s'''
+                cursor.execute(DELETE_ITEM_OLD_MEDIAS, (product_item_id,))
+                # do not use row count here
+
                 app.logger.debug("values_tuple_list= %s", values_tuple_list)
-                UPDATE_MEDIAS = '''INSERT INTO product_item_medias(product_item_id, media_id, display_order)
-                VALUES(%s, %s, %s) ON CONFLICT (product_item_id, media_id), (product_item_id, display_order)
-                DO UPDATE SET display_order = %s'''
+                INSERT_ITEM_MEDIAS = '''INSERT INTO product_item_medias(product_item_id, media_id, display_order)
+                VALUES(%s, %s, %s)'''
                 psycopg2.extras.execute_batch(
-                    cursor, UPDATE_MEDIAS, values_tuple_list)
+                    cursor, INSERT_ITEM_MEDIAS, values_tuple_list)
             except (Exception, psycopg2.Error) as err:
                 app.logger.debug(err)
+                app_globals.db_conn.rollback()
+                app_globals.db_conn.autocommit = True
+                app.logger.debug("autocommit switched back from off to on")
                 abort(400, 'Bad Request')
             finally:
                 cursor.close()
+            app_globals.db_conn.commit()
+            app_globals.db_conn.autocommit = True
             return {"message": f"product_item_id {product_item_id} modified."}, 200
         elif 'trashed' in data.keys():
             if user_type != "seller" and user_type != "admin" and user_type != "super_admin":
@@ -509,8 +518,8 @@ class SellersProductItems(Resource):
                 abort(400, 'Bad Request')
             for row in rows:
                 media_ids.append(row.media_id)
-            response = delete_medias_by_ids(tuple(media_ids))
-            if not response:
+            result = delete_medias_by_ids(tuple(media_ids))
+            if not result:
                 app.logger.debug("Error deleting medias from bucket")
                 abort(400, 'Bad Request')
 

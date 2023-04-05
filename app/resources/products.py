@@ -650,8 +650,8 @@ class SellersProducts(Resource):
                 abort(400, 'Bad Request')
             for row in rows:
                 media_ids.append(row.media_id)
-            response = delete_medias_by_ids(tuple(media_ids))
-            if not response:
+            result = delete_medias_by_ids(tuple(media_ids))
+            if not result:
                 app.logger.debug("Error deleting medias from bucket")
                 abort(400, 'Bad Request')
 

@@ -697,7 +697,7 @@
     "method": "POST",
     "sortNum": 0,
     "created": "2023-03-22T07:03:24.417Z",
-    "modified": "2023-03-29T19:42:50.920Z",
+    "modified": "2023-04-05T02:29:52.009Z",
     "headers": [],
     "params": [],
     "body": {
@@ -707,7 +707,7 @@
       "files": [
         {
           "name": "file",
-          "value": "C:\\Users\\prash\\OneDrive\\Pictures\\98-984378_linux-tux-ubuntu-debian-fedora-logos-hd-wallpaper.png"
+          "value": "c:\\Users\\prash\\OneDrive\\Pictures\\apni_shiksha_logo.jpg"
         }
       ]
     },
@@ -1884,12 +1884,12 @@
     "method": "PATCH",
     "sortNum": 0,
     "created": "2023-04-03T05:38:18.657Z",
-    "modified": "2023-04-04T17:58:05.369Z",
+    "modified": "2023-04-05T02:32:53.144Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n  \"media_list\": [\n    {\n      \"media_id\": 13,\n      \"display_order\": 1\n    },\n    {\n      \"media_id\": 14,\n      \"display_order\": 2\n    }\n  ]\n}",
+      "raw": "{\n  \"trashed\": true\n}",
       "form": []
     },
     "auth": {
@@ -2781,6 +2781,149 @@
         "isPath": false
       }
     ],
+    "tests": []
+  },
+  {
+    "_id": "51dc6d71-1c8b-41b7-b6de-6152e10ce9ba",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/sellers/product-items/16",
+    "url": "{{baseUrl}}/sellers/product-items/16",
+    "method": "DELETE",
+    "sortNum": 0,
+    "created": "2023-04-05T02:32:57.178Z",
+    "modified": "2023-04-05T02:32:57.178Z",
+    "headers": [],
+    "params": [],
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{admin_token}}"
+    },
+    "tests": []
+  },
+  {
+    "_id": "0510074d-0b84-440a-868a-2f496c2cb69d",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/sellers/products/7",
+    "url": "{{baseUrl}}/sellers/products/7",
+    "method": "DELETE",
+    "sortNum": 0,
+    "created": "2023-04-05T02:33:40.854Z",
+    "modified": "2023-04-05T02:33:40.854Z",
+    "headers": [],
+    "params": [],
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{admin_token}}"
+    },
+    "tests": []
+  },
+  {
+    "_id": "75f1465e-05c7-4bed-bf7d-2e66ac08386b",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/products/7",
+    "url": "{{baseUrl}}/products/7",
+    "method": "GET",
+    "sortNum": 0,
+    "created": "2023-04-05T02:34:36.370Z",
+    "modified": "2023-04-05T02:38:07.971Z",
+    "headers": [],
+    "params": [
+      {
+        "name": "product_status",
+        "value": "unpublished",
+        "isDisabled": true,
+        "isPath": false
+      }
+    ],
+    "tests": []
+  },
+  {
+    "_id": "441630cd-d7ac-42a0-99f0-d7812f81a0be",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/products/7?product_status=trashed",
+    "url": "{{baseUrl}}/products/7?product_status=trashed",
+    "method": "GET",
+    "sortNum": 0,
+    "created": "2023-04-05T02:35:18.022Z",
+    "modified": "2023-04-05T02:35:18.022Z",
+    "headers": [],
+    "params": [
+      {
+        "name": "product_status",
+        "value": "trashed",
+        "isPath": false
+      }
+    ],
+    "tests": []
+  },
+  {
+    "_id": "2dfb35cb-7d78-48cf-88ec-5634c44aecca",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/sellers/products/7",
+    "url": "{{baseUrl}}/sellers/products/7",
+    "method": "PATCH",
+    "sortNum": 0,
+    "created": "2023-04-05T02:37:40.332Z",
+    "modified": "2023-04-05T02:41:53.450Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n  \"trashed\": true\n}",
+      "form": []
+    },
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{seller_token}}"
+    },
+    "tests": []
+  },
+  {
+    "_id": "9c2bb580-e341-4263-aa5d-79ed29fdec3b",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/products/7?product_status=unpublished",
+    "url": "{{baseUrl}}/products/7?product_status=unpublished",
+    "method": "GET",
+    "sortNum": 0,
+    "created": "2023-04-05T02:40:48.933Z",
+    "modified": "2023-04-05T02:40:48.933Z",
+    "headers": [],
+    "params": [
+      {
+        "name": "product_status",
+        "value": "unpublished",
+        "isPath": false
+      }
+    ],
+    "tests": []
+  },
+  {
+    "_id": "05e02e96-befb-40cf-b99d-a85d84358f3b",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/sellers/product-items/13",
+    "url": "{{baseUrl}}/sellers/product-items/13",
+    "method": "PATCH",
+    "sortNum": 0,
+    "created": "2023-04-05T02:41:19.930Z",
+    "modified": "2023-04-05T02:41:19.930Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n  \"media_list\": [\n    {\n      \"media_id\": 17,\n      \"display_order\": 2\n    },\n    {\n      \"media_id\": 18,\n      \"display_order\": 1\n    }\n  ]\n}",
+      "form": []
+    },
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{seller_token}}"
+    },
     "tests": []
   }
 ]

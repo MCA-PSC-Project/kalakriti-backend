@@ -100,11 +100,26 @@ def delete_medias_by_ids(media_ids):
 
     bucket_name = app.config['S3_BUCKET']
     files_to_delete = path_list
-    response = app_globals.s3.delete_objects(
+    result = app_globals.s3.delete_objects(
         Bucket=bucket_name, Delete={"Objects": files_to_delete}
     )
-    app.logger.debug(response)
-    return response
+    # app.logger.debug(result)
+    if result is False:
+        return False
+    else:
+        DELETE_MEDIA = 'DELETE FROM media WHERE id IN %s'
+        try:
+            cursor = app_globals.get_cursor()
+            cursor.execute(DELETE_MEDIA, (media_ids,))
+            # app.logger.debug("row_counts= %s", cursor.rowcount)
+            if cursor.rowcount == 0:
+                abort(400, 'Bad Request: delete media rows error')
+        except (Exception, psycopg2.Error) as err:
+            app.logger.debug(err)
+            return False
+        finally:
+            cursor.close()
+    return result
 
 
 class DeleteMedia(Resource):

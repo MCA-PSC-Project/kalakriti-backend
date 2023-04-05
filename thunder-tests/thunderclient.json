@@ -206,7 +206,7 @@
     "method": "POST",
     "sortNum": 120000,
     "created": "2023-02-20T16:38:51.039Z",
-    "modified": "2023-03-29T19:42:50.913Z",
+    "modified": "2023-04-05T02:29:51.999Z",
     "headers": [],
     "params": [],
     "body": {
@@ -216,7 +216,7 @@
       "files": [
         {
           "name": "file",
-          "value": "C:\\Users\\prash\\OneDrive\\Pictures\\98-984378_linux-tux-ubuntu-debian-fedora-logos-hd-wallpaper.png"
+          "value": "c:\\Users\\prash\\OneDrive\\Pictures\\apni_shiksha_logo.jpg"
         }
       ]
     },
@@ -997,17 +997,16 @@
     "colId": "80d178ef-5176-474a-8708-db78bd45faee",
     "containerId": "d3f02f76-889e-4a8d-88e7-d026529d83a9",
     "name": "get product by id",
-    "url": "{{baseUrl}}/products/4",
+    "url": "{{baseUrl}}/products/7?product_status=unpublished",
     "method": "GET",
     "sortNum": 530000,
     "created": "2023-02-20T16:38:51.081Z",
-    "modified": "2023-04-03T08:24:18.808Z",
+    "modified": "2023-04-05T02:40:49.268Z",
     "headers": [],
     "params": [
       {
         "name": "product_status",
-        "value": "published",
-        "isDisabled": true,
+        "value": "unpublished",
         "isPath": false
       }
     ],
@@ -1662,11 +1661,11 @@
     "colId": "80d178ef-5176-474a-8708-db78bd45faee",
     "containerId": "d3f02f76-889e-4a8d-88e7-d026529d83a9",
     "name": "delete a product",
-    "url": "{{baseUrl}}/sellers/products/5",
+    "url": "{{baseUrl}}/sellers/products/7",
     "method": "DELETE",
     "sortNum": 920000,
     "created": "2023-02-22T14:12:15.464Z",
-    "modified": "2023-04-03T05:31:48.239Z",
+    "modified": "2023-04-05T02:33:41.231Z",
     "headers": [],
     "params": [],
     "auth": {
@@ -1680,11 +1679,11 @@
     "colId": "80d178ef-5176-474a-8708-db78bd45faee",
     "containerId": "d3f02f76-889e-4a8d-88e7-d026529d83a9",
     "name": "mark/unmark product as trashed",
-    "url": "{{baseUrl}}/sellers/products/5",
+    "url": "{{baseUrl}}/sellers/products/7",
     "method": "PATCH",
     "sortNum": 915000,
     "created": "2023-02-22T17:09:11.102Z",
-    "modified": "2023-04-03T05:33:29.096Z",
+    "modified": "2023-04-05T02:41:53.442Z",
     "headers": [],
     "params": [],
     "body": {
@@ -1823,16 +1822,16 @@
     "colId": "80d178ef-5176-474a-8708-db78bd45faee",
     "containerId": "9525375d-6d7f-486c-8969-7b49f2983b85",
     "name": "mark/unmark product item as trashed",
-    "url": "{{baseUrl}}/sellers/product-items/9",
+    "url": "{{baseUrl}}/sellers/product-items/16",
     "method": "PATCH",
     "sortNum": 40000,
     "created": "2023-02-23T13:11:37.223Z",
-    "modified": "2023-04-03T10:23:39.346Z",
+    "modified": "2023-04-05T02:32:53.131Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n  \"trashed\": false\n}",
+      "raw": "{\n  \"trashed\": true\n}",
       "form": []
     },
     "auth": {
@@ -1846,11 +1845,11 @@
     "colId": "80d178ef-5176-474a-8708-db78bd45faee",
     "containerId": "9525375d-6d7f-486c-8969-7b49f2983b85",
     "name": "delete a product item",
-    "url": "{{baseUrl}}/sellers/product-items/6",
+    "url": "{{baseUrl}}/sellers/product-items/16",
     "method": "DELETE",
     "sortNum": 50000,
     "created": "2023-02-23T13:37:24.353Z",
-    "modified": "2023-04-02T11:54:18.149Z",
+    "modified": "2023-04-05T02:32:58.135Z",
     "headers": [],
     "params": [],
     "auth": {
@@ -3138,16 +3137,16 @@
     "colId": "80d178ef-5176-474a-8708-db78bd45faee",
     "containerId": "9525375d-6d7f-486c-8969-7b49f2983b85",
     "name": "update product item medias",
-    "url": "{{baseUrl}}/sellers/product-items/16",
+    "url": "{{baseUrl}}/sellers/product-items/13",
     "method": "PATCH",
     "sortNum": 35000,
     "created": "2023-04-04T15:53:39.602Z",
-    "modified": "2023-04-04T17:58:05.361Z",
+    "modified": "2023-04-05T02:41:20.600Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n  \"media_list\": [\n    {\n      \"media_id\": 13,\n      \"display_order\": 1\n    },\n    {\n      \"media_id\": 14,\n      \"display_order\": 2\n    }\n  ]\n}",
+      "raw": "{\n  \"media_list\": [\n    {\n      \"media_id\": 17,\n      \"display_order\": 2\n    },\n    {\n      \"media_id\": 18,\n      \"display_order\": 1\n    }\n  ]\n}",
       "form": []
     },
     "auth": {
