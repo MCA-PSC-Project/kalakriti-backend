@@ -547,29 +547,6 @@
     "tests": []
   },
   {
-    "_id": "19e95ea7-80e7-4216-917f-648c9186e608",
-    "colId": "history",
-    "containerId": "",
-    "name": "{{baseUrl}}/auth/mfa/totp/login",
-    "url": "{{baseUrl}}/auth/mfa/totp/login",
-    "method": "POST",
-    "sortNum": 0,
-    "created": "2023-03-16T09:00:53.498Z",
-    "modified": "2023-03-16T14:36:44.220Z",
-    "headers": [],
-    "params": [],
-    "body": {
-      "type": "json",
-      "raw": "{\n  \"totp\": \"053473\"\n}",
-      "form": []
-    },
-    "auth": {
-      "type": "bearer",
-      "bearer": "{{temp_token}}"
-    },
-    "tests": []
-  },
-  {
     "_id": "eca1c5cb-617b-43b7-9b39-ff157179a5b6",
     "colId": "history",
     "containerId": "",
@@ -715,198 +692,6 @@
       "type": "bearer",
       "bearer": "{{admin_token}}"
     },
-    "tests": []
-  },
-  {
-    "_id": "e9d35a94-35f5-4b8c-8bc1-c62147df766f",
-    "colId": "history",
-    "containerId": "",
-    "name": "{{baseUrl}}/sellers/profile",
-    "url": "{{baseUrl}}/sellers/profile",
-    "method": "PATCH",
-    "sortNum": 0,
-    "created": "2023-03-22T08:16:34.520Z",
-    "modified": "2023-03-22T08:25:16.944Z",
-    "headers": [],
-    "params": [],
-    "body": {
-      "type": "json",
-      "raw": "{\n  \"sign_id\": 10\n}",
-      "form": []
-    },
-    "auth": {
-      "type": "bearer",
-      "bearer": "{{seller_token}}"
-    },
-    "tests": []
-  },
-  {
-    "_id": "0bcd6929-cc36-4578-bc1b-27aedcc3f099",
-    "colId": "history",
-    "containerId": "",
-    "name": "{{baseUrl}}/customers/1/status",
-    "url": "{{baseUrl}}/customers/1/status",
-    "method": "PATCH",
-    "sortNum": 0,
-    "created": "2023-03-22T13:14:30.553Z",
-    "modified": "2023-03-22T13:43:13.568Z",
-    "headers": [],
-    "params": [],
-    "body": {
-      "type": "json",
-      "raw": "{\n  \"enabled\": true\n}",
-      "form": []
-    },
-    "auth": {
-      "type": "bearer",
-      "bearer": "{{admin_token}}"
-    },
-    "tests": []
-  },
-  {
-    "_id": "27692fb7-9242-4dae-8177-6ac46cceb3af",
-    "colId": "history",
-    "containerId": "",
-    "name": "{{baseUrl}}/sellers/1/status",
-    "url": "{{baseUrl}}/sellers/1/status",
-    "method": "PATCH",
-    "sortNum": 0,
-    "created": "2023-03-22T13:36:51.571Z",
-    "modified": "2023-03-22T13:43:45.867Z",
-    "headers": [],
-    "params": [],
-    "body": {
-      "type": "json",
-      "raw": "{\n  \"enabled\": true\n}",
-      "form": []
-    },
-    "auth": {
-      "type": "bearer",
-      "bearer": "{{admin_token}}"
-    },
-    "tests": []
-  },
-  {
-    "_id": "0a3bdbe6-9cf1-45ca-8bd2-46dbc95c34a2",
-    "colId": "history",
-    "containerId": "",
-    "name": "{{baseUrl}}/admins/1/status",
-    "url": "{{baseUrl}}/admins/1/status",
-    "method": "PATCH",
-    "sortNum": 0,
-    "created": "2023-03-22T13:49:14.078Z",
-    "modified": "2023-03-22T13:53:58.231Z",
-    "headers": [],
-    "params": [],
-    "body": {
-      "type": "json",
-      "raw": "{\n  \"enabled\": true\n}",
-      "form": []
-    },
-    "auth": {
-      "type": "bearer",
-      "bearer": "{{super_admin_token}}"
-    },
-    "tests": []
-  },
-  {
-    "_id": "c76567ce-57eb-4834-8a76-9fbc77ced12d",
-    "colId": "history",
-    "containerId": "",
-    "name": "{{baseUrl}}/auth/verify-email?user_type=super_admin&token=ImN1c3RvbWVyX2RlbEBnbWFpbC5jb20i.ZB_-Vg.0-fn0RLbQGTKLxF_bnOOhYmvKNI",
-    "url": "{{baseUrl}}/auth/verify-email?user_type=super_admin&token=ImN1c3RvbWVyX2RlbEBnbWFpbC5jb20i.ZB_-Vg.0-fn0RLbQGTKLxF_bnOOhYmvKNI",
-    "method": "GET",
-    "sortNum": 0,
-    "created": "2023-03-26T08:12:28.476Z",
-    "modified": "2023-03-26T08:12:28.476Z",
-    "headers": [],
-    "params": [
-      {
-        "name": "user_type",
-        "value": "super_admin",
-        "isPath": false
-      },
-      {
-        "name": "token",
-        "value": "ImN1c3RvbWVyX2RlbEBnbWFpbC5jb20i.ZB_-Vg.0-fn0RLbQGTKLxF_bnOOhYmvKNI",
-        "isPath": false
-      }
-    ],
-    "tests": []
-  },
-  {
-    "_id": "8bbafcda-3158-4270-b524-16e2652883b5",
-    "colId": "history",
-    "containerId": "",
-    "name": "{{baseUrl}}/auth/verify-email?user_type=customer&token=ImN1c3RvbWVyX2RlbEBnbWFpbC5jb20i.ZB_-Vg.0-fn0RLbQGTKLxF_bnOOhYmvKNI",
-    "url": "{{baseUrl}}/auth/verify-email?user_type=customer&token=ImN1c3RvbWVyX2RlbEBnbWFpbC5jb20i.ZB_-Vg.0-fn0RLbQGTKLxF_bnOOhYmvKNI",
-    "method": "GET",
-    "sortNum": 0,
-    "created": "2023-03-26T08:12:37.083Z",
-    "modified": "2023-03-26T08:12:37.083Z",
-    "headers": [],
-    "params": [
-      {
-        "name": "user_type",
-        "value": "customer",
-        "isPath": false
-      },
-      {
-        "name": "token",
-        "value": "ImN1c3RvbWVyX2RlbEBnbWFpbC5jb20i.ZB_-Vg.0-fn0RLbQGTKLxF_bnOOhYmvKNI",
-        "isPath": false
-      }
-    ],
-    "tests": []
-  },
-  {
-    "_id": "b5ffdae6-6511-4efb-9a7c-1796a709721e",
-    "colId": "history",
-    "containerId": "",
-    "name": "{{baseUrl}}/auth/verify-email?user_type=seller&token=InNlbGxlcl9kZWxAZ21haWwuY29tIg.ZB_-hw.SjW_LrGbJoc7rM5y5MjL7jAYJTc",
-    "url": "{{baseUrl}}/auth/verify-email?user_type=seller&token=InNlbGxlcl9kZWxAZ21haWwuY29tIg.ZB_-hw.SjW_LrGbJoc7rM5y5MjL7jAYJTc",
-    "method": "GET",
-    "sortNum": 0,
-    "created": "2023-03-26T08:13:25.233Z",
-    "modified": "2023-03-26T08:13:25.233Z",
-    "headers": [],
-    "params": [
-      {
-        "name": "user_type",
-        "value": "seller",
-        "isPath": false
-      },
-      {
-        "name": "token",
-        "value": "InNlbGxlcl9kZWxAZ21haWwuY29tIg.ZB_-hw.SjW_LrGbJoc7rM5y5MjL7jAYJTc",
-        "isPath": false
-      }
-    ],
-    "tests": []
-  },
-  {
-    "_id": "d3fcc58a-7fa2-4e11-8713-92da013cd2ce",
-    "colId": "history",
-    "containerId": "",
-    "name": "{{baseUrl}}/auth/verify-email?user_type=admin&token=ImFkbWluX2RlbEBnbWFpbC5jb20i.ZB_-rg.PM7G3nReii1LdX5M61QS13vQHFE",
-    "url": "{{baseUrl}}/auth/verify-email?user_type=admin&token=ImFkbWluX2RlbEBnbWFpbC5jb20i.ZB_-rg.PM7G3nReii1LdX5M61QS13vQHFE",
-    "method": "GET",
-    "sortNum": 0,
-    "created": "2023-03-26T08:13:58.627Z",
-    "modified": "2023-03-26T08:13:58.627Z",
-    "headers": [],
-    "params": [
-      {
-        "name": "user_type",
-        "value": "admin",
-        "isPath": false
-      },
-      {
-        "name": "token",
-        "value": "ImFkbWluX2RlbEBnbWFpbC5jb20i.ZB_-rg.PM7G3nReii1LdX5M61QS13vQHFE",
-        "isPath": false
-      }
-    ],
     "tests": []
   },
   {
@@ -2924,6 +2709,224 @@
       "type": "bearer",
       "bearer": "{{seller_token}}"
     },
+    "tests": []
+  },
+  {
+    "_id": "faed9db3-527b-48a2-9f08-c077fb087d69",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/products/7?SKU",
+    "url": "{{baseUrl}}/products/7?SKU",
+    "method": "GET",
+    "sortNum": 0,
+    "created": "2023-04-05T10:19:29.774Z",
+    "modified": "2023-04-05T10:19:29.774Z",
+    "headers": [],
+    "params": [
+      {
+        "name": "product_status",
+        "value": "unpublished",
+        "isDisabled": true,
+        "isPath": false
+      },
+      {
+        "name": "SKU",
+        "value": "",
+        "isPath": false
+      },
+      {
+        "name": "min_offer_price",
+        "value": "",
+        "isDisabled": true,
+        "isPath": false
+      },
+      {
+        "name": "max_offer_price",
+        "value": "",
+        "isDisabled": true,
+        "isPath": false
+      },
+      {
+        "name": "in-stock",
+        "value": "",
+        "isDisabled": true,
+        "isPath": false
+      }
+    ],
+    "tests": []
+  },
+  {
+    "_id": "a627ad91-0eb7-4b24-a761-edd8080683aa",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/products/7?SKU=black-colorfv",
+    "url": "{{baseUrl}}/products/7?SKU=black-colorfv",
+    "method": "GET",
+    "sortNum": 0,
+    "created": "2023-04-05T10:20:31.223Z",
+    "modified": "2023-04-05T10:20:31.223Z",
+    "headers": [],
+    "params": [
+      {
+        "name": "product_status",
+        "value": "unpublished",
+        "isDisabled": true,
+        "isPath": false
+      },
+      {
+        "name": "SKU",
+        "value": "black-colorfv",
+        "isPath": false
+      },
+      {
+        "name": "min_offer_price",
+        "value": "",
+        "isDisabled": true,
+        "isPath": false
+      },
+      {
+        "name": "max_offer_price",
+        "value": "",
+        "isDisabled": true,
+        "isPath": false
+      },
+      {
+        "name": "in-stock",
+        "value": "",
+        "isDisabled": true,
+        "isPath": false
+      }
+    ],
+    "tests": []
+  },
+  {
+    "_id": "90fb3eac-8e33-4c4a-b610-d1c2b9e569b3",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/products?SKU=black-colorfv",
+    "url": "{{baseUrl}}/products?SKU=black-colorfv",
+    "method": "GET",
+    "sortNum": 0,
+    "created": "2023-04-05T10:20:57.363Z",
+    "modified": "2023-04-05T10:20:57.363Z",
+    "headers": [],
+    "params": [
+      {
+        "name": "product_status",
+        "value": "unpublished",
+        "isDisabled": true,
+        "isPath": false
+      },
+      {
+        "name": "min_offer_price",
+        "value": "",
+        "isDisabled": true,
+        "isPath": false
+      },
+      {
+        "name": "max_offer_price",
+        "value": "",
+        "isDisabled": true,
+        "isPath": false
+      },
+      {
+        "name": "in-stock",
+        "value": "",
+        "isDisabled": true,
+        "isPath": false
+      },
+      {
+        "name": "SKU",
+        "value": "black-colorfv",
+        "isPath": false
+      }
+    ],
+    "tests": []
+  },
+  {
+    "_id": "9ffdaa55-261c-4468-b203-7f6acee929f4",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/products?product_status=published&SKU=black-colorfv",
+    "url": "{{baseUrl}}/products?product_status=published&SKU=black-colorfv",
+    "method": "GET",
+    "sortNum": 0,
+    "created": "2023-04-05T10:21:56.245Z",
+    "modified": "2023-04-05T10:21:56.245Z",
+    "headers": [],
+    "params": [
+      {
+        "name": "product_status",
+        "value": "published",
+        "isPath": false
+      },
+      {
+        "name": "min_offer_price",
+        "value": "",
+        "isDisabled": true,
+        "isPath": false
+      },
+      {
+        "name": "max_offer_price",
+        "value": "",
+        "isDisabled": true,
+        "isPath": false
+      },
+      {
+        "name": "in-stock",
+        "value": "",
+        "isDisabled": true,
+        "isPath": false
+      },
+      {
+        "name": "SKU",
+        "value": "black-colorfv",
+        "isPath": false
+      }
+    ],
+    "tests": []
+  },
+  {
+    "_id": "c1f3e906-37b7-4780-afb8-fed756a31389",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/products?product_status=draft&SKU=black-colorfv",
+    "url": "{{baseUrl}}/products?product_status=draft&SKU=black-colorfv",
+    "method": "GET",
+    "sortNum": 0,
+    "created": "2023-04-05T10:23:37.512Z",
+    "modified": "2023-04-05T10:23:37.512Z",
+    "headers": [],
+    "params": [
+      {
+        "name": "product_status",
+        "value": "draft",
+        "isPath": false
+      },
+      {
+        "name": "min_offer_price",
+        "value": "",
+        "isDisabled": true,
+        "isPath": false
+      },
+      {
+        "name": "max_offer_price",
+        "value": "",
+        "isDisabled": true,
+        "isPath": false
+      },
+      {
+        "name": "in-stock",
+        "value": "",
+        "isDisabled": true,
+        "isPath": false
+      },
+      {
+        "name": "SKU",
+        "value": "black-colorfv",
+        "isPath": false
+      }
+    ],
     "tests": []
   }
 ]

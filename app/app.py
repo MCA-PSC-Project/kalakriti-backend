@@ -18,7 +18,7 @@ from app.resources.auth_otp import GetMobileOtp, MobileOtpLoginAdmin, MobileOtpL
 from app.resources.home import Home, NewProducts, PopularProducts, RecommendedProducts
 from app.resources.orders import Orders, CustomerOrders
 from app.resources.product_items import ProductItems, SellersProductBaseItem, SellersProductItems
-from app.resources.products import Products, ProductsAllDetails, ProductsByCategory, SellersProducts
+from app.resources.products import Products, ProductsAllDetails, ProductsByCategory, ProductsByQuery, SellersProducts
 from app.resources.search import Search, TopSearches
 from app.resources.tags import Tags
 from app.resources.user_profile import CustomerProfile, SellerProfile, AdminProfile
@@ -171,6 +171,7 @@ def create_app(config_name):
 
     # Products
     api.add_resource(ProductsByCategory, '/categories/products')
+    api.add_resource(ProductsByQuery, '/products')
     api.add_resource(Products, '/products/<int:product_id>')
     api.add_resource(ProductItems, '/product-items/<int:product_item_id>')
     api.add_resource(SellersProducts, '/sellers/products',

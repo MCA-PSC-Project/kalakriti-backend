@@ -3154,5 +3154,48 @@
       "bearer": "{{seller_token}}"
     },
     "tests": []
+  },
+  {
+    "_id": "212bc72a-e024-43fd-8f98-12b0628948b9",
+    "colId": "80d178ef-5176-474a-8708-db78bd45faee",
+    "containerId": "d3f02f76-889e-4a8d-88e7-d026529d83a9",
+    "name": "get product using query params",
+    "url": "{{baseUrl}}/products?product_status=draft&SKU=black-colorfv",
+    "method": "GET",
+    "sortNum": 532500,
+    "created": "2023-04-05T08:37:58.448Z",
+    "modified": "2023-04-05T10:23:37.809Z",
+    "headers": [],
+    "params": [
+      {
+        "name": "product_status",
+        "value": "draft",
+        "isPath": false
+      },
+      {
+        "name": "min_offer_price",
+        "value": "",
+        "isDisabled": true,
+        "isPath": false
+      },
+      {
+        "name": "max_offer_price",
+        "value": "",
+        "isDisabled": true,
+        "isPath": false
+      },
+      {
+        "name": "in-stock",
+        "value": "",
+        "isDisabled": true,
+        "isPath": false
+      },
+      {
+        "name": "SKU",
+        "value": "black-colorfv",
+        "isPath": false
+      }
+    ],
+    "tests": []
   }
 ]
