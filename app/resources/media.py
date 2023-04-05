@@ -397,7 +397,6 @@ class BucketObjects(Resource):
     def delete(self):
         """
         This function deletes all files from S3 bucket
-        :return: None
         """
         claims = f_jwt.get_jwt()
         user_type = claims['user_type']

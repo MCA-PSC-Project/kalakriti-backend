@@ -371,8 +371,8 @@ class SellersProducts(Resource):
             media_list = product_item_dict.get("media_list")
             values_tuple_list = []
             for media_dict in media_list:
-                values_tuple = (media_dict.get(
-                    "media_id"), product_item_id, media_dict.get("display_order"))
+                values_tuple = (product_item_id, media_dict.get(
+                    "media_id"), media_dict.get("display_order"))
                 values_tuple_list.append(values_tuple)
             app.logger.debug("values_tuple_list= %s", values_tuple_list)
             psycopg2.extras.execute_batch(

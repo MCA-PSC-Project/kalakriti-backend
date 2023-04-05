@@ -36,9 +36,9 @@ class NewProducts(Resource):
             except Exception as err:
                 app.logger.debug(err)
 
-        limit= args.get('limit', None)
+        limit = args.get('limit', None)
         if not limit:
-            limit=10
+            limit = 10
         try:
             cursor = app_globals.get_named_tuple_cursor()
             GET_NEW_PRODUCTS = '''SELECT p.id AS product_id, p.product_name, p.product_description, 

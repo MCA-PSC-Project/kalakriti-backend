@@ -89,7 +89,7 @@
     "method": "POST",
     "sortNum": 0,
     "created": "2023-03-14T17:30:06.748Z",
-    "modified": "2023-04-04T17:46:54.015Z",
+    "modified": "2023-04-05T13:56:51.265Z",
     "headers": [],
     "params": [],
     "body": {
@@ -913,12 +913,12 @@
     "method": "POST",
     "sortNum": 0,
     "created": "2023-03-29T17:14:14.734Z",
-    "modified": "2023-04-04T17:50:00.177Z",
+    "modified": "2023-04-05T14:20:07.452Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n  \"product_name\": \"madhubani painting\",\n  \"product_description\": \"dxvxk\",\n  \"category_id\": 1,\n  \"subcategory_id\": 2,\n  \"currency\": \"INR\",\n  \"min_order_quantity\": 2,\n  \"max_order_quantity\": 10,\n  \"product_items\": [\n    {\n      \"variant\": \"BASE\",\n      \"variant_value\": \"BASE\",\n      \"product_variant_name\": \"BASE\",\n      \"SKU\": \"1234\",\n      \"original_price\": 1000,\n      \"offer_price\": 500,\n      \"quantity_in_stock\": 10,\n      \"media_list\": [\n        {\n          \"media_id\": 12,\n          \"display_order\": 2\n        },\n        {\n          \"media_id\": 13,\n          \"display_order\": 1\n        }\n      ]\n    }\n  ]\n}",
+      "raw": "{\n  \"product_name\": \"madhubani painting\",\n  \"product_description\": \"dxvxk\",\n  \"category_id\": 1,\n  \"subcategory_id\": 2,\n  \"currency\": \"INR\",\n  \"min_order_quantity\": 2,\n  \"max_order_quantity\": 10,\n  \"product_items\": [\n    {\n      \"variant\": \"BASE\",\n      \"variant_value\": \"BASE\",\n      \"product_variant_name\": \"BASE\",\n      \"SKU\": \"123456\",\n      \"original_price\": 1000,\n      \"offer_price\": 500,\n      \"quantity_in_stock\": 10,\n      \"media_list\": [\n        {\n          \"media_id\": 21,\n          \"display_order\": 1\n        },\n        {\n          \"media_id\": 22,\n          \"display_order\": 1\n        }\n      ]\n    }\n  ]\n}",
       "form": []
     },
     "auth": {
@@ -950,12 +950,12 @@
     "method": "POST",
     "sortNum": 0,
     "created": "2023-03-29T17:14:34.801Z",
-    "modified": "2023-04-03T15:35:32.342Z",
+    "modified": "2023-04-05T14:25:19.999Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n\t\"name\": \"c3\",\n\t\"parent_id\" : null,\n\t\"cover_id\" : null\n}",
+      "raw": "{\n\t\"name\": \"test\",\n\t\"parent_id\" : null,\n\t\"cover_id\" : null\n}",
       "form": []
     },
     "auth": {
@@ -2967,6 +2967,232 @@
       {
         "name": "SKU",
         "value": "dgreen-colorf6",
+        "isPath": false
+      }
+    ],
+    "tests": []
+  },
+  {
+    "_id": "e60aa7a2-295e-4665-a573-b2dfdb453da6",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/products?SKU=dgreen-colorf6",
+    "url": "{{baseUrl}}/products?SKU=dgreen-colorf6",
+    "method": "GET",
+    "sortNum": 0,
+    "created": "2023-04-05T11:10:02.119Z",
+    "modified": "2023-04-05T11:10:02.119Z",
+    "headers": [],
+    "params": [
+      {
+        "name": "product_status",
+        "value": "draft",
+        "isDisabled": true,
+        "isPath": false
+      },
+      {
+        "name": "min_offer_price",
+        "value": "",
+        "isDisabled": true,
+        "isPath": false
+      },
+      {
+        "name": "max_offer_price",
+        "value": "",
+        "isDisabled": true,
+        "isPath": false
+      },
+      {
+        "name": "in-stock",
+        "value": "",
+        "isDisabled": true,
+        "isPath": false
+      },
+      {
+        "name": "SKU",
+        "value": "dgreen-colorf6",
+        "isPath": false
+      }
+    ],
+    "tests": []
+  },
+  {
+    "_id": "16e55409-5ca6-4c9d-add6-5f6b3339ef0a",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/sellers/products/10",
+    "url": "{{baseUrl}}/sellers/products/10",
+    "method": "PUT",
+    "sortNum": 0,
+    "created": "2023-04-05T14:23:05.835Z",
+    "modified": "2023-04-05T14:23:05.835Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n  \"product_name\": \"famous madhubani painting\",\n  \"product_description\": \"paintings from madhubani\",\n  \"category_id\": 1,\n  \"subcategory_id\": null,\n  \"currency\": \"INR\",\n  \"min_order_quantity\": 1,\n  \"max_order_quantity\": 5\n}",
+      "form": []
+    },
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{seller_token}}"
+    },
+    "tests": []
+  },
+  {
+    "_id": "d665d86e-d2ff-42c3-ba99-f7ee65704121",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/categories/6",
+    "url": "{{baseUrl}}/categories/6",
+    "method": "DELETE",
+    "sortNum": 0,
+    "created": "2023-04-05T14:25:39.152Z",
+    "modified": "2023-04-05T14:25:39.152Z",
+    "headers": [],
+    "params": [],
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{admin_token}}"
+    },
+    "tests": []
+  },
+  {
+    "_id": "dcc1413c-0bbd-47be-af17-4a9f9b9c370d",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/categories/7",
+    "url": "{{baseUrl}}/categories/7",
+    "method": "DELETE",
+    "sortNum": 0,
+    "created": "2023-04-05T14:26:32.505Z",
+    "modified": "2023-04-05T14:26:32.505Z",
+    "headers": [],
+    "params": [],
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{admin_token}}"
+    },
+    "tests": []
+  },
+  {
+    "_id": "5d533f10-6c5a-4e26-8cac-a1ce4213ae05",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/products/10",
+    "url": "{{baseUrl}}/products/10",
+    "method": "GET",
+    "sortNum": 0,
+    "created": "2023-04-05T14:28:20.249Z",
+    "modified": "2023-04-05T14:28:35.191Z",
+    "headers": [],
+    "params": [
+      {
+        "name": "product_status",
+        "value": "draft",
+        "isDisabled": true,
+        "isPath": false
+      }
+    ],
+    "tests": []
+  },
+  {
+    "_id": "e094454f-d21b-4d30-9ff2-434c642e9e78",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/products/10?product_status=draft",
+    "url": "{{baseUrl}}/products/10?product_status=draft",
+    "method": "GET",
+    "sortNum": 0,
+    "created": "2023-04-05T14:28:28.913Z",
+    "modified": "2023-04-05T14:28:28.913Z",
+    "headers": [],
+    "params": [
+      {
+        "name": "product_status",
+        "value": "draft",
+        "isPath": false
+      }
+    ],
+    "tests": []
+  },
+  {
+    "_id": "50d52624-59a3-4110-ae59-3b8b3ce3e8f8",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/sellers/product-items/19",
+    "url": "{{baseUrl}}/sellers/product-items/19",
+    "method": "DELETE",
+    "sortNum": 0,
+    "created": "2023-04-05T14:40:52.977Z",
+    "modified": "2023-04-05T14:40:52.977Z",
+    "headers": [],
+    "params": [],
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{admin_token}}"
+    },
+    "tests": []
+  },
+  {
+    "_id": "301b5653-9aed-463c-8d8f-03091cd6cd03",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/sellers/product-items/19",
+    "url": "{{baseUrl}}/sellers/product-items/19",
+    "method": "PATCH",
+    "sortNum": 0,
+    "created": "2023-04-05T14:41:54.030Z",
+    "modified": "2023-04-05T14:42:57.257Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n  \"quantity_in_stock\": 25\n}",
+      "form": []
+    },
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{seller_token}}"
+    },
+    "tests": []
+  },
+  {
+    "_id": "0ebd53ef-5c21-4514-bac9-bddf5e6ce103",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/product-items/19",
+    "url": "{{baseUrl}}/product-items/19",
+    "method": "GET",
+    "sortNum": 0,
+    "created": "2023-04-05T14:43:06.790Z",
+    "modified": "2023-04-05T14:43:06.790Z",
+    "headers": [],
+    "params": [
+      {
+        "name": "product_item_status",
+        "value": "draft",
+        "isDisabled": true,
+        "isPath": false
+      }
+    ],
+    "tests": []
+  },
+  {
+    "_id": "456a9ccd-cde7-4149-b62b-ebd0bc059a08",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/product-items/19?product_item_status=draft",
+    "url": "{{baseUrl}}/product-items/19?product_item_status=draft",
+    "method": "GET",
+    "sortNum": 0,
+    "created": "2023-04-05T14:43:14.455Z",
+    "modified": "2023-04-05T14:43:14.455Z",
+    "headers": [],
+    "params": [
+      {
+        "name": "product_item_status",
+        "value": "draft",
         "isPath": false
       }
     ],

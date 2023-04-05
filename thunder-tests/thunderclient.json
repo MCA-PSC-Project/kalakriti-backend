@@ -415,7 +415,7 @@
     "method": "GET",
     "sortNum": 220000,
     "created": "2023-02-20T16:38:51.049Z",
-    "modified": "2023-04-04T05:29:27.228Z",
+    "modified": "2023-04-05T13:40:38.123Z",
     "headers": [],
     "params": [
       {
@@ -474,12 +474,12 @@
     "method": "POST",
     "sortNum": 250000,
     "created": "2023-02-20T16:38:51.052Z",
-    "modified": "2023-04-03T15:35:32.326Z",
+    "modified": "2023-04-05T14:25:19.991Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n\t\"name\": \"c3\",\n\t\"parent_id\" : null,\n\t\"cover_id\" : null\n}",
+      "raw": "{\n\t\"name\": \"test\",\n\t\"parent_id\" : null,\n\t\"cover_id\" : null\n}",
       "form": []
     },
     "auth": {
@@ -516,11 +516,11 @@
     "colId": "80d178ef-5176-474a-8708-db78bd45faee",
     "containerId": "67bd2609-a1c1-41da-ab7e-1e5b9002ee51",
     "name": "Delete category",
-    "url": "{{baseUrl}}/categories/4",
+    "url": "{{baseUrl}}/categories/7",
     "method": "DELETE",
     "sortNum": 280000,
     "created": "2023-02-20T16:38:51.055Z",
-    "modified": "2023-03-29T18:12:22.174Z",
+    "modified": "2023-04-05T14:26:32.638Z",
     "headers": [],
     "params": [],
     "auth": {
@@ -997,16 +997,17 @@
     "colId": "80d178ef-5176-474a-8708-db78bd45faee",
     "containerId": "d3f02f76-889e-4a8d-88e7-d026529d83a9",
     "name": "get product by id",
-    "url": "{{baseUrl}}/products/7?product_status=unpublished",
+    "url": "{{baseUrl}}/products/10",
     "method": "GET",
     "sortNum": 530000,
     "created": "2023-02-20T16:38:51.081Z",
-    "modified": "2023-04-05T02:40:49.268Z",
+    "modified": "2023-04-05T14:28:35.182Z",
     "headers": [],
     "params": [
       {
         "name": "product_status",
-        "value": "unpublished",
+        "value": "draft",
+        "isDisabled": true,
         "isPath": false
       }
     ],
@@ -1046,12 +1047,12 @@
     "method": "POST",
     "sortNum": 535000,
     "created": "2023-02-20T16:38:51.083Z",
-    "modified": "2023-04-04T17:50:00.151Z",
+    "modified": "2023-04-05T14:20:07.444Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n  \"product_name\": \"madhubani painting\",\n  \"product_description\": \"dxvxk\",\n  \"category_id\": 1,\n  \"subcategory_id\": 2,\n  \"currency\": \"INR\",\n  \"min_order_quantity\": 2,\n  \"max_order_quantity\": 10,\n  \"product_items\": [\n    {\n      \"variant\": \"BASE\",\n      \"variant_value\": \"BASE\",\n      \"product_variant_name\": \"BASE\",\n      \"SKU\": \"1234\",\n      \"original_price\": 1000,\n      \"offer_price\": 500,\n      \"quantity_in_stock\": 10,\n      \"media_list\": [\n        {\n          \"media_id\": 12,\n          \"display_order\": 2\n        },\n        {\n          \"media_id\": 13,\n          \"display_order\": 1\n        }\n      ]\n    }\n  ]\n}",
+      "raw": "{\n  \"product_name\": \"madhubani painting\",\n  \"product_description\": \"dxvxk\",\n  \"category_id\": 1,\n  \"subcategory_id\": 2,\n  \"currency\": \"INR\",\n  \"min_order_quantity\": 2,\n  \"max_order_quantity\": 10,\n  \"product_items\": [\n    {\n      \"variant\": \"BASE\",\n      \"variant_value\": \"BASE\",\n      \"product_variant_name\": \"BASE\",\n      \"SKU\": \"123456\",\n      \"original_price\": 1000,\n      \"offer_price\": 500,\n      \"quantity_in_stock\": 10,\n      \"media_list\": [\n        {\n          \"media_id\": 21,\n          \"display_order\": 1\n        },\n        {\n          \"media_id\": 22,\n          \"display_order\": 1\n        }\n      ]\n    }\n  ]\n}",
       "form": []
     },
     "auth": {
@@ -1065,11 +1066,11 @@
     "colId": "80d178ef-5176-474a-8708-db78bd45faee",
     "containerId": "d3f02f76-889e-4a8d-88e7-d026529d83a9",
     "name": "update product",
-    "url": "{{baseUrl}}/sellers/products/1",
+    "url": "{{baseUrl}}/sellers/products/10",
     "method": "PUT",
     "sortNum": 537500,
     "created": "2023-02-20T16:38:51.084Z",
-    "modified": "2023-03-29T18:13:23.994Z",
+    "modified": "2023-04-05T14:23:05.971Z",
     "headers": [],
     "params": [],
     "body": {
@@ -1755,17 +1756,16 @@
     "colId": "80d178ef-5176-474a-8708-db78bd45faee",
     "containerId": "9525375d-6d7f-486c-8969-7b49f2983b85",
     "name": "get product item by id",
-    "url": "{{baseUrl}}/product-items/7",
+    "url": "{{baseUrl}}/product-items/19?product_item_status=draft",
     "method": "GET",
     "sortNum": 10000,
     "created": "2023-02-23T11:46:39.450Z",
-    "modified": "2023-04-03T08:57:20.591Z",
+    "modified": "2023-04-05T14:43:14.695Z",
     "headers": [],
     "params": [
       {
         "name": "product_item_status",
         "value": "draft",
-        "isDisabled": true,
         "isPath": false
       }
     ],
@@ -1822,11 +1822,11 @@
     "colId": "80d178ef-5176-474a-8708-db78bd45faee",
     "containerId": "9525375d-6d7f-486c-8969-7b49f2983b85",
     "name": "mark/unmark product item as trashed",
-    "url": "{{baseUrl}}/sellers/product-items/16",
+    "url": "{{baseUrl}}/sellers/product-items/19",
     "method": "PATCH",
     "sortNum": 40000,
     "created": "2023-02-23T13:11:37.223Z",
-    "modified": "2023-04-05T02:32:53.131Z",
+    "modified": "2023-04-05T14:41:54.172Z",
     "headers": [],
     "params": [],
     "body": {
@@ -1845,11 +1845,11 @@
     "colId": "80d178ef-5176-474a-8708-db78bd45faee",
     "containerId": "9525375d-6d7f-486c-8969-7b49f2983b85",
     "name": "delete a product item",
-    "url": "{{baseUrl}}/sellers/product-items/16",
+    "url": "{{baseUrl}}/sellers/product-items/19",
     "method": "DELETE",
     "sortNum": 50000,
     "created": "2023-02-23T13:37:24.353Z",
-    "modified": "2023-04-05T02:32:58.135Z",
+    "modified": "2023-04-05T14:40:54.567Z",
     "headers": [],
     "params": [],
     "auth": {
@@ -3114,11 +3114,11 @@
     "colId": "80d178ef-5176-474a-8708-db78bd45faee",
     "containerId": "9525375d-6d7f-486c-8969-7b49f2983b85",
     "name": "update product item quantity",
-    "url": "{{baseUrl}}/sellers/product-items/9",
+    "url": "{{baseUrl}}/sellers/product-items/19",
     "method": "PATCH",
     "sortNum": 25000,
     "created": "2023-04-03T10:11:49.929Z",
-    "modified": "2023-04-03T10:22:49.544Z",
+    "modified": "2023-04-05T14:42:57.249Z",
     "headers": [],
     "params": [],
     "body": {
@@ -3160,16 +3160,17 @@
     "colId": "80d178ef-5176-474a-8708-db78bd45faee",
     "containerId": "d3f02f76-889e-4a8d-88e7-d026529d83a9",
     "name": "get product using query params",
-    "url": "{{baseUrl}}/products?product_status=draft&SKU=dgreen-colorf6",
+    "url": "{{baseUrl}}/products?SKU=dgreen-colorf6",
     "method": "GET",
     "sortNum": 532500,
     "created": "2023-04-05T08:37:58.448Z",
-    "modified": "2023-04-05T11:03:48.694Z",
+    "modified": "2023-04-05T11:10:02.135Z",
     "headers": [],
     "params": [
       {
         "name": "product_status",
         "value": "draft",
+        "isDisabled": true,
         "isPath": false
       },
       {
