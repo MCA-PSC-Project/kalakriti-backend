@@ -10,3 +10,4 @@ gunicorn
 boto3
 pyotp
 qrcode
+redis

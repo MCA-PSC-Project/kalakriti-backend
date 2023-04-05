@@ -7,7 +7,6 @@ import flask_jwt_extended as f_jwt
 import json
 from flask import current_app as app
 
-
 class Categories(Resource):
     @f_jwt.jwt_required()
     def post(self):
@@ -40,6 +39,13 @@ class Categories(Resource):
         return f"category_id = {id} created sucessfully", 201
 
     def get(self):
+        try:
+            response = app_globals.redis_client.get('categories_list')
+            if response:
+                return json.loads(response.decode('utf-8'))
+        except Exception as err:
+            app.logger.debug(err)
+
         categories_list = []
         GET_CATEGORIES = '''SELECT c.id AS category_id, c.name AS category_name, c.parent_id,
         m.id AS media_id, m.name AS media_name, m.path
@@ -117,6 +123,10 @@ class Categories(Resource):
         finally:
             cursor.close()
         # app.logger.debug(categories_list)
+        # app_globals.redis_client.set('key', 'value')
+        app_globals.redis_client.set(
+            'categories_list', json.dumps(categories_list))
+        app_globals.redis_client.expire('categories_list', 60)  # seconds
         return categories_list
 
     @ f_jwt.jwt_required()
@@ -160,12 +170,11 @@ class Categories(Resource):
         app.logger.debug("user_type= %s", user_type)
 
         if user_type != "admin" and user_type != "super_admin":
-            abort(403, 'Forbidden: only super-admins and admins can create category')
-
-        DELETE_CATEGORY = 'DELETE FROM categories WHERE id= %s'
+            abort(403, 'Forbidden: only super-admins and admins can delete category')
 
         try:
             cursor = app_globals.get_cursor()
+            DELETE_CATEGORY = 'DELETE FROM categories WHERE id= %s'
             cursor.execute(DELETE_CATEGORY, (category_id,))
             if cursor.rowcount != 1:
                 abort(400, 'Bad Request: delete row error')
@@ -174,4 +183,5 @@ class Categories(Resource):
             abort(400, 'Bad Request')
         finally:
             cursor.close()
+            # app.logger.debug('cursor closed')
         return 200

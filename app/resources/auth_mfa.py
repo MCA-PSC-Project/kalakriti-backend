@@ -118,7 +118,7 @@ class SetupTOTPAuthentication(Resource):
             name=user_email, issuer_name=app.config['APP_NAME'])
         UPSERT_TOTP_SECRET_KEY = '''INSERT INTO {0} ({1}, secret_key, added_at) VALUES(%s, %s, %s)
         ON CONFLICT ({1}, mfa_type)
-        DO UPDATE set secret_key= %s, updated_at= %s'''.format(
+        DO UPDATE SET secret_key = %s, updated_at = %s'''.format(
             table_name+'_mfa', user_type+'_id')
         try:
             cursor = app_globals.get_cursor()

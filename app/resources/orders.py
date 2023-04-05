@@ -259,7 +259,7 @@ class Orders(Resource):
         return {"message": f"Order id = {order_id} modified."}, 200
 
 
-class UserOrders(Resource):
+class CustomerOrders(Resource):
     @f_jwt.jwt_required()
     def get(self):
         user_id = f_jwt.get_jwt_identity()

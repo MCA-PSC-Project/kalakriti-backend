@@ -7,24 +7,31 @@ import flask_jwt_extended as f_jwt
 import json
 from flask import current_app as app
 
+from app.resources.media import delete_medias_by_ids
+
 
 class ProductItems(Resource):
     def get(self, product_item_id):
+        args = request.args  # retrieve args from query string
+        product_item_status = args.get('product_item_status', None)
+        if not product_item_status:
+            product_item_status = 'published'
+
         product_item_dict = {}
         try:
             cursor = app_globals.get_named_tuple_cursor()
 
             GET_PRODUCT_ITEM = '''SELECT pi.id AS product_item_id, pi.product_id, pi.product_variant_name, pi."SKU", 
-            pi.original_price, pi.offer_price, pi.quantity_in_stock, pi.added_at, pi.updated_at,
+            pi.original_price, pi.offer_price, pi.quantity_in_stock, pi.added_at, pi.updated_at, pi.product_item_status,
             (SELECT v.variant AS variant FROM variants v WHERE v.id = 
             (SELECT vv.variant_id FROM variant_values vv WHERE vv.id = piv.variant_value_id)),
             (SELECT vv.variant_value AS variant_value FROM variant_values vv WHERE vv.id = piv.variant_value_id)
             FROM product_items pi 
             JOIN product_item_values piv ON pi.id = piv.product_item_id
-            WHERE pi.id=%s
-            '''
+            WHERE pi.id=%s AND product_item_status= %s'''
 
-            cursor.execute(GET_PRODUCT_ITEM, (product_item_id,))
+            cursor.execute(GET_PRODUCT_ITEM,
+                           (product_item_id, product_item_status,))
             row = cursor.fetchone()
             if not row:
                 app.logger.debug("No row")
@@ -46,6 +53,7 @@ class ProductItems(Resource):
                 json.dumps({'added_at': row.added_at}, default=str)))
             product_item_dict.update(json.loads(
                 json.dumps({'updated_at': row.updated_at}, default=str)))
+            product_item_dict['product_item_status'] = row.product_item_status
 
             product_item_dict['variant'] = row.variant
             product_item_dict['variant_value'] = row.variant_value
@@ -78,7 +86,7 @@ class ProductItems(Resource):
                     media_dict['path'] = None
                 media_dict['display_order'] = row.display_order
                 media_list.append(media_dict)
-            product_item_dict.update({"medias": media_list})
+            product_item_dict.update({"media_list": media_list})
 
         except (Exception, psycopg2.Error) as err:
             app.logger.debug(err)
@@ -90,7 +98,6 @@ class ProductItems(Resource):
 
 
 class SellersProductItems(Resource):
-    # TODO: work on medias and tags
     @f_jwt.jwt_required()
     def post(self):
         user_id = f_jwt.get_jwt_identity()
@@ -140,17 +147,16 @@ class SellersProductItems(Resource):
                            (product_item_id, variant_value_id,))
             # product_item_value_id = cursor.fetchone()[0]
 
-            INSERT_MEDIAS = '''INSERT INTO product_item_medias(media_id, product_item_id, display_order)
+            INSERT_MEDIAS = '''INSERT INTO product_item_medias(product_item_id, media_id, display_order)
             VALUES(%s, %s, %s)'''
 
-            media_id_list = product_item_dict.get("media_ids")
+            media_id_list = product_item_dict.get("media_list")
             values_tuple_list = []
-            for media_id_dict in media_id_list:
-                values_tuple = (media_id_dict.get(
-                    "media_id"), product_item_id, media_id_dict.get("display_order"))
+            for media_dict in media_id_list:
+                values_tuple = (product_item_id, media_dict.get(
+                    "media_id"),  media_dict.get("display_order"))
                 values_tuple_list.append(values_tuple)
             app.logger.debug("values_tuple_list= %s", values_tuple_list)
-
             psycopg2.extras.execute_batch(
                 cursor, INSERT_MEDIAS, values_tuple_list)
         except (Exception, psycopg2.Error) as err:
@@ -312,7 +318,7 @@ class SellersProductItems(Resource):
 
             GET_VARIANT_VALUE_ID = '''SELECT variant_value_id FROM product_item_values WHERE product_item_id= %s'''
             cursor.execute(
-                GET_VARIANT_VALUE_ID, (str(product_item_id),))
+                GET_VARIANT_VALUE_ID, (product_item_id,))
             row = cursor.fetchone()
             if not row:
                 # app.logger.debug("variant_value_id not found!")
@@ -340,14 +346,14 @@ class SellersProductItems(Resource):
                 abort(400, 'Bad Request: update variant_values row error')
 
             UPDATE_PRODUCT_ITEM = '''UPDATE product_items SET product_variant_name= %s, 
-            "SKU"= %s, original_price= %s, offer_price= %s, quantity_in_stock= %s, updated_at= %s 
+            "SKU"= %s, original_price= %s, offer_price= %s, updated_at= %s 
             WHERE id= %s'''
 
             cursor.execute(
                 UPDATE_PRODUCT_ITEM, (product_item_dict.get('product_variant_name'), product_item_dict.get('SKU'),
                                       product_item_dict.get(
                                           'original_price'), product_item_dict.get('offer_price'),
-                                      product_item_dict.get('quantity_in_stock'), current_time, str(product_item_id),))
+                                      current_time, product_item_id,))
             if cursor.rowcount != 1:
                 abort(400, 'Bad Request: update product_items row error')
         except (Exception, psycopg2.Error) as err:
@@ -364,7 +370,6 @@ class SellersProductItems(Resource):
         return {"message": f"product_item_id {product_item_id} modified."}, 200
 
     # mark/unmark product item as trashed (partially delete)
-    # TODO: check product_item_id is not base item
     @ f_jwt.jwt_required()
     def patch(self, product_item_id):
         user_id = f_jwt.get_jwt_identity()
@@ -372,36 +377,113 @@ class SellersProductItems(Resource):
         claims = f_jwt.get_jwt()
         user_type = claims['user_type']
         app.logger.debug("user_type= %s", user_type)
-
         app.logger.debug("product_item_id= %s", product_item_id)
         data = request.get_json()
 
-        if 'product_item_status' in data.keys():
-            if user_type != "admin" and user_type != "super_admin":
+        if 'quantity_in_stock' in data.keys():
+            if user_type != "seller":
+                abort(400, "only seller is allowed change quantity")
+            value = data['quantity_in_stock']
+            # app.logger.debug("quantity_in_stock= %s", value)
+            UPDATE_PRODUCT_ITEM_QUANTITY = '''UPDATE product_items SET quantity_in_stock= %s, updated_at= %s
+            WHERE id= %s'''
+            PATCH_PRODUCT_ITEM = UPDATE_PRODUCT_ITEM_QUANTITY
+        elif 'product_item_status' in data.keys():
+            if user_type != "seller" and user_type != "admin" and user_type != "super_admin":
                 abort(
-                    400, "only super-admins and admins are allowed to update product_item status")
+                    400, "only sellers, super-admins and admins are allowed to update product item status")
             value = data['product_item_status']
             # app.logger.debug("product_status= %s", value)
-            UPDATE_PRODUCT_ITEM_STATUS = '''UPDATE product_items SET product_item_status= %s, updated_at= %s
+            UPDATE_PRODUCT_ITEM_QUANTITY = '''UPDATE product_items SET product_item_status= %s, updated_at= %s
             WHERE id= %s'''
-            PATCH_PRODUCT_ITEM = UPDATE_PRODUCT_ITEM_STATUS
+            PATCH_PRODUCT_ITEM = UPDATE_PRODUCT_ITEM_QUANTITY
+        elif 'media_list' in data.keys():
+            if user_type != "seller":
+                abort(400, "only seller is allowed update medias")
+            media_list = data['media_list']
+            # before beginning transaction autocommit must be off
+            app_globals.db_conn.autocommit = False
+            try:
+                GET_MEDIA_IDS = '''SELECT media_id FROM product_item_medias WHERE product_item_id = %s'''
+                cursor = app_globals.get_named_tuple_cursor()
+                cursor.execute(GET_MEDIA_IDS, (product_item_id,))
+                rows = cursor.fetchall()
+                old_media_ids_set = set()
+                for row in rows:
+                    old_media_ids_set.add(row.media_id)
+                app.logger.debug('old_media_ids_set= %s', old_media_ids_set)
+
+                values_tuple_list = []
+                new_media_ids_set = set()
+                for media_dict in media_list:
+                    media_id = media_dict.get("media_id")
+                    new_media_ids_set.add(media_id)
+                    display_order = media_dict.get("display_order")
+                    values_tuple = (product_item_id, media_id, display_order)
+                    values_tuple_list.append(values_tuple)
+                app.logger.debug('new_media_ids_set= %s', new_media_ids_set)
+                media_ids_to_be_deleted_set = old_media_ids_set - new_media_ids_set
+                app.logger.debug('media_ids_to_be_deleted_set= %s',
+                                 media_ids_to_be_deleted_set)
+                # if set is not empty
+                if media_ids_to_be_deleted_set:
+                    result = delete_medias_by_ids(
+                        tuple(media_ids_to_be_deleted_set))
+                    if not result:
+                        app.logger.debug("Error deleting medias from bucket")
+                        abort(400, 'Bad Request')
+
+                DELETE_ITEM_OLD_MEDIAS = '''DELETE FROM product_item_medias WHERE product_item_id = %s'''
+                cursor.execute(DELETE_ITEM_OLD_MEDIAS, (product_item_id,))
+                # do not use row count here
+
+                app.logger.debug("values_tuple_list= %s", values_tuple_list)
+                INSERT_ITEM_MEDIAS = '''INSERT INTO product_item_medias(product_item_id, media_id, display_order)
+                VALUES(%s, %s, %s)'''
+                psycopg2.extras.execute_batch(
+                    cursor, INSERT_ITEM_MEDIAS, values_tuple_list)
+            except (Exception, psycopg2.Error) as err:
+                app.logger.debug(err)
+                app_globals.db_conn.rollback()
+                app_globals.db_conn.autocommit = True
+                app.logger.debug("autocommit switched back from off to on")
+                abort(400, 'Bad Request')
+            finally:
+                cursor.close()
+            app_globals.db_conn.commit()
+            app_globals.db_conn.autocommit = True
+            return {"message": f"product_item_id {product_item_id} modified."}, 200
         elif 'trashed' in data.keys():
             if user_type != "seller" and user_type != "admin" and user_type != "super_admin":
                 abort(
-                    400, "only seller, super-admins and admins can trash a product_item")
-            value = data['trashed']
+                    400, "only sellers, super-admins and admins can trash a product item")
+            value = 'trashed' if data['trashed'] else 'unpublished'
             # app.logger.debug("trashed= %s", value)
-            UPDATE_PRODUCT_ITEM_TRASHED_VALUE = '''UPDATE product_items SET trashed= %s, updated_at= %s
+            # check product_item_id is not base item
+            try:
+                CHECK_ITEM_IS_BASE = '''SELECT COUNT(product_item_id) FROM product_base_item WHERE product_item_id = %s'''
+                cursor = app_globals.get_cursor()
+                cursor.execute(CHECK_ITEM_IS_BASE, (product_item_id,))
+                count = cursor.fetchone()[0]
+                if count != 0:
+                    app.logger.debug("error: cannot trash a base product item")
+                    abort(400, 'Bad Request')
+            except (Exception, psycopg2.Error) as err:
+                app.logger.debug(err)
+                abort(400, 'Bad Request')
+            finally:
+                cursor.close()
+
+            UPDATE_PRODUCT_ITEM_TRASHED_VALUE = '''UPDATE product_items SET product_item_status= %s, updated_at= %s
             WHERE id= %s'''
             PATCH_PRODUCT_ITEM = UPDATE_PRODUCT_ITEM_TRASHED_VALUE
         else:
             abort(400, "Bad Request")
-        current_time = datetime.now()
 
         try:
             cursor = app_globals.get_cursor()
             cursor.execute(
-                PATCH_PRODUCT_ITEM, (value, current_time, product_item_id,))
+                PATCH_PRODUCT_ITEM, (value, datetime.now(), product_item_id,))
             if cursor.rowcount != 1:
                 abort(400, 'Bad Request: update row error')
         except (Exception, psycopg2.Error) as err:
@@ -412,7 +494,6 @@ class SellersProductItems(Resource):
         return {"message": f"product_item_id {product_item_id} modified."}, 200
 
     # delete trashed product item
-    # TODO: check product_item_id is not base item
     @ f_jwt.jwt_required()
     def delete(self, product_item_id):
         user_id = f_jwt.get_jwt_identity()
@@ -420,27 +501,39 @@ class SellersProductItems(Resource):
         claims = f_jwt.get_jwt()
         user_type = claims['user_type']
         app.logger.debug("user_type= %s", user_type)
-
-        app.logger.debug("product_id=%s", product_item_id)
+        app.logger.debug("product_item_id=%s", product_item_id)
 
         if user_type != "admin" and user_type != "super_admin":
             abort(400, "only super-admins and admins can delete product item")
 
         app_globals.db_conn.autocommit = False
         try:
-            cursor = app_globals.get_cursor()
+            cursor = app_globals.get_named_tuple_cursor()
+            # For deleting medias
+            media_ids = []
+            GET_MEDIA_IDS = '''SELECT media_id FROM product_item_medias WHERE product_item_id = %s'''
+            cursor.execute(GET_MEDIA_IDS, (product_item_id,))
+            rows = cursor.fetchall()
+            if not rows:
+                abort(400, 'Bad Request')
+            for row in rows:
+                media_ids.append(row.media_id)
+            result = delete_medias_by_ids(tuple(media_ids))
+            if not result:
+                app.logger.debug("Error deleting medias from bucket")
+                abort(400, 'Bad Request')
 
+            # For deleting variants
             DELETE_VARIANT_VALUE = '''DELETE FROM variant_values vv WHERE vv.id = (
                 SELECT piv.variant_value_id FROM product_item_values piv 
                 WHERE piv.product_item_id = %s
             )'''
-
             cursor.execute(DELETE_VARIANT_VALUE, (product_item_id,))
             if cursor.rowcount != 1:
                 abort(400, 'Bad Request: delete variant value row error')
 
-            DELETE_TRASHED_PRODUCT_ITEM = 'DELETE FROM product_items WHERE id= %s AND trashed= true'
-
+            # For deleting trashed product item
+            DELETE_TRASHED_PRODUCT_ITEM = '''DELETE FROM product_items WHERE id= %s AND product_item_status= 'trashed' '''
             cursor.execute(DELETE_TRASHED_PRODUCT_ITEM, (product_item_id,))
             if cursor.rowcount != 1:
                 abort(400, 'Bad Request: delete trashed product item row error')
@@ -456,3 +549,41 @@ class SellersProductItems(Resource):
         app_globals.db_conn.autocommit = True
         app.logger.debug("autocommit switched back from off to on")
         return 200
+
+
+class SellersProductBaseItem(Resource):
+    @f_jwt.jwt_required()
+    def patch(self):
+        user_id = f_jwt.get_jwt_identity()
+        app.logger.debug("user_id= %s", user_id)
+        claims = f_jwt.get_jwt()
+        user_type = claims['user_type']
+        app.logger.debug("user_type= %s", user_type)
+
+        if user_type != "seller" and user_type != "admin" and user_type != "super_admin":
+            abort(
+                400, "only seller, super-admins and admins can change base item of a product")
+        data = request.get_json()
+        product_id = data.get('product_id')
+        product_item_id = data.get('product_item_id')
+
+        try:
+            cursor = app_globals.get_cursor()
+            CHECK_ITEM_EXISTS = '''SELECT true FROM product_items WHERE id = %s AND product_id = %s'''
+            cursor.execute(CHECK_ITEM_EXISTS, (product_item_id, product_id,))
+            row = cursor.fetchone()
+            if row is None:
+                app.logger.debug(
+                    "No row with given product_id and product_item_id exists")
+                abort(400, 'Bad Request')
+            CHANGE_BASE_ITEM = '''UPDATE product_base_item SET product_item_id = %s WHERE product_id = %s'''
+            cursor.execute(
+                CHANGE_BASE_ITEM, (product_item_id, product_id,))
+            if cursor.rowcount != 1:
+                abort(400, 'Bad Request: update row error')
+        except (Exception, psycopg2.Error) as err:
+            app.logger.debug(err)
+            abort(400, 'Bad Request')
+        finally:
+            cursor.close()
+        return {"message": f"Base item modified successfully."}, 200

@@ -162,7 +162,7 @@ class Product_item_review(Resource):
         return 200
 
 
-class GetUserReviewOnProduct(Resource):
+class GetCustomerReviewOnProduct(Resource):
     @f_jwt.jwt_required()
     def get(self, product_item_id):
         customer_id = f_jwt.get_jwt_identity()

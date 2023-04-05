@@ -62,11 +62,11 @@
     "colId": "80d178ef-5176-474a-8708-db78bd45faee",
     "containerId": "20dae99d-610b-4865-98e2-da1b674f86e0",
     "name": "verify email",
-    "url": "{{baseUrl}}/auth/verify-email?user_type=admin&token=ImFkbWluX2RlbEBnbWFpbC5jb20i.ZB_-rg.PM7G3nReii1LdX5M61QS13vQHFE",
+    "url": "{{baseUrl}}/auth/verify-email?user_type=admin&token=InN1cGVyX2FkbWluMUBnbWFpbC5jb20i.ZCR9tA.EEKtN4IjUP2gJ4Sg9pQFtPnJ4yA",
     "method": "GET",
     "sortNum": 40000,
     "created": "2023-02-20T16:38:51.031Z",
-    "modified": "2023-03-26T08:13:58.908Z",
+    "modified": "2023-03-29T18:04:59.035Z",
     "headers": [],
     "params": [
       {
@@ -76,7 +76,7 @@
       },
       {
         "name": "token",
-        "value": "ImFkbWluX2RlbEBnbWFpbC5jb20i.ZB_-rg.PM7G3nReii1LdX5M61QS13vQHFE",
+        "value": "InN1cGVyX2FkbWluMUBnbWFpbC5jb20i.ZCR9tA.EEKtN4IjUP2gJ4Sg9pQFtPnJ4yA",
         "isPath": false
       }
     ],
@@ -206,7 +206,7 @@
     "method": "POST",
     "sortNum": 120000,
     "created": "2023-02-20T16:38:51.039Z",
-    "modified": "2023-03-05T07:18:17.329Z",
+    "modified": "2023-04-05T02:29:51.999Z",
     "headers": [],
     "params": [],
     "body": {
@@ -216,13 +216,13 @@
       "files": [
         {
           "name": "file",
-          "value": "C:\\Users\\prash\\OneDrive\\Pictures\\98-984378_linux-tux-ubuntu-debian-fedora-logos-hd-wallpaper.png"
+          "value": "c:\\Users\\prash\\OneDrive\\Pictures\\apni_shiksha_logo.jpg"
         }
       ]
     },
     "auth": {
       "type": "bearer",
-      "bearer": "{{token}}"
+      "bearer": "{{admin_token}}"
     },
     "tests": []
   },
@@ -343,64 +343,22 @@
     "docs": ""
   },
   {
-    "_id": "fac6ad0c-af47-4bd4-b9b4-b7e2dec7a578",
-    "colId": "80d178ef-5176-474a-8708-db78bd45faee",
-    "containerId": "4a61adc3-63f1-4474-872a-a902ad27e1a1",
-    "name": "Upload  file to object store",
-    "url": "{{baseUrl}}/uploads/banners",
-    "method": "POST",
-    "sortNum": 170000,
-    "created": "2023-02-20T16:38:51.044Z",
-    "modified": "2023-02-20T16:38:51.044Z",
-    "headers": [],
-    "params": [],
-    "body": {
-      "form": [],
-      "files": [
-        {
-          "name": "file",
-          "value": "/home/h4rdw1r3/Pictures/design-build-deliver-m.png"
-        }
-      ],
-      "type": "formdata"
-    },
-    "auth": {
-      "type": "bearer",
-      "bearer": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MjM5Mjc2MzUsImlkIjo4NCwidHlwZSI6IjAifQ.JJmyQSuH89n8MiFd1CvCWizTZ4P1JpZLfNN6AyYcBak"
-    },
-    "docs": ""
-  },
-  {
     "_id": "6a9352bd-2261-4a67-bf56-4caeb810c362",
     "colId": "80d178ef-5176-474a-8708-db78bd45faee",
     "containerId": "4a61adc3-63f1-4474-872a-a902ad27e1a1",
-    "name": "Get All Files",
-    "url": "http://localhost:6898/uploads",
+    "name": "Get All Medias in bucket",
+    "url": "{{baseUrl}}/uploads/media/all",
     "method": "GET",
-    "sortNum": 180000,
+    "sortNum": 165000,
     "created": "2023-02-20T16:38:51.045Z",
-    "modified": "2023-02-20T16:38:51.045Z",
+    "modified": "2023-03-29T19:28:59.099Z",
     "headers": [],
     "params": [],
     "auth": {
       "type": "bearer",
-      "bearer": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MjE5NTAwMzcsImlkIjoxLCJ0eXBlIjoiMiJ9.zao3vOHPWjvxh-LwnP5RuZqPqMD2ShZSMvveMD4j0Lw"
+      "bearer": "{{admin_token}}"
     },
-    "docs": ""
-  },
-  {
-    "_id": "0caeb856-ecfb-44c5-943c-e59237d928d0",
-    "colId": "80d178ef-5176-474a-8708-db78bd45faee",
-    "containerId": "4a61adc3-63f1-4474-872a-a902ad27e1a1",
-    "name": "Get File",
-    "url": "{{baseUrl}}/media/banners/84be3721-06b0-4b81-a159-1ca0b8340a9e.png",
-    "method": "GET",
-    "sortNum": 190000,
-    "created": "2023-02-20T16:38:51.046Z",
-    "modified": "2023-02-20T16:38:51.046Z",
-    "headers": [],
-    "params": [],
-    "docs": ""
+    "tests": []
   },
   {
     "_id": "2df2231e-2cc7-4d4d-aa9f-8817ca7a98d5",
@@ -453,19 +411,26 @@
     "colId": "80d178ef-5176-474a-8708-db78bd45faee",
     "containerId": "9ae95817-3002-4a5d-9fa4-dd1f643a1400",
     "name": "get new products",
-    "url": "{{baseUrl}}/new-products",
+    "url": "{{baseUrl}}/new-products?limit=10",
     "method": "GET",
     "sortNum": 220000,
     "created": "2023-02-20T16:38:51.049Z",
-    "modified": "2023-02-20T16:38:51.049Z",
+    "modified": "2023-04-05T13:40:38.123Z",
     "headers": [],
     "params": [
       {
         "name": "limit",
-        "value": "5"
+        "value": "10",
+        "isPath": false
+      },
+      {
+        "name": "product_status",
+        "value": "draft",
+        "isDisabled": true,
+        "isPath": false
       }
     ],
-    "docs": ""
+    "tests": []
   },
   {
     "_id": "9efb2049-4c80-4cb5-a0c9-4702a9a2546a",
@@ -509,12 +474,12 @@
     "method": "POST",
     "sortNum": 250000,
     "created": "2023-02-20T16:38:51.052Z",
-    "modified": "2023-03-11T14:35:41.219Z",
+    "modified": "2023-04-05T14:25:19.991Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n\t\"name\": \"c2\",\n\t\"parent_id\" : null,\n\t\"cover_id\" : null\n}",
+      "raw": "{\n\t\"name\": \"test\",\n\t\"parent_id\" : null,\n\t\"cover_id\" : null\n}",
       "form": []
     },
     "auth": {
@@ -551,11 +516,11 @@
     "colId": "80d178ef-5176-474a-8708-db78bd45faee",
     "containerId": "67bd2609-a1c1-41da-ab7e-1e5b9002ee51",
     "name": "Delete category",
-    "url": "{{baseUrl}}/categories/6",
+    "url": "{{baseUrl}}/categories/7",
     "method": "DELETE",
     "sortNum": 280000,
     "created": "2023-02-20T16:38:51.055Z",
-    "modified": "2023-03-11T14:36:06.787Z",
+    "modified": "2023-04-05T14:26:32.638Z",
     "headers": [],
     "params": [],
     "auth": {
@@ -573,12 +538,12 @@
     "method": "POST",
     "sortNum": 295000,
     "created": "2023-02-20T16:38:51.056Z",
-    "modified": "2023-03-12T07:51:30.031Z",
+    "modified": "2023-03-30T13:52:50.084Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n  \"product_item_id\": 3\n}",
+      "raw": "{\n  \"product_item_id\": 5\n}",
       "form": []
     },
     "auth": {
@@ -1032,13 +997,20 @@
     "colId": "80d178ef-5176-474a-8708-db78bd45faee",
     "containerId": "d3f02f76-889e-4a8d-88e7-d026529d83a9",
     "name": "get product by id",
-    "url": "{{baseUrl}}/products/5",
+    "url": "{{baseUrl}}/products/10",
     "method": "GET",
     "sortNum": 530000,
     "created": "2023-02-20T16:38:51.081Z",
-    "modified": "2023-03-10T10:07:48.401Z",
+    "modified": "2023-04-05T14:28:35.182Z",
     "headers": [],
-    "params": [],
+    "params": [
+      {
+        "name": "product_status",
+        "value": "draft",
+        "isDisabled": true,
+        "isPath": false
+      }
+    ],
     "tests": []
   },
   {
@@ -1050,9 +1022,16 @@
     "method": "GET",
     "sortNum": 540000,
     "created": "2023-02-20T16:38:51.082Z",
-    "modified": "2023-02-22T18:13:56.841Z",
+    "modified": "2023-04-03T08:40:01.759Z",
     "headers": [],
-    "params": [],
+    "params": [
+      {
+        "name": "product_status",
+        "value": "draft",
+        "isDisabled": true,
+        "isPath": false
+      }
+    ],
     "auth": {
       "type": "bearer",
       "bearer": "{{seller_token}}"
@@ -1068,12 +1047,12 @@
     "method": "POST",
     "sortNum": 535000,
     "created": "2023-02-20T16:38:51.083Z",
-    "modified": "2023-03-10T10:07:39.149Z",
+    "modified": "2023-04-05T14:20:07.444Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n  \"product_name\": \"madhubani\",\n  \"product_description\": \"dxvxk\",\n  \"category_id\": 3,\n  \"subcategory_id\": null,\n  \"currency\": \"INR\",\n  \"min_order_quantity\": 2,\n  \"max_order_quantity\": 10,\n  \"product_items\": [\n    {\n      \"variant\": \"BASE\",\n      \"variant_value\": \"BASE\",\n      \"product_variant_name\": \"BASE\",\n      \"SKU\": \"abcdefghijk\",\n      \"original_price\": 1000,\n      \"offer_price\": 500,\n      \"quantity_in_stock\": 10\n    }\n  ]\n}",
+      "raw": "{\n  \"product_name\": \"madhubani painting\",\n  \"product_description\": \"dxvxk\",\n  \"category_id\": 1,\n  \"subcategory_id\": 2,\n  \"currency\": \"INR\",\n  \"min_order_quantity\": 2,\n  \"max_order_quantity\": 10,\n  \"product_items\": [\n    {\n      \"variant\": \"BASE\",\n      \"variant_value\": \"BASE\",\n      \"product_variant_name\": \"BASE\",\n      \"SKU\": \"123456\",\n      \"original_price\": 1000,\n      \"offer_price\": 500,\n      \"quantity_in_stock\": 10,\n      \"media_list\": [\n        {\n          \"media_id\": 21,\n          \"display_order\": 1\n        },\n        {\n          \"media_id\": 22,\n          \"display_order\": 1\n        }\n      ]\n    }\n  ]\n}",
       "form": []
     },
     "auth": {
@@ -1087,16 +1066,16 @@
     "colId": "80d178ef-5176-474a-8708-db78bd45faee",
     "containerId": "d3f02f76-889e-4a8d-88e7-d026529d83a9",
     "name": "update product",
-    "url": "{{baseUrl}}/sellers/products/31",
+    "url": "{{baseUrl}}/sellers/products/10",
     "method": "PUT",
     "sortNum": 537500,
     "created": "2023-02-20T16:38:51.084Z",
-    "modified": "2023-03-01T04:09:26.443Z",
+    "modified": "2023-04-05T14:23:05.971Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n  \"product_name\": \"famous madhubani painting\",\n  \"product_description\": \"paintings from madhubani\",\n  \"category_id\": 5,\n  \"subcategory_id\": 7,\n  \"currency\": \"INR\",\n  \"min_order_quantity\": 1,\n  \"max_order_quantity\": 5\n}",
+      "raw": "{\n  \"product_name\": \"famous madhubani painting\",\n  \"product_description\": \"paintings from madhubani\",\n  \"category_id\": 1,\n  \"subcategory_id\": null,\n  \"currency\": \"INR\",\n  \"min_order_quantity\": 1,\n  \"max_order_quantity\": 5\n}",
       "form": []
     },
     "auth": {
@@ -1106,44 +1085,26 @@
     "tests": []
   },
   {
-    "_id": "9a2a4291-416f-4061-872f-5d13acac5dac",
-    "colId": "80d178ef-5176-474a-8708-db78bd45faee",
-    "containerId": "d3f02f76-889e-4a8d-88e7-d026529d83a9",
-    "name": "GET products",
-    "url": "{{ baseUrl  }}/users/products",
-    "method": "GET",
-    "sortNum": 930000,
-    "created": "2023-02-20T16:38:51.085Z",
-    "modified": "2023-02-23T12:06:57.182Z",
-    "headers": [],
-    "params": [
-      {
-        "name": "category_id",
-        "value": "1",
-        "isDisabled": false
-      }
-    ],
-    "auth": {
-      "type": "bearer",
-      "bearer": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2NDQ5MTM3MDYsImlkIjoyNywidXNlcl90eXBlIjoibGVhcm5lciJ9.ch2FChaQniyZQIw7TEuUx5DEdgANdf1Tr6ATWZPphHw"
-    },
-    "docs": ""
-  },
-  {
     "_id": "97188d8c-2ed5-4fe2-b392-aef811e9bfd3",
     "colId": "80d178ef-5176-474a-8708-db78bd45faee",
     "containerId": "d3f02f76-889e-4a8d-88e7-d026529d83a9",
     "name": "GET products by subcategory",
-    "url": "{{baseUrl}}/categories/products?subcategory_id=5",
+    "url": "{{baseUrl}}/categories/products?subcategory_id=2",
     "method": "GET",
     "sortNum": 265000,
     "created": "2023-02-20T16:38:51.086Z",
-    "modified": "2023-03-11T14:42:29.782Z",
+    "modified": "2023-04-03T08:16:09.888Z",
     "headers": [],
     "params": [
       {
         "name": "subcategory_id",
-        "value": "5",
+        "value": "2",
+        "isPath": false
+      },
+      {
+        "name": "product_status",
+        "value": "published",
+        "isDisabled": true,
         "isPath": false
       }
     ],
@@ -1236,11 +1197,11 @@
     "colId": "80d178ef-5176-474a-8708-db78bd45faee",
     "containerId": "425e5407-d0b4-4763-94d2-413ae5508d5b",
     "name": "Get Tags",
-    "url": "{{baseUrl}}/products/26/tags",
+    "url": "{{baseUrl}}/products/1/tags",
     "method": "GET",
     "sortNum": 670000,
     "created": "2023-02-20T16:38:51.095Z",
-    "modified": "2023-02-24T10:29:16.328Z",
+    "modified": "2023-03-30T16:31:39.154Z",
     "headers": [],
     "params": [],
     "tests": []
@@ -1249,12 +1210,12 @@
     "_id": "f7154c8b-0834-4d75-bfe2-b8f8eff54721",
     "colId": "80d178ef-5176-474a-8708-db78bd45faee",
     "containerId": "425e5407-d0b4-4763-94d2-413ae5508d5b",
-    "name": "Update Tags",
-    "url": "{{baseUrl}}/products/26/tags",
+    "name": "Create or Update Tags",
+    "url": "{{baseUrl}}/products/1/tags",
     "method": "PUT",
     "sortNum": 680000,
     "created": "2023-02-20T16:38:51.096Z",
-    "modified": "2023-02-24T14:55:01.034Z",
+    "modified": "2023-03-30T16:34:00.293Z",
     "headers": [],
     "params": [],
     "body": {
@@ -1277,12 +1238,18 @@
     "method": "GET",
     "sortNum": 700000,
     "created": "2023-02-20T16:38:51.098Z",
-    "modified": "2023-02-24T15:26:20.637Z",
+    "modified": "2023-04-03T10:58:11.910Z",
     "headers": [],
     "params": [
       {
         "name": "query",
         "value": "art",
+        "isPath": false
+      },
+      {
+        "name": "product_status",
+        "value": "draft",
+        "isDisabled": true,
         "isPath": false
       }
     ],
@@ -1516,12 +1483,12 @@
     "method": "POST",
     "sortNum": 810000,
     "created": "2023-02-21T14:25:16.253Z",
-    "modified": "2023-03-07T14:36:32.697Z",
+    "modified": "2023-04-03T06:03:02.378Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n\t\"media_id\" : 1,\n\t\"redirect_type\" : \"rt\" ,\n\t\"redirect_url\" : \"www.example1.com\"\n}",
+      "raw": "{\n\t\"media_id\" : 11,\n\t\"redirect_type\" : \"rt\" ,\n\t\"redirect_url\" : \"www.example1.com\"\n}",
       "form": []
     },
     "auth": {
@@ -1553,16 +1520,16 @@
     "colId": "80d178ef-5176-474a-8708-db78bd45faee",
     "containerId": "f688fb68-9864-41a4-b257-bb38efeb6b05",
     "name": "Update Banner",
-    "url": "{{baseUrl}}/banners/3",
+    "url": "{{baseUrl}}/banners/1",
     "method": "PUT",
     "sortNum": 830000,
     "created": "2023-02-21T14:30:44.614Z",
-    "modified": "2023-03-08T17:08:31.192Z",
+    "modified": "2023-04-03T06:12:46.762Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n\t\"media_id\" : 1,\n\t\"redirect_type\" : \"rtype_updated\" ,\n\t\"redirect_url\" : \"www.example.com\"\n}",
+      "raw": "{\n\t\"media_id\" : 11,\n\t\"redirect_type\" : \"rtype_updated\" ,\n\t\"redirect_url\" : \"www.example.com\"\n}",
       "form": []
     },
     "auth": {
@@ -1576,11 +1543,11 @@
     "colId": "80d178ef-5176-474a-8708-db78bd45faee",
     "containerId": "f688fb68-9864-41a4-b257-bb38efeb6b05",
     "name": "Delete Banner",
-    "url": "{{baseUrl}}/banners/3",
+    "url": "{{baseUrl}}/banners/1",
     "method": "DELETE",
     "sortNum": 840000,
     "created": "2023-02-21T14:33:12.257Z",
-    "modified": "2023-03-08T17:08:42.865Z",
+    "modified": "2023-04-03T06:14:01.909Z",
     "headers": [],
     "params": [],
     "auth": {
@@ -1672,16 +1639,16 @@
     "colId": "80d178ef-5176-474a-8708-db78bd45faee",
     "containerId": "d3f02f76-889e-4a8d-88e7-d026529d83a9",
     "name": "update product status",
-    "url": "{{baseUrl}}/sellers/products/26",
+    "url": "{{baseUrl}}/sellers/products/1",
     "method": "PATCH",
     "sortNum": 735000,
     "created": "2023-02-22T14:05:51.975Z",
-    "modified": "2023-02-24T14:16:05.225Z",
+    "modified": "2023-04-03T10:57:58.265Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n  \"product_status\": \"draft\"\n}",
+      "raw": "{\n  \"product_status\": \"published\"\n}",
       "form": []
     },
     "auth": {
@@ -1695,11 +1662,11 @@
     "colId": "80d178ef-5176-474a-8708-db78bd45faee",
     "containerId": "d3f02f76-889e-4a8d-88e7-d026529d83a9",
     "name": "delete a product",
-    "url": "{{baseUrl}}/sellers/products/23",
+    "url": "{{baseUrl}}/sellers/products/7",
     "method": "DELETE",
     "sortNum": 920000,
     "created": "2023-02-22T14:12:15.464Z",
-    "modified": "2023-03-01T08:28:08.754Z",
+    "modified": "2023-04-05T02:33:41.231Z",
     "headers": [],
     "params": [],
     "auth": {
@@ -1713,11 +1680,11 @@
     "colId": "80d178ef-5176-474a-8708-db78bd45faee",
     "containerId": "d3f02f76-889e-4a8d-88e7-d026529d83a9",
     "name": "mark/unmark product as trashed",
-    "url": "{{baseUrl}}/sellers/products/23",
+    "url": "{{baseUrl}}/sellers/products/7",
     "method": "PATCH",
     "sortNum": 915000,
     "created": "2023-02-22T17:09:11.102Z",
-    "modified": "2023-03-01T08:27:12.733Z",
+    "modified": "2023-04-05T02:41:53.442Z",
     "headers": [],
     "params": [],
     "body": {
@@ -1740,12 +1707,18 @@
     "method": "GET",
     "sortNum": 555000,
     "created": "2023-02-23T10:56:47.972Z",
-    "modified": "2023-03-11T14:45:27.347Z",
+    "modified": "2023-04-03T08:40:57.183Z",
     "headers": [],
     "params": [
       {
         "name": "seller_user_id",
         "value": "1",
+        "isPath": false
+      },
+      {
+        "name": "product_status",
+        "value": "draft",
+        "isDisabled": true,
         "isPath": false
       }
     ],
@@ -1764,12 +1737,12 @@
     "method": "POST",
     "sortNum": 15000,
     "created": "2023-02-23T11:07:04.114Z",
-    "modified": "2023-03-12T07:46:00.202Z",
+    "modified": "2023-04-04T17:51:23.596Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n  \"product_id\": 3,\n  \"variant\": \"COLOR\",\n  \"variant_value\": \"BLACK\",\n  \"product_variant_name\": \"black_COLOR_VARIANT\",\n  \"SKU\": \"black-colorfv\",\n  \"original_price\": 1000,\n  \"offer_price\": 500,\n  \"quantity_in_stock\": 20,\n  \"media_ids\": [\n    {\n      \"media_id\": 1,\n      \"display_order\": 2\n    },\n    {\n      \"media_id\": 2,\n      \"display_order\": 1\n    }\n  ]\n}",
+      "raw": "{\n  \"product_id\": 7,\n  \"variant\": \"COLOR\",\n  \"variant_value\": \"BLACK\",\n  \"product_variant_name\": \"black_COLOR_VARIANT\",\n  \"SKU\": \"black-colorfv-yza\",\n  \"original_price\": 1000,\n  \"offer_price\": 500,\n  \"quantity_in_stock\": 20,\n  \"media_list\": [\n    {\n      \"media_id\": 13,\n      \"display_order\": 2\n    },\n    {\n      \"media_id\": 14,\n      \"display_order\": 1\n    }\n  ]\n}",
       "form": []
     },
     "auth": {
@@ -1783,13 +1756,19 @@
     "colId": "80d178ef-5176-474a-8708-db78bd45faee",
     "containerId": "9525375d-6d7f-486c-8969-7b49f2983b85",
     "name": "get product item by id",
-    "url": "{{baseUrl}}/product-items/1",
+    "url": "{{baseUrl}}/product-items/19?product_item_status=draft",
     "method": "GET",
     "sortNum": 10000,
     "created": "2023-02-23T11:46:39.450Z",
-    "modified": "2023-03-10T10:26:49.497Z",
+    "modified": "2023-04-05T14:43:14.695Z",
     "headers": [],
-    "params": [],
+    "params": [
+      {
+        "name": "product_item_status",
+        "value": "draft",
+        "isPath": false
+      }
+    ],
     "tests": []
   },
   {
@@ -1797,16 +1776,16 @@
     "colId": "80d178ef-5176-474a-8708-db78bd45faee",
     "containerId": "9525375d-6d7f-486c-8969-7b49f2983b85",
     "name": "update product item",
-    "url": "{{baseUrl}}/sellers/product-items/18",
+    "url": "{{baseUrl}}/sellers/product-items/9",
     "method": "PUT",
     "sortNum": 20000,
     "created": "2023-02-23T12:04:45.230Z",
-    "modified": "2023-02-24T14:42:06.934Z",
+    "modified": "2023-04-03T10:11:01.544Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n  \"variant\": \"MATERIAL\",\n  \"variant_value\": \"LIGHT_GREEN\",\n  \"product_variant_name\": \"LIGHT_GREEN_COLOR_VARIANT\",\n  \"SKU\": \"dgreen-colorf6\",\n  \"original_price\": 5000,\n  \"offer_price\": 2000,\n  \"quantity_in_stock\": 25\n}",
+      "raw": "{\n  \"variant\": \"MATERIAL\",\n  \"variant_value\": \"LIGHT_GREEN\",\n  \"product_variant_name\": \"LIGHT_GREEN_COLOR_VARIANT\",\n  \"SKU\": \"dgreen-colorf6\",\n  \"original_price\": 5000,\n  \"offer_price\": 2000\n}",
       "form": []
     },
     "auth": {
@@ -1820,11 +1799,11 @@
     "colId": "80d178ef-5176-474a-8708-db78bd45faee",
     "containerId": "9525375d-6d7f-486c-8969-7b49f2983b85",
     "name": "update product item status ",
-    "url": "{{baseUrl}}/sellers/product-items/16",
+    "url": "{{baseUrl}}/sellers/product-items/1",
     "method": "PATCH",
     "sortNum": 30000,
     "created": "2023-02-23T13:11:26.774Z",
-    "modified": "2023-02-23T13:26:24.904Z",
+    "modified": "2023-04-03T10:53:04.894Z",
     "headers": [],
     "params": [],
     "body": {
@@ -1843,11 +1822,11 @@
     "colId": "80d178ef-5176-474a-8708-db78bd45faee",
     "containerId": "9525375d-6d7f-486c-8969-7b49f2983b85",
     "name": "mark/unmark product item as trashed",
-    "url": "{{baseUrl}}/sellers/product-items/28",
+    "url": "{{baseUrl}}/sellers/product-items/19",
     "method": "PATCH",
     "sortNum": 40000,
     "created": "2023-02-23T13:11:37.223Z",
-    "modified": "2023-03-01T08:25:41.522Z",
+    "modified": "2023-04-05T14:41:54.172Z",
     "headers": [],
     "params": [],
     "body": {
@@ -1866,11 +1845,11 @@
     "colId": "80d178ef-5176-474a-8708-db78bd45faee",
     "containerId": "9525375d-6d7f-486c-8969-7b49f2983b85",
     "name": "delete a product item",
-    "url": "{{baseUrl}}/sellers/product-items/28",
+    "url": "{{baseUrl}}/sellers/product-items/19",
     "method": "DELETE",
     "sortNum": 50000,
     "created": "2023-02-23T13:37:24.353Z",
-    "modified": "2023-03-01T08:25:45.442Z",
+    "modified": "2023-04-05T14:40:54.567Z",
     "headers": [],
     "params": [],
     "auth": {
@@ -1907,16 +1886,22 @@
     "colId": "80d178ef-5176-474a-8708-db78bd45faee",
     "containerId": "d3f02f76-889e-4a8d-88e7-d026529d83a9",
     "name": "GET products by category",
-    "url": "{{baseUrl}}/categories/products?category_id=3",
+    "url": "{{baseUrl}}/categories/products?category_id=1",
     "method": "GET",
     "sortNum": 132500,
     "created": "2023-03-01T04:15:52.734Z",
-    "modified": "2023-03-11T14:41:50.704Z",
+    "modified": "2023-04-03T08:15:14.342Z",
     "headers": [],
     "params": [
       {
         "name": "category_id",
-        "value": "3",
+        "value": "1",
+        "isPath": false
+      },
+      {
+        "name": "product_status",
+        "value": "published",
+        "isDisabled": true,
         "isPath": false
       }
     ],
@@ -1927,13 +1912,17 @@
     "colId": "80d178ef-5176-474a-8708-db78bd45faee",
     "containerId": "d3f02f76-889e-4a8d-88e7-d026529d83a9",
     "name": "GET all details of a product",
-    "url": "{{baseUrl}}/products/26/all-details",
+    "url": "{{baseUrl}}/products/4/all-details",
     "method": "GET",
     "sortNum": 925000,
     "created": "2023-03-01T06:55:05.728Z",
-    "modified": "2023-03-01T06:57:16.903Z",
+    "modified": "2023-04-03T08:49:22.014Z",
     "headers": [],
     "params": [],
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{admin_token}}"
+    },
     "tests": []
   },
   {
@@ -2037,11 +2026,11 @@
     "colId": "80d178ef-5176-474a-8708-db78bd45faee",
     "containerId": "2ffd39e9-6675-40b7-abd0-296aaf9564ad",
     "name": "get orders of a user",
-    "url": "{{baseUrl}}/user-orders",
+    "url": "{{baseUrl}}/customer-orders",
     "method": "GET",
     "sortNum": 530000,
     "created": "2023-03-04T13:37:50.603Z",
-    "modified": "2023-03-05T07:34:18.026Z",
+    "modified": "2023-04-02T10:08:52.029Z",
     "headers": [],
     "params": [],
     "auth": {
@@ -3054,6 +3043,160 @@
       "type": "bearer",
       "bearer": "{{super_admin_token}}"
     },
+    "tests": []
+  },
+  {
+    "_id": "88203cb8-b385-4852-a604-f0ea45f7c93e",
+    "colId": "80d178ef-5176-474a-8708-db78bd45faee",
+    "containerId": "67bd2609-a1c1-41da-ab7e-1e5b9002ee51",
+    "name": "Create Subcategory ",
+    "url": "{{baseUrl}}/categories",
+    "method": "POST",
+    "sortNum": 260000,
+    "created": "2023-03-29T18:07:08.588Z",
+    "modified": "2023-03-29T18:10:19.820Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n\t\"name\": \"s2\",\n\t\"parent_id\" : 2,\n\t\"cover_id\" : null\n}",
+      "form": []
+    },
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{admin_token}}"
+    },
+    "tests": []
+  },
+  {
+    "_id": "6e933ae9-cb3c-4c77-b98a-bfa85eccaca2",
+    "colId": "80d178ef-5176-474a-8708-db78bd45faee",
+    "containerId": "4a61adc3-63f1-4474-872a-a902ad27e1a1",
+    "name": "Delete All Medias in bucket ",
+    "url": "{{baseUrl}}/uploads/media/all",
+    "method": "DELETE",
+    "sortNum": 175000,
+    "created": "2023-03-29T19:26:45.060Z",
+    "modified": "2023-03-29T19:29:34.113Z",
+    "headers": [],
+    "params": [],
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{admin_token}}"
+    },
+    "tests": []
+  },
+  {
+    "_id": "a91c1e62-5cd6-4862-a7ac-be3ebc6228aa",
+    "colId": "80d178ef-5176-474a-8708-db78bd45faee",
+    "containerId": "9525375d-6d7f-486c-8969-7b49f2983b85",
+    "name": "change base item of a product",
+    "url": "{{baseUrl}}/sellers/products/base-item",
+    "method": "PATCH",
+    "sortNum": 60000,
+    "created": "2023-04-02T09:31:51.148Z",
+    "modified": "2023-04-02T09:59:01.362Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n  \"product_id\": 4,\n  \"product_item_id\": 7\n}",
+      "form": []
+    },
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{seller_token}}"
+    },
+    "tests": []
+  },
+  {
+    "_id": "fd32d310-7da2-4bce-860b-1f5e0ac3a1a3",
+    "colId": "80d178ef-5176-474a-8708-db78bd45faee",
+    "containerId": "9525375d-6d7f-486c-8969-7b49f2983b85",
+    "name": "update product item quantity",
+    "url": "{{baseUrl}}/sellers/product-items/19",
+    "method": "PATCH",
+    "sortNum": 25000,
+    "created": "2023-04-03T10:11:49.929Z",
+    "modified": "2023-04-05T14:42:57.249Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n  \"quantity_in_stock\": 25\n}",
+      "form": []
+    },
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{seller_token}}"
+    },
+    "tests": []
+  },
+  {
+    "_id": "1536ab64-d620-475b-847c-ae87292d7aaf",
+    "colId": "80d178ef-5176-474a-8708-db78bd45faee",
+    "containerId": "9525375d-6d7f-486c-8969-7b49f2983b85",
+    "name": "update product item medias",
+    "url": "{{baseUrl}}/sellers/product-items/13",
+    "method": "PATCH",
+    "sortNum": 35000,
+    "created": "2023-04-04T15:53:39.602Z",
+    "modified": "2023-04-05T02:41:20.600Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n  \"media_list\": [\n    {\n      \"media_id\": 17,\n      \"display_order\": 2\n    },\n    {\n      \"media_id\": 18,\n      \"display_order\": 1\n    }\n  ]\n}",
+      "form": []
+    },
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{seller_token}}"
+    },
+    "tests": []
+  },
+  {
+    "_id": "212bc72a-e024-43fd-8f98-12b0628948b9",
+    "colId": "80d178ef-5176-474a-8708-db78bd45faee",
+    "containerId": "d3f02f76-889e-4a8d-88e7-d026529d83a9",
+    "name": "get product using query params",
+    "url": "{{baseUrl}}/products?SKU=dgreen-colorf6",
+    "method": "GET",
+    "sortNum": 532500,
+    "created": "2023-04-05T08:37:58.448Z",
+    "modified": "2023-04-05T11:10:02.135Z",
+    "headers": [],
+    "params": [
+      {
+        "name": "product_status",
+        "value": "draft",
+        "isDisabled": true,
+        "isPath": false
+      },
+      {
+        "name": "min_offer_price",
+        "value": "",
+        "isDisabled": true,
+        "isPath": false
+      },
+      {
+        "name": "max_offer_price",
+        "value": "",
+        "isDisabled": true,
+        "isPath": false
+      },
+      {
+        "name": "in-stock",
+        "value": "",
+        "isDisabled": true,
+        "isPath": false
+      },
+      {
+        "name": "SKU",
+        "value": "dgreen-colorf6",
+        "isPath": false
+      }
+    ],
     "tests": []
   }
 ]

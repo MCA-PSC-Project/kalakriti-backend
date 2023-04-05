@@ -209,7 +209,7 @@ CREATE TABLE "products"(
 	"id" SERIAL PRIMARY KEY,
 	"product_name" VARCHAR(250) NOT NULL,
 	"product_description" VARCHAR(1000) NOT NULL,
-	"category_id" INT,
+	"category_id" INT NOT NULL,
 	"subcategory_id" INT,
 	"seller_id" INT NOT NULL,
 	"currency" varchar(5) NOT NULL DEFAULT 'INR',
@@ -219,12 +219,10 @@ CREATE TABLE "products"(
 	"tags" text [] CHECK (array_length(tags, 1) <= 15),
 	"added_at" TIMESTAMPTZ NOT NULL,
 	"updated_at" TIMESTAMPTZ,
-	FOREIGN KEY("category_id") REFERENCES "categories"("id") ON DELETE
-	SET NULL,
-		FOREIGN KEY("subcategory_id") REFERENCES "categories"("id") ON DELETE
-	SET NULL,
-		FOREIGN KEY("seller_id") REFERENCES "sellers"("id") ON DELETE CASCADE,
-		CONSTRAINT "order_quantity_check" CHECK("min_order_quantity" <= "max_order_quantity")
+	FOREIGN KEY("category_id") REFERENCES "categories"("id") ON DELETE RESTRICT,
+	FOREIGN KEY("subcategory_id") REFERENCES "categories"("id") ON DELETE RESTRICT,
+	FOREIGN KEY("seller_id") REFERENCES "sellers"("id") ON DELETE CASCADE,
+	CONSTRAINT "order_quantity_check" CHECK("min_order_quantity" <= "max_order_quantity")
 );
 CREATE TABLE "variants" (
 	"id" SERIAL PRIMARY KEY,
@@ -265,14 +263,13 @@ CREATE TABLE "product_item_values"(
 );
 CREATE TABLE "product_item_medias"(
 	-- "id" SERIAL PRIMARY KEY,
-	"media_id" INT NOT NULL,
 	"product_item_id" INT NOT NULL,
+	"media_id" INT NOT NULL,
 	"display_order" SMALLINT NOT NULL CHECK("display_order" > 0),
 	PRIMARY KEY("media_id", "product_item_id"),
 	UNIQUE("product_item_id", "display_order"),
-	FOREIGN KEY("media_id") REFERENCES "media"("id") ON DELETE
-	SET NULL,
-		FOREIGN KEY("product_item_id") REFERENCES "product_items"("id") ON DELETE CASCADE
+	FOREIGN KEY("media_id") REFERENCES "media"("id") ON DELETE CASCADE,
+	FOREIGN KEY("product_item_id") REFERENCES "product_items"("id") ON DELETE CASCADE
 );
 CREATE TABLE "wishlists"(
 	"customer_id" INT NOT NULL,

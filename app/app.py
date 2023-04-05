@@ -7,6 +7,8 @@ import flask_mail
 import boto3
 import atexit
 
+import redis
+
 # local imports
 from app.config import app_config
 from app.resources.address import UserAddress
@@ -14,14 +16,14 @@ from app.resources.auth import LoginAdmin, LoginCustomer, LoginSeller, RefreshTo
 from app.resources.auth_mfa import MFABackupKey, MFAStatus, SetupTOTPAuthentication, TOTPAuthenticationLogin
 from app.resources.auth_otp import GetMobileOtp, MobileOtpLoginAdmin, MobileOtpLoginCustomer, MobileOtpLoginSeller
 from app.resources.home import Home, NewProducts, PopularProducts, RecommendedProducts
-from app.resources.orders import Orders, UserOrders
-from app.resources.product_items import ProductItems, SellersProductItems
-from app.resources.products import Products, ProductsAllDetails, ProductsByCategory, SellersProducts
+from app.resources.orders import Orders, CustomerOrders
+from app.resources.product_items import ProductItems, SellersProductBaseItem, SellersProductItems
+from app.resources.products import Products, ProductsAllDetails, ProductsByCategory, ProductsByQuery, SellersProducts
 from app.resources.search import Search, TopSearches
 from app.resources.tags import Tags
 from app.resources.user_profile import CustomerProfile, SellerProfile, AdminProfile
 from app.resources.reset import RequestResetEmail, RequestResetPassword, ResetEmail, ResetMobile, ResetPassword
-from app.resources.media import UploadImage, UploadAudio, UploadVideo, UploadFile, DeleteMedia
+from app.resources.media import BucketObjects, UploadImage, UploadAudio, UploadVideo, UploadFile, DeleteMedia
 from app.resources.categories import Categories
 from app.resources.admin import CustomersInfo, PromoteToSeller, SellersInfo
 from app.resources.super_admin import AdminsInfo, PromoteToAdmin
@@ -29,7 +31,7 @@ from app.resources.banners import Banners
 from app.resources.seller_applicant_form import Seller_Applicant_Form
 from app.resources.wishlists import Wishlists
 from app.resources.carts import Carts
-from app.resources.product_item_review import Product_item_review, GetUserReviewOnProduct
+from app.resources.product_item_review import Product_item_review, GetCustomerReviewOnProduct
 from app.resources.seller_bank_details import Seller_Bank_Details
 
 import app.app_globals as app_globals
@@ -52,6 +54,7 @@ def create_app(config_name):
 
     app.logger.debug(app_config[config_name])
     app.logger.debug('DATABASE_URI=%s' % app.config['DATABASE_URI'])
+    app.logger.debug('REDIS_URL=%s' % app.config['REDIS_URL'])
     app.logger.debug('SECRET_KEY=%s' % app.config['SECRET_KEY'])
 
     # app_globals.db_conn = psycopg2.connect(app.config['DATABASE_URI'])
@@ -76,6 +79,10 @@ def create_app(config_name):
         app.logger.fatal('Database connection error')
     app_globals.db_conn.autocommit = True
 
+    app_globals.redis_client = redis.Redis.from_url(url=app.config['REDIS_URL'])
+    if not app_globals.redis_client.ping():
+        app.logger.fatal("Redis connection error")
+
     jwt = flask_jwt_extended.JWTManager(app)
     app_globals.mail = flask_mail.Mail(app)
 
@@ -85,7 +92,6 @@ def create_app(config_name):
         aws_access_key_id=app.config['S3_KEY'],
         aws_secret_access_key=app.config['S3_SECRET']
     )
-
     response = app_globals.s3.list_buckets()
     print('Existing buckets:')
     for bucket in response['Buckets']:
@@ -100,6 +106,7 @@ def create_app(config_name):
     api.add_resource(UploadFile, '/uploads/file')
     # only for testing purpose
     api.add_resource(DeleteMedia, '/uploads/media/<int:media_id>')
+    api.add_resource(BucketObjects, '/uploads/media/all')
 
     # Auth
     api.add_resource(RegisterCustomer, '/customers/auth/register')
@@ -164,12 +171,14 @@ def create_app(config_name):
 
     # Products
     api.add_resource(ProductsByCategory, '/categories/products')
+    api.add_resource(ProductsByQuery, '/products')
     api.add_resource(Products, '/products/<int:product_id>')
     api.add_resource(ProductItems, '/product-items/<int:product_item_id>')
     api.add_resource(SellersProducts, '/sellers/products',
                      '/sellers/products/<int:product_id>')
     api.add_resource(SellersProductItems, '/sellers/product-items',
                      '/sellers/product-items/<int:product_item_id>')
+    api.add_resource(SellersProductBaseItem, '/sellers/products/base-item')
     api.add_resource(ProductsAllDetails,
                      '/products/<int:product_id>/all-details')
 
@@ -197,7 +206,7 @@ def create_app(config_name):
     api.add_resource(Product_item_review, '/product-reviews',
                      '/product-reviews/<int:review_id>',
                      '/product-reviews/<int:product_id>/product-id')  # products table id
-    api.add_resource(GetUserReviewOnProduct,
+    api.add_resource(GetCustomerReviewOnProduct,
                      '/product-review/<int:product_item_id>')
 
     # Search
@@ -206,7 +215,7 @@ def create_app(config_name):
 
     # Orders
     api.add_resource(Orders, '/orders', '/orders/<int:order_id>')
-    api.add_resource(UserOrders, '/user-orders')
+    api.add_resource(CustomerOrders, '/customer-orders')
 
     # TODO: Homepage related endpoints
     # Home
@@ -221,5 +230,5 @@ def create_app(config_name):
         # app.logger.debug(app_globals.db_conn_pool)
         if app_globals.db_conn_pool:
             app_globals.db_conn_pool.closeall()
-        app.logger.debug("Connection pool closed")
+        app.logger.debug("db connection pool closed")
     return app
