@@ -867,16 +867,24 @@ class ProductsByQuery(Resource):
             cursor = app_globals.get_named_tuple_cursor()
             GET_PRODUCTS_BY_QUERY = '''SELECT p.id AS product_id, p.product_name, 
             p.currency, p.product_status, p.min_order_quantity, p.max_order_quantity,
-            p.added_at, p.updated_at, 
+            p.added_at AS product_added_at, p.updated_at AS product_updated_at, 
             s.id AS seller_id, s.seller_name, s.email,
-            pbi.product_item_id AS base_product_item_id
-            FROM products p 
-            JOIN sellers s ON p.seller_id = s.id 
-            JOIN product_base_item pbi ON p.id = pbi.product_id
-            WHERE p.product_status = %s  
-            ORDER BY p.id DESC'''
+            pbi.product_item_id AS base_product_item_id,
+            pi.id AS product_item_id, pi.product_id AS pi_product_id, pi.product_variant_name, pi."SKU",
+            pi.original_price, pi.offer_price, pi.quantity_in_stock, 
+            pi.added_at AS pi_added_at, pi.updated_at AS pi_updated_at, pi.product_item_status,
+            (SELECT v.variant AS variant FROM variants v WHERE v.id = 
+            (SELECT vv.variant_id FROM variant_values vv WHERE vv.id = piv.variant_value_id)),
+            (SELECT vv.variant_value AS variant_value FROM variant_values vv WHERE vv.id = piv.variant_value_id)
+            FROM product_items pi 
+            JOIN product_item_values piv ON pi.id = piv.product_item_id
+            JOIN products p ON p.id = pi.product_id 
+            JOIN sellers s ON s.id = (SELECT p.seller_id FROM products p WHERE p.id = pi.product_id) 
+            LEFT JOIN product_base_item pbi ON pbi.product_id = (SELECT p.id FROM products p WHERE p.id = pi.product_id)
+            WHERE p.product_status = %s AND pi.product_item_status = %s {}'''.format(product_item_where_condition)
 
-            cursor.execute(GET_PRODUCTS_BY_QUERY, (product_status,))
+            cursor.execute(GET_PRODUCTS_BY_QUERY,
+                           (product_status, *product_item_values_tuple))
             rows = cursor.fetchall()
             if not rows:
                 return {}
@@ -890,9 +898,9 @@ class ProductsByQuery(Resource):
                 product_dict['min_order_quantity'] = row.min_order_quantity
                 product_dict['max_order_quantity'] = row.max_order_quantity
                 product_dict.update(json.loads(
-                    json.dumps({'added_at': row.added_at}, default=str)))
+                    json.dumps({'added_at': row.product_added_at}, default=str)))
                 product_dict.update(json.loads(
-                    json.dumps({'updated_at': row.updated_at}, default=str)))
+                    json.dumps({'updated_at': row.product_updated_at}, default=str)))
 
                 seller_dict = {}
                 seller_dict['id'] = row.seller_id
@@ -902,45 +910,26 @@ class ProductsByQuery(Resource):
 
                 product_dict['base_product_item_id'] = row.base_product_item_id
 
-                product_item_status = product_status
-                GET_PRODUCT_BASE_ITEM = '''SELECT pi.id AS product_item_id, pi.product_id, pi.product_variant_name, pi."SKU",
-                pi.original_price, pi.offer_price, pi.quantity_in_stock, pi.added_at, pi.updated_at, pi.product_item_status,
-                (SELECT v.variant AS variant FROM variants v WHERE v.id = 
-                (SELECT vv.variant_id FROM variant_values vv WHERE vv.id = piv.variant_value_id)),
-                (SELECT vv.variant_value AS variant_value FROM variant_values vv WHERE vv.id = piv.variant_value_id)
-                FROM product_items pi 
-                JOIN product_item_values piv ON pi.id = piv.product_item_id
-                WHERE pi.id = %s AND pi.product_item_status = %s {}'''.format(product_item_where_condition)
+                product_item_dict = {}
+                product_item_dict['id'] = row.product_item_id
+                product_item_dict['product_id'] = row.pi_product_id
+                product_item_dict['product_variant_name'] = row.product_variant_name
+                product_item_dict['SKU'] = row.SKU
 
-                base_product_item_dict = {}
-                cursor.execute(GET_PRODUCT_BASE_ITEM,
-                               (product_dict['base_product_item_id'], *product_item_values_tuple))
-                row = cursor.fetchone()
-                if not row:
-                    app.logger.debug("No base product item row")
-                    product_dict.update(
-                        {"base_product_item": base_product_item_dict})
-                    products_list.append(product_dict)
-                    continue
-                base_product_item_dict['id'] = row.product_item_id
-                base_product_item_dict['product_id'] = row.product_id
-                base_product_item_dict['product_variant_name'] = row.product_variant_name
-                base_product_item_dict['SKU'] = row.SKU
-
-                base_product_item_dict.update(json.loads(
+                product_item_dict.update(json.loads(
                     json.dumps({'original_price': row.original_price}, default=str)))
-                base_product_item_dict.update(json.loads(
+                product_item_dict.update(json.loads(
                     json.dumps({'offer_price': row.offer_price}, default=str)))
 
-                base_product_item_dict['quantity_in_stock'] = row.quantity_in_stock
-                base_product_item_dict.update(json.loads(
-                    json.dumps({'added_at': row.added_at}, default=str)))
-                base_product_item_dict.update(json.loads(
-                    json.dumps({'updated_at': row.updated_at}, default=str)))
-                base_product_item_dict['product_item_status'] = row.product_item_status
+                product_item_dict['quantity_in_stock'] = row.quantity_in_stock
+                product_item_dict.update(json.loads(
+                    json.dumps({'added_at': row.pi_added_at}, default=str)))
+                product_item_dict.update(json.loads(
+                    json.dumps({'updated_at': row.pi_updated_at}, default=str)))
+                product_item_dict['product_item_status'] = row.product_item_status
 
-                base_product_item_dict['variant'] = row.variant
-                base_product_item_dict['variant_value'] = row.variant_value
+                product_item_dict['variant'] = row.variant
+                product_item_dict['variant_value'] = row.variant_value
 
                 media_dict = {}
                 GET_BASE_MEDIA = '''SELECT m.id AS media_id, m.name, m.path
@@ -951,13 +940,13 @@ class ProductsByQuery(Resource):
                     ORDER BY pim.display_order LIMIT 1
                 )'''
                 cursor.execute(
-                    GET_BASE_MEDIA, (product_dict['base_product_item_id'],))
+                    GET_BASE_MEDIA, (product_item_dict['id'],))
                 row = cursor.fetchone()
                 if row is None:
                     app.logger.debug("No media rows")
-                    base_product_item_dict.update({"media": media_dict})
+                    product_item_dict.update({"media": media_dict})
                     product_dict.update(
-                        {"base_product_item": base_product_item_dict})
+                        {"base_product_item": product_item_dict})
                     products_list.append(product_dict)
                     continue
                 media_dict['id'] = row.media_id
@@ -969,11 +958,10 @@ class ProductsByQuery(Resource):
                         app.config["S3_LOCATION"], path)
                 else:
                     media_dict['path'] = None
-                base_product_item_dict.update({"media": media_dict})
+                product_item_dict.update({"media": media_dict})
                 product_dict.update(
-                    {"base_product_item": base_product_item_dict})
+                    {"base_product_item": product_item_dict})
                 products_list.append(product_dict)
-
         except (Exception, psycopg2.Error) as err:
             app.logger.debug(err)
             abort(400, 'Bad Request')

@@ -2808,12 +2808,12 @@
     "method": "GET",
     "sortNum": 0,
     "created": "2023-04-05T10:20:57.363Z",
-    "modified": "2023-04-05T10:20:57.363Z",
+    "modified": "2023-04-05T11:01:51.904Z",
     "headers": [],
     "params": [
       {
         "name": "product_status",
-        "value": "unpublished",
+        "value": "draft",
         "isDisabled": true,
         "isPath": false
       },
@@ -2924,6 +2924,49 @@
       {
         "name": "SKU",
         "value": "black-colorfv",
+        "isPath": false
+      }
+    ],
+    "tests": []
+  },
+  {
+    "_id": "99bff237-e19f-4927-af8f-e6a9c6d042b6",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/products?product_status=draft&SKU=dgreen-colorf6",
+    "url": "{{baseUrl}}/products?product_status=draft&SKU=dgreen-colorf6",
+    "method": "GET",
+    "sortNum": 0,
+    "created": "2023-04-05T11:03:48.526Z",
+    "modified": "2023-04-05T11:03:48.526Z",
+    "headers": [],
+    "params": [
+      {
+        "name": "product_status",
+        "value": "draft",
+        "isPath": false
+      },
+      {
+        "name": "min_offer_price",
+        "value": "",
+        "isDisabled": true,
+        "isPath": false
+      },
+      {
+        "name": "max_offer_price",
+        "value": "",
+        "isDisabled": true,
+        "isPath": false
+      },
+      {
+        "name": "in-stock",
+        "value": "",
+        "isDisabled": true,
+        "isPath": false
+      },
+      {
+        "name": "SKU",
+        "value": "dgreen-colorf6",
         "isPath": false
       }
     ],

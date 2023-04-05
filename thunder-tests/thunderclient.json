@@ -3160,11 +3160,11 @@
     "colId": "80d178ef-5176-474a-8708-db78bd45faee",
     "containerId": "d3f02f76-889e-4a8d-88e7-d026529d83a9",
     "name": "get product using query params",
-    "url": "{{baseUrl}}/products?product_status=draft&SKU=black-colorfv",
+    "url": "{{baseUrl}}/products?product_status=draft&SKU=dgreen-colorf6",
     "method": "GET",
     "sortNum": 532500,
     "created": "2023-04-05T08:37:58.448Z",
-    "modified": "2023-04-05T10:23:37.809Z",
+    "modified": "2023-04-05T11:03:48.694Z",
     "headers": [],
     "params": [
       {
@@ -3192,7 +3192,7 @@
       },
       {
         "name": "SKU",
-        "value": "black-colorfv",
+        "value": "dgreen-colorf6",
         "isPath": false
       }
     ],
