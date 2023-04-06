@@ -836,7 +836,8 @@ class ProductsAllDetails(Resource):
 class ProductsByQuery(Resource):
     def get(self):
         args = request.args  # retrieve args from query string
-        product_item_status = product_status = args.get('product_status', None)
+        product_status = args.get('product_status', None)
+        product_item_status = args.get('product_item_status', None)
         SKU = args.get('SKU', None)
         min_offer_price = args.get('min_offer_price', None)
         max_offer_price = args.get('max_offer_price', None)
@@ -845,19 +846,19 @@ class ProductsByQuery(Resource):
         if not product_status:
             product_item_status = product_status = 'published'
         if SKU:
-            product_item_where_condition += 'AND "SKU" = %s'
+            product_item_where_condition += ' AND "SKU" = %s'
             product_item_values_tuple = (product_item_status, SKU,)
         else:
             if min_offer_price and max_offer_price:
-                product_item_where_condition += 'AND offer_price >= %s AND offer_price <= %s'
+                product_item_where_condition += ' AND offer_price >= %s AND offer_price <= %s'
                 product_item_values_tuple = (product_item_status,
                                              min_offer_price, max_offer_price,)
             elif min_offer_price and (not max_offer_price):
-                product_item_where_condition += 'AND offer_price >= %s'
+                product_item_where_condition += ' AND offer_price >= %s'
                 product_item_values_tuple = (
                     product_item_status, min_offer_price,)
             elif (not min_offer_price) and max_offer_price:
-                product_item_where_condition += 'AND offer_price <= %s'
+                product_item_where_condition += ' AND offer_price <= %s'
                 product_item_values_tuple = (
                     product_item_status, max_offer_price,)
             else:

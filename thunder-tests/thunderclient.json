@@ -3160,23 +3160,22 @@
     "colId": "80d178ef-5176-474a-8708-db78bd45faee",
     "containerId": "d3f02f76-889e-4a8d-88e7-d026529d83a9",
     "name": "get product using query params",
-    "url": "{{baseUrl}}/products?SKU=dgreen-colorf6",
+    "url": "{{baseUrl}}/products?min_offer_price=200",
     "method": "GET",
     "sortNum": 532500,
     "created": "2023-04-05T08:37:58.448Z",
-    "modified": "2023-04-05T11:10:02.135Z",
+    "modified": "2023-04-06T10:37:42.979Z",
     "headers": [],
     "params": [
       {
         "name": "product_status",
-        "value": "draft",
+        "value": "published",
         "isDisabled": true,
         "isPath": false
       },
       {
         "name": "min_offer_price",
-        "value": "",
-        "isDisabled": true,
+        "value": "200",
         "isPath": false
       },
       {
@@ -3194,6 +3193,13 @@
       {
         "name": "SKU",
         "value": "dgreen-colorf6",
+        "isDisabled": true,
+        "isPath": false
+      },
+      {
+        "name": "product_item_status",
+        "value": "unpublished",
+        "isDisabled": true,
         "isPath": false
       }
     ],
