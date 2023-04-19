@@ -383,12 +383,12 @@ CREATE TABLE "mobile_otp"(
 	"expiry_at" TIMESTAMPTZ NOT NULL
 );
 CREATE TABLE "top_searches"(
-	"rank" smallint,
-	"query" varchar,
+	"rank" SMALLINT,
+	"query" VARCHAR NOT NULL UNIQUE,
 	PRIMARY KEY("rank")
 );
 CREATE TABLE "products_tsv_store"(
-	"product_id" integer,
+	"product_id" INTEGER,
 	"tsv" tsvector,
 	PRIMARY KEY("product_id"),
 	FOREIGN KEY ("product_id") REFERENCES "products"("id") ON DELETE CASCADE
