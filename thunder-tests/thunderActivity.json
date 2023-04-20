@@ -251,29 +251,6 @@
     "tests": []
   },
   {
-    "_id": "b27f56a3-0f4f-4abb-86a2-0115cbc3d301",
-    "colId": "history",
-    "containerId": "",
-    "name": "{{baseUrl}}/sellers/products/base-item",
-    "url": "{{baseUrl}}/sellers/products/base-item",
-    "method": "PATCH",
-    "sortNum": 0,
-    "created": "2023-04-02T09:37:58.421Z",
-    "modified": "2023-04-02T09:59:01.377Z",
-    "headers": [],
-    "params": [],
-    "body": {
-      "type": "json",
-      "raw": "{\n  \"product_id\": 4,\n  \"product_item_id\": 7\n}",
-      "form": []
-    },
-    "auth": {
-      "type": "bearer",
-      "bearer": "{{seller_token}}"
-    },
-    "tests": []
-  },
-  {
     "_id": "3d39b3de-2127-48d3-943e-1d428177463c",
     "colId": "history",
     "containerId": "",
@@ -2535,6 +2512,142 @@
     "auth": {
       "type": "bearer",
       "bearer": "{{seller_token}}"
+    },
+    "tests": []
+  },
+  {
+    "_id": "edf72bd3-51ff-425d-ad94-02738563d98c",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/product-reviews",
+    "url": "{{baseUrl}}/product-reviews",
+    "method": "POST",
+    "sortNum": 0,
+    "created": "2023-04-20T16:14:46.365Z",
+    "modified": "2023-04-20T17:19:27.645Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n\t\"order_item_id\" : 9,\n\t\"rating\" : 3.0,\n\t\"review\" : \"good\"\n}",
+      "form": []
+    },
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{token}}"
+    },
+    "tests": []
+  },
+  {
+    "_id": "e2b1207d-9f6b-487e-9d57-aed3067b2130",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/product-reviews/26/product-id",
+    "url": "{{baseUrl}}/product-reviews/26/product-id",
+    "method": "GET",
+    "sortNum": 0,
+    "created": "2023-04-20T17:21:04.456Z",
+    "modified": "2023-04-20T17:21:04.456Z",
+    "headers": [],
+    "params": [],
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{token}}"
+    },
+    "tests": []
+  },
+  {
+    "_id": "4edf1e86-4ed5-4d0b-a96a-d3ee2009668a",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/product-review/19",
+    "url": "{{baseUrl}}/product-review/19",
+    "method": "GET",
+    "sortNum": 0,
+    "created": "2023-04-20T17:23:34.541Z",
+    "modified": "2023-04-20T17:23:34.541Z",
+    "headers": [],
+    "params": [],
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{token}}"
+    },
+    "tests": []
+  },
+  {
+    "_id": "10fede5d-ff9d-44f4-9406-26392015fc3c",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/product-review/9",
+    "url": "{{baseUrl}}/product-review/9",
+    "method": "GET",
+    "sortNum": 0,
+    "created": "2023-04-20T17:24:28.594Z",
+    "modified": "2023-04-20T17:24:28.594Z",
+    "headers": [],
+    "params": [],
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{token}}"
+    },
+    "tests": []
+  },
+  {
+    "_id": "6d8d325b-2deb-4241-8a4a-404772e433a6",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/product-reviews/1",
+    "url": "{{baseUrl}}/product-reviews/1",
+    "method": "PUT",
+    "sortNum": 0,
+    "created": "2023-04-20T17:28:52.526Z",
+    "modified": "2023-04-20T17:28:52.526Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n\t\"rating\" : 5,\n\t\"review\": \"really awesome\"\n}",
+      "form": []
+    },
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{token}}"
+    },
+    "tests": []
+  },
+  {
+    "_id": "a3a05e0d-cad9-4e27-b1a7-0a0c1f91d614",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/products/product-reviews/1",
+    "url": "{{baseUrl}}/products/product-reviews/1",
+    "method": "GET",
+    "sortNum": 0,
+    "created": "2023-04-20T17:39:08.508Z",
+    "modified": "2023-04-20T17:39:08.508Z",
+    "headers": [],
+    "params": [],
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{token}}"
+    },
+    "tests": []
+  },
+  {
+    "_id": "72bc0c98-4e12-4018-a8b9-5d39b738a10b",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/products/1/product-reviews",
+    "url": "{{baseUrl}}/products/1/product-reviews",
+    "method": "GET",
+    "sortNum": 0,
+    "created": "2023-04-20T17:39:57.395Z",
+    "modified": "2023-04-20T17:39:57.395Z",
+    "headers": [],
+    "params": [],
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{token}}"
     },
     "tests": []
   }
