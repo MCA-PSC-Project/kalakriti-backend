@@ -16,7 +16,7 @@ from app.resources.auth import LoginAdmin, LoginCustomer, LoginSeller, RefreshTo
 from app.resources.auth_mfa import MFABackupKey, MFAStatus, SetupTOTPAuthentication, TOTPAuthenticationLogin
 from app.resources.auth_otp import GetMobileOtp, MobileOtpLoginAdmin, MobileOtpLoginCustomer, MobileOtpLoginSeller
 from app.resources.home import Home, NewProducts, PopularProducts, RecommendedProducts
-from app.resources.orders import Orders, CustomerOrders
+from app.resources.orders import OrderItems, Orders, CustomerOrders
 from app.resources.product_items import ProductItems, SellersProductBaseItem, SellersProductItems
 from app.resources.products import Products, ProductsAllDetails, ProductsByCategory, ProductsByQuery, SellersProducts
 from app.resources.search import Search, TopSearches
@@ -216,6 +216,7 @@ def create_app(config_name):
 
     # Orders
     api.add_resource(Orders, '/orders', '/orders/<int:order_id>')
+    api.add_resource(OrderItems, '/order-items/<int:order_item_id>')
     api.add_resource(CustomerOrders, '/customer-orders')
 
     # TODO: Homepage related endpoints

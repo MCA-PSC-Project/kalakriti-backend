@@ -41,13 +41,8 @@ class Orders(Resource):
 
         # before beginning transaction autocommit must be off
         app_globals.db_conn.autocommit = False
-        # print(app_globals.db_conn)
-        # catch exception for invalid SQL statement
         try:
-            # declare a cursor object from the connection
             cursor = app_globals.get_cursor()
-            # # app.logger.debug("cursor object: %s", cursor)
-
             CREATE_ORDER = """INSERT INTO orders(customer_id, shipping_address_id, mobile_no,
             total_original_price, sub_total, total_discount, total_tax, grand_total, added_at)
             VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s) RETURNING id"""
@@ -70,8 +65,8 @@ class Orders(Resource):
 
             # add order items
             INSERT_ORDER_ITEMS = """INSERT INTO order_items(order_id, product_item_id, quantity,
-            original_price, offer_price, discount_percent, discount, tax)
-            VALUES(%s, %s, %s, %s, %s, %s, %s, %s)"""
+            original_price, offer_price, discount_percent, discount, tax, added_at)
+            VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s)"""
 
             values_tuple_list = []
             for order_item_dict in order_dict["order_items"]:
@@ -84,6 +79,7 @@ class Orders(Resource):
                     order_item_dict.get("discount_percent"),
                     order_item_dict.get("discount"),
                     order_item_dict.get("tax"),
+                    current_time,
                 )
                 values_tuple_list.append(values_tuple)
             app.logger.debug("values_tuple_list= %s", values_tuple_list)
@@ -116,7 +112,7 @@ class Orders(Resource):
         customer_id = f_jwt.get_jwt_identity()
         app.logger.debug("customer_id= %s", customer_id)
 
-        GET_ORDER = """SELECT o.id AS order_id, o.customer_id, o.mobile_no, o.order_status,
+        GET_ORDER = """SELECT o.id AS order_id, o.customer_id, o.mobile_no,
         o.total_original_price, o.sub_total, o.total_discount, o.total_tax, o.grand_total, o.added_at, o.updated_at,
         ad.id AS address_id, ad.address_line1, ad.address_line2, ad.district, ad.city, ad.state, ad.country, ad.pincode, ad.landmark
         FROM orders o
@@ -133,7 +129,6 @@ class Orders(Resource):
             order_dict["order_id"] = row.order_id
             order_dict["customer_id"] = row.customer_id
             order_dict["mobile_no"] = row.mobile_no
-            order_dict["order_status"] = row.order_status
             order_dict.update(
                 json.loads(
                     json.dumps(
@@ -174,8 +169,8 @@ class Orders(Resource):
             address_dict["landmark"] = row.landmark
             order_dict.update({"shipping_address": address_dict})
 
-            GET_ORDER_ITEMS = """SELECT oi.id AS order_item_id, oi.quantity, oi.original_price, oi.offer_price, 
-            oi.discount_percent, oi.discount, oi.tax, oi.product_item_id, 
+            GET_ORDER_ITEMS = """SELECT oi.id AS order_item_id, oi.order_item_status, oi.quantity, 
+            oi.original_price, oi.offer_price, oi.discount_percent, oi.discount, oi.tax, oi.product_item_id, 
             pi.product_id, p.product_name
             FROM order_items oi
             JOIN product_items pi ON pi.id = oi.product_item_id
@@ -190,6 +185,7 @@ class Orders(Resource):
             for row in rows:
                 order_item_dict = {}
                 order_item_dict["order_item_id"] = row.order_item_id
+                order_item_dict["order_item_status"] = row.order_item_status
                 order_item_dict["quantity"] = row.quantity
                 order_item_dict.update(
                     json.loads(
@@ -226,8 +222,7 @@ class Orders(Resource):
                         WHERE pim.product_item_id = %s
                         ORDER BY pim.display_order
                         LIMIT 1
-                    )
-                    """
+                    )"""
                 cursor.execute(
                     GET_BASE_MEDIA, (order_item_dict.get("product_item_id"),)
                 )
@@ -256,20 +251,22 @@ class Orders(Resource):
         # app.logger.debug(order_dict)
         return order_dict
 
+
+class OrderItems(Resource):
     @f_jwt.jwt_required()
-    def patch(self, order_id):
+    def patch(self, order_item_id):
         user_id = f_jwt.get_jwt_identity()
         app.logger.debug("user_id= %s", user_id)
         claims = f_jwt.get_jwt()
         user_type = claims["user_type"]
         # app.logger.debug("user_type= %s", user_type)
         data = request.get_json()
-        order_status = data.get("order_status", None)
-        if not order_status:
+        order_item_status = data.get("order_item_status", None)
+        if not order_item_status:
             abort(400, "Bad Request")
 
         if user_type == "seller":
-            ALLOWED_ORDER_STATUS = {
+            ALLOWED_ORDER_ITEM_STATUS = {
                 "pending",
                 "confirmed_by_seller",
                 "cancelled_by_seller",
@@ -279,31 +276,30 @@ class Orders(Resource):
                 "failure",
                 "success",
             }
-            if order_status not in ALLOWED_ORDER_STATUS:
+            if order_item_status not in ALLOWED_ORDER_ITEM_STATUS:
                 app.logger.debug("operation not allowed for seller")
                 abort(400, "Bad Request")
         elif user_type == "customer":
-            ALLOWED_ORDER_STATUS = {
+            ALLOWED_ORDER_ITEM_STATUS = {
                 "delivered",
                 "cancelled_by_customer",
                 "return_request",
                 "returned",
             }
-            if order_status not in ALLOWED_ORDER_STATUS:
+            if order_item_status not in ALLOWED_ORDER_ITEM_STATUS:
                 app.logger.debug("operation not allowed for customer")
                 abort(400, "Bad Request")
 
         try:
             cursor = app_globals.get_cursor()
-            UPDATE_ORDER_STATUS = (
-                """UPDATE orders SET order_status= %s, updated_at= %s WHERE id= %s"""
-            )
+            UPDATE_ORDER_ITEM_STATUS = """UPDATE order_items SET order_item_status= %s, updated_at= %s 
+            WHERE id= %s"""
             cursor.execute(
-                UPDATE_ORDER_STATUS,
+                UPDATE_ORDER_ITEM_STATUS,
                 (
-                    order_status,
+                    order_item_status,
                     datetime.now(),
-                    order_id,
+                    order_item_id,
                 ),
             )
             if cursor.rowcount != 1:
@@ -313,7 +309,7 @@ class Orders(Resource):
             abort(400, "Bad Request")
         finally:
             cursor.close()
-        return {"message": f"Order Id = {order_id} modified."}, 200
+        return {"message": f"Order Item Id = {order_item_id} modified."}, 200
 
 
 class CustomerOrders(Resource):
@@ -343,11 +339,12 @@ class CustomerOrders(Resource):
         #     WHERE o.customer_id = %s
         #     ORDER BY o.added_at'''
 
-        GET_ORDERS = """SELECT o.id AS order_id, o.order_status, o.added_at, o.updated_at, 
-            temp.order_item_id, temp.product_item_id, temp.quantity, temp.product_id, temp.product_name 
+        GET_ORDERS = """SELECT o.id AS order_id, o.added_at, o.updated_at, 
+            temp.order_item_id, temp.product_item_id, temp.order_item_status, temp.quantity, 
+            temp.product_id, temp.product_name 
             FROM orders o 
             JOIN LATERAL(
-                SELECT oi.id AS order_item_id, oi.product_item_id, oi.quantity, 
+                SELECT oi.id AS order_item_id, oi.product_item_id, oi.order_item_status, oi.quantity, 
                 p.id AS product_id, p.product_name AS product_name
                 FROM order_items oi 
                 JOIN products p
@@ -370,7 +367,6 @@ class CustomerOrders(Resource):
             for row in rows:
                 order_dict = {}
                 order_dict["order_id"] = row.order_id
-                order_dict["order_status"] = row.order_status
                 order_dict.update(
                     json.loads(json.dumps({"added_at": row.added_at}, default=str))
                 )
@@ -379,6 +375,7 @@ class CustomerOrders(Resource):
                 )
                 order_dict["order_item_id"] = row.order_item_id
                 order_dict["product_item_id"] = row.product_item_id
+                order_dict["order_item_status"] = row.order_item_status
                 order_dict["quantity"] = row.quantity
                 order_dict["product_id"] = row.product_id
                 order_dict["product_name"] = row.product_name
@@ -391,8 +388,7 @@ class CustomerOrders(Resource):
                     WHERE pim.product_item_id = %s 
                     ORDER BY pim.display_order 
                     LIMIT 1
-                ) 
-                """
+                )"""
                 cursor.execute(GET_BASE_MEDIA, (order_dict.get("product_item_id"),))
                 row = cursor.fetchone()
                 if row is None:

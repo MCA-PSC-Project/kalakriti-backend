@@ -2043,17 +2043,17 @@
     "_id": "2c3ac572-6467-4069-b8d8-0ae0609d99a0",
     "colId": "80d178ef-5176-474a-8708-db78bd45faee",
     "containerId": "2ffd39e9-6675-40b7-abd0-296aaf9564ad",
-    "name": "Update order's status",
-    "url": "{{baseUrl}}/orders/1",
+    "name": "Update order item's status",
+    "url": "{{baseUrl}}/order-items/2",
     "method": "PATCH",
     "sortNum": 527500,
     "created": "2023-03-04T14:42:16.324Z",
-    "modified": "2023-04-20T09:39:20.780Z",
+    "modified": "2023-04-20T10:53:32.231Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n  \"order_status\": \"dispatched\"\n}",
+      "raw": "{\n  \"order_item_status\": \"dispatched\"\n}",
       "form": []
     },
     "auth": {

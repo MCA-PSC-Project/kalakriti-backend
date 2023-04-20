@@ -10,7 +10,7 @@ CREATE TYPE "product__status" AS ENUM (
 	'review_rejected',
 	'trashed'
 );
-CREATE TYPE "order__status" AS ENUM (
+CREATE TYPE "order__item__status" AS ENUM (
 	'initiated',
 	'pending',
 	'confirmed_by_seller',
@@ -306,7 +306,6 @@ CREATE TABLE "orders"(
 	"customer_id" INT,
 	"shipping_address_id" INT NOT NULL,
 	"mobile_no" VARCHAR NOT NULL,
-	"order_status" order__status DEFAULT 'initiated',
 	"total_original_price" NUMERIC NOT NULL CHECK ("total_original_price" >= 0),
 	"sub_total" NUMERIC NOT NULL CHECK ("sub_total" >= 0),
 	"total_discount" NUMERIC NOT NULL DEFAULT 0 CHECK ("total_discount" >= 0),
@@ -323,12 +322,15 @@ CREATE TABLE "order_items"(
 	"id" SERIAL PRIMARY KEY,
 	"order_id" INT NOT NULL,
 	"product_item_id" INT,
+	"order_item_status" order__item__status DEFAULT 'initiated',
 	"quantity" INT NOT NULL CHECK("quantity" > 0),
 	"original_price" NUMERIC NOT NULL CHECK ("original_price" >= 0),
 	"offer_price" NUMERIC NOT NULL CHECK ("offer_price" >= 0),
 	"discount_percent" NUMERIC NOT NULL CHECK ("discount_percent" >= 0),
 	"discount" NUMERIC NOT NULL CHECK ("discount" >= 0),
 	"tax" NUMERIC NOT NULL CHECK ("tax" >= 0),
+	"added_at" TIMESTAMPTZ NOT NULL,
+	"updated_at" TIMESTAMPTZ,
 	UNIQUE("order_id", "product_item_id"),
 	FOREIGN KEY("order_id") REFERENCES "orders"("id"),
 	FOREIGN KEY("product_item_id") REFERENCES "product_items"("id") ON DELETE
