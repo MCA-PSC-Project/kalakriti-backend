@@ -11,11 +11,13 @@ from flask import current_app as app
 class Orders(Resource):
     @f_jwt.jwt_required()
     def post(self):
-        user_id = f_jwt.get_jwt_identity()
-        app.logger.debug("user_id= %s", user_id)
-        # claims = f_jwt.get_jwt()
-        # user_type = claims['user_type']
+        customer_id = f_jwt.get_jwt_identity()
+        app.logger.debug("customer_id= %s", customer_id)
+        claims = f_jwt.get_jwt()
+        user_type = claims["user_type"]
         # app.logger.debug("user_type= %s", user_type)
+        if user_type != "customer":
+            abort(403, "Forbidden: only customers can create orders")
 
         data = request.get_json()
         order_dict = json.loads(json.dumps(data))
@@ -46,14 +48,14 @@ class Orders(Resource):
             cursor = app_globals.get_cursor()
             # # app.logger.debug("cursor object: %s", cursor)
 
-            CREATE_ORDER = """INSERT INTO orders(user_id, shipping_address_id, mobile_no,
+            CREATE_ORDER = """INSERT INTO orders(customer_id, shipping_address_id, mobile_no,
             total_original_price, sub_total, total_discount, total_tax, grand_total, added_at)
             VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s) RETURNING id"""
 
             cursor.execute(
                 CREATE_ORDER,
                 (
-                    user_id,
+                    customer_id,
                     order_dict.get("shipping_address_id"),
                     order_dict.get("mobile_no"),
                     order_dict.get("total_original_price"),
@@ -111,29 +113,25 @@ class Orders(Resource):
 
     @f_jwt.jwt_required()
     def get(self, order_id):
-        user_id = f_jwt.get_jwt_identity()
-        app.logger.debug("user_id= %s", user_id)
+        customer_id = f_jwt.get_jwt_identity()
+        app.logger.debug("customer_id= %s", customer_id)
 
-        GET_ORDER = """SELECT o.id AS order_id, o.user_id, o.mobile_no, o.order_status,
+        GET_ORDER = """SELECT o.id AS order_id, o.customer_id, o.mobile_no, o.order_status,
         o.total_original_price, o.sub_total, o.total_discount, o.total_tax, o.grand_total, o.added_at, o.updated_at,
-        ad.id AS address_id, ad.address, ad.district, ad.city, ad.state, ad.country, ad.pincode, ad.landmark
+        ad.id AS address_id, ad.address_line1, ad.address_line2, ad.district, ad.city, ad.state, ad.country, ad.pincode, ad.landmark
         FROM orders o
         JOIN addresses ad ON ad.id = o.shipping_address_id
         WHERE o.id = %s"""
 
-        # catch exception for invalid SQL statement
         try:
-            # declare a cursor object from the connection
             cursor = app_globals.get_named_tuple_cursor()
-            # # app.logger.debug("cursor object: %s", cursor)
             cursor.execute(GET_ORDER, (order_id,))
             row = cursor.fetchone()
             if row is None:
                 return {}
-
             order_dict = {}
             order_dict["order_id"] = row.order_id
-            order_dict["user_id"] = row.user_id
+            order_dict["customer_id"] = row.customer_id
             order_dict["mobile_no"] = row.mobile_no
             order_dict["order_status"] = row.order_status
             order_dict.update(
@@ -166,7 +164,8 @@ class Orders(Resource):
 
             address_dict = {}
             address_dict["address_id"] = row.address_id
-            address_dict["address"] = row.address
+            address_dict["address_line1"] = row.address_line1
+            address_dict["address_line2"] = row.address_line2
             address_dict["district"] = row.district
             address_dict["city"] = row.city
             address_dict["state"] = row.state
@@ -263,33 +262,50 @@ class Orders(Resource):
         app.logger.debug("user_id= %s", user_id)
         claims = f_jwt.get_jwt()
         user_type = claims["user_type"]
-        app.logger.debug("user_type= %s", user_type)
-
+        # app.logger.debug("user_type= %s", user_type)
         data = request.get_json()
         order_status = data.get("order_status", None)
         if not order_status:
             abort(400, "Bad Request")
-        current_time = datetime.now()
 
-        # catch exception for invalid SQL statement
+        if user_type == "seller":
+            ALLOWED_ORDER_STATUS = {
+                "pending",
+                "confirmed_by_seller",
+                "cancelled_by_seller",
+                "dispatched",
+                "shipped",
+                "return_apporved",
+                "failure",
+                "success",
+            }
+            if order_status not in ALLOWED_ORDER_STATUS:
+                app.logger.debug("operation not allowed for seller")
+                abort(400, "Bad Request")
+        elif user_type == "customer":
+            ALLOWED_ORDER_STATUS = {
+                "delivered",
+                "cancelled_by_customer",
+                "return_request",
+                "returned",
+            }
+            if order_status not in ALLOWED_ORDER_STATUS:
+                app.logger.debug("operation not allowed for customer")
+                abort(400, "Bad Request")
+
         try:
-            # declare a cursor object from the connection
             cursor = app_globals.get_cursor()
-            # app.logger.debug("cursor object: %s", cursor)
-
             UPDATE_ORDER_STATUS = (
                 """UPDATE orders SET order_status= %s, updated_at= %s WHERE id= %s"""
             )
-
             cursor.execute(
                 UPDATE_ORDER_STATUS,
                 (
                     order_status,
-                    current_time,
+                    datetime.now(),
                     order_id,
                 ),
             )
-            # app.logger.debug("row_counts= %s", cursor.rowcount)
             if cursor.rowcount != 1:
                 abort(400, "Bad Request: update orders row error")
         except (Exception, psycopg2.Error) as err:
@@ -297,14 +313,14 @@ class Orders(Resource):
             abort(400, "Bad Request")
         finally:
             cursor.close()
-        return {"message": f"Order id = {order_id} modified."}, 200
+        return {"message": f"Order Id = {order_id} modified."}, 200
 
 
 class CustomerOrders(Resource):
     @f_jwt.jwt_required()
     def get(self):
-        user_id = f_jwt.get_jwt_identity()
-        app.logger.debug("user_id= %s", user_id)
+        customer_id = f_jwt.get_jwt_identity()
+        app.logger.debug("customer_id= %s", customer_id)
 
         orders_list = []
 
@@ -313,7 +329,7 @@ class CustomerOrders(Resource):
         # FROM product_items pi
         # WHERE pi.id IN (
         #     SELECT oi.product_item_id FROM order_items oi WHERE oi.order_id IN (
-        #         SELECT o.id FROM orders o WHERE o.user_id = %s
+        #         SELECT o.id FROM orders o WHERE o.customer_id = %s
         #     )
         # )'''
 
@@ -324,7 +340,7 @@ class CustomerOrders(Resource):
         #     FROM order_items oi
         #     WHERE oi.order_id = o.id
         #     ) AS oi ON TRUE
-        #     WHERE o.user_id = %s
+        #     WHERE o.customer_id = %s
         #     ORDER BY o.added_at'''
 
         GET_ORDERS = """SELECT o.id AS order_id, o.order_status, o.added_at, o.updated_at, 
@@ -342,15 +358,12 @@ class CustomerOrders(Resource):
                 ) 
                 WHERE oi.order_id = o.id
             ) AS temp ON TRUE
-            WHERE o.user_id = %s
+            WHERE o.customer_id = %s
             ORDER BY o.added_at DESC"""
 
-        # catch exception for invalid SQL statement
         try:
-            # declare a cursor object from the connection
             cursor = app_globals.get_named_tuple_cursor()
-            # # app.logger.debug("cursor object: %s", cursor)
-            cursor.execute(GET_ORDERS, (user_id,))
+            cursor.execute(GET_ORDERS, (customer_id,))
             rows = cursor.fetchall()
             if not rows:
                 return {}
