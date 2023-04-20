@@ -79,7 +79,8 @@ def create_app(config_name):
         app.logger.fatal('Database connection error')
     app_globals.db_conn.autocommit = True
 
-    app_globals.redis_client = redis.Redis.from_url(url=app.config['REDIS_URL'])
+    app_globals.redis_client = redis.Redis.from_url(
+        url=app.config['REDIS_URL'])
     if not app_globals.redis_client.ping():
         app.logger.fatal("Redis connection error")
 

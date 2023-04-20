@@ -167,29 +167,6 @@
     "tests": []
   },
   {
-    "_id": "2c6ca7ee-a25c-4514-becd-a008e1ff5089",
-    "colId": "history",
-    "containerId": "",
-    "name": "{{baseUrl}}/sellers/products/1",
-    "url": "{{baseUrl}}/sellers/products/1",
-    "method": "PUT",
-    "sortNum": 0,
-    "created": "2023-03-29T18:13:11.983Z",
-    "modified": "2023-03-29T18:13:24.002Z",
-    "headers": [],
-    "params": [],
-    "body": {
-      "type": "json",
-      "raw": "{\n  \"product_name\": \"famous madhubani painting\",\n  \"product_description\": \"paintings from madhubani\",\n  \"category_id\": 1,\n  \"subcategory_id\": null,\n  \"currency\": \"INR\",\n  \"min_order_quantity\": 1,\n  \"max_order_quantity\": 5\n}",
-      "form": []
-    },
-    "auth": {
-      "type": "bearer",
-      "bearer": "{{seller_token}}"
-    },
-    "tests": []
-  },
-  {
     "_id": "84cb8217-e9cd-4aff-af40-f1906d7b8263",
     "colId": "history",
     "containerId": "",
@@ -2505,6 +2482,20 @@
       "type": "bearer",
       "bearer": "{{admin_token}}"
     },
+    "tests": []
+  },
+  {
+    "_id": "2b49ce28-f1ff-4990-872e-7c4c982ceaea",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/categories",
+    "url": "{{baseUrl}}/categories",
+    "method": "GET",
+    "sortNum": 0,
+    "created": "2023-04-20T04:40:50.335Z",
+    "modified": "2023-04-20T04:40:50.335Z",
+    "headers": [],
+    "params": [],
     "tests": []
   }
 ]
