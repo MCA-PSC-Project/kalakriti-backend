@@ -252,7 +252,7 @@ def create_app(config_name):
         "/product-reviews",
         "/product-reviews/<int:review_id>",
         "/products/<int:product_id>/product-reviews",
-    )  # products table id
+    )
     api.add_resource(
         GetCustomerReviewOnProduct, "/product-review/<int:product_item_id>"
     )

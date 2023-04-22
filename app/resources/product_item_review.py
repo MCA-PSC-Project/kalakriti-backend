@@ -33,8 +33,11 @@ class ProductItemReview(Resource):
             cursor.execute(GET_PRODUCT_ITEM_ID, (order_item_id,))
             row = cursor.fetchone()
             if not row:
-                app.logger.debug("product_item_id not found!")
+                app.logger.debug(
+                    "product_item_id not found for the given order_item_id!"
+                )
                 app_globals.db_conn.rollback()
+                abort(400, "Bad Request")
             product_item_id = row[0]
 
             CREATE_REVIEW = """INSERT INTO product_item_reviews(customer_id, order_item_id, product_item_id, rating, review, added_at)
@@ -64,7 +67,7 @@ class ProductItemReview(Resource):
     @f_jwt.jwt_required()
     def get(self, product_id):
         reviews_list = []
-        GET_REVIEWS = """SELECT id,customer_id, rating, review , added_at , updated_at FROM product_item_reviews 
+        GET_REVIEWS = """SELECT id,customer_id, rating, review, added_at, updated_at FROM product_item_reviews 
                          WHERE product_item_id IN (SELECT id FROM product_items WHERE product_id =%s)"""
 
         try:
@@ -72,7 +75,7 @@ class ProductItemReview(Resource):
             cursor.execute(GET_REVIEWS, (product_id,))
             rows = cursor.fetchall()
             if not rows:
-                return {}
+                return []
             for row in rows:
                 review_dict = {}
                 review_dict["review_id"] = row.id
@@ -130,13 +133,13 @@ class ProductItemReview(Resource):
 
         current_time = datetime.now()
 
-        UPDATE_BANNER = "UPDATE product_item_reviews SET rating= %s, review= %s, updated_at=%s WHERE id= %s and customer_id= %s"
+        UPDATE_REVIEW = """UPDATE product_item_reviews SET rating= %s, review= %s, updated_at= %s 
+        WHERE id= %s AND customer_id= %s"""
 
         try:
             cursor = app_globals.get_cursor()
-
             cursor.execute(
-                UPDATE_BANNER,
+                UPDATE_REVIEW,
                 (
                     review_dict["rating"],
                     review_dict["review"],
@@ -160,12 +163,10 @@ class ProductItemReview(Resource):
         app.logger.debug("user_id= %s", customer_id)
 
         DELETE_REVIEW = (
-            "DELETE FROM product_item_reviews WHERE id= %s AND customer_id =%s"
+            """DELETE FROM product_item_reviews WHERE id= %s AND customer_id =%s"""
         )
-
         try:
             cursor = app_globals.get_cursor()
-
             cursor.execute(
                 DELETE_REVIEW,
                 (
@@ -190,14 +191,11 @@ class GetCustomerReviewOnProduct(Resource):
         app.logger.debug("customer_id= %s", customer_id)
         reviews_list = []
 
-        GET_REVIEWS = """SELECT id, rating, review , added_at , updated_at FROM product_item_reviews 
+        GET_REVIEWS = """SELECT id, rating, review, added_at, updated_at FROM product_item_reviews 
                          WHERE product_item_id = %s AND customer_id = %s"""
 
         try:
-            # declare a cursor object from the connection
             cursor = app_globals.get_named_tuple_cursor()
-            # # app.logger.debug("cursor object: %s", cursor)
-
             cursor.execute(
                 GET_REVIEWS,
                 (
@@ -208,7 +206,6 @@ class GetCustomerReviewOnProduct(Resource):
             row = cursor.fetchone()
             if row is None:
                 return {}
-            # for row in rows:
             review_dict = {}
             review_dict["review_id"] = row.id
             review_dict.update(

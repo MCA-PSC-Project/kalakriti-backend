@@ -52,7 +52,7 @@
     "data": [
       {
         "name": "token",
-        "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6dHJ1ZSwiaWF0IjoxNjgxOTgzMTkxLCJqdGkiOiIxYWRjNmFkNS02ZjlkLTRkM2QtODdiYi0xMWNhNTQwNjFkOGEiLCJ0eXBlIjoiYWNjZXNzIiwic3ViIjoxLCJuYmYiOjE2ODE5ODMxOTEsImV4cCI6MTY4MjA0Nzk5MSwidXNlcl90eXBlIjoiY3VzdG9tZXIifQ.oTDNEe4dM9XYR3LVaOxV2hKaMI6TplJHu3vaGf3C99A"
+        "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6dHJ1ZSwiaWF0IjoxNjgyMTc3ODIyLCJqdGkiOiIwNzY2MGYwYy02MjY2LTQ1MDQtYWJhMy01OTY1NzNkY2FjMDIiLCJ0eXBlIjoiYWNjZXNzIiwic3ViIjoxLCJuYmYiOjE2ODIxNzc4MjIsImV4cCI6MTY4MjI0MjYyMiwidXNlcl90eXBlIjoiY3VzdG9tZXIifQ.w_EiXeH3bcazXumH6kiLPdOTV63ZK5BpmFAgY8V9GK8"
       },
       {
         "name": "seller_token",
