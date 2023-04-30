@@ -350,22 +350,27 @@ CREATE TABLE "payments"(
 	FOREIGN KEY("order_id") REFERENCES "orders"("id") ON DELETE
 	SET NULL
 );
-CREATE TABLE "product_item_reviews"(
+CREATE TABLE "product_reviews"(
 	"id" SERIAL PRIMARY KEY,
 	"customer_id" INT,
-	"order_item_id" INT,
-	"product_item_id" INT,
+	"product_id" INT,
 	"rating" NUMERIC(2, 1) CHECK("rating" <= 5),
 	"review" VARCHAR(500),
 	"added_at" TIMESTAMPTZ NOT NULL,
 	"updated_at" TIMESTAMPTZ,
-	UNIQUE("customer_id", "order_item_id"),
-	UNIQUE("customer_id", "product_item_id"),
-	FOREIGN KEY("customer_id") REFERENCES "customers"("id") ON DELETE
-	SET NULL,
-		FOREIGN KEY("order_item_id") REFERENCES "order_items"("id") ON DELETE
-	SET NULL,
-		FOREIGN KEY("product_item_id") REFERENCES "product_items"("id") ON DELETE CASCADE
+	UNIQUE("customer_id", "product_id"),
+	FOREIGN KEY("customer_id") REFERENCES "customers"("id") ON DELETE SET NULL,
+	FOREIGN KEY("product_id") REFERENCES "products"("id") ON DELETE CASCADE
+);
+CREATE TABLE "product_review_medias"(
+	-- "id" SERIAL PRIMARY KEY,
+	"product_review_id" INT NOT NULL,
+	"media_id" INT NOT NULL,
+	"display_order" SMALLINT NOT NULL CHECK("display_order" > 0),
+	PRIMARY KEY("media_id", "product_review_id"),
+	UNIQUE("product_review_id", "display_order"),
+	FOREIGN KEY("media_id") REFERENCES "media"("id") ON DELETE CASCADE,
+	FOREIGN KEY("product_review_id") REFERENCES "product_reviews"("id") ON DELETE CASCADE
 );
 CREATE TABLE "seller_applicant_forms"(
 	"id" SERIAL PRIMARY KEY,

@@ -73,9 +73,9 @@ from app.resources.banners import Banners
 from app.resources.seller_applicant_form import Seller_Applicant_Form
 from app.resources.wishlists import Wishlists
 from app.resources.carts import Carts
-from app.resources.product_item_review import (
-    ProductItemReview,
-    GetCustomerReviewOnProduct,
+from app.resources.product_reviews import (
+    ProductReview,
+    CustomerReviewOnProduct,
 )
 from app.resources.seller_bank_details import Seller_Bank_Details
 
@@ -248,14 +248,12 @@ def create_app(config_name):
 
     # Reviews
     api.add_resource(
-        ProductItemReview,
+        ProductReview,
         "/product-reviews",
         "/product-reviews/<int:review_id>",
         "/products/<int:product_id>/product-reviews",
     )
-    api.add_resource(
-        GetCustomerReviewOnProduct, "/product-review/<int:product_item_id>"
-    )
+    api.add_resource(CustomerReviewOnProduct, "/product-review/<int:product_item_id>")
 
     # Search
     api.add_resource(Search, "/search")

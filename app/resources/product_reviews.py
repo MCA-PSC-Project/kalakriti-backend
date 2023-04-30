@@ -8,7 +8,7 @@ import json
 from flask import current_app as app
 
 
-class ProductItemReview(Resource):
+class ProductReview(Resource):
     @f_jwt.jwt_required()
     def post(self):
         customer_id = f_jwt.get_jwt_identity()
@@ -184,7 +184,7 @@ class ProductItemReview(Resource):
         return 200
 
 
-class GetCustomerReviewOnProduct(Resource):
+class CustomerReviewOnProduct(Resource):
     @f_jwt.jwt_required()
     def get(self, product_item_id):
         customer_id = f_jwt.get_jwt_identity()
