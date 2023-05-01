@@ -978,12 +978,12 @@
     "method": "POST",
     "sortNum": 520000,
     "created": "2023-02-20T16:38:51.080Z",
-    "modified": "2023-03-05T17:16:22.780Z",
+    "modified": "2023-04-20T09:37:40.177Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n  \"shipping_address_id\": 5 ,\n  \"mobile_no\": \"9876543210\",\n  \"order_items\": [\n    {\n      \"product_item_id\": 23,\n      \"quantity\": 2,\n      \"original_price\": 1000,\n      \"offer_price\": 500,\n      \"discount_percent\": 50,\n      \"discount\": 500,\n      \"tax\": 20\n    },\n    {\n      \"product_item_id\": 24,\n      \"quantity\": 2,\n      \"original_price\": 2000,\n      \"offer_price\": 1000,\n      \"discount_percent\": 50,\n      \"discount\": 1000,\n      \"tax\": 20\n    }\n  ]\n}",
+      "raw": "{\n  \"shipping_address_id\": 1 ,\n  \"mobile_no\": \"9876543210\",\n  \"order_items\": [\n    {\n      \"product_item_id\": 19,\n      \"quantity\": 2,\n      \"original_price\": 1000,\n      \"offer_price\": 500,\n      \"discount_percent\": 50,\n      \"discount\": 500,\n      \"tax\": 20\n    },\n    {\n      \"product_item_id\": 9,\n      \"quantity\": 2,\n      \"original_price\": 2000,\n      \"offer_price\": 1000,\n      \"discount_percent\": 50,\n      \"discount\": 1000,\n      \"tax\": 20\n    }\n  ]\n}",
       "form": []
     },
     "auth": {
@@ -1119,7 +1119,7 @@
     "method": "POST",
     "sortNum": 590000,
     "created": "2023-02-20T16:38:51.087Z",
-    "modified": "2023-03-06T08:23:02.374Z",
+    "modified": "2023-04-22T16:17:56.277Z",
     "headers": [],
     "params": [],
     "body": {
@@ -1137,12 +1137,12 @@
     "_id": "a9e5c863-dd2a-4311-a10f-4884de389cbf",
     "colId": "80d178ef-5176-474a-8708-db78bd45faee",
     "containerId": "3c47a409-79a2-440c-b50c-c521a6ce6beb",
-    "name": "get product reviews",
-    "url": "{{baseUrl}}/product-reviews/26/product-id",
+    "name": "get product reviews on a product",
+    "url": "{{baseUrl}}/products/4/product-reviews",
     "method": "GET",
     "sortNum": 600000,
     "created": "2023-02-20T16:38:51.088Z",
-    "modified": "2023-03-06T08:16:14.781Z",
+    "modified": "2023-04-22T15:55:19.636Z",
     "headers": [],
     "params": [],
     "auth": {
@@ -1155,12 +1155,12 @@
     "_id": "5f486821-a145-4c02-8362-308baf78f165",
     "colId": "80d178ef-5176-474a-8708-db78bd45faee",
     "containerId": "3c47a409-79a2-440c-b50c-c521a6ce6beb",
-    "name": "get  user product reviews by product item id",
-    "url": "{{baseUrl}}/product-review/23",
+    "name": "get customer's reviews on product by product id",
+    "url": "{{baseUrl}}/product-review/9",
     "method": "GET",
     "sortNum": 610000,
     "created": "2023-02-20T16:38:51.089Z",
-    "modified": "2023-03-06T06:34:33.053Z",
+    "modified": "2023-04-20T17:24:28.901Z",
     "headers": [],
     "params": [],
     "auth": {
@@ -1173,17 +1173,17 @@
     "_id": "30bb03a6-8ea1-4174-9fbf-a0e5cb97cc35",
     "colId": "80d178ef-5176-474a-8708-db78bd45faee",
     "containerId": "3c47a409-79a2-440c-b50c-c521a6ce6beb",
-    "name": "update product item reviews",
-    "url": "{{baseUrl}}/product-reviews/4",
+    "name": "update product  reviews",
+    "url": "{{baseUrl}}/product-reviews/1",
     "method": "PUT",
     "sortNum": 620000,
     "created": "2023-02-20T16:38:51.090Z",
-    "modified": "2023-03-06T08:24:30.622Z",
+    "modified": "2023-04-22T15:57:53.865Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n\t\"rating\" : 5,\n\t\"review\": \"really awesome\"\n}",
+      "raw": "{\n\t\"rating\" : 5,\n\t\"review\": \"really really awesome\"\n}",
       "form": []
     },
     "auth": {
@@ -1483,12 +1483,12 @@
     "method": "POST",
     "sortNum": 810000,
     "created": "2023-02-21T14:25:16.253Z",
-    "modified": "2023-04-03T06:03:02.378Z",
+    "modified": "2023-04-06T11:43:43.804Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n\t\"media_id\" : 11,\n\t\"redirect_type\" : \"rt\" ,\n\t\"redirect_url\" : \"www.example1.com\"\n}",
+      "raw": "{\n\t\"media_id\" : 23,\n\t\"redirect_type\" : \"rt\" ,\n\t\"redirect_url\" : \"www.example1.com\"\n}",
       "form": []
     },
     "auth": {
@@ -1520,16 +1520,16 @@
     "colId": "80d178ef-5176-474a-8708-db78bd45faee",
     "containerId": "f688fb68-9864-41a4-b257-bb38efeb6b05",
     "name": "Update Banner",
-    "url": "{{baseUrl}}/banners/1",
+    "url": "{{baseUrl}}/banners/6",
     "method": "PUT",
     "sortNum": 830000,
     "created": "2023-02-21T14:30:44.614Z",
-    "modified": "2023-04-03T06:12:46.762Z",
+    "modified": "2023-04-06T11:44:03.474Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n\t\"media_id\" : 11,\n\t\"redirect_type\" : \"rtype_updated\" ,\n\t\"redirect_url\" : \"www.example.com\"\n}",
+      "raw": "{\n\t\"media_id\" : 26,\n\t\"redirect_type\" : \"rtype_updated\" ,\n\t\"redirect_url\" : \"www.example.com\"\n}",
       "form": []
     },
     "auth": {
@@ -1543,11 +1543,11 @@
     "colId": "80d178ef-5176-474a-8708-db78bd45faee",
     "containerId": "f688fb68-9864-41a4-b257-bb38efeb6b05",
     "name": "Delete Banner",
-    "url": "{{baseUrl}}/banners/1",
+    "url": "{{baseUrl}}/banners/3",
     "method": "DELETE",
     "sortNum": 840000,
     "created": "2023-02-21T14:33:12.257Z",
-    "modified": "2023-04-03T06:14:01.909Z",
+    "modified": "2023-04-06T11:43:05.085Z",
     "headers": [],
     "params": [],
     "auth": {
@@ -1952,7 +1952,7 @@
     "method": "POST",
     "sortNum": 950000,
     "created": "2023-03-03T10:23:13.876Z",
-    "modified": "2023-03-21T17:24:08.024Z",
+    "modified": "2023-04-20T09:36:12.311Z",
     "headers": [],
     "params": [],
     "body": {
@@ -1962,7 +1962,7 @@
     },
     "auth": {
       "type": "bearer",
-      "bearer": "{{super_admin_token}}"
+      "bearer": "{{token}}"
     },
     "tests": []
   },
@@ -2007,12 +2007,12 @@
     "_id": "8d975d34-33ae-4e34-b736-13f1fc23ea8b",
     "colId": "80d178ef-5176-474a-8708-db78bd45faee",
     "containerId": "3c47a409-79a2-440c-b50c-c521a6ce6beb",
-    "name": "delete product item reviews",
-    "url": "{{baseUrl}}/product-reviews/5",
+    "name": "delete product reviews",
+    "url": "{{baseUrl}}/product-reviews/1",
     "method": "DELETE",
     "sortNum": 630000,
     "created": "2023-03-03T10:54:00.645Z",
-    "modified": "2023-03-06T06:52:18.407Z",
+    "modified": "2023-04-22T15:58:06.563Z",
     "headers": [],
     "params": [],
     "auth": {
@@ -2043,22 +2043,22 @@
     "_id": "2c3ac572-6467-4069-b8d8-0ae0609d99a0",
     "colId": "80d178ef-5176-474a-8708-db78bd45faee",
     "containerId": "2ffd39e9-6675-40b7-abd0-296aaf9564ad",
-    "name": "Update order's status",
-    "url": "{{baseUrl}}/orders/6",
+    "name": "Update order item's status",
+    "url": "{{baseUrl}}/order-items/2",
     "method": "PATCH",
     "sortNum": 527500,
     "created": "2023-03-04T14:42:16.324Z",
-    "modified": "2023-03-05T17:18:08.892Z",
+    "modified": "2023-04-20T10:53:32.231Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n  \"order_status\": \"dispatched\"\n}",
+      "raw": "{\n  \"order_item_status\": \"dispatched\"\n}",
       "form": []
     },
     "auth": {
       "type": "bearer",
-      "bearer": "{{token}}"
+      "bearer": "{{seller_token}}"
     },
     "tests": []
   },
@@ -2067,11 +2067,11 @@
     "colId": "80d178ef-5176-474a-8708-db78bd45faee",
     "containerId": "2ffd39e9-6675-40b7-abd0-296aaf9564ad",
     "name": "get order information by order id",
-    "url": "{{baseUrl}}/orders/5",
+    "url": "{{baseUrl}}/orders/2",
     "method": "GET",
     "sortNum": 525000,
     "created": "2023-03-05T07:29:39.649Z",
-    "modified": "2023-03-05T14:24:07.647Z",
+    "modified": "2023-04-20T09:38:35.072Z",
     "headers": [],
     "params": [],
     "auth": {
@@ -3137,16 +3137,16 @@
     "colId": "80d178ef-5176-474a-8708-db78bd45faee",
     "containerId": "9525375d-6d7f-486c-8969-7b49f2983b85",
     "name": "update product item medias",
-    "url": "{{baseUrl}}/sellers/product-items/13",
+    "url": "{{baseUrl}}/sellers/product-items/19",
     "method": "PATCH",
     "sortNum": 35000,
     "created": "2023-04-04T15:53:39.602Z",
-    "modified": "2023-04-05T02:41:20.600Z",
+    "modified": "2023-04-06T11:31:39.224Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n  \"media_list\": [\n    {\n      \"media_id\": 17,\n      \"display_order\": 2\n    },\n    {\n      \"media_id\": 18,\n      \"display_order\": 1\n    }\n  ]\n}",
+      "raw": "{\n  \"media_list\": [\n    {\n      \"media_id\": 23,\n      \"display_order\": 1\n    },\n    {\n      \"media_id\": 25,\n      \"display_order\": 2\n    }\n  ]\n}",
       "form": []
     },
     "auth": {
@@ -3160,23 +3160,22 @@
     "colId": "80d178ef-5176-474a-8708-db78bd45faee",
     "containerId": "d3f02f76-889e-4a8d-88e7-d026529d83a9",
     "name": "get product using query params",
-    "url": "{{baseUrl}}/products?SKU=dgreen-colorf6",
+    "url": "{{baseUrl}}/products?min_offer_price=200",
     "method": "GET",
     "sortNum": 532500,
     "created": "2023-04-05T08:37:58.448Z",
-    "modified": "2023-04-05T11:10:02.135Z",
+    "modified": "2023-04-06T11:59:10.848Z",
     "headers": [],
     "params": [
       {
         "name": "product_status",
-        "value": "draft",
+        "value": "published",
         "isDisabled": true,
         "isPath": false
       },
       {
         "name": "min_offer_price",
-        "value": "",
-        "isDisabled": true,
+        "value": "200",
         "isPath": false
       },
       {
@@ -3194,9 +3193,39 @@
       {
         "name": "SKU",
         "value": "dgreen-colorf6",
+        "isDisabled": true,
+        "isPath": false
+      },
+      {
+        "name": "product_item_status",
+        "value": "unpublished",
+        "isDisabled": true,
         "isPath": false
       }
     ],
+    "tests": []
+  },
+  {
+    "_id": "5f09d66d-1672-43bd-97ae-8c2943208f66",
+    "colId": "80d178ef-5176-474a-8708-db78bd45faee",
+    "containerId": "3e702aea-670a-4ca4-8b33-d039296af95a",
+    "name": "upsert top searches ",
+    "url": "{{baseUrl}}/top-searches",
+    "method": "PUT",
+    "sortNum": 720000,
+    "created": "2023-04-19T16:51:29.330Z",
+    "modified": "2023-04-19T17:00:24.072Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "[\n  {\n    \"rank\": 1,\n    \"query\": \"madhubani paintings\"\n  },\n  {\n    \"rank\": 2,\n    \"query\": \"embroidery sarees\"\n  }\n]",
+      "form": []
+    },
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{admin_token}}"
+    },
     "tests": []
   }
 ]

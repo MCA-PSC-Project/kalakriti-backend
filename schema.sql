@@ -10,7 +10,7 @@ CREATE TYPE "product__status" AS ENUM (
 	'review_rejected',
 	'trashed'
 );
-CREATE TYPE "order__status" AS ENUM (
+CREATE TYPE "order__item__status" AS ENUM (
 	'initiated',
 	'pending',
 	'confirmed_by_seller',
@@ -306,7 +306,6 @@ CREATE TABLE "orders"(
 	"customer_id" INT,
 	"shipping_address_id" INT NOT NULL,
 	"mobile_no" VARCHAR NOT NULL,
-	"order_status" order__status DEFAULT 'initiated',
 	"total_original_price" NUMERIC NOT NULL CHECK ("total_original_price" >= 0),
 	"sub_total" NUMERIC NOT NULL CHECK ("sub_total" >= 0),
 	"total_discount" NUMERIC NOT NULL DEFAULT 0 CHECK ("total_discount" >= 0),
@@ -323,12 +322,15 @@ CREATE TABLE "order_items"(
 	"id" SERIAL PRIMARY KEY,
 	"order_id" INT NOT NULL,
 	"product_item_id" INT,
+	"order_item_status" order__item__status DEFAULT 'initiated',
 	"quantity" INT NOT NULL CHECK("quantity" > 0),
 	"original_price" NUMERIC NOT NULL CHECK ("original_price" >= 0),
 	"offer_price" NUMERIC NOT NULL CHECK ("offer_price" >= 0),
 	"discount_percent" NUMERIC NOT NULL CHECK ("discount_percent" >= 0),
 	"discount" NUMERIC NOT NULL CHECK ("discount" >= 0),
 	"tax" NUMERIC NOT NULL CHECK ("tax" >= 0),
+	"added_at" TIMESTAMPTZ NOT NULL,
+	"updated_at" TIMESTAMPTZ,
 	UNIQUE("order_id", "product_item_id"),
 	FOREIGN KEY("order_id") REFERENCES "orders"("id"),
 	FOREIGN KEY("product_item_id") REFERENCES "product_items"("id") ON DELETE
@@ -348,22 +350,27 @@ CREATE TABLE "payments"(
 	FOREIGN KEY("order_id") REFERENCES "orders"("id") ON DELETE
 	SET NULL
 );
-CREATE TABLE "product_item_reviews"(
+CREATE TABLE "product_reviews"(
 	"id" SERIAL PRIMARY KEY,
 	"customer_id" INT,
-	"order_item_id" INT,
-	"product_item_id" INT,
+	"product_id" INT,
 	"rating" NUMERIC(2, 1) CHECK("rating" <= 5),
 	"review" VARCHAR(500),
 	"added_at" TIMESTAMPTZ NOT NULL,
 	"updated_at" TIMESTAMPTZ,
-	UNIQUE("customer_id", "order_item_id"),
-	UNIQUE("customer_id", "product_item_id"),
-	FOREIGN KEY("customer_id") REFERENCES "customers"("id") ON DELETE
-	SET NULL,
-		FOREIGN KEY("order_item_id") REFERENCES "order_items"("id") ON DELETE
-	SET NULL,
-		FOREIGN KEY("product_item_id") REFERENCES "product_items"("id") ON DELETE CASCADE
+	UNIQUE("customer_id", "product_id"),
+	FOREIGN KEY("customer_id") REFERENCES "customers"("id") ON DELETE SET NULL,
+	FOREIGN KEY("product_id") REFERENCES "products"("id") ON DELETE CASCADE
+);
+CREATE TABLE "product_review_medias"(
+	-- "id" SERIAL PRIMARY KEY,
+	"product_review_id" INT NOT NULL,
+	"media_id" INT NOT NULL,
+	"display_order" SMALLINT NOT NULL CHECK("display_order" > 0),
+	PRIMARY KEY("media_id", "product_review_id"),
+	UNIQUE("product_review_id", "display_order"),
+	FOREIGN KEY("media_id") REFERENCES "media"("id") ON DELETE CASCADE,
+	FOREIGN KEY("product_review_id") REFERENCES "product_reviews"("id") ON DELETE CASCADE
 );
 CREATE TABLE "seller_applicant_forms"(
 	"id" SERIAL PRIMARY KEY,
@@ -383,12 +390,12 @@ CREATE TABLE "mobile_otp"(
 	"expiry_at" TIMESTAMPTZ NOT NULL
 );
 CREATE TABLE "top_searches"(
-	"rank" smallint,
-	"query" varchar,
+	"rank" SMALLINT,
+	"query" VARCHAR NOT NULL UNIQUE,
 	PRIMARY KEY("rank")
 );
 CREATE TABLE "products_tsv_store"(
-	"product_id" integer,
+	"product_id" INTEGER,
 	"tsv" tsvector,
 	PRIMARY KEY("product_id"),
 	FOREIGN KEY ("product_id") REFERENCES "products"("id") ON DELETE CASCADE

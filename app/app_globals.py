@@ -25,7 +25,7 @@ def get_cursor():
             app.logger.debug("Getting new connection")
             db_conn = db_conn_pool.getconn()
             if db_conn == None:
-                app.logger.fatal('Database connection error')
+                app.logger.fatal("Database connection error")
             db_conn.autocommit = True
             # app.logger.debug(db_conn)
             cursor = db_conn.cursor()
@@ -39,8 +39,7 @@ def get_named_tuple_cursor():
     try:
         # app.logger.debug(db_conn)
 
-        cursor = db_conn.cursor(
-            cursor_factory=psycopg2.extras.NamedTupleCursor)
+        cursor = db_conn.cursor(cursor_factory=psycopg2.extras.NamedTupleCursor)
         # raise Exception
     except (Exception, psycopg2.Error) as err:
         # db_conn.close()
@@ -49,9 +48,8 @@ def get_named_tuple_cursor():
             app.logger.debug("Getting new connection")
             db_conn = db_conn_pool.getconn()
             if db_conn == None:
-                app.logger.fatal('Database connection error')
+                app.logger.fatal("Database connection error")
             db_conn.autocommit = True
             # app.logger.debug(db_conn)
-            cursor = db_conn.cursor(
-                cursor_factory=psycopg2.extras.NamedTupleCursor)
+            cursor = db_conn.cursor(cursor_factory=psycopg2.extras.NamedTupleCursor)
     return cursor
