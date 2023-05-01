@@ -464,31 +464,6 @@
     "tests": []
   },
   {
-    "_id": "12ddc4cd-02ed-466f-816c-29c739b75dc2",
-    "colId": "history",
-    "containerId": "",
-    "name": "{{baseUrl}}/auth/verify-email?user_type=customer&token=ImN1c3RvbWVyQGdtYWlsLmNvbSI.ZBKs7A.GtfEhkCY_1ANzKpXU9l4zd20S6s",
-    "url": "{{baseUrl}}/auth/verify-email?user_type=customer&token=ImN1c3RvbWVyQGdtYWlsLmNvbSI.ZBKs7A.GtfEhkCY_1ANzKpXU9l4zd20S6s",
-    "method": "GET",
-    "sortNum": 0,
-    "created": "2023-03-16T05:45:43.963Z",
-    "modified": "2023-03-16T05:45:43.963Z",
-    "headers": [],
-    "params": [
-      {
-        "name": "user_type",
-        "value": "customer",
-        "isPath": false
-      },
-      {
-        "name": "token",
-        "value": "ImN1c3RvbWVyQGdtYWlsLmNvbSI.ZBKs7A.GtfEhkCY_1ANzKpXU9l4zd20S6s",
-        "isPath": false
-      }
-    ],
-    "tests": []
-  },
-  {
     "_id": "2abfdb0e-1437-41d9-ae8b-dec0eee919a5",
     "colId": "history",
     "containerId": "",
