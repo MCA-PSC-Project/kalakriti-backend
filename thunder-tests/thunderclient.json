@@ -1119,12 +1119,12 @@
     "method": "POST",
     "sortNum": 590000,
     "created": "2023-02-20T16:38:51.087Z",
-    "modified": "2023-05-02T12:33:02.630Z",
+    "modified": "2023-05-02T13:42:21.698Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n\t\"order_item_id\" : 12,\n\t\"rating\" : 3.0,\n\t\"review\" : \"good\"\n}",
+      "raw": "{\n\t\"order_item_id\" : 9,\n\t\"rating\" : 3.0,\n\t\"review\" : \"good\"\n}",
       "form": []
     },
     "auth": {
@@ -1138,11 +1138,11 @@
     "colId": "80d178ef-5176-474a-8708-db78bd45faee",
     "containerId": "3c47a409-79a2-440c-b50c-c521a6ce6beb",
     "name": "get product reviews on a product",
-    "url": "{{baseUrl}}/products/3/product-reviews",
+    "url": "{{baseUrl}}/products/4/product-reviews",
     "method": "GET",
     "sortNum": 600000,
     "created": "2023-02-20T16:38:51.088Z",
-    "modified": "2023-05-02T12:39:07.192Z",
+    "modified": "2023-05-02T13:42:43.173Z",
     "headers": [],
     "params": [],
     "auth": {
@@ -3226,6 +3226,43 @@
       "type": "bearer",
       "bearer": "{{admin_token}}"
     },
+    "tests": []
+  },
+  {
+    "_id": "c2658e7c-25fc-4750-88c2-1ba421b2e085",
+    "colId": "80d178ef-5176-474a-8708-db78bd45faee",
+    "containerId": "3c47a409-79a2-440c-b50c-c521a6ce6beb",
+    "name": "insert media in review",
+    "url": "{{baseUrl}}/product-review/6",
+    "method": "POST",
+    "sortNum": 1060000,
+    "created": "2023-05-02T13:44:14.115Z",
+    "modified": "2023-05-02T14:28:26.718Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n   \"media_list\": [\n        {\n          \"media_id\": 19,\n          \"display_order\": 1\n        },\n        {\n          \"media_id\": 20,\n          \"display_order\": 2\n        }\n      ]\n}",
+      "form": []
+    },
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{token}}"
+    },
+    "tests": []
+  },
+  {
+    "_id": "804b8e98-56e6-47eb-bfa4-b480f1dca129",
+    "colId": "80d178ef-5176-474a-8708-db78bd45faee",
+    "containerId": "3c47a409-79a2-440c-b50c-c521a6ce6beb",
+    "name": "update media in review",
+    "url": "",
+    "method": "PUT",
+    "sortNum": 1070000,
+    "created": "2023-05-02T13:44:43.419Z",
+    "modified": "2023-05-02T13:44:53.701Z",
+    "headers": [],
+    "params": [],
     "tests": []
   }
 ]
