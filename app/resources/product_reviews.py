@@ -40,14 +40,26 @@ class ProductReview(Resource):
                 abort(400, "Bad Request")
             product_item_id = row[0]
 
-            CREATE_REVIEW = """INSERT INTO product_item_reviews(customer_id, order_item_id, product_item_id, rating, review, added_at)
-            VALUES(%s, %s, %s, %s, %s, %s) RETURNING id"""
+            GET_PRODUCT_ID =(
+                """SELECT product_id FROM product_base_item WHERE product_item_id = %s"""
+            )
+            cursor.execute(GET_PRODUCT_ID, (product_item_id,))
+            row = cursor.fetchone()
+            if not row:
+                app.logger.debug(
+                    "product_id not found for the given order_item_id!"
+                )
+                app_globals.db_conn.rollback()
+                abort(400, "Bad Request")
+            product_id = row[0]
+
+            CREATE_REVIEW = """INSERT INTO product_reviews(customer_id, product_id, rating, review, added_at)
+            VALUES(%s, %s, %s, %s, %s) RETURNING id"""
             cursor.execute(
                 CREATE_REVIEW,
                 (
                     customer_id,
-                    order_item_id,
-                    product_item_id,
+                    product_id,
                     rating,
                     review,
                     current_time,
@@ -60,15 +72,15 @@ class ProductReview(Resource):
         finally:
             cursor.close()
         return (
-            f"Review id = {review_id} created sucessfully for product item id = {product_item_id}",
+            f"Review id = {review_id} created sucessfully for product id = {product_id}",
             201,
         )
 
     @f_jwt.jwt_required()
     def get(self, product_id):
         reviews_list = []
-        GET_REVIEWS = """SELECT id,customer_id, rating, review, added_at, updated_at FROM product_item_reviews 
-                         WHERE product_item_id IN (SELECT id FROM product_items WHERE product_id =%s)"""
+        GET_REVIEWS = """SELECT id,customer_id, rating, review, added_at, updated_at FROM product_reviews 
+                         WHERE product_id = %s"""
 
         try:
             cursor = app_globals.get_named_tuple_cursor()
@@ -133,7 +145,7 @@ class ProductReview(Resource):
 
         current_time = datetime.now()
 
-        UPDATE_REVIEW = """UPDATE product_item_reviews SET rating= %s, review= %s, updated_at= %s 
+        UPDATE_REVIEW = """UPDATE product_reviews SET rating= %s, review= %s, updated_at= %s 
         WHERE id= %s AND customer_id= %s"""
 
         try:
@@ -163,7 +175,7 @@ class ProductReview(Resource):
         app.logger.debug("user_id= %s", customer_id)
 
         DELETE_REVIEW = (
-            """DELETE FROM product_item_reviews WHERE id= %s AND customer_id =%s"""
+            """DELETE FROM product_reviews WHERE id= %s AND customer_id =%s"""
         )
         try:
             cursor = app_globals.get_cursor()
@@ -186,20 +198,20 @@ class ProductReview(Resource):
 
 class CustomerReviewOnProduct(Resource):
     @f_jwt.jwt_required()
-    def get(self, product_item_id):
+    def get(self, product_id):
         customer_id = f_jwt.get_jwt_identity()
         app.logger.debug("customer_id= %s", customer_id)
         reviews_list = []
 
-        GET_REVIEWS = """SELECT id, rating, review, added_at, updated_at FROM product_item_reviews 
-                         WHERE product_item_id = %s AND customer_id = %s"""
+        GET_REVIEWS = """SELECT id, rating, review, added_at, updated_at FROM product_reviews 
+                         WHERE product_id = %s AND customer_id = %s"""
 
         try:
             cursor = app_globals.get_named_tuple_cursor()
             cursor.execute(
                 GET_REVIEWS,
                 (
-                    product_item_id,
+                    product_id,
                     customer_id,
                 ),
             )
