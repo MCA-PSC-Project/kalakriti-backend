@@ -237,6 +237,47 @@ class AddMediaInReview(Resource):
             f"media inserted successfully",
             201,
         )
+   
+   def put(self,review_id):
+        # user_id = f_jwt.get_jwt_identity()
+        # app.logger.debug("user_id= %s", user_id)
+        # claims = f_jwt.get_jwt()
+        # user_type = claims["user_type"]
+        # app.logger.debug("user_type= %s", user_type)
+
+        data = request.get_json()
+        review_media_dict = json.loads(json.dumps(data))
+        try:
+            cursor = app_globals.get_cursor()   
+            INSERT_REVIEW_MEDIAS = """UPDATE product_review_medias SET media_id = %s, display_order = %s
+            WHERE product_review_id = %s"""
+
+            media_id_list = review_media_dict.get("media_list")
+            values_tuple_list = []
+            for media_dict in media_id_list:
+                values_tuple = (
+                    media_dict.get("media_id"),
+                    media_dict.get("display_order"),
+                    review_id,
+                )
+                values_tuple_list.append(values_tuple)
+            app.logger.debug("values_tuple_list= %s", values_tuple_list)
+            psycopg2.extras.execute_batch(cursor, INSERT_REVIEW_MEDIAS, values_tuple_list)
+        except (Exception, psycopg2.Error) as err:
+            app.logger.debug(err)
+            app_globals.db_conn.rollback()
+            app_globals.db_conn.autocommit = True
+            app.logger.debug("autocommit switched back from off to on")
+            abort(400, "Bad Request")
+        finally:
+            cursor.close()
+        app_globals.db_conn.commit()
+        app_globals.db_conn.autocommit = True
+        return (
+            f"media updated successfully",
+            201,
+        )
+
 class CustomerReviewOnProduct(Resource):
     @f_jwt.jwt_required()
     def get(self, product_id):

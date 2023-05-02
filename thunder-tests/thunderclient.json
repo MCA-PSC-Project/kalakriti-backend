@@ -3233,11 +3233,11 @@
     "colId": "80d178ef-5176-474a-8708-db78bd45faee",
     "containerId": "3c47a409-79a2-440c-b50c-c521a6ce6beb",
     "name": "insert media in review",
-    "url": "{{baseUrl}}/product-review/6",
+    "url": "{{baseUrl}}/product-review/7",
     "method": "POST",
     "sortNum": 1060000,
     "created": "2023-05-02T13:44:14.115Z",
-    "modified": "2023-05-02T14:28:26.718Z",
+    "modified": "2023-05-02T14:43:35.301Z",
     "headers": [],
     "params": [],
     "body": {
@@ -3256,13 +3256,22 @@
     "colId": "80d178ef-5176-474a-8708-db78bd45faee",
     "containerId": "3c47a409-79a2-440c-b50c-c521a6ce6beb",
     "name": "update media in review",
-    "url": "",
+    "url": "{{baseUrl}}/product-review/7",
     "method": "PUT",
     "sortNum": 1070000,
     "created": "2023-05-02T13:44:43.419Z",
-    "modified": "2023-05-02T13:44:53.701Z",
+    "modified": "2023-05-02T14:45:40.337Z",
     "headers": [],
     "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n   \"media_list\": [\n        {\n          \"media_id\": 19,\n          \"display_order\": 1\n        },\n        {\n          \"media_id\": 22,\n          \"display_order\": 2\n        }\n      ]\n}",
+      "form": []
+    },
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{token}}"
+    },
     "tests": []
   }
 ]
