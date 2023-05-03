@@ -438,9 +438,9 @@ class SellersProductItems(Resource):
                 abort(400, "only seller is allowed change quantity")
             value = data["quantity_in_stock"]
             # app.logger.debug("quantity_in_stock= %s", value)
-            UPDATE_PRODUCT_ITEM_QUANTITY = """UPDATE product_items SET quantity_in_stock= %s, updated_at= %s
+            UPDATE_PRODUCT_ITEM_STATUS = """UPDATE product_items SET quantity_in_stock= %s, updated_at= %s
             WHERE id= %s"""
-            PATCH_PRODUCT_ITEM = UPDATE_PRODUCT_ITEM_QUANTITY
+            PATCH_PRODUCT_ITEM = UPDATE_PRODUCT_ITEM_STATUS
         elif "product_item_status" in data.keys():
             if (
                 user_type != "seller"
@@ -452,10 +452,10 @@ class SellersProductItems(Resource):
                     "only sellers, super-admins and admins are allowed to update product item status",
                 )
             value = data["product_item_status"]
-            # app.logger.debug("product_status= %s", value)
-            UPDATE_PRODUCT_ITEM_QUANTITY = """UPDATE product_items SET product_item_status= %s, updated_at= %s
+            # app.logger.debug("product_item_status= %s", value)
+            UPDATE_PRODUCT_ITEM_STATUS = """UPDATE product_items SET product_item_status= %s, updated_at= %s
             WHERE id= %s"""
-            PATCH_PRODUCT_ITEM = UPDATE_PRODUCT_ITEM_QUANTITY
+            PATCH_PRODUCT_ITEM = UPDATE_PRODUCT_ITEM_STATUS
         elif "media_list" in data.keys():
             if user_type != "seller":
                 abort(400, "only seller is allowed update medias")
