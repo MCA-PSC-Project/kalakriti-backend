@@ -1119,12 +1119,12 @@
     "method": "POST",
     "sortNum": 590000,
     "created": "2023-02-20T16:38:51.087Z",
-    "modified": "2023-05-03T06:45:21.184Z",
+    "modified": "2023-05-03T11:50:23.648Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n\t\"order_item_id\" : 10,\n\t\"rating\" : 3.0,\n\t\"review\" : \"good\"\n}",
+      "raw": "{\n\t\"order_item_id\" : 10,\n\t\"rating\" : 3.0,\n\t\"review\" : \"good\",\n  \"media_list\": [\n    {\n      \"media_id\": 19,\n      \"display_order\": 1\n    },\n    {\n      \"media_id\": 20,\n      \"display_order\": 2\n    }\n  ]\n}",
       "form": []
     },
     "auth": {
@@ -1138,11 +1138,11 @@
     "colId": "80d178ef-5176-474a-8708-db78bd45faee",
     "containerId": "3c47a409-79a2-440c-b50c-c521a6ce6beb",
     "name": "get product reviews on a product",
-    "url": "{{baseUrl}}/products/4/product-reviews",
+    "url": "{{baseUrl}}/products/10/product-reviews",
     "method": "GET",
     "sortNum": 600000,
     "created": "2023-02-20T16:38:51.088Z",
-    "modified": "2023-05-02T13:42:43.173Z",
+    "modified": "2023-05-03T12:18:24.608Z",
     "headers": [],
     "params": [],
     "auth": {
@@ -1160,7 +1160,7 @@
     "method": "GET",
     "sortNum": 610000,
     "created": "2023-02-20T16:38:51.089Z",
-    "modified": "2023-05-03T06:45:50.715Z",
+    "modified": "2023-05-03T12:18:37.912Z",
     "headers": [],
     "params": [],
     "auth": {
@@ -1174,16 +1174,16 @@
     "colId": "80d178ef-5176-474a-8708-db78bd45faee",
     "containerId": "3c47a409-79a2-440c-b50c-c521a6ce6beb",
     "name": "update product  reviews",
-    "url": "{{baseUrl}}/product-reviews/10",
-    "method": "PUT",
+    "url": "{{baseUrl}}/product-reviews/12",
+    "method": "PATCH",
     "sortNum": 620000,
     "created": "2023-02-20T16:38:51.090Z",
-    "modified": "2023-05-03T06:45:30.729Z",
+    "modified": "2023-05-03T12:25:13.150Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n\t\"rating\" : 4,\n\t\"review\": \"really awesome\"\n}",
+      "raw": "{\n\t\"rating\" : 4,\n\t\"review\": \"really awesome\",\n\t\n   \"media_list\": [\n        {\n          \"media_id\": 20,\n          \"display_order\": 1\n        },\n        {\n          \"media_id\": 26,\n          \"display_order\": 2\n        }\n      ]\n}",
       "form": []
     },
     "auth": {
@@ -3225,52 +3225,6 @@
     "auth": {
       "type": "bearer",
       "bearer": "{{admin_token}}"
-    },
-    "tests": []
-  },
-  {
-    "_id": "c2658e7c-25fc-4750-88c2-1ba421b2e085",
-    "colId": "80d178ef-5176-474a-8708-db78bd45faee",
-    "containerId": "3c47a409-79a2-440c-b50c-c521a6ce6beb",
-    "name": "insert media in review",
-    "url": "{{baseUrl}}/product-review/9",
-    "method": "POST",
-    "sortNum": 1060000,
-    "created": "2023-05-02T13:44:14.115Z",
-    "modified": "2023-05-03T06:27:27.042Z",
-    "headers": [],
-    "params": [],
-    "body": {
-      "type": "json",
-      "raw": "{\n  \"media_list\": [\n    {\n      \"media_id\": 19,\n      \"display_order\": 1\n    },\n    {\n      \"media_id\": 20,\n      \"display_order\": 2\n    }\n  ]\n}",
-      "form": []
-    },
-    "auth": {
-      "type": "bearer",
-      "bearer": "{{token}}"
-    },
-    "tests": []
-  },
-  {
-    "_id": "804b8e98-56e6-47eb-bfa4-b480f1dca129",
-    "colId": "80d178ef-5176-474a-8708-db78bd45faee",
-    "containerId": "3c47a409-79a2-440c-b50c-c521a6ce6beb",
-    "name": "update media in product reviews",
-    "url": "{{baseUrl}}/product-review/10",
-    "method": "PUT",
-    "sortNum": 1070000,
-    "created": "2023-05-02T13:44:43.419Z",
-    "modified": "2023-05-03T07:14:48.060Z",
-    "headers": [],
-    "params": [],
-    "body": {
-      "type": "json",
-      "raw": "{\n   \"media_list\": [\n        {\n          \"media_id\": 20,\n          \"display_order\": 1\n        },\n        {\n          \"media_id\": 19,\n          \"display_order\": 2\n        }\n      ]\n}",
-      "form": []
-    },
-    "auth": {
-      "type": "bearer",
-      "bearer": "{{token}}"
     },
     "tests": []
   }

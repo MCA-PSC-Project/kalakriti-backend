@@ -76,7 +76,7 @@ from app.resources.carts import Carts
 from app.resources.product_reviews import (
     ProductReview,
     CustomerReviewOnProduct,
-    AddMediaInReview
+    # AddMediaInReview
 )
 from app.resources.seller_bank_details import Seller_Bank_Details
 
@@ -255,7 +255,7 @@ def create_app(config_name):
         "/products/<int:product_id>/product-reviews",
     )
     api.add_resource(CustomerReviewOnProduct, "/product-review/<int:product_id>")
-    api.add_resource(AddMediaInReview, "/product-review/<int:review_id>")
+    # api.add_resource(AddMediaInReview, "/product-review/<int:review_id>")
 
     # Search
     api.add_resource(Search, "/search")

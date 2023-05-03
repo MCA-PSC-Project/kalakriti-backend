@@ -7,6 +7,8 @@ import flask_jwt_extended as f_jwt
 import json
 from flask import current_app as app
 
+from app.resources.media import delete_medias_by_ids
+
 
 class ProductReview(Resource):
     @f_jwt.jwt_required()
@@ -18,6 +20,8 @@ class ProductReview(Resource):
         app.logger.debug("user_type= %s", user_type)
 
         data = request.get_json()
+        review_media_dict = json.loads(json.dumps(data))
+        # review_media_dict = review_dict["review_medias"][0]
         order_item_id = data.get("order_item_id", None)
         app.logger.debug("order_item_id= %s", order_item_id)
         rating = data.get("rating", None)
@@ -60,6 +64,23 @@ class ProductReview(Resource):
                 ),
             )
             review_id = cursor.fetchone()[0]
+
+            INSERT_REVIEW_MEDIAS = """INSERT INTO product_review_medias(product_review_id, media_id, display_order)
+            VALUES(%s, %s, %s)"""
+
+            media_id_list = review_media_dict.get("media_list")
+            values_tuple_list = []
+            for media_dict in media_id_list:
+                values_tuple = (
+                    review_id,
+                    media_dict.get("media_id"),
+                    media_dict.get("display_order"),
+                )
+                values_tuple_list.append(values_tuple)
+            app.logger.debug("values_tuple_list= %s", values_tuple_list)
+            psycopg2.extras.execute_batch(
+                cursor, INSERT_REVIEW_MEDIAS, values_tuple_list
+            )
         except (Exception, psycopg2.Error) as err:
             app.logger.debug(err)
             abort(400, "Bad Request")
@@ -129,7 +150,7 @@ class ProductReview(Resource):
         return reviews_list
 
     @f_jwt.jwt_required()
-    def put(self, review_id):
+    def patch(self, review_id):
         customer_id = f_jwt.get_jwt_identity()
         app.logger.debug("user_id= %s", customer_id)
 
@@ -154,6 +175,52 @@ class ProductReview(Resource):
             )
             if cursor.rowcount != 1:
                 abort(400, "Bad Request: update row error")
+
+            if "media_list" in data.keys():
+                media_list = data["media_list"]
+            # before beginning transaction autocommit must be 
+                app_globals.db_conn.autocommit = False
+                GET_MEDIA_IDS = """SELECT media_id FROM product_review_medias WHERE product_review_id = %s"""
+                cursor = app_globals.get_named_tuple_cursor()
+                cursor.execute(GET_MEDIA_IDS, (review_id,))
+                rows = cursor.fetchall()
+                old_media_ids_set = set()
+                for row in rows:
+                    old_media_ids_set.add(row.media_id)
+                app.logger.debug("old_media_ids_set= %s", old_media_ids_set)
+
+                values_tuple_list = []
+                new_media_ids_set = set()
+                for media_dict in media_list:
+                    media_id = media_dict.get("media_id")
+                    new_media_ids_set.add(media_id)
+                    display_order = media_dict.get("display_order")
+                    values_tuple = (review_id, media_id, display_order)
+                    values_tuple_list.append(values_tuple)
+                app.logger.debug("new_media_ids_set= %s", new_media_ids_set)
+                media_ids_to_be_deleted_set = old_media_ids_set - new_media_ids_set
+                app.logger.debug(
+                    "media_ids_to_be_deleted_set= %s", media_ids_to_be_deleted_set
+                )
+                # if set is not empty
+                if media_ids_to_be_deleted_set:
+                    result = delete_medias_by_ids(tuple(media_ids_to_be_deleted_set))
+                    if not result:
+                        app.logger.debug("Error deleting medias from bucket")
+                        abort(400, "Bad Request")
+
+                DELETE_ITEM_OLD_MEDIAS = (
+                    """DELETE FROM product_review_medias WHERE product_review_id = %s"""
+                )
+                cursor.execute(DELETE_ITEM_OLD_MEDIAS, (review_id,))
+                # do not use row count here
+
+                app.logger.debug("values_tuple_list= %s", values_tuple_list)
+                INSERT_ITEM_MEDIAS = """INSERT INTO product_review_medias(product_review_id, media_id, display_order)
+                VALUES(%s, %s, %s)"""
+                psycopg2.extras.execute_batch(
+                    cursor, INSERT_ITEM_MEDIAS, values_tuple_list
+                )
         except (Exception, psycopg2.Error) as err:
             app.logger.debug(err)
             abort(400, "Bad Request")
@@ -186,92 +253,6 @@ class ProductReview(Resource):
         finally:
             cursor.close()
         return 200
-
-
-class AddMediaInReview(Resource):
-    @f_jwt.jwt_required()
-    def post(self, review_id):
-        user_id = f_jwt.get_jwt_identity()
-        app.logger.debug("user_id= %s", user_id)
-        claims = f_jwt.get_jwt()
-        user_type = claims["user_type"]
-        app.logger.debug("user_type= %s", user_type)
-
-        data = request.get_json()
-        review_media_dict = json.loads(json.dumps(data))
-        try:
-            cursor = app_globals.get_cursor()
-            INSERT_REVIEW_MEDIAS = """INSERT INTO product_review_medias(product_review_id, media_id, display_order)
-            VALUES(%s, %s, %s)"""
-
-            media_id_list = review_media_dict.get("media_list")
-            values_tuple_list = []
-            for media_dict in media_id_list:
-                values_tuple = (
-                    review_id,
-                    media_dict.get("media_id"),
-                    media_dict.get("display_order"),
-                )
-                values_tuple_list.append(values_tuple)
-            app.logger.debug("values_tuple_list= %s", values_tuple_list)
-            psycopg2.extras.execute_batch(
-                cursor, INSERT_REVIEW_MEDIAS, values_tuple_list
-            )
-        except (Exception, psycopg2.Error) as err:
-            app.logger.debug(err)
-            app_globals.db_conn.rollback()
-            app_globals.db_conn.autocommit = True
-            app.logger.debug("autocommit switched back from off to on")
-            abort(400, "Bad Request")
-        finally:
-            cursor.close()
-        app_globals.db_conn.commit()
-        app_globals.db_conn.autocommit = True
-        return (
-            f"media inserted successfully",
-            201,
-        )
-
-    @f_jwt.jwt_required()
-    def put(self, review_id):
-        customer_id = f_jwt.get_jwt_identity()
-        app.logger.debug("customer_id= %s", customer_id)
-
-        data = request.get_json()
-        review_media_dict = json.loads(json.dumps(data))
-        try:
-            cursor = app_globals.get_cursor()
-            UPDATE_REVIEW_MEDIAS = """UPDATE product_review_medias SET media_id = %s, display_order = %s
-            WHERE product_review_id = %s"""
-
-            media_list = review_media_dict.get("media_list")
-            values_tuple_list = []
-            for media_dict in media_list:
-                values_tuple = (
-                    media_dict.get("media_id"),
-                    media_dict.get("display_order"),
-                    review_id,
-                )
-                values_tuple_list.append(values_tuple)
-            app.logger.debug("values_tuple_list= %s", values_tuple_list)
-            psycopg2.extras.execute_batch(
-                cursor, UPDATE_REVIEW_MEDIAS, values_tuple_list
-            )
-        except (Exception, psycopg2.Error) as err:
-            app.logger.debug(err)
-            app_globals.db_conn.rollback()
-            app_globals.db_conn.autocommit = True
-            app.logger.debug("autocommit switched back from off to on")
-            abort(400, "Bad Request")
-        finally:
-            cursor.close()
-        app_globals.db_conn.commit()
-        app_globals.db_conn.autocommit = True
-        return (
-            f"media updated successfully",
-            201,
-        )
-
 
 class CustomerReviewOnProduct(Resource):
     @f_jwt.jwt_required()
