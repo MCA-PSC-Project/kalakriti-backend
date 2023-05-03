@@ -1119,12 +1119,12 @@
     "method": "POST",
     "sortNum": 590000,
     "created": "2023-02-20T16:38:51.087Z",
-    "modified": "2023-05-03T11:50:23.648Z",
+    "modified": "2023-05-03T14:55:23.814Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n\t\"order_item_id\" : 10,\n\t\"rating\" : 3.0,\n\t\"review\" : \"good\",\n  \"media_list\": [\n    {\n      \"media_id\": 19,\n      \"display_order\": 1\n    },\n    {\n      \"media_id\": 20,\n      \"display_order\": 2\n    }\n  ]\n}",
+      "raw": "{\n  \"order_item_id\": 11,\n  \"rating\": 3.5,\n  \"review\": \"good\",\n  \"media_list\": [\n    {\n      \"media_id\": 19,\n      \"display_order\": 1\n    },\n    {\n      \"media_id\": 20,\n      \"display_order\": 2\n    }\n  ]\n}",
       "form": []
     },
     "auth": {
@@ -1174,16 +1174,16 @@
     "colId": "80d178ef-5176-474a-8708-db78bd45faee",
     "containerId": "3c47a409-79a2-440c-b50c-c521a6ce6beb",
     "name": "update product  reviews",
-    "url": "{{baseUrl}}/product-reviews/12",
-    "method": "PATCH",
+    "url": "{{baseUrl}}/product-reviews/14",
+    "method": "PUT",
     "sortNum": 620000,
     "created": "2023-02-20T16:38:51.090Z",
-    "modified": "2023-05-03T12:25:13.150Z",
+    "modified": "2023-05-03T15:00:59.960Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n\t\"rating\" : 4,\n\t\"review\": \"really awesome\",\n\t\n   \"media_list\": [\n        {\n          \"media_id\": 20,\n          \"display_order\": 1\n        },\n        {\n          \"media_id\": 26,\n          \"display_order\": 2\n        }\n      ]\n}",
+      "raw": "{\n  \"rating\": 4,\n  \"review\": \"really awesome\",\n  \"media_list\": [\n    {\n      \"media_id\": 20,\n      \"display_order\": 1\n    },\n    {\n      \"media_id\": 26,\n      \"display_order\": 2\n    }\n  ]\n}",
       "form": []
     },
     "auth": {

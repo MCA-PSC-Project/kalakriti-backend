@@ -2473,5 +2473,28 @@
       "bearer": "{{token}}"
     },
     "tests": []
+  },
+  {
+    "_id": "2594786e-13e7-422f-a282-8b5a3d36f545",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/product-reviews/14",
+    "url": "{{baseUrl}}/product-reviews/14",
+    "method": "PUT",
+    "sortNum": 0,
+    "created": "2023-05-03T15:00:58.818Z",
+    "modified": "2023-05-03T15:00:58.818Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n  \"rating\": 4,\n  \"review\": \"really awesome\",\n  \"media_list\": [\n    {\n      \"media_id\": 20,\n      \"display_order\": 1\n    },\n    {\n      \"media_id\": 26,\n      \"display_order\": 2\n    }\n  ]\n}",
+      "form": []
+    },
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{token}}"
+    },
+    "tests": []
   }
 ]

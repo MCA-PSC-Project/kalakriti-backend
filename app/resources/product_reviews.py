@@ -26,6 +26,9 @@ class ProductReview(Resource):
         rating = data.get("rating", None)
         review = data.get("review", None)
         current_time = datetime.now()
+
+        # before beginning transaction autocommit must be off
+        app_globals.db_conn.autocommit = False
         try:
             cursor = app_globals.get_cursor()
             GET_PRODUCT_ITEM_ID = (
@@ -82,9 +85,14 @@ class ProductReview(Resource):
             )
         except (Exception, psycopg2.Error) as err:
             app.logger.debug(err)
+            app_globals.db_conn.rollback()
+            app_globals.db_conn.autocommit = True
+            app.logger.debug("autocommit switched back from off to on")
             abort(400, "Bad Request")
         finally:
             cursor.close()
+        app_globals.db_conn.commit()
+        app_globals.db_conn.autocommit = True
         return (
             f"Review id = {review_id} created sucessfully for product id = {product_id}",
             201,
@@ -149,7 +157,7 @@ class ProductReview(Resource):
         return reviews_list
 
     @f_jwt.jwt_required()
-    def patch(self, review_id):
+    def put(self, review_id):
         customer_id = f_jwt.get_jwt_identity()
         app.logger.debug("user_id= %s", customer_id)
 
@@ -157,11 +165,12 @@ class ProductReview(Resource):
         review_dict = json.loads(json.dumps(data))
         app.logger.debug(review_dict)
 
-        UPDATE_REVIEW = """UPDATE product_reviews SET rating= %s, review= %s, updated_at= %s 
-        WHERE id= %s AND customer_id= %s"""
-
+        # before beginning transaction autocommit must be off
+        app_globals.db_conn.autocommit = False
         try:
             cursor = app_globals.get_cursor()
+            UPDATE_REVIEW = """UPDATE product_reviews SET rating= %s, review= %s, updated_at= %s 
+            WHERE id= %s AND customer_id= %s"""
             cursor.execute(
                 UPDATE_REVIEW,
                 (
@@ -173,12 +182,10 @@ class ProductReview(Resource):
                 ),
             )
             if cursor.rowcount != 1:
-                abort(400, "Bad Request: update row error")
+                abort(400, "Bad Request: update product_review row error")
 
             if "media_list" in data.keys():
                 media_list = data["media_list"]
-                # before beginning transaction autocommit must be
-                app_globals.db_conn.autocommit = False
                 GET_MEDIA_IDS = """SELECT media_id FROM product_review_medias WHERE product_review_id = %s"""
                 cursor = app_globals.get_named_tuple_cursor()
                 cursor.execute(GET_MEDIA_IDS, (review_id,))
@@ -215,16 +222,21 @@ class ProductReview(Resource):
                 # do not use row count here
 
                 app.logger.debug("values_tuple_list= %s", values_tuple_list)
-                INSERT_ITEM_MEDIAS = """INSERT INTO product_review_medias(product_review_id, media_id, display_order)
+                INSERT_REVIEW_MEDIAS = """INSERT INTO product_review_medias(product_review_id, media_id, display_order)
                 VALUES(%s, %s, %s)"""
                 psycopg2.extras.execute_batch(
-                    cursor, INSERT_ITEM_MEDIAS, values_tuple_list
+                    cursor, INSERT_REVIEW_MEDIAS, values_tuple_list
                 )
         except (Exception, psycopg2.Error) as err:
             app.logger.debug(err)
+            app_globals.db_conn.rollback()
+            app_globals.db_conn.autocommit = True
+            app.logger.debug("autocommit switched back from off to on")
             abort(400, "Bad Request")
         finally:
             cursor.close()
+        app_globals.db_conn.commit()
+        app_globals.db_conn.autocommit = True
         return {"message": f"Review_id {review_id} modified."}, 200
 
     @f_jwt.jwt_required()
