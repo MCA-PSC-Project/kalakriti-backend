@@ -6,7 +6,6 @@ import app.app_globals as app_globals
 import flask_jwt_extended as f_jwt
 import json
 from flask import current_app as app
-
 from app.resources.media import delete_medias_by_ids
 
 
@@ -178,7 +177,7 @@ class ProductReview(Resource):
 
             if "media_list" in data.keys():
                 media_list = data["media_list"]
-            # before beginning transaction autocommit must be 
+                # before beginning transaction autocommit must be
                 app_globals.db_conn.autocommit = False
                 GET_MEDIA_IDS = """SELECT media_id FROM product_review_medias WHERE product_review_id = %s"""
                 cursor = app_globals.get_named_tuple_cursor()
@@ -253,6 +252,7 @@ class ProductReview(Resource):
         finally:
             cursor.close()
         return 200
+
 
 class CustomerReviewOnProduct(Resource):
     @f_jwt.jwt_required()

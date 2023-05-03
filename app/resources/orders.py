@@ -22,12 +22,32 @@ class Orders(Resource):
         data = request.get_json()
         order_dict = json.loads(json.dumps(data))
         current_time = datetime.now()
-
         order_dict["total_original_price"] = 0
         order_dict["sub_total"] = 0
         order_dict["total_discount"] = 0
         order_dict["total_tax"] = 0
         for order_item_dict in order_dict["order_items"]:
+            GET_PRICE = """SELECT original_price, offer_price, product_item_status FROM product_items 
+            WHERE id = %s"""
+            try:
+                cursor = app_globals.get_named_tuple_cursor()
+                cursor.execute(GET_PRICE, (order_item_dict.get("product_item_id"),))
+                row = cursor.fetchone()
+                if row is None:
+                    abort(400, "Bad Request")
+                if row.product_item_status != "published":
+                    app.logger.debug(
+                        "product_item_status is not published for %s",
+                        order_item_dict.get("product_item_id"),
+                    )
+                    abort(400, "Bad Request")
+                order_item_dict["original_price"] = row.original_price
+                order_item_dict["offer_price"] = row.offer_price
+            except (Exception, psycopg2.Error) as err:
+                app.logger.debug(err)
+                abort(400, "Bad Request")
+            finally:
+                cursor.close()
             order_dict["total_original_price"] += order_item_dict.get("original_price")
             order_dict["sub_total"] += order_item_dict.get("offer_price")
             order_dict["total_discount"] += order_item_dict.get("discount")
