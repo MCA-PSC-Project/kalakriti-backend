@@ -16,12 +16,10 @@ class ProductReview(Resource):
         claims = f_jwt.get_jwt()
         user_type = claims["user_type"]
         app.logger.debug("user_type= %s", user_type)
-        # TODO: check seller
 
         data = request.get_json()
         order_item_id = data.get("order_item_id", None)
         app.logger.debug("order_item_id= %s", order_item_id)
-
         rating = data.get("rating", None)
         review = data.get("review", None)
         current_time = datetime.now()
@@ -40,15 +38,11 @@ class ProductReview(Resource):
                 abort(400, "Bad Request")
             product_item_id = row[0]
 
-            GET_PRODUCT_ID =(
-                """SELECT product_id FROM product_items WHERE id = %s"""
-            )
+            GET_PRODUCT_ID = """SELECT product_id FROM product_items WHERE id = %s"""
             cursor.execute(GET_PRODUCT_ID, (product_item_id,))
             row = cursor.fetchone()
             if not row:
-                app.logger.debug(
-                    "product_id not found for the given order_item_id!"
-                )
+                app.logger.debug("product_id not found for the given order_item_id!")
                 app_globals.db_conn.rollback()
                 abort(400, "Bad Request")
             product_id = row[0]
@@ -79,8 +73,9 @@ class ProductReview(Resource):
     @f_jwt.jwt_required()
     def get(self, product_id):
         reviews_list = []
-        GET_REVIEWS = """SELECT id,customer_id, rating, review, added_at, updated_at FROM product_reviews 
-                         WHERE product_id = %s"""
+        GET_REVIEWS = """SELECT id, customer_id, rating, review, added_at, updated_at 
+        FROM product_reviews 
+        WHERE product_id = %s"""
 
         try:
             cursor = app_globals.get_named_tuple_cursor()
@@ -105,7 +100,8 @@ class ProductReview(Resource):
 
                 GET_USER_PROFILE = """SELECT c.first_name, c.last_name,
                 m.id AS media_id, m.name AS media_name, m.path
-                FROM customers c LEFT JOIN media m on c.dp_id = m.id WHERE c.id = %s"""
+                FROM customers c 
+                LEFT JOIN media m on c.dp_id = m.id WHERE c.id = %s"""
 
                 cursor.execute(GET_USER_PROFILE, (review_dict.get("customer_id"),))
                 row = cursor.fetchone()
@@ -122,16 +118,14 @@ class ProductReview(Resource):
                     media_dict["path"] = "{}/{}".format(app.config["S3_LOCATION"], path)
                 else:
                     media_dict["path"] = None
-
                 review_dict.update({"dp": media_dict})
                 reviews_list.append(review_dict)
-
         except (Exception, psycopg2.Error) as err:
             app.logger.debug(err)
             abort(400, "Bad Request")
         finally:
             cursor.close()
-        # app.logger.debug(banner_dict)
+        # app.logger.debug(reviews_list)
         return reviews_list
 
     @f_jwt.jwt_required()
@@ -143,8 +137,6 @@ class ProductReview(Resource):
         review_dict = json.loads(json.dumps(data))
         app.logger.debug(review_dict)
 
-        current_time = datetime.now()
-
         UPDATE_REVIEW = """UPDATE product_reviews SET rating= %s, review= %s, updated_at= %s 
         WHERE id= %s AND customer_id= %s"""
 
@@ -155,7 +147,7 @@ class ProductReview(Resource):
                 (
                     review_dict["rating"],
                     review_dict["review"],
-                    current_time,
+                    datetime.now(),
                     review_id,
                     customer_id,
                 ),
@@ -175,7 +167,7 @@ class ProductReview(Resource):
         app.logger.debug("user_id= %s", customer_id)
 
         DELETE_REVIEW = (
-            """DELETE FROM product_reviews WHERE id= %s AND customer_id =%s"""
+            """DELETE FROM product_reviews WHERE id = %s AND customer_id = %s"""
         )
         try:
             cursor = app_globals.get_cursor()
@@ -197,8 +189,8 @@ class ProductReview(Resource):
 
 
 class AddMediaInReview(Resource):
-   @f_jwt.jwt_required()
-   def post(self,review_id):
+    @f_jwt.jwt_required()
+    def post(self, review_id):
         user_id = f_jwt.get_jwt_identity()
         app.logger.debug("user_id= %s", user_id)
         claims = f_jwt.get_jwt()
@@ -208,7 +200,7 @@ class AddMediaInReview(Resource):
         data = request.get_json()
         review_media_dict = json.loads(json.dumps(data))
         try:
-            cursor = app_globals.get_cursor()   
+            cursor = app_globals.get_cursor()
             INSERT_REVIEW_MEDIAS = """INSERT INTO product_review_medias(product_review_id, media_id, display_order)
             VALUES(%s, %s, %s)"""
 
@@ -222,7 +214,9 @@ class AddMediaInReview(Resource):
                 )
                 values_tuple_list.append(values_tuple)
             app.logger.debug("values_tuple_list= %s", values_tuple_list)
-            psycopg2.extras.execute_batch(cursor, INSERT_REVIEW_MEDIAS, values_tuple_list)
+            psycopg2.extras.execute_batch(
+                cursor, INSERT_REVIEW_MEDIAS, values_tuple_list
+            )
         except (Exception, psycopg2.Error) as err:
             app.logger.debug(err)
             app_globals.db_conn.rollback()
@@ -237,24 +231,22 @@ class AddMediaInReview(Resource):
             f"media inserted successfully",
             201,
         )
-   
-   def put(self,review_id):
-        # user_id = f_jwt.get_jwt_identity()
-        # app.logger.debug("user_id= %s", user_id)
-        # claims = f_jwt.get_jwt()
-        # user_type = claims["user_type"]
-        # app.logger.debug("user_type= %s", user_type)
+
+    @f_jwt.jwt_required()
+    def put(self, review_id):
+        customer_id = f_jwt.get_jwt_identity()
+        app.logger.debug("customer_id= %s", customer_id)
 
         data = request.get_json()
         review_media_dict = json.loads(json.dumps(data))
         try:
-            cursor = app_globals.get_cursor()   
-            INSERT_REVIEW_MEDIAS = """UPDATE product_review_medias SET media_id = %s, display_order = %s
+            cursor = app_globals.get_cursor()
+            UPDATE_REVIEW_MEDIAS = """UPDATE product_review_medias SET media_id = %s, display_order = %s
             WHERE product_review_id = %s"""
 
-            media_id_list = review_media_dict.get("media_list")
+            media_list = review_media_dict.get("media_list")
             values_tuple_list = []
-            for media_dict in media_id_list:
+            for media_dict in media_list:
                 values_tuple = (
                     media_dict.get("media_id"),
                     media_dict.get("display_order"),
@@ -262,7 +254,9 @@ class AddMediaInReview(Resource):
                 )
                 values_tuple_list.append(values_tuple)
             app.logger.debug("values_tuple_list= %s", values_tuple_list)
-            psycopg2.extras.execute_batch(cursor, INSERT_REVIEW_MEDIAS, values_tuple_list)
+            psycopg2.extras.execute_batch(
+                cursor, UPDATE_REVIEW_MEDIAS, values_tuple_list
+            )
         except (Exception, psycopg2.Error) as err:
             app.logger.debug(err)
             app_globals.db_conn.rollback()
@@ -277,6 +271,7 @@ class AddMediaInReview(Resource):
             f"media updated successfully",
             201,
         )
+
 
 class CustomerReviewOnProduct(Resource):
     @f_jwt.jwt_required()
@@ -315,7 +310,8 @@ class CustomerReviewOnProduct(Resource):
 
             GET_USER_PROFILE = """SELECT c.first_name, c.last_name,
             m.id AS media_id, m.name AS media_name, m.path
-            FROM customers c LEFT JOIN media m on c.dp_id = m.id WHERE c.id = %s"""
+            FROM customers c 
+            LEFT JOIN media m on c.dp_id = m.id WHERE c.id = %s"""
 
             cursor.execute(GET_USER_PROFILE, (customer_id,))
             row = cursor.fetchone()
@@ -332,7 +328,6 @@ class CustomerReviewOnProduct(Resource):
                 media_dict["path"] = "{}/{}".format(app.config["S3_LOCATION"], path)
             else:
                 media_dict["path"] = None
-
             review_dict.update({"dp": media_dict})
             reviews_list.append(review_dict)
         except (Exception, psycopg2.Error) as err:
