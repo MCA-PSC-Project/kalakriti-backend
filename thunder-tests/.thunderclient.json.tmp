@@ -1803,12 +1803,12 @@
     "method": "PATCH",
     "sortNum": 30000,
     "created": "2023-02-23T13:11:26.774Z",
-    "modified": "2023-05-04T03:26:04.157Z",
+    "modified": "2023-05-04T03:26:14.536Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n  \"product_item_status\": \"draft\"\n}",
+      "raw": "{\n  \"product_item_status\": \"published\"\n}",
       "form": []
     },
     "auth": {

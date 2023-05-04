@@ -466,13 +466,10 @@ FOR EACH ROW EXECUTE PROCEDURE create_cart();
 -- 
 CREATE OR REPLACE FUNCTION check_product_item_status() RETURNS trigger AS $$  
 BEGIN  
-    --code for Update
-	IF NEW.product_item_status = 'published' THEN
-		IF (SELECT((SELECT "product_status" FROM "products" WHERE "id" = NEW.product_id) 
-		<> 'published')) THEN
-			RAISE EXCEPTION 'not allowed: product status is not published';
-		END IF;
-    END IF;
+	IF (SELECT((SELECT "product_status" FROM "products" WHERE "id" = NEW.product_id) 
+	<> 'published')) THEN
+		RAISE EXCEPTION 'not allowed: product status is not published';
+	END IF;
   RETURN NEW;
 END  
 $$ LANGUAGE plpgsql;
@@ -481,7 +478,7 @@ $$ LANGUAGE plpgsql;
 CREATE OR REPLACE TRIGGER "check_update_product_item_status_trigger" BEFORE UPDATE  
 ON product_items 
 FOR EACH ROW 
-WHEN (OLD.product_item_status IS DISTINCT FROM NEW.product_item_status)
+WHEN (NEW.product_item_status = 'published')
 EXECUTE PROCEDURE check_product_item_status(); 
 
 --
