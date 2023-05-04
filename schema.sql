@@ -449,8 +449,9 @@ CREATE TRIGGER "insert_update_tsv_trigger" AFTER INSERT OR UPDATE
 ON products 
 FOR EACH ROW EXECUTE PROCEDURE products_tsv_trigger(); 
 
+--
 
-CREATE OR REPLACE FUNCTION create_cart() RETURNS trigger AS $$  
+ CREATE OR REPLACE FUNCTION create_cart() RETURNS trigger AS $$  
 BEGIN  
       INSERT INTO "carts" (customer_id) 
       VALUES (new.id);
@@ -460,7 +461,31 @@ $$ LANGUAGE plpgsql;
 
 CREATE TRIGGER "create_cart_trigger" AFTER INSERT ON "customers" 
 FOR EACH ROW EXECUTE PROCEDURE create_cart();
+-- 
 
+-- 
+CREATE OR REPLACE FUNCTION check_product_item_status() RETURNS trigger AS $$  
+BEGIN  
+    --code for Update
+	IF NEW.product_item_status = 'published' THEN
+		IF (SELECT((SELECT "product_status" FROM "products" WHERE "id" = NEW.product_id) 
+		<> 'published')) THEN
+			RAISE EXCEPTION 'not allowed: product status is not published';
+		END IF;
+    END IF;
+  RETURN NEW;
+END  
+$$ LANGUAGE plpgsql;
+
+
+CREATE OR REPLACE TRIGGER "check_update_product_item_status_trigger" BEFORE UPDATE  
+ON product_items 
+FOR EACH ROW 
+WHEN (OLD.product_item_status IS DISTINCT FROM NEW.product_item_status)
+EXECUTE PROCEDURE check_product_item_status(); 
+
+--
+--
 CREATE INDEX "tsv_index" ON "products_tsv_store" USING GIN ("tsv");
 
 END;
