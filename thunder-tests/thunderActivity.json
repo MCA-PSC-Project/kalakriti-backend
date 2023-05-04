@@ -164,26 +164,6 @@
     "tests": []
   },
   {
-    "_id": "3eae337f-069d-420d-9e4a-87b4eea2787f",
-    "colId": "history",
-    "containerId": "",
-    "name": "{{baseUrl}}/products/4?product_status=published",
-    "url": "{{baseUrl}}/products/4?product_status=published",
-    "method": "GET",
-    "sortNum": 0,
-    "created": "2023-04-03T08:22:34.063Z",
-    "modified": "2023-04-03T08:22:34.063Z",
-    "headers": [],
-    "params": [
-      {
-        "name": "product_status",
-        "value": "published",
-        "isPath": false
-      }
-    ],
-    "tests": []
-  },
-  {
     "_id": "6782c8f7-8af9-46b4-be2d-f3022005579d",
     "colId": "history",
     "containerId": "",
