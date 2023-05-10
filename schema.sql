@@ -407,6 +407,16 @@ CREATE TABLE "recommended_products" (
 	"updated_at" TIMESTAMPTZ,
 	FOREIGN KEY("product_id") REFERENCES "products"("id") ON DELETE CASCADE
 );
+CREATE TABLE "viewed_products" (
+	-- "id" SERIAL PRIMARY KEY,
+	"customer_id" INT,
+	"product_id" INT,
+	"added_at" TIMESTAMPTZ NOT NULL,
+	"updated_at" TIMESTAMPTZ,
+	PRIMARY KEY("customer_id", "product_id"),
+	FOREIGN KEY("customer_id") REFERENCES "customers"("id") ON DELETE CASCADE,
+	FOREIGN KEY("product_id") REFERENCES "products"("id") ON DELETE CASCADE
+);
 ----- Indexes -----
 CREATE INDEX ON "customers" ("email");
 CREATE INDEX ON "sellers" ("email");

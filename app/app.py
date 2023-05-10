@@ -35,7 +35,13 @@ from app.resources.auth_otp import (
     MobileOtpLoginCustomer,
     MobileOtpLoginSeller,
 )
-from app.resources.home import Home, NewProducts, PopularProducts, RecommendedProducts
+from app.resources.home import (
+    Home,
+    NewProducts,
+    PopularProducts,
+    RecommendedProducts,
+    ViewedProducts,
+)
 from app.resources.orders import OrderItems, Orders, CustomerOrders
 from app.resources.product_items import (
     ProductItems,
@@ -277,6 +283,7 @@ def create_app(config_name):
     )
     api.add_resource(PopularProducts, "/popular-products")
     api.add_resource(NewProducts, "/new-products")
+    api.add_resource(ViewedProducts, "/viewed-products")
 
     # to be exceuted at app exit for cleanups
     @atexit.register

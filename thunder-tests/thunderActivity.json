@@ -164,128 +164,6 @@
     "tests": []
   },
   {
-    "_id": "6782c8f7-8af9-46b4-be2d-f3022005579d",
-    "colId": "history",
-    "containerId": "",
-    "name": "{{baseUrl}}/products/4?product_status=publishe",
-    "url": "{{baseUrl}}/products/4?product_status=publishe",
-    "method": "GET",
-    "sortNum": 0,
-    "created": "2023-04-03T08:24:11.500Z",
-    "modified": "2023-04-03T08:24:11.500Z",
-    "headers": [],
-    "params": [
-      {
-        "name": "product_status",
-        "value": "publishe",
-        "isPath": false
-      }
-    ],
-    "tests": []
-  },
-  {
-    "_id": "efeafd02-9742-4c73-b028-205e66cdf6a8",
-    "colId": "history",
-    "containerId": "",
-    "name": "{{baseUrl}}/sellers/products",
-    "url": "{{baseUrl}}/sellers/products",
-    "method": "GET",
-    "sortNum": 0,
-    "created": "2023-04-03T08:38:19.884Z",
-    "modified": "2023-04-03T08:40:01.770Z",
-    "headers": [],
-    "params": [
-      {
-        "name": "product_status",
-        "value": "draft",
-        "isDisabled": true,
-        "isPath": false
-      }
-    ],
-    "auth": {
-      "type": "bearer",
-      "bearer": "{{seller_token}}"
-    },
-    "tests": []
-  },
-  {
-    "_id": "a9169dc9-1a27-4115-9176-1ed4e9463014",
-    "colId": "history",
-    "containerId": "",
-    "name": "{{baseUrl}}/sellers/products?product_status=published",
-    "url": "{{baseUrl}}/sellers/products?product_status=published",
-    "method": "GET",
-    "sortNum": 0,
-    "created": "2023-04-03T08:38:54.003Z",
-    "modified": "2023-04-03T08:38:54.003Z",
-    "headers": [],
-    "params": [
-      {
-        "name": "product_status",
-        "value": "published",
-        "isPath": false
-      }
-    ],
-    "auth": {
-      "type": "bearer",
-      "bearer": "{{seller_token}}"
-    },
-    "tests": []
-  },
-  {
-    "_id": "98dba48a-cc9d-4249-bc25-cb120df41608",
-    "colId": "history",
-    "containerId": "",
-    "name": "{{baseUrl}}/sellers/products?product_status=draft",
-    "url": "{{baseUrl}}/sellers/products?product_status=draft",
-    "method": "GET",
-    "sortNum": 0,
-    "created": "2023-04-03T08:39:17.269Z",
-    "modified": "2023-04-03T08:39:17.269Z",
-    "headers": [],
-    "params": [
-      {
-        "name": "product_status",
-        "value": "draft",
-        "isPath": false
-      }
-    ],
-    "auth": {
-      "type": "bearer",
-      "bearer": "{{seller_token}}"
-    },
-    "tests": []
-  },
-  {
-    "_id": "f297adbb-728b-4e65-9b68-0876891918e7",
-    "colId": "history",
-    "containerId": "",
-    "name": "{{baseUrl}}/sellers/products?seller_user_id=1&product_status=draft",
-    "url": "{{baseUrl}}/sellers/products?seller_user_id=1&product_status=draft",
-    "method": "GET",
-    "sortNum": 0,
-    "created": "2023-04-03T08:40:43.887Z",
-    "modified": "2023-04-03T08:40:43.887Z",
-    "headers": [],
-    "params": [
-      {
-        "name": "seller_user_id",
-        "value": "1",
-        "isPath": false
-      },
-      {
-        "name": "product_status",
-        "value": "draft",
-        "isPath": false
-      }
-    ],
-    "auth": {
-      "type": "bearer",
-      "bearer": "{{admin_token}}"
-    },
-    "tests": []
-  },
-  {
     "_id": "08b9fa22-b1f0-439e-b51f-a4fc9e08950c",
     "colId": "history",
     "containerId": "",
@@ -2578,6 +2456,47 @@
     "auth": {
       "type": "bearer",
       "bearer": "{{admin_token}}"
+    },
+    "tests": []
+  },
+  {
+    "_id": "e035e534-2a8b-4a61-9e73-4f3915ef6e35",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/viewed-products",
+    "url": "{{baseUrl}}/viewed-products",
+    "method": "GET",
+    "sortNum": 0,
+    "created": "2023-05-10T14:33:43.764Z",
+    "modified": "2023-05-10T14:34:49.814Z",
+    "headers": [],
+    "params": [],
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{token}}"
+    },
+    "tests": []
+  },
+  {
+    "_id": "b9fa0a4a-9a47-44a5-9286-7873bdb86e89",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/viewed-products",
+    "url": "{{baseUrl}}/viewed-products",
+    "method": "PUT",
+    "sortNum": 0,
+    "created": "2023-05-10T14:35:58.052Z",
+    "modified": "2023-05-10T14:38:45.425Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "[\n  1\n]",
+      "form": []
+    },
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{token}}"
     },
     "tests": []
   }

@@ -1421,64 +1421,6 @@
     "docs": ""
   },
   {
-    "_id": "c2206661-f4a7-40b6-b3af-d80aa8048171",
-    "colId": "80d178ef-5176-474a-8708-db78bd45faee",
-    "containerId": "c2e78d60-f731-44bf-823c-2edcc1630ae1",
-    "name": "instamojo test",
-    "url": "https://test.instamojo.com/api/1.1/payment-requests/",
-    "method": "POST",
-    "sortNum": 790000,
-    "created": "2023-02-20T16:38:51.107Z",
-    "modified": "2023-02-20T16:38:51.107Z",
-    "headers": [
-      {
-        "name": "X-API-Key",
-        "value": "test_2c55dc313f55fa1d260534acef2",
-        "isDisabled": false
-      },
-      {
-        "name": "X-Auth-Token",
-        "value": "test_950aa3f3fc3454e0eb9af20b664",
-        "isDisabled": false
-      }
-    ],
-    "params": [],
-    "body": {
-      "type": "json",
-      "raw": "{\n\t\"amount\" : \"2000\",\n\t\"purpose\" : \"testing\"\n}"
-    },
-    "docs": ""
-  },
-  {
-    "_id": "4d403c6b-f5ac-4a64-86e4-1442ff6aafee",
-    "colId": "80d178ef-5176-474a-8708-db78bd45faee",
-    "containerId": "c2e78d60-f731-44bf-823c-2edcc1630ae1",
-    "name": "instamojo live",
-    "url": "https://www.instamojo.com/api/1.1/payment-requests/ ",
-    "method": "POST",
-    "sortNum": 800000,
-    "created": "2023-02-20T16:38:51.108Z",
-    "modified": "2023-02-20T16:38:51.108Z",
-    "headers": [
-      {
-        "name": "X-API-Key",
-        "value": "08a7fd2fdedd0590614a8c8e264294f6",
-        "isDisabled": false
-      },
-      {
-        "name": "X-Auth-Token",
-        "value": "2d38fd72be7f30cf5add1bc62fb2f053",
-        "isDisabled": false
-      }
-    ],
-    "params": [],
-    "body": {
-      "type": "json",
-      "raw": "{\n\t\"amount\" : \"2000\",\n\t\"purpose\" : \"testing\"\n}"
-    },
-    "docs": ""
-  },
-  {
     "_id": "804cf388-959b-4ae5-a3d5-c6059de77d70",
     "colId": "80d178ef-5176-474a-8708-db78bd45faee",
     "containerId": "f688fb68-9864-41a4-b257-bb38efeb6b05",
@@ -3293,6 +3235,47 @@
     "auth": {
       "type": "bearer",
       "bearer": "{{admin_token}}"
+    },
+    "tests": []
+  },
+  {
+    "_id": "4c7cad28-721d-476d-b8ea-ef96596a593e",
+    "colId": "80d178ef-5176-474a-8708-db78bd45faee",
+    "containerId": "c2e78d60-f731-44bf-823c-2edcc1630ae1",
+    "name": "viewed products",
+    "url": "{{baseUrl}}/viewed-products",
+    "method": "GET",
+    "sortNum": 1070000,
+    "created": "2023-05-10T13:00:12.229Z",
+    "modified": "2023-05-10T14:34:49.805Z",
+    "headers": [],
+    "params": [],
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{token}}"
+    },
+    "tests": []
+  },
+  {
+    "_id": "f25e7bd2-dcf5-48e4-9932-fe904280d3fb",
+    "colId": "80d178ef-5176-474a-8708-db78bd45faee",
+    "containerId": "c2e78d60-f731-44bf-823c-2edcc1630ae1",
+    "name": "viewed products ",
+    "url": "{{baseUrl}}/viewed-products",
+    "method": "PUT",
+    "sortNum": 1080000,
+    "created": "2023-05-10T13:03:28.492Z",
+    "modified": "2023-05-10T14:38:37.943Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "[\n  1\n]",
+      "form": []
+    },
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{token}}"
     },
     "tests": []
   }
