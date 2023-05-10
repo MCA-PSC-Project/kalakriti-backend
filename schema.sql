@@ -359,8 +359,9 @@ CREATE TABLE "product_reviews"(
 	"added_at" TIMESTAMPTZ NOT NULL,
 	"updated_at" TIMESTAMPTZ,
 	UNIQUE("customer_id", "product_id"),
-	FOREIGN KEY("customer_id") REFERENCES "customers"("id") ON DELETE SET NULL,
-	FOREIGN KEY("product_id") REFERENCES "products"("id") ON DELETE CASCADE
+	FOREIGN KEY("customer_id") REFERENCES "customers"("id") ON DELETE
+	SET NULL,
+		FOREIGN KEY("product_id") REFERENCES "products"("id") ON DELETE CASCADE
 );
 CREATE TABLE "product_review_medias"(
 	-- "id" SERIAL PRIMARY KEY,
@@ -400,6 +401,13 @@ CREATE TABLE "products_tsv_store"(
 	PRIMARY KEY("product_id"),
 	FOREIGN KEY ("product_id") REFERENCES "products"("id") ON DELETE CASCADE
 );
+CREATE TABLE "recommended_products" (
+	"id" SERIAL PRIMARY KEY,
+	"product_id" INT UNIQUE,
+	"added_at" TIMESTAMPTZ NOT NULL,
+	"updated_at" TIMESTAMPTZ,
+	FOREIGN KEY("product_id") REFERENCES "products"("id") ON DELETE CASCADE
+);
 ----- Indexes -----
 CREATE INDEX ON "customers" ("email");
 CREATE INDEX ON "sellers" ("email");
@@ -419,70 +427,80 @@ VALUES ('MATERIAL');
 INSERT INTO "variants"("variant")
 VALUES ('SIZE');
 ----- tsv ----
-CREATE OR REPLACE FUNCTION products_tsv_trigger() RETURNS trigger AS $$  
-BEGIN  
-    --code for Insert
-    IF TG_OP = 'INSERT' THEN
-      INSERT INTO "products_tsv_store" (product_id, tsv) 
-      VALUES (
-      NEW.id, setweight(to_tsvector('english', COALESCE(NEW.product_name,'')), 'A') || 
-      setweight(to_tsvector('english', COALESCE(NEW.product_description,'')), 'B') || 
-      setweight(to_tsvector('english', COALESCE(array_to_string(NEW.tags, ' '),'')), 'C')
-      );
-
-    --code for Update
-    ELSIF TG_OP = 'UPDATE' THEN
-        IF NEW.product_name <> OLD.product_name or NEW.product_description <> OLD.product_description or NEW.tags IS NOT NULL THEN
-            UPDATE "products_tsv_store" SET tsv =
-            setweight(to_tsvector('english', COALESCE(NEW.product_name,'')), 'A') || 
-            setweight(to_tsvector('english', COALESCE(NEW.product_description,'')), 'B') || 
-            setweight(to_tsvector('english', COALESCE(array_to_string(NEW.tags, ' '),'')), 'C') 
-            WHERE product_id = NEW.id;
-        END IF;
-    END IF;
-  RETURN NEW;
-END  
-$$ LANGUAGE plpgsql;
-
-
-CREATE TRIGGER "insert_update_tsv_trigger" AFTER INSERT OR UPDATE  
-ON products 
-FOR EACH ROW EXECUTE PROCEDURE products_tsv_trigger(); 
-
+CREATE OR REPLACE FUNCTION products_tsv_trigger() RETURNS trigger AS $$ BEGIN --code for Insert
+	IF TG_OP = 'INSERT' THEN
+INSERT INTO "products_tsv_store" (product_id, tsv)
+VALUES (
+		NEW.id,
+		setweight(
+			to_tsvector('english', COALESCE(NEW.product_name, '')),
+			'A'
+		) || setweight(
+			to_tsvector('english', COALESCE(NEW.product_description, '')),
+			'B'
+		) || setweight(
+			to_tsvector(
+				'english',
+				COALESCE(array_to_string(NEW.tags, ' '), '')
+			),
+			'C'
+		)
+	);
+--code for Update
+ELSIF TG_OP = 'UPDATE' THEN IF NEW.product_name <> OLD.product_name
+or NEW.product_description <> OLD.product_description
+or NEW.tags IS NOT NULL THEN
+UPDATE "products_tsv_store"
+SET tsv = setweight(
+		to_tsvector('english', COALESCE(NEW.product_name, '')),
+		'A'
+	) || setweight(
+		to_tsvector('english', COALESCE(NEW.product_description, '')),
+		'B'
+	) || setweight(
+		to_tsvector(
+			'english',
+			COALESCE(array_to_string(NEW.tags, ' '), '')
+		),
+		'C'
+	)
+WHERE product_id = NEW.id;
+END IF;
+END IF;
+RETURN NEW;
+END $$ LANGUAGE plpgsql;
+CREATE TRIGGER "insert_update_tsv_trigger"
+AFTER
+INSERT
+	OR
+UPDATE ON products FOR EACH ROW EXECUTE PROCEDURE products_tsv_trigger();
 --
-
- CREATE OR REPLACE FUNCTION create_cart() RETURNS trigger AS $$  
-BEGIN  
-      INSERT INTO "carts" (customer_id) 
-      VALUES (new.id);
-	  RETURN NEW;
-END
-$$ LANGUAGE plpgsql;
-
-CREATE TRIGGER "create_cart_trigger" AFTER INSERT ON "customers" 
-FOR EACH ROW EXECUTE PROCEDURE create_cart();
+CREATE OR REPLACE FUNCTION create_cart() RETURNS trigger AS $$ BEGIN
+INSERT INTO "carts" (customer_id)
+VALUES (new.id);
+RETURN NEW;
+END $$ LANGUAGE plpgsql;
+CREATE TRIGGER "create_cart_trigger"
+AFTER
+INSERT ON "customers" FOR EACH ROW EXECUTE PROCEDURE create_cart();
 -- 
-
 -- 
-CREATE OR REPLACE FUNCTION check_product_item_status() RETURNS trigger AS $$  
-BEGIN  
-	IF (SELECT((SELECT "product_status" FROM "products" WHERE "id" = NEW.product_id) 
-	<> 'published')) THEN
-		RAISE EXCEPTION 'not allowed: product status is not published';
-	END IF;
-  RETURN NEW;
-END  
-$$ LANGUAGE plpgsql;
-
-
-CREATE OR REPLACE TRIGGER "check_update_product_item_status_trigger" BEFORE UPDATE  
-ON product_items 
-FOR EACH ROW 
-WHEN (NEW.product_item_status = 'published')
-EXECUTE PROCEDURE check_product_item_status(); 
-
+CREATE OR REPLACE FUNCTION check_product_item_status() RETURNS trigger AS $$ BEGIN IF (
+		SELECT(
+				(
+					SELECT "product_status"
+					FROM "products"
+					WHERE "id" = NEW.product_id
+				) <> 'published'
+			)
+	) THEN RAISE EXCEPTION 'not allowed: product status is not published';
+END IF;
+RETURN NEW;
+END $$ LANGUAGE plpgsql;
+CREATE OR REPLACE TRIGGER "check_update_product_item_status_trigger" BEFORE
+UPDATE ON product_items FOR EACH ROW
+	WHEN (NEW.product_item_status = 'published') EXECUTE PROCEDURE check_product_item_status();
 --
 --
 CREATE INDEX "tsv_index" ON "products_tsv_store" USING GIN ("tsv");
-
 END;

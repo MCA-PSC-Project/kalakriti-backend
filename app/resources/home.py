@@ -17,10 +17,106 @@ class RecommendedProducts(Resource):
     def get(self):
         pass
 
+    @f_jwt.jwt_required()
+    def post(self):
+        claims = f_jwt.get_jwt()
+        user_type = claims["user_type"]
+        app.logger.debug("user_type= %s", user_type)
+        data = request.get_json()
+        product_id = data.get("product_id", None)
+        if user_type != "admin" and user_type != "super_admin":
+            abort(
+                403,
+                "Forbidden: only super-admins and admins can add recommended products",
+            )
+
+        ADD_RECOMMENDED_PRODUCT = """INSERT INTO recommended_products(product_id, added_at)
+        VALUES(%s, %s) RETURNING id"""
+        try:
+            cursor = app_globals.get_cursor()
+            cursor.execute(
+                ADD_RECOMMENDED_PRODUCT,
+                (
+                    product_id,
+                    datetime.now(),
+                ),
+            )
+            id = cursor.fetchone()[0]
+        except (Exception, psycopg2.Error) as err:
+            app.logger.debug(err)
+            abort(400, "Bad Request")
+        finally:
+            cursor.close()
+        return f"recommended_product_id = {id} created sucessfully", 201
+
+    @f_jwt.jwt_required()
+    def put(self, recommended_product_id):
+        claims = f_jwt.get_jwt()
+        user_type = claims["user_type"]
+        app.logger.debug("user_type= %s", user_type)
+
+        data = request.get_json()
+        product_id = data.get("product_id", None)
+        if user_type != "admin" and user_type != "super_admin":
+            abort(
+                403,
+                "Forbidden: only super-admins and admins can update recommended product",
+            )
+
+        UPDATE_RECOMMENDED_PRODUCT = (
+            """UPDATE recommended_products SET product_id = %s WHERE id = %s"""
+        )
+        try:
+            cursor = app_globals.get_cursor()
+            cursor.execute(
+                UPDATE_RECOMMENDED_PRODUCT,
+                (
+                    product_id,
+                    recommended_product_id,
+                ),
+            )
+            if cursor.rowcount != 1:
+                abort(400, "Bad Request: update recommended_products row error")
+        except (Exception, psycopg2.Error) as err:
+            app.logger.debug(err)
+            abort(400, "Bad Request")
+        finally:
+            cursor.close()
+        return {
+            "message": f"recommended_product_id {recommended_product_id} modified."
+        }, 200
+
+    @f_jwt.jwt_required()
+    def delete(self, recommended_product_id):
+        claims = f_jwt.get_jwt()
+        user_type = claims["user_type"]
+        app.logger.debug("user_type= %s", user_type)
+
+        if user_type != "admin" and user_type != "super_admin":
+            abort(403, "Forbidden: only super-admins and admins can delete banner")
+
+        DELETE_RECOMMENDED_PRODUCT = (
+            """DELETE FROM recommended_products WHERE id = %s"""
+        )
+        try:
+            cursor = app_globals.get_cursor()
+            cursor.execute(
+                DELETE_RECOMMENDED_PRODUCT,
+                (recommended_product_id,),
+            )
+            if cursor.rowcount != 1:
+                abort(400, "Bad Request: delete recommended_products row error")
+        except (Exception, psycopg2.Error) as err:
+            app.logger.debug(err)
+            abort(400, "Bad Request")
+        finally:
+            cursor.close()
+        return 200
+
 
 class PopularProducts(Resource):
     def get(self):
-        args = request.args 
+        args = request.args
         limit = args.get("limit", None)
         if not limit:
             limit = 10
@@ -28,17 +124,15 @@ class PopularProducts(Resource):
             cursor = app_globals.get_named_tuple_cursor()
             product_id_list = []
             product_ids = []
-            
+
             GET_POPULAR_PRODUCT_IDS = """ select product_id, avg(rating) as r from product_reviews 
             group by product_id 
             order by r desc 
             limit %s"""
 
             cursor.execute(
-                 GET_POPULAR_PRODUCT_IDS,
-                (
-                    limit,
-                ),
+                GET_POPULAR_PRODUCT_IDS,
+                (limit,),
             )
 
             rows = cursor.fetchall()
@@ -49,13 +143,12 @@ class PopularProducts(Resource):
                 product_id_dict["id"] = row.product_id
                 product_id_list.append(product_id_dict)
 
-
             for product_id in product_id_list:
-                product_ids.append(product_id['id'])  
-            app.logger.debug(product_ids) 
+                product_ids.append(product_id["id"])
+            app.logger.debug(product_ids)
 
             product_id_tuple = tuple(product_ids)
-        
+
             GET_POPULAR_PRODUCTS = """SELECT p.id AS product_id, p.product_name, p.product_description, 
             p.currency, p.product_status, p.min_order_quantity, p.max_order_quantity,
             p.added_at, p.updated_at,
@@ -68,13 +161,10 @@ class PopularProducts(Resource):
             JOIN product_reviews pr ON pr.product_id = p.id
             WHERE p.id IN %s 
             ORDER BY pr.review DESC"""
-            
 
             cursor.execute(
                 GET_POPULAR_PRODUCTS,
-                (
-                    (product_id_tuple,)
-                ),
+                ((product_id_tuple,)),
             )
             rows = cursor.fetchall()
             if not rows:
@@ -124,9 +214,7 @@ class PopularProducts(Resource):
                 base_product_item_dict = {}
                 cursor.execute(
                     GET_PRODUCT_BASE_ITEM,
-                    (
-                        product_dict["base_product_item_id"],
-                    ),
+                    (product_dict["base_product_item_id"],),
                 )
                 row = cursor.fetchone()
                 if not row:
@@ -199,7 +287,6 @@ class PopularProducts(Resource):
         app_globals.redis_client.set("new_products_list", json.dumps(products_list))
         app_globals.redis_client.expire("new_products_list", 60)  # seconds
         return products_list
-
 
 
 class NewProducts(Resource):

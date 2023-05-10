@@ -270,7 +270,11 @@ def create_app(config_name):
     # TODO: Homepage related endpoints
     # Home
     api.add_resource(Home, "/home")
-    api.add_resource(RecommendedProducts, "/recommended-products")
+    api.add_resource(
+        RecommendedProducts,
+        "/recommended-products",
+        "/recommended-products/<int:recommended_product_id>",
+    )
     api.add_resource(PopularProducts, "/popular-products")
     api.add_resource(NewProducts, "/new-products")
 
