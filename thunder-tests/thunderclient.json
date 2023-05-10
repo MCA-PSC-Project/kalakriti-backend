@@ -388,23 +388,26 @@
     "colId": "80d178ef-5176-474a-8708-db78bd45faee",
     "containerId": "9ae95817-3002-4a5d-9fa4-dd1f643a1400",
     "name": "get recommended products",
-    "url": "{{baseUrl}}/recommended-products",
+    "url": "{{baseUrl}}/recommended-products?limit=10",
     "method": "GET",
     "sortNum": 210000,
     "created": "2023-02-20T16:38:51.048Z",
-    "modified": "2023-02-20T16:38:51.048Z",
+    "modified": "2023-05-10T09:33:04.218Z",
     "headers": [],
     "params": [
       {
         "name": "limit",
-        "value": "10"
+        "value": "10",
+        "isPath": false
       },
       {
         "name": "category_ids",
-        "value": "15,20"
+        "value": "15,20",
+        "isDisabled": true,
+        "isPath": false
       }
     ],
-    "docs": ""
+    "tests": []
   },
   {
     "_id": "33d25aec-ed82-4c51-86e0-e33c963503d4",
@@ -3238,12 +3241,12 @@
     "method": "POST",
     "sortNum": 10000,
     "created": "2023-05-10T09:04:55.275Z",
-    "modified": "2023-05-10T09:06:10.382Z",
+    "modified": "2023-05-10T09:36:04.265Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n  \"product_id\": 1\n}",
+      "raw": "{\n  \"product_id\": 3\n}",
       "form": []
     },
     "auth": {
@@ -3257,11 +3260,11 @@
     "colId": "80d178ef-5176-474a-8708-db78bd45faee",
     "containerId": "555df9df-9d33-4300-817c-daf4f62797e8",
     "name": "delete recommended products",
-    "url": "{{baseUrl}}/recommended-products/1",
+    "url": "{{baseUrl}}/recommended-products/3",
     "method": "DELETE",
     "sortNum": 20000,
     "created": "2023-05-10T09:06:14.807Z",
-    "modified": "2023-05-10T09:06:38.819Z",
+    "modified": "2023-05-10T09:35:34.003Z",
     "headers": [],
     "params": [],
     "auth": {

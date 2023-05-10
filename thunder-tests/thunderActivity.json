@@ -2482,12 +2482,12 @@
     "method": "POST",
     "sortNum": 0,
     "created": "2023-05-10T09:13:06.761Z",
-    "modified": "2023-05-10T09:13:06.761Z",
+    "modified": "2023-05-10T09:36:04.278Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n  \"product_id\": 1\n}",
+      "raw": "{\n  \"product_id\": 3\n}",
       "form": []
     },
     "auth": {
@@ -2529,6 +2529,50 @@
     "sortNum": 0,
     "created": "2023-05-10T09:13:43.110Z",
     "modified": "2023-05-10T09:13:43.110Z",
+    "headers": [],
+    "params": [],
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{admin_token}}"
+    },
+    "tests": []
+  },
+  {
+    "_id": "b5872caf-b1b0-4054-985e-5275c31fc0aa",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/recommended-products?limit=10",
+    "url": "{{baseUrl}}/recommended-products?limit=10",
+    "method": "GET",
+    "sortNum": 0,
+    "created": "2023-05-10T09:33:02.968Z",
+    "modified": "2023-05-10T09:33:02.968Z",
+    "headers": [],
+    "params": [
+      {
+        "name": "limit",
+        "value": "10",
+        "isPath": false
+      },
+      {
+        "name": "category_ids",
+        "value": "15,20",
+        "isDisabled": true,
+        "isPath": false
+      }
+    ],
+    "tests": []
+  },
+  {
+    "_id": "9699dcdd-a6b1-45f6-87ee-66bed7dff42e",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/recommended-products/3",
+    "url": "{{baseUrl}}/recommended-products/3",
+    "method": "DELETE",
+    "sortNum": 0,
+    "created": "2023-05-10T09:35:33.845Z",
+    "modified": "2023-05-10T09:35:33.845Z",
     "headers": [],
     "params": [],
     "auth": {
