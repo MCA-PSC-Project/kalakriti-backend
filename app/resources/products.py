@@ -53,7 +53,7 @@ class ProductsByCategory(Resource):
             )
             rows = cursor.fetchall()
             if not rows:
-                return {}
+                return []
             products_list = []
             for row in rows:
                 product_dict = {}
@@ -689,6 +689,7 @@ class SellersProducts(Resource):
 
         app.logger.debug("product_id= %s", product_id)
         data = request.get_json()
+        current_time = datetime.now()
 
         if "product_status" in data.keys():
             if user_type != "admin" and user_type != "super_admin":
@@ -696,11 +697,50 @@ class SellersProducts(Resource):
                     400,
                     "only super-admins and admins are allowed to update product status",
                 )
-            value = data["product_status"]
+            product_item_status = product_status = data["product_status"]
             # app.logger.debug("product_status= %s", value)
-            UPDATE_PRODUCT_STATUS = """UPDATE products SET product_status= %s, updated_at= %s
-            WHERE id= %s"""
-            PATCH_PRODUCT = UPDATE_PRODUCT_STATUS
+
+            # before beginning transaction autocommit must be off
+            app_globals.db_conn.autocommit = False
+            try:
+                cursor = app_globals.get_cursor()
+                UPDATE_PRODUCT_STATUS = """UPDATE products SET product_status= %s, updated_at= %s
+                WHERE id= %s"""
+                cursor.execute(
+                    UPDATE_PRODUCT_STATUS,
+                    (
+                        product_status,
+                        current_time,
+                        product_id,
+                    ),
+                )
+                if cursor.rowcount != 1:
+                    abort(400, "Bad Request: update row error")
+
+                # for making base product item status same as product status
+                UPDATE_BASE_PRODUCT_ITEM_STATUS = """UPDATE product_items SET product_item_status= %s, updated_at= %s
+                WHERE id= (SELECT product_item_id FROM product_base_item WHERE product_id= %s)"""
+                cursor.execute(
+                    UPDATE_BASE_PRODUCT_ITEM_STATUS,
+                    (
+                        product_item_status,
+                        current_time,
+                        product_id,
+                    ),
+                )
+                if cursor.rowcount != 1:
+                    abort(400, "Bad Request: update row error")
+            except (Exception, psycopg2.Error) as err:
+                app.logger.debug(err)
+                app_globals.db_conn.rollback()
+                app_globals.db_conn.autocommit = True
+                app.logger.debug("autocommit switched back from off to on")
+                abort(400, "Bad Request")
+            finally:
+                cursor.close()
+            app_globals.db_conn.commit()
+            app_globals.db_conn.autocommit = True
+
         elif "trashed" in data.keys():
             if (
                 user_type != "seller"
@@ -710,29 +750,48 @@ class SellersProducts(Resource):
                 abort(400, "only seller, super-admins and admins can trash a product")
             value = "trashed" if data["trashed"] else "unpublished"
             # app.logger.debug("trashed= %s", value)
-            UPDATE_PRODUCT_TRASHED_VALUE = """UPDATE products SET product_status= %s, updated_at= %s
-            WHERE id= %s"""
-            PATCH_PRODUCT = UPDATE_PRODUCT_TRASHED_VALUE
+            # before beginning transaction autocommit must be off
+            app_globals.db_conn.autocommit = False
+            try:
+                cursor = app_globals.get_cursor()
+                UPDATE_PRODUCT_TRASHED_VALUE = """UPDATE products SET product_status= %s, updated_at= %s
+                WHERE id= %s"""
+                cursor.execute(
+                    UPDATE_PRODUCT_TRASHED_VALUE,
+                    (
+                        value,
+                        current_time,
+                        product_id,
+                    ),
+                )
+                if cursor.rowcount != 1:
+                    abort(400, "Bad Request: update row error")
+
+                # for making product items status same as product status
+                UPDATE_PRODUCT_ITEMS_TRASHED_VALUE = """UPDATE product_items SET product_item_status= %s, updated_at= %s
+                WHERE product_id= %s"""
+                cursor.execute(
+                    UPDATE_PRODUCT_ITEMS_TRASHED_VALUE,
+                    (
+                        value,
+                        current_time,
+                        product_id,
+                    ),
+                )
+                if cursor.rowcount == 0:
+                    abort(400, "Bad Request: update row error")
+            except (Exception, psycopg2.Error) as err:
+                app.logger.debug(err)
+                app_globals.db_conn.rollback()
+                app_globals.db_conn.autocommit = True
+                app.logger.debug("autocommit switched back from off to on")
+                abort(400, "Bad Request")
+            finally:
+                cursor.close()
+            app_globals.db_conn.commit()
+            app_globals.db_conn.autocommit = True
         else:
             abort(400, "Bad Request")
-        current_time = datetime.now()
-        try:
-            cursor = app_globals.get_cursor()
-            cursor.execute(
-                PATCH_PRODUCT,
-                (
-                    value,
-                    current_time,
-                    product_id,
-                ),
-            )
-            if cursor.rowcount != 1:
-                abort(400, "Bad Request: update row error")
-        except (Exception, psycopg2.Error) as err:
-            app.logger.debug(err)
-            abort(400, "Bad Request")
-        finally:
-            cursor.close()
         return {"message": f"product_id {product_id} modified."}, 200
 
     # delete trashed product
