@@ -39,7 +39,8 @@ from app.resources.home import (
     Home,
     NewProducts,
     PopularProducts,
-    RecommendedProducts,
+    RecommendedProductsForAnonymousCustomer,
+    PersonalizedRecommendedProducts,
     ViewedProducts,
 )
 from app.resources.orders import OrderItems, Orders, CustomerOrders
@@ -277,13 +278,18 @@ def create_app(config_name):
     # Home
     api.add_resource(Home, "/home")
     api.add_resource(
-        RecommendedProducts,
+        RecommendedProductsForAnonymousCustomer,
         "/recommended-products",
         "/recommended-products/<int:recommended_product_id>",
     )
+    api.add_resource(
+        PersonalizedRecommendedProducts, "/recommended-products/personalized"
+    )
     api.add_resource(PopularProducts, "/popular-products")
     api.add_resource(NewProducts, "/new-products")
-    api.add_resource(ViewedProducts, "/viewed-products")
+    api.add_resource(
+        ViewedProducts, "/viewed-products", "/viewed-products/<int:product_id>"
+    )
 
     # to be exceuted at app exit for cleanups
     @atexit.register

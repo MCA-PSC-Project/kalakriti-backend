@@ -28,12 +28,12 @@
     "method": "POST",
     "sortNum": 5000,
     "created": "2023-02-20T16:38:51.029Z",
-    "modified": "2023-05-14T10:53:36.966Z",
+    "modified": "2023-05-16T05:07:57.571Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n  \"email\": \"customer1gmail.com\",\n  \"password\": \"abcd@1234\"\n}",
+      "raw": "{\n  \"email\": \"customer1@gmail.com\",\n  \"password\": \"abcd@1234\"\n}",
       "form": []
     },
     "tests": [],
@@ -387,12 +387,12 @@
     "_id": "e9f6b309-7ee8-4316-ae1b-35a1cdd00f08",
     "colId": "80d178ef-5176-474a-8708-db78bd45faee",
     "containerId": "9ae95817-3002-4a5d-9fa4-dd1f643a1400",
-    "name": "get recommended products",
+    "name": "get recommended products for anonymous customer",
     "url": "{{baseUrl}}/recommended-products?limit=10",
     "method": "GET",
-    "sortNum": 210000,
+    "sortNum": 203750,
     "created": "2023-02-20T16:38:51.048Z",
-    "modified": "2023-05-15T07:51:21.361Z",
+    "modified": "2023-05-15T10:00:35.496Z",
     "headers": [],
     "params": [
       {
@@ -1045,12 +1045,12 @@
     "method": "POST",
     "sortNum": 535000,
     "created": "2023-02-20T16:38:51.083Z",
-    "modified": "2023-05-15T07:50:50.411Z",
+    "modified": "2023-05-16T05:38:27.378Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n  \"product_name\": \"madhubani painting\",\n  \"product_description\": \"dxvxk\",\n  \"category_id\": 1,\n  \"subcategory_id\": 2,\n  \"currency\": \"INR\",\n  \"min_order_quantity\": 2,\n  \"max_order_quantity\": 10,\n  \"product_items\": [\n    {\n      \"variant\": \"BASE\",\n      \"variant_value\": \"BASE\",\n      \"product_variant_name\": \"BASE\",\n      \"SKU\": \"12345\",\n      \"original_price\": 1000,\n      \"offer_price\": 500,\n      \"quantity_in_stock\": 10,\n      \"media_list\": [\n        {\n          \"media_id\": 1,\n          \"display_order\": 1\n        },\n        {\n          \"media_id\": 2,\n          \"display_order\": 2\n        }\n      ]\n    }\n  ]\n}",
+      "raw": "{\n  \"product_name\": \"madhubani painting\",\n  \"product_description\": \"dxvxk\",\n  \"category_id\": 1,\n  \"subcategory_id\": null,\n  \"currency\": \"INR\",\n  \"min_order_quantity\": 2,\n  \"max_order_quantity\": 10,\n  \"product_items\": [\n    {\n      \"variant\": \"BASE\",\n      \"variant_value\": \"BASE\",\n      \"product_variant_name\": \"BASE\",\n      \"SKU\": \"123a\",\n      \"original_price\": 1000,\n      \"offer_price\": 500,\n      \"quantity_in_stock\": 10,\n      \"media_list\": [\n        {\n          \"media_id\": 1,\n          \"display_order\": 1\n        },\n        {\n          \"media_id\": 2,\n          \"display_order\": 2\n        }\n      ]\n    }\n  ]\n}",
       "form": []
     },
     "auth": {
@@ -1064,16 +1064,16 @@
     "colId": "80d178ef-5176-474a-8708-db78bd45faee",
     "containerId": "d3f02f76-889e-4a8d-88e7-d026529d83a9",
     "name": "update product",
-    "url": "{{baseUrl}}/sellers/products/10",
+    "url": "{{baseUrl}}/sellers/products/5",
     "method": "PUT",
     "sortNum": 537500,
     "created": "2023-02-20T16:38:51.084Z",
-    "modified": "2023-04-05T14:23:05.971Z",
+    "modified": "2023-05-16T05:42:28.592Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n  \"product_name\": \"famous madhubani painting\",\n  \"product_description\": \"paintings from madhubani\",\n  \"category_id\": 1,\n  \"subcategory_id\": null,\n  \"currency\": \"INR\",\n  \"min_order_quantity\": 1,\n  \"max_order_quantity\": 5\n}",
+      "raw": "{\n  \"product_name\": \"famous madhubani painting\",\n  \"product_description\": \"paintings from madhubani\",\n  \"category_id\": 2,\n  \"subcategory_id\": 3,\n  \"currency\": \"INR\",\n  \"min_order_quantity\": 1,\n  \"max_order_quantity\": 5\n}",
       "form": []
     },
     "auth": {
@@ -3233,15 +3233,39 @@
     "tests": []
   },
   {
-    "_id": "4c7cad28-721d-476d-b8ea-ef96596a593e",
+    "_id": "f9395a47-cf94-465e-a201-2f189857e3a9",
     "colId": "80d178ef-5176-474a-8708-db78bd45faee",
-    "containerId": "c2e78d60-f731-44bf-823c-2edcc1630ae1",
+    "containerId": "9ae95817-3002-4a5d-9fa4-dd1f643a1400",
+    "name": "get recommended products for customer",
+    "url": "{{baseUrl}}/recommended-products/personalized?limit=10",
+    "method": "GET",
+    "sortNum": 207500,
+    "created": "2023-05-15T09:59:39.978Z",
+    "modified": "2023-05-15T10:03:50.991Z",
+    "headers": [],
+    "params": [
+      {
+        "name": "limit",
+        "value": "10",
+        "isPath": false
+      }
+    ],
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{token}}"
+    },
+    "tests": []
+  },
+  {
+    "_id": "957ac23d-94c8-4f4f-a656-05ba007016ce",
+    "colId": "80d178ef-5176-474a-8708-db78bd45faee",
+    "containerId": "bcba1221-b084-4e7e-af87-7859876e2435",
     "name": "viewed products",
     "url": "{{baseUrl}}/viewed-products",
     "method": "GET",
     "sortNum": 1070000,
-    "created": "2023-05-10T13:00:12.229Z",
-    "modified": "2023-05-10T14:34:49.805Z",
+    "created": "2023-05-16T05:49:06.311Z",
+    "modified": "2023-05-16T05:49:06.311Z",
     "headers": [],
     "params": [],
     "auth": {
@@ -3251,22 +3275,17 @@
     "tests": []
   },
   {
-    "_id": "f25e7bd2-dcf5-48e4-9932-fe904280d3fb",
+    "_id": "9b8f4ebe-594c-4853-bd44-59437a739da1",
     "colId": "80d178ef-5176-474a-8708-db78bd45faee",
-    "containerId": "c2e78d60-f731-44bf-823c-2edcc1630ae1",
-    "name": "viewed products ",
-    "url": "{{baseUrl}}/viewed-products",
+    "containerId": "bcba1221-b084-4e7e-af87-7859876e2435",
+    "name": "viewed product",
+    "url": "{{baseUrl}}/viewed-products/5",
     "method": "PUT",
     "sortNum": 1080000,
-    "created": "2023-05-10T13:03:28.492Z",
-    "modified": "2023-05-10T14:38:37.943Z",
+    "created": "2023-05-16T05:49:06.312Z",
+    "modified": "2023-05-16T05:49:06.311Z",
     "headers": [],
     "params": [],
-    "body": {
-      "type": "json",
-      "raw": "[\n  1\n]",
-      "form": []
-    },
     "auth": {
       "type": "bearer",
       "bearer": "{{token}}"

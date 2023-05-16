@@ -400,23 +400,32 @@ CREATE TABLE "products_tsv_store"(
 	PRIMARY KEY("product_id"),
 	FOREIGN KEY ("product_id") REFERENCES "products"("id") ON DELETE CASCADE
 );
+-- for anonymous customers 
 CREATE TABLE "recommended_products" (
 	"id" SERIAL PRIMARY KEY,
-	"product_id" INT UNIQUE,
+	"product_id" INT NOT NULL UNIQUE,
 	"added_at" TIMESTAMPTZ NOT NULL,
 	"updated_at" TIMESTAMPTZ,
 	FOREIGN KEY("product_id") REFERENCES "products"("id") ON DELETE CASCADE
 );
 CREATE TABLE "viewed_products" (
-	-- "id" SERIAL PRIMARY KEY,
-	"customer_id" INT,
-	"product_id" INT,
+	"customer_id" INT NOT NULL,
+	"product_id" INT NOT NULL,
+	"interested_category_id" INT NOT NULL,
 	"added_at" TIMESTAMPTZ NOT NULL,
 	"updated_at" TIMESTAMPTZ,
 	PRIMARY KEY("customer_id", "product_id"),
 	FOREIGN KEY("customer_id") REFERENCES "customers"("id") ON DELETE CASCADE,
-	FOREIGN KEY("product_id") REFERENCES "products"("id") ON DELETE CASCADE
+	FOREIGN KEY("product_id") REFERENCES "products"("id") ON DELETE CASCADE,
+	FOREIGN KEY("interested_category_id") REFERENCES "categories"("id") ON DELETE CASCADE
 );
+-- CREATE TABLE "customers_interested_categories" (
+-- 	"customer_id" INT,
+-- 	"category_id" INT,
+-- 	PRIMARY KEY("customer_id", "category_id"),
+-- 	FOREIGN KEY("customer_id") REFERENCES "customers"("id") ON DELETE CASCADE,
+-- 	FOREIGN KEY("category_id") REFERENCES "categories"("id") ON DELETE CASCADE
+-- );
 ----- Indexes -----
 CREATE INDEX ON "customers" ("email");
 CREATE INDEX ON "sellers" ("email");

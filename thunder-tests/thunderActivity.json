@@ -8,7 +8,7 @@
     "method": "POST",
     "sortNum": 0,
     "created": "2023-03-14T17:30:06.748Z",
-    "modified": "2023-05-14T11:18:08.161Z",
+    "modified": "2023-05-16T05:08:51.074Z",
     "headers": [],
     "params": [],
     "body": {
@@ -57,12 +57,12 @@
     "method": "POST",
     "sortNum": 0,
     "created": "2023-03-29T17:14:14.734Z",
-    "modified": "2023-05-15T07:50:50.438Z",
+    "modified": "2023-05-16T05:38:27.412Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n  \"product_name\": \"madhubani painting\",\n  \"product_description\": \"dxvxk\",\n  \"category_id\": 1,\n  \"subcategory_id\": 2,\n  \"currency\": \"INR\",\n  \"min_order_quantity\": 2,\n  \"max_order_quantity\": 10,\n  \"product_items\": [\n    {\n      \"variant\": \"BASE\",\n      \"variant_value\": \"BASE\",\n      \"product_variant_name\": \"BASE\",\n      \"SKU\": \"12345\",\n      \"original_price\": 1000,\n      \"offer_price\": 500,\n      \"quantity_in_stock\": 10,\n      \"media_list\": [\n        {\n          \"media_id\": 1,\n          \"display_order\": 1\n        },\n        {\n          \"media_id\": 2,\n          \"display_order\": 2\n        }\n      ]\n    }\n  ]\n}",
+      "raw": "{\n  \"product_name\": \"madhubani painting\",\n  \"product_description\": \"dxvxk\",\n  \"category_id\": 1,\n  \"subcategory_id\": null,\n  \"currency\": \"INR\",\n  \"min_order_quantity\": 2,\n  \"max_order_quantity\": 10,\n  \"product_items\": [\n    {\n      \"variant\": \"BASE\",\n      \"variant_value\": \"BASE\",\n      \"product_variant_name\": \"BASE\",\n      \"SKU\": \"123a\",\n      \"original_price\": 1000,\n      \"offer_price\": 500,\n      \"quantity_in_stock\": 10,\n      \"media_list\": [\n        {\n          \"media_id\": 1,\n          \"display_order\": 1\n        },\n        {\n          \"media_id\": 2,\n          \"display_order\": 2\n        }\n      ]\n    }\n  ]\n}",
       "form": []
     },
     "auth": {
@@ -1781,12 +1781,12 @@
     "method": "POST",
     "sortNum": 0,
     "created": "2023-04-22T15:36:43.748Z",
-    "modified": "2023-05-14T10:53:36.976Z",
+    "modified": "2023-05-16T05:08:00.428Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n  \"email\": \"customer1gmail.com\",\n  \"password\": \"abcd@1234\"\n}",
+      "raw": "{\n  \"email\": \"customer1@gmail.com\",\n  \"password\": \"abcd@1234\"\n}",
       "form": []
     },
     "tests": [],
@@ -2195,12 +2195,12 @@
     "method": "PUT",
     "sortNum": 0,
     "created": "2023-05-10T14:35:58.052Z",
-    "modified": "2023-05-10T14:38:45.425Z",
+    "modified": "2023-05-15T09:52:32.986Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "[\n  1\n]",
+      "raw": "[\n  3,\n  4\n]",
       "form": []
     },
     "auth": {
@@ -2579,6 +2579,124 @@
     "auth": {
       "type": "bearer",
       "bearer": "{{admin_token}}"
+    },
+    "tests": []
+  },
+  {
+    "_id": "98f6f0ff-4bea-482e-a431-1c40b574fdf2",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/viewed-products/1",
+    "url": "{{baseUrl}}/viewed-products/1",
+    "method": "PUT",
+    "sortNum": 0,
+    "created": "2023-05-16T05:06:25.483Z",
+    "modified": "2023-05-16T05:06:25.483Z",
+    "headers": [],
+    "params": [],
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{token}}"
+    },
+    "tests": []
+  },
+  {
+    "_id": "e1677f53-b31d-4c64-9e05-7ace296a0a22",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/viewed-products/3",
+    "url": "{{baseUrl}}/viewed-products/3",
+    "method": "PUT",
+    "sortNum": 0,
+    "created": "2023-05-16T05:11:38.529Z",
+    "modified": "2023-05-16T05:11:38.529Z",
+    "headers": [],
+    "params": [],
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{token}}"
+    },
+    "tests": []
+  },
+  {
+    "_id": "3d3daa25-cf41-4bdf-bbbd-58bfcc6d02cb",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/viewed-products/4",
+    "url": "{{baseUrl}}/viewed-products/4",
+    "method": "PUT",
+    "sortNum": 0,
+    "created": "2023-05-16T05:22:53.967Z",
+    "modified": "2023-05-16T05:22:53.967Z",
+    "headers": [],
+    "params": [],
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{token}}"
+    },
+    "tests": []
+  },
+  {
+    "_id": "054b2c89-a9b8-4219-83eb-bfc9fc868b48",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/sellers/products/3",
+    "url": "{{baseUrl}}/sellers/products/3",
+    "method": "PUT",
+    "sortNum": 0,
+    "created": "2023-05-16T05:41:26.650Z",
+    "modified": "2023-05-16T05:41:26.650Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n  \"product_name\": \"famous madhubani painting\",\n  \"product_description\": \"paintings from madhubani\",\n  \"category_id\": 1,\n  \"subcategory_id\": null,\n  \"currency\": \"INR\",\n  \"min_order_quantity\": 1,\n  \"max_order_quantity\": 5\n}",
+      "form": []
+    },
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{seller_token}}"
+    },
+    "tests": []
+  },
+  {
+    "_id": "41f9e48b-3b7e-4a7b-8501-6f0ee7bc8a26",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/sellers/products/5",
+    "url": "{{baseUrl}}/sellers/products/5",
+    "method": "PUT",
+    "sortNum": 0,
+    "created": "2023-05-16T05:41:39.625Z",
+    "modified": "2023-05-16T05:42:11.479Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n  \"product_name\": \"famous madhubani painting\",\n  \"product_description\": \"paintings from madhubani\",\n  \"category_id\": 1,\n  \"subcategory_id\": 4,\n  \"currency\": \"INR\",\n  \"min_order_quantity\": 1,\n  \"max_order_quantity\": 5\n}",
+      "form": []
+    },
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{seller_token}}"
+    },
+    "tests": []
+  },
+  {
+    "_id": "c909038f-3d5f-4fb5-ad2f-eb406f0a5f4c",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/viewed-products/5",
+    "url": "{{baseUrl}}/viewed-products/5",
+    "method": "PUT",
+    "sortNum": 0,
+    "created": "2023-05-16T05:48:28.697Z",
+    "modified": "2023-05-16T05:48:28.697Z",
+    "headers": [],
+    "params": [],
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{token}}"
     },
     "tests": []
   }
