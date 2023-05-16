@@ -788,21 +788,21 @@ class ViewedProducts(Resource):
             p.currency, p.product_status, p.min_order_quantity, p.max_order_quantity,
             p.added_at, p.updated_at, 
             s.id AS seller_id, s.seller_name, s.email,
-            pbi.product_item_id AS base_product_item_id
+            pbi.product_item_id AS base_product_item_id,
+            vp.added_at AS vp_added_at, vp.updated_at AS vp_updated_at 
             FROM products p 
             JOIN sellers s ON p.seller_id = s.id 
             JOIN product_base_item pbi ON p.id = pbi.product_id
-            WHERE p.id IN (
-                SELECT product_id FROM viewed_products WHERE customer_id = %s 
-                ORDER BY updated_at ASC, added_at DESC LIMIT %s 
-            ) AND p.product_status = %s"""
+            JOIN viewed_products vp ON p.id = vp.product_id AND vp.customer_id = %s
+            WHERE p.product_status = %s
+            ORDER BY vp.updated_at ASC, vp.added_at DESC LIMIT %s """
 
             cursor.execute(
                 GET_VIEWED_PRODUCTS,
                 (
                     customer_id,
-                    limit,
                     product_status,
+                    limit,
                 ),
             )
             rows = cursor.fetchall()
@@ -812,6 +812,18 @@ class ViewedProducts(Resource):
             for row in rows:
                 product_dict = {}
                 product_dict["id"] = row.product_id
+                product_dict.update(
+                    json.loads(
+                        json.dumps(
+                            {
+                                "last_viewed_at": row.vp_updated_at
+                                if row.vp_updated_at
+                                else row.vp_added_at
+                            },
+                            default=str,
+                        )
+                    )
+                )
                 product_dict["product_name"] = row.product_name
                 product_dict["product_description"] = row.product_description
                 product_dict["currency"] = row.currency
@@ -832,7 +844,6 @@ class ViewedProducts(Resource):
                 product_dict.update({"seller": seller_dict})
 
                 product_dict["base_product_item_id"] = row.base_product_item_id
-
                 product_item_status = product_status
                 GET_PRODUCT_BASE_ITEM = """SELECT pi.id AS product_item_id, pi.product_id, pi.product_variant_name, pi."SKU",
                 pi.original_price, pi.offer_price, pi.quantity_in_stock, pi.added_at, pi.updated_at, pi.product_item_status,
