@@ -170,7 +170,7 @@
     "params": [],
     "auth": {
       "type": "bearer",
-      "bearer": "{{token}}"
+      "bearer": "{{customer_token}}"
     },
     "tests": []
   },
@@ -193,7 +193,7 @@
     },
     "auth": {
       "type": "bearer",
-      "bearer": "{{token}}"
+      "bearer": "{{customer_token}}"
     },
     "tests": []
   },
@@ -251,7 +251,7 @@
     },
     "auth": {
       "type": "bearer",
-      "bearer": "{{token}}"
+      "bearer": "{{customer_token}}"
     },
     "docs": ""
   },
@@ -280,7 +280,7 @@
     },
     "auth": {
       "type": "bearer",
-      "bearer": "{{token}}"
+      "bearer": "{{customer_token}}"
     },
     "docs": ""
   },
@@ -309,7 +309,7 @@
     },
     "auth": {
       "type": "bearer",
-      "bearer": "{{token}}"
+      "bearer": "{{customer_token}}"
     },
     "docs": ""
   },
@@ -338,7 +338,7 @@
     },
     "auth": {
       "type": "bearer",
-      "bearer": "{{token}}"
+      "bearer": "{{customer_token}}"
     },
     "docs": ""
   },
@@ -546,7 +546,7 @@
     },
     "auth": {
       "type": "bearer",
-      "bearer": "{{token}}"
+      "bearer": "{{customer_token}}"
     },
     "tests": []
   },
@@ -564,7 +564,7 @@
     "params": [],
     "auth": {
       "type": "bearer",
-      "bearer": "{{token}}"
+      "bearer": "{{customer_token}}"
     },
     "tests": []
   },
@@ -582,7 +582,7 @@
     "params": [],
     "auth": {
       "type": "bearer",
-      "bearer": "{{token}}"
+      "bearer": "{{customer_token}}"
     },
     "tests": []
   },
@@ -605,7 +605,7 @@
     },
     "auth": {
       "type": "bearer",
-      "bearer": "{{token}}"
+      "bearer": "{{customer_token}}"
     },
     "tests": []
   },
@@ -623,7 +623,7 @@
     "params": [],
     "auth": {
       "type": "bearer",
-      "bearer": "{{token}}"
+      "bearer": "{{customer_token}}"
     },
     "tests": []
   },
@@ -641,7 +641,7 @@
     "params": [],
     "auth": {
       "type": "bearer",
-      "bearer": "{{token}}"
+      "bearer": "{{customer_token}}"
     },
     "tests": []
   },
@@ -986,7 +986,7 @@
     },
     "auth": {
       "type": "bearer",
-      "bearer": "{{token}}"
+      "bearer": "{{customer_token}}"
     },
     "tests": []
   },
@@ -1127,7 +1127,7 @@
     },
     "auth": {
       "type": "bearer",
-      "bearer": "{{token}}"
+      "bearer": "{{customer_token}}"
     },
     "tests": []
   },
@@ -1145,7 +1145,7 @@
     "params": [],
     "auth": {
       "type": "bearer",
-      "bearer": "{{token}}"
+      "bearer": "{{customer_token}}"
     },
     "tests": []
   },
@@ -1163,7 +1163,7 @@
     "params": [],
     "auth": {
       "type": "bearer",
-      "bearer": "{{token}}"
+      "bearer": "{{customer_token}}"
     },
     "tests": []
   },
@@ -1186,7 +1186,7 @@
     },
     "auth": {
       "type": "bearer",
-      "bearer": "{{token}}"
+      "bearer": "{{customer_token}}"
     },
     "tests": []
   },
@@ -1451,7 +1451,7 @@
     "params": [],
     "auth": {
       "type": "bearer",
-      "bearer": "{{token}}"
+      "bearer": "{{customer_token}}"
     },
     "tests": []
   },
@@ -1515,7 +1515,7 @@
     },
     "auth": {
       "type": "bearer",
-      "bearer": "{{token}}"
+      "bearer": "{{customer_token}}"
     },
     "tests": []
   },
@@ -1552,7 +1552,7 @@
     },
     "auth": {
       "type": "bearer",
-      "bearer": "{{token}}"
+      "bearer": "{{customer_token}}"
     },
     "tests": []
   },
@@ -1570,7 +1570,7 @@
     "params": [],
     "auth": {
       "type": "bearer",
-      "bearer": "{{token}}"
+      "bearer": "{{customer_token}}"
     },
     "tests": []
   },
@@ -1817,7 +1817,7 @@
     },
     "auth": {
       "type": "bearer",
-      "bearer": "{{token}}"
+      "bearer": "{{customer_token}}"
     },
     "tests": []
   },
@@ -1879,7 +1879,7 @@
     "params": [],
     "auth": {
       "type": "bearer",
-      "bearer": "{{token}}"
+      "bearer": "{{customer_token}}"
     },
     "tests": []
   },
@@ -1902,7 +1902,7 @@
     },
     "auth": {
       "type": "bearer",
-      "bearer": "{{token}}"
+      "bearer": "{{customer_token}}"
     },
     "tests": []
   },
@@ -1957,7 +1957,7 @@
     "params": [],
     "auth": {
       "type": "bearer",
-      "bearer": "{{token}}"
+      "bearer": "{{customer_token}}"
     },
     "tests": []
   },
@@ -1975,7 +1975,7 @@
     "params": [],
     "auth": {
       "type": "bearer",
-      "bearer": "{{token}}"
+      "bearer": "{{customer_token}}"
     },
     "tests": []
   },
@@ -2016,7 +2016,7 @@
     "params": [],
     "auth": {
       "type": "bearer",
-      "bearer": "{{token}}"
+      "bearer": "{{customer_token}}"
     },
     "tests": []
   },
@@ -2039,7 +2039,7 @@
     },
     "auth": {
       "type": "bearer",
-      "bearer": "{{token}}"
+      "bearer": "{{customer_token}}"
     },
     "tests": []
   },
@@ -2324,7 +2324,7 @@
     },
     "auth": {
       "type": "bearer",
-      "bearer": "{{token}}"
+      "bearer": "{{customer_token}}"
     },
     "tests": []
   },
@@ -2436,7 +2436,7 @@
     },
     "auth": {
       "type": "bearer",
-      "bearer": "{{token}}"
+      "bearer": "{{customer_token}}"
     },
     "tests": []
   },
@@ -2478,7 +2478,7 @@
     },
     "auth": {
       "type": "bearer",
-      "bearer": "{{token}}"
+      "bearer": "{{customer_token}}"
     },
     "tests": []
   },
@@ -2602,7 +2602,7 @@
     "params": [],
     "auth": {
       "type": "bearer",
-      "bearer": "{{token}}"
+      "bearer": "{{customer_token}}"
     },
     "tests": []
   },
@@ -2620,7 +2620,7 @@
     "params": [],
     "auth": {
       "type": "bearer",
-      "bearer": "{{token}}"
+      "bearer": "{{customer_token}}"
     },
     "tests": []
   },
@@ -2656,7 +2656,7 @@
     "params": [],
     "auth": {
       "type": "bearer",
-      "bearer": "{{token}}"
+      "bearer": "{{customer_token}}"
     },
     "tests": []
   },
@@ -2697,7 +2697,7 @@
     "params": [],
     "auth": {
       "type": "bearer",
-      "bearer": "{{token}}"
+      "bearer": "{{customer_token}}"
     },
     "tests": []
   },
@@ -2743,7 +2743,7 @@
     },
     "auth": {
       "type": "bearer",
-      "bearer": "{{token}}"
+      "bearer": "{{customer_token}}"
     },
     "tests": []
   },
@@ -2858,7 +2858,7 @@
     },
     "auth": {
       "type": "bearer",
-      "bearer": "{{token}}"
+      "bearer": "{{customer_token}}"
     },
     "tests": []
   },
@@ -3252,7 +3252,7 @@
     ],
     "auth": {
       "type": "bearer",
-      "bearer": "{{token}}"
+      "bearer": "{{customer_token}}"
     },
     "tests": []
   },
@@ -3270,7 +3270,7 @@
     "params": [],
     "auth": {
       "type": "bearer",
-      "bearer": "{{token}}"
+      "bearer": "{{customer_token}}"
     },
     "tests": []
   },
@@ -3288,7 +3288,7 @@
     "params": [],
     "auth": {
       "type": "bearer",
-      "bearer": "{{token}}"
+      "bearer": "{{customer_token}}"
     },
     "tests": []
   }

@@ -51,7 +51,7 @@
     "modified": "2023-02-20T16:51:11.153Z",
     "data": [
       {
-        "name": "token",
+        "name": "customer_token",
         "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6dHJ1ZSwiaWF0IjoxNjg0MjEzNjgwLCJqdGkiOiI0ZGNmZjczOS01YjJlLTQwZmQtYTZlMS1mZjQ2ZGE5NzkwNmIiLCJ0eXBlIjoiYWNjZXNzIiwic3ViIjoxLCJuYmYiOjE2ODQyMTM2ODAsImV4cCI6MTY4NDQ3Mjg4MCwidXNlcl90eXBlIjoiY3VzdG9tZXIifQ.L29An4k_ePnfIO9LEiBl1w74N1PGWKLymZ03_ya-VwI"
       },
       {
