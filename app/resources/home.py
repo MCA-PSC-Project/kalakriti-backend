@@ -275,14 +275,14 @@ class PersonalizedRecommendedProducts(Resource):
         product_status = args.get("product_status", None)
         if not product_status:
             product_status = "published"
-            # try:
-            #     response = app_globals.redis_client.get(
-            #         str(customer_id) + "_recommended_products_list"
-            #     )
-            #     if response:
-            #         return json.loads(response.decode("utf-8"))
-            # except Exception as err:
-            #     app.logger.debug(err)
+            try:
+                response = app_globals.redis_client.get(
+                    str(customer_id) + "_recommended_products_list"
+                )
+                if response:
+                    return json.loads(response.decode("utf-8"))
+            except Exception as err:
+                app.logger.debug(err)
 
         limit = args.get("limit", None)
         if not limit:
@@ -300,9 +300,10 @@ class PersonalizedRecommendedProducts(Resource):
             JOIN sellers s ON p.seller_id = s.id 
             JOIN product_base_item pbi ON p.id = pbi.product_id
             WHERE c.id IN (
-                SELECT interested_category_id FROM viewed_products 
-                GROUP BY interested_category_id
-                ORDER BY COUNT(interested_category_id) DESC
+                SELECT vp.interested_category_id FROM viewed_products vp
+                WHERE vp.customer_id = %s
+                GROUP BY vp.interested_category_id
+                ORDER BY COUNT(vp.interested_category_id) DESC
             ) 
             AND p.product_status = %s  
             LIMIT %s"""
@@ -310,6 +311,7 @@ class PersonalizedRecommendedProducts(Resource):
             cursor.execute(
                 GET_PERSONALIZED_RECOMMENDED_PRODUCTS,
                 (
+                    customer_id,
                     product_status,
                     limit,
                 ),
@@ -427,12 +429,13 @@ class PersonalizedRecommendedProducts(Resource):
             abort(400, "Bad Request")
         finally:
             cursor.close()
-        # app.logger.debug(products_list)
-        # if product_status == "published":
-        #     app_globals.redis_client.set(
-        #         str(customer_id) + "_recommended_products_list", json.dumps(products_list)
-        #     )
-        #     app_globals.redis_client.expire("recommended_products_list", 60)  # seconds
+        app.logger.debug(products_list)
+        if product_status == "published":
+            app_globals.redis_client.set(
+                str(customer_id) + "_recommended_products_list",
+                json.dumps(products_list),
+            )
+            app_globals.redis_client.expire("recommended_products_list", 60)  # seconds
         return products_list
 
 
