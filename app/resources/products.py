@@ -356,6 +356,15 @@ class SellersProducts(Resource):
         # print(app_globals.db_conn)
         try:
             cursor = app_globals.get_cursor()
+            category_id = product_dict.get("category_id")
+            subcategory_id = product_dict.get("subcategory_id")
+            if subcategory_id != None:
+                CHECK_SUBCATEGORY = """SELECT parent_id FROM categories WHERE id = %s"""
+                cursor.execute(CHECK_SUBCATEGORY, (subcategory_id,))
+                stored_category_id = cursor.fetchone()[0]
+                if category_id != stored_category_id:
+                    app.logger.debug("category_id != stored_category_id")
+                    abort(400, "Bad request")
             CREATE_PRODUCT = """INSERT INTO products(product_name, product_description, category_id, subcategory_id, 
             currency, seller_id, min_order_quantity, max_order_quantity, added_at) 
             VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s) RETURNING id"""
@@ -364,8 +373,8 @@ class SellersProducts(Resource):
                 (
                     product_dict.get("product_name"),
                     product_dict.get("product_description"),
-                    product_dict.get("category_id"),
-                    product_dict.get("subcategory_id"),
+                    category_id,
+                    subcategory_id,
                     product_dict.get("currency", "INR"),
                     seller_id,
                     product_dict.get("min_order_quantity"),
@@ -640,20 +649,23 @@ class SellersProducts(Resource):
         data = request.get_json()
         product_dict = json.loads(json.dumps(data))
         # app.logger.debug(product_dict)
-
         current_time = datetime.now()
 
-        UPDATE_PRODUCT = """UPDATE products SET product_name= %s, product_description= %s,
-        category_id= %s, subcategory_id= %s, currency= %s, min_order_quantity= %s, max_order_quantity= %s,
-        updated_at= %s 
-        WHERE id= %s"""
-
-        # catch exception for invalid SQL statement
         try:
-            # declare a cursor object from the connection
             cursor = app_globals.get_cursor()
-            # # app.logger.debug("cursor object: %s", cursor)
-
+            category_id = product_dict.get("category_id")
+            subcategory_id = product_dict.get("subcategory_id")
+            if subcategory_id != None:
+                CHECK_SUBCATEGORY = """SELECT parent_id FROM categories WHERE id = %s"""
+                cursor.execute(CHECK_SUBCATEGORY, (subcategory_id,))
+                stored_category_id = cursor.fetchone()[0]
+                if category_id != stored_category_id:
+                    app.logger.debug("category_id != stored_category_id")
+                    abort(400, "Bad request")
+            UPDATE_PRODUCT = """UPDATE products SET product_name= %s, product_description= %s,
+            category_id= %s, subcategory_id= %s, currency= %s, min_order_quantity= %s, max_order_quantity= %s,
+            updated_at= %s 
+            WHERE id= %s"""
             cursor.execute(
                 UPDATE_PRODUCT,
                 (
