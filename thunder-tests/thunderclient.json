@@ -8,12 +8,12 @@
     "method": "POST",
     "sortNum": 10000,
     "created": "2023-02-20T16:38:51.028Z",
-    "modified": "2023-05-14T11:02:22.145Z",
+    "modified": "2023-05-16T10:11:01.629Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n  \"email\": \"customer1@gmail.com\",\n  \"password\": \"abcd@1234\",\n  \"first_name\": \"bittu\",\n  \"last_name\": \"kumar\",\n  \"dob\": \"10/3/1998\",\n  \"gender\": \"male\"\n}",
+      "raw": "{\n  \"email\": \"customer2@gmail.com\",\n  \"password\": \"abcd@1234\",\n  \"first_name\": \"prashant\",\n  \"last_name\": \"kumar\",\n  \"dob\": \"10/3/1998\",\n  \"gender\": \"male\"\n}",
       "form": []
     },
     "tests": [],
@@ -28,16 +28,16 @@
     "method": "POST",
     "sortNum": 5000,
     "created": "2023-02-20T16:38:51.029Z",
-    "modified": "2023-05-16T05:07:57.571Z",
+    "modified": "2023-05-16T10:13:01.769Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n  \"email\": \"customer1@gmail.com\",\n  \"password\": \"abcd@1234\"\n}",
+      "raw": "{\n  \"email\": \"customer2@gmail.com\",\n  \"password\": \"abcd@1234\"\n}",
       "form": []
     },
     "tests": [],
-    "docs": "```json\n{\n    \"email\": \"customer@gmail.com\",\n    \"password\": \"abcd@123\"\n}\n```\n```json\n{\n\t\"email\": \"seller@gmail.com\",\n\t\"password\": \"abcd@123\"\n}\n```\n\n```json\n{\n\t\"email\": \"admin@gmail.com\",\n\t\"password\": \"abcd@123\"\n}\n```\n\n```json\n{\n    \"email\": \"customer1@gmail.com\",\n    \"password\": \"abcd@123\"\n}\n```\n\n```json\n{\n    \"email\": \"seller1@gmail.com\",\n    \"password\": \"abcd@123\"\n}\n```\n\n```json\n{\n    \"email\": \"updated_admin@gmail.com\",\n    \"password\": \"abcd@123\"\n}\n```\n\n```json\n{\n\t\"email\": \"mywebnewslettersinbox123@gmail.com\",\n\t\"password\": \"abcd@123\"\n}\n```"
+    "docs": "```json\n{\n    \"email\": \"customer1@gmail.com\",\n    \"password\": \"abcd@1234\"\n}\n```\n```\n{\n  \"email\": \"customer2@gmail.com\",\n  \"password\": \"abcd@1234\"\n}\n```\n"
   },
   {
     "_id": "e4888b8e-9242-4be3-8747-c2cd265f5c50",
@@ -62,21 +62,21 @@
     "colId": "80d178ef-5176-474a-8708-db78bd45faee",
     "containerId": "20dae99d-610b-4865-98e2-da1b674f86e0",
     "name": "verify email",
-    "url": "{{baseUrl}}/auth/verify-email?user_type=super_admin&token=InN1cGVyX2FkbWluMUBnbWFpbC5jb20i.ZGDDUA.AzUSXtz5_YKgbUwDE5ctxGam400",
+    "url": "{{baseUrl}}/auth/verify-email?user_type=customer&token=ImN1c3RvbWVyMkBnbWFpbC5jb20i.ZGNXLQ.DH4zlOjrtISJpBJuUupQv1JGdOM",
     "method": "GET",
     "sortNum": 40000,
     "created": "2023-02-20T16:38:51.031Z",
-    "modified": "2023-05-14T11:21:00.072Z",
+    "modified": "2023-05-16T10:13:38.017Z",
     "headers": [],
     "params": [
       {
         "name": "user_type",
-        "value": "super_admin",
+        "value": "customer",
         "isPath": false
       },
       {
         "name": "token",
-        "value": "InN1cGVyX2FkbWluMUBnbWFpbC5jb20i.ZGDDUA.AzUSXtz5_YKgbUwDE5ctxGam400",
+        "value": "ImN1c3RvbWVyMkBnbWFpbC5jb20i.ZGNXLQ.DH4zlOjrtISJpBJuUupQv1JGdOM",
         "isPath": false
       }
     ],

@@ -69,6 +69,10 @@
       {
         "name": "temp_token",
         "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6dHJ1ZSwiaWF0IjoxNjc4OTgzODg4LCJqdGkiOiI0YmQzOTk4Yy04N2Y1LTQ0NTItYjRkOC0wMThkMzRiYWMyODMiLCJ0eXBlIjoiYWNjZXNzIiwic3ViIjotMSwibmJmIjoxNjc4OTgzODg4LCJleHAiOjE2Nzg5ODQ0ODgsInVzZXJfdHlwZSI6ImN1c3RvbWVyX3RlbXAifQ.8wnlXygFP3sGFEo0QANS9J5zX0ySElITmwZXPhlzKLg"
+      },
+      {
+        "name": "customer2_token",
+        "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6dHJ1ZSwiaWF0IjoxNjg0MjMyMDIzLCJqdGkiOiIwODM1NjQyMS1iNTgzLTRhMWEtYmI2MC05NmQ2NGFjMDQ1ZjkiLCJ0eXBlIjoiYWNjZXNzIiwic3ViIjoyLCJuYmYiOjE2ODQyMzIwMjMsImV4cCI6MTY4NDQ5MTIyMywidXNlcl90eXBlIjoiY3VzdG9tZXIifQ.TFKjYaw76UA4qy4yjlOxrKgBeIMO3-ap4hNMEHuLmZo"
       }
     ]
   }

@@ -1504,16 +1504,16 @@
     "method": "POST",
     "sortNum": 0,
     "created": "2023-04-22T15:36:43.748Z",
-    "modified": "2023-05-16T05:08:00.428Z",
+    "modified": "2023-05-16T10:13:01.779Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n  \"email\": \"customer1@gmail.com\",\n  \"password\": \"abcd@1234\"\n}",
+      "raw": "{\n  \"email\": \"customer2@gmail.com\",\n  \"password\": \"abcd@1234\"\n}",
       "form": []
     },
     "tests": [],
-    "docs": "```json\n{\n    \"email\": \"customer@gmail.com\",\n    \"password\": \"abcd@123\"\n}\n```\n```json\n{\n\t\"email\": \"seller@gmail.com\",\n\t\"password\": \"abcd@123\"\n}\n```\n\n```json\n{\n\t\"email\": \"admin@gmail.com\",\n\t\"password\": \"abcd@123\"\n}\n```\n\n```json\n{\n    \"email\": \"customer1@gmail.com\",\n    \"password\": \"abcd@123\"\n}\n```\n\n```json\n{\n    \"email\": \"seller1@gmail.com\",\n    \"password\": \"abcd@123\"\n}\n```\n\n```json\n{\n    \"email\": \"updated_admin@gmail.com\",\n    \"password\": \"abcd@123\"\n}\n```\n\n```json\n{\n\t\"email\": \"mywebnewslettersinbox123@gmail.com\",\n\t\"password\": \"abcd@123\"\n}\n```"
+    "docs": "```json\n{\n    \"email\": \"customer1@gmail.com\",\n    \"password\": \"abcd@1234\"\n}\n```\n```\n{\n  \"email\": \"customer2@gmail.com\",\n  \"password\": \"abcd@1234\"\n}\n```\n"
   },
   {
     "_id": "18431e48-22ec-4121-8de5-73dd9d05018d",
@@ -1941,12 +1941,12 @@
     "method": "POST",
     "sortNum": 0,
     "created": "2023-05-14T10:45:41.196Z",
-    "modified": "2023-05-14T10:45:41.196Z",
+    "modified": "2023-05-16T10:11:01.637Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n  \"email\": \"customer1gmail.com\",\n  \"password\": \"abcd@1234\",\n  \"first_name\": \"bittu\",\n  \"last_name\": \"kumar\",\n  \"dob\": \"10/3/1998\",\n  \"gender\": \"male\"\n}",
+      "raw": "{\n  \"email\": \"customer2@gmail.com\",\n  \"password\": \"abcd@1234\",\n  \"first_name\": \"prashant\",\n  \"last_name\": \"kumar\",\n  \"dob\": \"10/3/1998\",\n  \"gender\": \"male\"\n}",
       "form": []
     },
     "tests": [],
@@ -2555,6 +2555,31 @@
       "type": "bearer",
       "bearer": "{{admin_token}}"
     },
+    "tests": []
+  },
+  {
+    "_id": "facaf32c-d4ca-4b45-88c7-ff21a41ee23f",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/auth/verify-email?user_type=customer&token=ImN1c3RvbWVyMkBnbWFpbC5jb20i.ZGNXLQ.DH4zlOjrtISJpBJuUupQv1JGdOM",
+    "url": "{{baseUrl}}/auth/verify-email?user_type=customer&token=ImN1c3RvbWVyMkBnbWFpbC5jb20i.ZGNXLQ.DH4zlOjrtISJpBJuUupQv1JGdOM",
+    "method": "GET",
+    "sortNum": 0,
+    "created": "2023-05-16T10:13:37.716Z",
+    "modified": "2023-05-16T10:13:37.716Z",
+    "headers": [],
+    "params": [
+      {
+        "name": "user_type",
+        "value": "customer",
+        "isPath": false
+      },
+      {
+        "name": "token",
+        "value": "ImN1c3RvbWVyMkBnbWFpbC5jb20i.ZGNXLQ.DH4zlOjrtISJpBJuUupQv1JGdOM",
+        "isPath": false
+      }
+    ],
     "tests": []
   }
 ]
