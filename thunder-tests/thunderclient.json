@@ -3241,7 +3241,7 @@
     "method": "GET",
     "sortNum": 207500,
     "created": "2023-05-15T09:59:39.978Z",
-    "modified": "2023-05-15T10:03:50.991Z",
+    "modified": "2023-05-17T06:37:49.691Z",
     "headers": [],
     "params": [
       {
@@ -3252,7 +3252,7 @@
     ],
     "auth": {
       "type": "bearer",
-      "bearer": "{{customer_token}}"
+      "bearer": "{{customer2_token}}"
     },
     "tests": []
   },

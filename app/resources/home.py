@@ -276,9 +276,9 @@ class PersonalizedRecommendedProducts(Resource):
         if not product_status:
             product_status = "published"
             try:
-                response = app_globals.redis_client.get(
-                    str(customer_id) + "_recommended_products_list"
-                )
+                key_name= str(customer_id) + "_recommended_products_list"
+                app.logger.debug("keyname= %s", key_name)
+                response = app_globals.redis_client.get(key_name)
                 if response:
                     return json.loads(response.decode("utf-8"))
             except Exception as err:
@@ -289,23 +289,23 @@ class PersonalizedRecommendedProducts(Resource):
             limit = 10
         try:
             cursor = app_globals.get_named_tuple_cursor()
-            GET_PERSONALIZED_RECOMMENDED_PRODUCTS = """SELECT p.id AS product_id, p.product_name, p.product_description, 
+            GET_PERSONALIZED_RECOMMENDED_PRODUCTS = """SELECT p.id AS product_id, p.product_name, p.product_description,
             p.currency, p.product_status, p.min_order_quantity, p.max_order_quantity,
-            p.added_at, p.updated_at, 
+            p.added_at, p.updated_at,
             c.id AS category_id,
             s.id AS seller_id, s.seller_name, s.email,
             pbi.product_item_id AS base_product_item_id
             FROM categories c
-            JOIN products p ON p.subcategory_id = c.id OR p.category_id = c.id  
-            JOIN sellers s ON p.seller_id = s.id 
+            JOIN products p ON p.subcategory_id = c.id OR p.category_id = c.id
+            JOIN sellers s ON p.seller_id = s.id
             JOIN product_base_item pbi ON p.id = pbi.product_id
             WHERE c.id IN (
                 SELECT vp.interested_category_id FROM viewed_products vp
                 WHERE vp.customer_id = %s
                 GROUP BY vp.interested_category_id
                 ORDER BY COUNT(vp.interested_category_id) DESC
-            ) 
-            AND p.product_status = %s  
+            )
+            AND p.product_status = %s
             LIMIT %s"""
 
             cursor.execute(
@@ -316,6 +316,25 @@ class PersonalizedRecommendedProducts(Resource):
                     limit,
                 ),
             )
+            app.logger.debug("row_count= %s", cursor.rowcount)
+            if cursor.rowcount < 5:
+                GET_RECOMMENDED_PRODUCTS = """SELECT p.id AS product_id, p.product_name, p.product_description, 
+                p.currency, p.product_status, p.min_order_quantity, p.max_order_quantity,
+                p.added_at, p.updated_at, 
+                s.id AS seller_id, s.seller_name, s.email,
+                pbi.product_item_id AS base_product_item_id
+                FROM products p 
+                JOIN sellers s ON p.seller_id = s.id 
+                JOIN product_base_item pbi ON p.id = pbi.product_id
+                WHERE p.id IN (SELECT product_id FROM recommended_products ORDER BY id) AND p.product_status = %s  
+                LIMIT %s"""
+                cursor.execute(
+                    GET_RECOMMENDED_PRODUCTS,
+                    (
+                        product_status,
+                        limit,
+                    ),
+                )
             rows = cursor.fetchall()
             if not rows:
                 return []
@@ -323,7 +342,10 @@ class PersonalizedRecommendedProducts(Resource):
             for row in rows:
                 product_dict = {}
                 product_dict["id"] = row.product_id
-                product_dict["category_id"] = row.category_id
+                try:
+                    product_dict["category_id"] = row.category_id
+                except:
+                    pass
                 product_dict["product_name"] = row.product_name
                 product_dict["product_description"] = row.product_description
                 product_dict["currency"] = row.currency
@@ -429,10 +451,10 @@ class PersonalizedRecommendedProducts(Resource):
             abort(400, "Bad Request")
         finally:
             cursor.close()
-        app.logger.debug(products_list)
+        # app.logger.debug(products_list)
         if product_status == "published":
             app_globals.redis_client.set(
-                str(customer_id) + "_recommended_products_list",
+                key_name,
                 json.dumps(products_list),
             )
             app_globals.redis_client.expire("recommended_products_list", 60)  # seconds
@@ -783,12 +805,6 @@ class ViewedProducts(Resource):
         product_status = args.get("product_status", None)
         if not product_status:
             product_status = "published"
-            # try:
-            #     response = app_globals.redis_client.get("recommended_products_list")
-            #     if response:
-            #         return json.loads(response.decode("utf-8"))
-            # except Exception as err:
-            #     app.logger.debug(err)
 
         limit = args.get("limit", None)
         if not limit:
@@ -939,12 +955,6 @@ class ViewedProducts(Resource):
             abort(400, "Bad Request")
         finally:
             cursor.close()
-        # app.logger.debug(products_list)
-        # if product_status == "published":
-        #     app_globals.redis_client.set(
-        #         "recommended_products_list", json.dumps(products_list)
-        #     )
-        #     app_globals.redis_client.expire("recommended_products_list", 60)  # seconds
         return products_list
 
     @f_jwt.jwt_required()
