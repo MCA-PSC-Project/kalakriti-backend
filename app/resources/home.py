@@ -276,7 +276,7 @@ class PersonalizedRecommendedProducts(Resource):
         if not product_status:
             product_status = "published"
             try:
-                key_name= str(customer_id) + "_recommended_products_list"
+                key_name = str(customer_id) + "_recommended_products_list"
                 app.logger.debug("keyname= %s", key_name)
                 response = app_globals.redis_client.get(key_name)
                 if response:
@@ -467,52 +467,29 @@ class PopularProducts(Resource):
         limit = args.get("limit", None)
         if not limit:
             limit = 10
+        popular_products_list = []
+        product_ids = []
         try:
             cursor = app_globals.get_named_tuple_cursor()
-            product_id_list = []
-            product_ids = []
-
-            GET_POPULAR_PRODUCT_IDS = """ select product_id, avg(rating) as r from product_reviews 
-            group by product_id 
-            order by r desc 
-            limit %s"""
-
-            cursor.execute(
-                GET_POPULAR_PRODUCT_IDS,
-                (limit,),
-            )
-
-            rows = cursor.fetchall()
-            if not rows:
-                return []
-            for row in rows:
-                product_id_dict = {}
-                product_id_dict["id"] = row.product_id
-                product_id_list.append(product_id_dict)
-
-            for product_id in product_id_list:
-                product_ids.append(product_id["id"])
-            app.logger.debug(product_ids)
-
-            product_id_tuple = tuple(product_ids)
-
             GET_POPULAR_PRODUCTS = """SELECT p.id AS product_id, p.product_name, p.product_description, 
             p.currency, p.product_status, p.min_order_quantity, p.max_order_quantity,
             p.added_at, p.updated_at,
-            pr.rating,pr.review, 
             s.id AS seller_id, s.seller_name, s.email,
-            pbi.product_item_id AS base_product_item_id
+            pbi.product_item_id AS base_product_item_id,
+            AVG(pr.rating) AS average_rating
             FROM products p 
+            JOIN product_reviews pr
+            ON p.id = pr.product_id
             JOIN sellers s ON p.seller_id = s.id 
             JOIN product_base_item pbi ON p.id = pbi.product_id
-            JOIN product_reviews pr ON pr.product_id = p.id
-            WHERE p.id IN %s 
-            ORDER BY pr.review DESC"""
+            GROUP BY p.id, p.product_name, p.product_description, 
+            p.currency, p.product_status, p.min_order_quantity, p.max_order_quantity,
+            p.added_at, p.updated_at,
+            s.id, s.seller_name, s.email,
+            pbi.product_item_id
+            ORDER BY average_rating DESC LIMIT %s"""
 
-            cursor.execute(
-                GET_POPULAR_PRODUCTS,
-                ((product_id_tuple,)),
-            )
+            cursor.execute(GET_POPULAR_PRODUCTS, (limit,))
             rows = cursor.fetchall()
             if not rows:
                 return []
@@ -533,13 +510,11 @@ class PopularProducts(Resource):
                     json.loads(json.dumps({"updated_at": row.updated_at}, default=str))
                 )
 
-                review_dict = {}
-                review_dict.update(
-                    json.loads(json.dumps({"rating": row.rating}, default=str))
+                product_dict.update(
+                    json.loads(
+                        json.dumps({"average_rating": row.average_rating}, default=str)
+                    )
                 )
-                review_dict["review"] = row.review
-                product_dict.update({"rating": review_dict})
-
                 seller_dict = {}
                 seller_dict["id"] = row.seller_id
                 seller_dict["seller_name"] = row.seller_name
@@ -547,7 +522,6 @@ class PopularProducts(Resource):
                 product_dict.update({"seller": seller_dict})
 
                 product_dict["base_product_item_id"] = row.base_product_item_id
-
                 # product_item_status = product_status
                 GET_PRODUCT_BASE_ITEM = """SELECT pi.id AS product_item_id, pi.product_id, pi.product_variant_name, pi."SKU",
                 pi.original_price, pi.offer_price, pi.quantity_in_stock, pi.added_at, pi.updated_at, pi.product_item_status,
@@ -586,7 +560,6 @@ class PopularProducts(Resource):
                         json.dumps({"offer_price": row.offer_price}, default=str)
                     )
                 )
-
                 base_product_item_dict["quantity_in_stock"] = row.quantity_in_stock
                 base_product_item_dict.update(
                     json.loads(json.dumps({"added_at": row.added_at}, default=str))
@@ -595,7 +568,6 @@ class PopularProducts(Resource):
                     json.loads(json.dumps({"updated_at": row.updated_at}, default=str))
                 )
                 base_product_item_dict["product_item_status"] = row.product_item_status
-
                 base_product_item_dict["variant"] = row.variant
                 base_product_item_dict["variant_value"] = row.variant_value
 
@@ -630,7 +602,6 @@ class PopularProducts(Resource):
         finally:
             cursor.close()
         # app.logger.debug(products_list)
-        # if product_status == "published":
         app_globals.redis_client.set("new_products_list", json.dumps(products_list))
         app_globals.redis_client.expire("new_products_list", 60)  # seconds
         return products_list

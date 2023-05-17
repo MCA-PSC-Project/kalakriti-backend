@@ -57,7 +57,7 @@ class Orders(Resource):
             - order_dict["total_discount"]
             + order_dict["total_tax"]
         )
-        app.logger.debug("order_dict= %s", order_dict)
+        # app.logger.debug("order_dict= %s", order_dict)
 
         # before beginning transaction autocommit must be off
         app_globals.db_conn.autocommit = False
