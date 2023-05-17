@@ -1217,17 +1217,17 @@
     "method": "POST",
     "sortNum": 0,
     "created": "2023-04-20T09:36:40.523Z",
-    "modified": "2023-05-17T09:30:26.234Z",
+    "modified": "2023-05-17T09:36:23.887Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n  \"shipping_address_id\": 1,\n  \"mobile_no\": \"9876543219\",\n  \"order_items\": [\n    {\n      \"product_item_id\": 3,\n      \"quantity\": 2,\n      \"discount_percent\": 50,\n      \"discount\": 50,\n      \"tax\": 20\n    },\n    {\n      \"product_item_id\": 4,\n      \"quantity\": 2,\n      \"discount_percent\": 50,\n      \"discount\": 50,\n      \"tax\": 20\n    }\n  ]\n}",
+      "raw": "{\n  \"shipping_address_id\": 1,\n  \"mobile_no\": \"9876543219\",\n  \"order_items\": [\n    {\n      \"product_item_id\": 11,\n      \"quantity\": 2,\n      \"discount_percent\": 50,\n      \"discount\": 50,\n      \"tax\": 20\n    },\n    {\n      \"product_item_id\": 12,\n      \"quantity\": 2,\n      \"discount_percent\": 50,\n      \"discount\": 50,\n      \"tax\": 20\n    }\n  ]\n}",
       "form": []
     },
     "auth": {
       "type": "bearer",
-      "bearer": "{{customer2_token}}"
+      "bearer": "{{customer_token}}"
     },
     "tests": []
   },
@@ -1368,17 +1368,17 @@
     "method": "POST",
     "sortNum": 0,
     "created": "2023-04-20T16:14:46.365Z",
-    "modified": "2023-05-17T09:32:49.125Z",
+    "modified": "2023-05-17T10:29:46.115Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n  \"order_item_id\": 4,\n  \"rating\": 4.0,\n  \"review\": \"good\",\n  \"media_list\": [\n    {\n      \"media_id\": 1,\n      \"display_order\": 1\n    },\n    {\n      \"media_id\": 2,\n      \"display_order\": 2\n    }\n  ]\n}",
+      "raw": "{\n  \"order_item_id\": 6,\n  \"rating\": 4.5,\n  \"review\": \"good\",\n  \"media_list\": [\n    {\n      \"media_id\": 1,\n      \"display_order\": 1\n    },\n    {\n      \"media_id\": 2,\n      \"display_order\": 2\n    }\n  ]\n}",
       "form": []
     },
     "auth": {
       "type": "bearer",
-      "bearer": "{{customer2_token}}"
+      "bearer": "{{customer_token}}"
     },
     "tests": []
   },
@@ -2600,6 +2600,29 @@
         "isPath": false
       }
     ],
+    "tests": []
+  },
+  {
+    "_id": "e5bfc3a4-e93e-40af-9eab-a02fded3cb5d",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/product-reviews/6",
+    "url": "{{baseUrl}}/product-reviews/6",
+    "method": "PUT",
+    "sortNum": 0,
+    "created": "2023-05-17T11:39:51.200Z",
+    "modified": "2023-05-17T11:39:51.200Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n  \"rating\": 5,\n  \"review\": \"really awesome\",\n  \"media_list\": [\n    {\n      \"media_id\": 1,\n      \"display_order\": 1\n    },\n    {\n      \"media_id\": 2,\n      \"display_order\": 2\n    }\n  ]\n}",
+      "form": []
+    },
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{customer_token}}"
+    },
     "tests": []
   }
 ]

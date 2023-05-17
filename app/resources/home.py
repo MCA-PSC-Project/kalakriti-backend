@@ -476,18 +476,20 @@ class PopularProducts(Resource):
             p.added_at, p.updated_at,
             s.id AS seller_id, s.seller_name, s.email,
             pbi.product_item_id AS base_product_item_id,
-            AVG(pr.rating) AS average_rating
+            AVG(pr.rating) AS average_rating, COUNT(pr.rating) AS rating_count,
+            (AVG(pr.rating) * 0.5 + COUNT(pr.rating) * 0.5) as weighted_average
             FROM products p 
             JOIN product_reviews pr
             ON p.id = pr.product_id
             JOIN sellers s ON p.seller_id = s.id 
             JOIN product_base_item pbi ON p.id = pbi.product_id
+            WHERE p.product_status = 'published'
             GROUP BY p.id, p.product_name, p.product_description, 
             p.currency, p.product_status, p.min_order_quantity, p.max_order_quantity,
             p.added_at, p.updated_at,
             s.id, s.seller_name, s.email,
             pbi.product_item_id
-            ORDER BY average_rating DESC LIMIT %s"""
+            ORDER BY weighted_average DESC LIMIT %s"""
 
             cursor.execute(GET_POPULAR_PRODUCTS, (limit,))
             rows = cursor.fetchall()
@@ -509,10 +511,17 @@ class PopularProducts(Resource):
                 product_dict.update(
                     json.loads(json.dumps({"updated_at": row.updated_at}, default=str))
                 )
-
                 product_dict.update(
                     json.loads(
                         json.dumps({"average_rating": row.average_rating}, default=str)
+                    )
+                )
+                product_dict["rating_count"] = row.rating_count
+                product_dict.update(
+                    json.loads(
+                        json.dumps(
+                            {"weighted_average": row.weighted_average}, default=str
+                        )
                     )
                 )
                 seller_dict = {}
