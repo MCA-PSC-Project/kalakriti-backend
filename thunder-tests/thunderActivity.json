@@ -112,108 +112,6 @@
     "tests": []
   },
   {
-    "_id": "0510074d-0b84-440a-868a-2f496c2cb69d",
-    "colId": "history",
-    "containerId": "",
-    "name": "{{baseUrl}}/sellers/products/7",
-    "url": "{{baseUrl}}/sellers/products/7",
-    "method": "DELETE",
-    "sortNum": 0,
-    "created": "2023-04-05T02:33:40.854Z",
-    "modified": "2023-04-05T02:33:40.854Z",
-    "headers": [],
-    "params": [],
-    "auth": {
-      "type": "bearer",
-      "bearer": "{{admin_token}}"
-    },
-    "tests": []
-  },
-  {
-    "_id": "75f1465e-05c7-4bed-bf7d-2e66ac08386b",
-    "colId": "history",
-    "containerId": "",
-    "name": "{{baseUrl}}/products/7",
-    "url": "{{baseUrl}}/products/7",
-    "method": "GET",
-    "sortNum": 0,
-    "created": "2023-04-05T02:34:36.370Z",
-    "modified": "2023-04-05T02:38:07.971Z",
-    "headers": [],
-    "params": [
-      {
-        "name": "product_status",
-        "value": "unpublished",
-        "isDisabled": true,
-        "isPath": false
-      }
-    ],
-    "tests": []
-  },
-  {
-    "_id": "441630cd-d7ac-42a0-99f0-d7812f81a0be",
-    "colId": "history",
-    "containerId": "",
-    "name": "{{baseUrl}}/products/7?product_status=trashed",
-    "url": "{{baseUrl}}/products/7?product_status=trashed",
-    "method": "GET",
-    "sortNum": 0,
-    "created": "2023-04-05T02:35:18.022Z",
-    "modified": "2023-04-05T02:35:18.022Z",
-    "headers": [],
-    "params": [
-      {
-        "name": "product_status",
-        "value": "trashed",
-        "isPath": false
-      }
-    ],
-    "tests": []
-  },
-  {
-    "_id": "2dfb35cb-7d78-48cf-88ec-5634c44aecca",
-    "colId": "history",
-    "containerId": "",
-    "name": "{{baseUrl}}/sellers/products/7",
-    "url": "{{baseUrl}}/sellers/products/7",
-    "method": "PATCH",
-    "sortNum": 0,
-    "created": "2023-04-05T02:37:40.332Z",
-    "modified": "2023-04-05T02:37:40.332Z",
-    "headers": [],
-    "params": [],
-    "body": {
-      "type": "json",
-      "raw": "{\n  \"trashed\": false\n}",
-      "form": []
-    },
-    "auth": {
-      "type": "bearer",
-      "bearer": "{{seller_token}}"
-    },
-    "tests": []
-  },
-  {
-    "_id": "9c2bb580-e341-4263-aa5d-79ed29fdec3b",
-    "colId": "history",
-    "containerId": "",
-    "name": "{{baseUrl}}/products/7?product_status=unpublished",
-    "url": "{{baseUrl}}/products/7?product_status=unpublished",
-    "method": "GET",
-    "sortNum": 0,
-    "created": "2023-04-05T02:40:48.933Z",
-    "modified": "2023-04-05T02:40:48.933Z",
-    "headers": [],
-    "params": [
-      {
-        "name": "product_status",
-        "value": "unpublished",
-        "isPath": false
-      }
-    ],
-    "tests": []
-  },
-  {
     "_id": "05e02e96-befb-40cf-b99d-a85d84358f3b",
     "colId": "history",
     "containerId": "",
@@ -222,106 +120,18 @@
     "method": "PATCH",
     "sortNum": 0,
     "created": "2023-04-05T02:41:19.930Z",
-    "modified": "2023-04-06T11:25:59.577Z",
+    "modified": "2023-05-18T10:48:14.025Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n  \"media_list\": [\n    {\n      \"media_id\": 23,\n      \"display_order\": 2\n    },\n    {\n      \"media_id\": 24,\n      \"display_order\": 1\n    }\n  ]\n}",
+      "raw": "{\n  \"quantity_in_stock\": 25\n}",
       "form": []
     },
     "auth": {
       "type": "bearer",
       "bearer": "{{seller_token}}"
     },
-    "tests": []
-  },
-  {
-    "_id": "faed9db3-527b-48a2-9f08-c077fb087d69",
-    "colId": "history",
-    "containerId": "",
-    "name": "{{baseUrl}}/products/7?SKU",
-    "url": "{{baseUrl}}/products/7?SKU",
-    "method": "GET",
-    "sortNum": 0,
-    "created": "2023-04-05T10:19:29.774Z",
-    "modified": "2023-04-05T10:19:29.774Z",
-    "headers": [],
-    "params": [
-      {
-        "name": "product_status",
-        "value": "unpublished",
-        "isDisabled": true,
-        "isPath": false
-      },
-      {
-        "name": "SKU",
-        "value": "",
-        "isPath": false
-      },
-      {
-        "name": "min_offer_price",
-        "value": "",
-        "isDisabled": true,
-        "isPath": false
-      },
-      {
-        "name": "max_offer_price",
-        "value": "",
-        "isDisabled": true,
-        "isPath": false
-      },
-      {
-        "name": "in-stock",
-        "value": "",
-        "isDisabled": true,
-        "isPath": false
-      }
-    ],
-    "tests": []
-  },
-  {
-    "_id": "a627ad91-0eb7-4b24-a761-edd8080683aa",
-    "colId": "history",
-    "containerId": "",
-    "name": "{{baseUrl}}/products/7?SKU=black-colorfv",
-    "url": "{{baseUrl}}/products/7?SKU=black-colorfv",
-    "method": "GET",
-    "sortNum": 0,
-    "created": "2023-04-05T10:20:31.223Z",
-    "modified": "2023-04-05T10:20:31.223Z",
-    "headers": [],
-    "params": [
-      {
-        "name": "product_status",
-        "value": "unpublished",
-        "isDisabled": true,
-        "isPath": false
-      },
-      {
-        "name": "SKU",
-        "value": "black-colorfv",
-        "isPath": false
-      },
-      {
-        "name": "min_offer_price",
-        "value": "",
-        "isDisabled": true,
-        "isPath": false
-      },
-      {
-        "name": "max_offer_price",
-        "value": "",
-        "isDisabled": true,
-        "isPath": false
-      },
-      {
-        "name": "in-stock",
-        "value": "",
-        "isDisabled": true,
-        "isPath": false
-      }
-    ],
     "tests": []
   },
   {
@@ -340,92 +150,6 @@
         "name": "product_status",
         "value": "draft",
         "isDisabled": true,
-        "isPath": false
-      },
-      {
-        "name": "min_offer_price",
-        "value": "",
-        "isDisabled": true,
-        "isPath": false
-      },
-      {
-        "name": "max_offer_price",
-        "value": "",
-        "isDisabled": true,
-        "isPath": false
-      },
-      {
-        "name": "in-stock",
-        "value": "",
-        "isDisabled": true,
-        "isPath": false
-      },
-      {
-        "name": "SKU",
-        "value": "black-colorfv",
-        "isPath": false
-      }
-    ],
-    "tests": []
-  },
-  {
-    "_id": "9ffdaa55-261c-4468-b203-7f6acee929f4",
-    "colId": "history",
-    "containerId": "",
-    "name": "{{baseUrl}}/products?product_status=published&SKU=black-colorfv",
-    "url": "{{baseUrl}}/products?product_status=published&SKU=black-colorfv",
-    "method": "GET",
-    "sortNum": 0,
-    "created": "2023-04-05T10:21:56.245Z",
-    "modified": "2023-04-05T10:21:56.245Z",
-    "headers": [],
-    "params": [
-      {
-        "name": "product_status",
-        "value": "published",
-        "isPath": false
-      },
-      {
-        "name": "min_offer_price",
-        "value": "",
-        "isDisabled": true,
-        "isPath": false
-      },
-      {
-        "name": "max_offer_price",
-        "value": "",
-        "isDisabled": true,
-        "isPath": false
-      },
-      {
-        "name": "in-stock",
-        "value": "",
-        "isDisabled": true,
-        "isPath": false
-      },
-      {
-        "name": "SKU",
-        "value": "black-colorfv",
-        "isPath": false
-      }
-    ],
-    "tests": []
-  },
-  {
-    "_id": "c1f3e906-37b7-4780-afb8-fed756a31389",
-    "colId": "history",
-    "containerId": "",
-    "name": "{{baseUrl}}/products?product_status=draft&SKU=black-colorfv",
-    "url": "{{baseUrl}}/products?product_status=draft&SKU=black-colorfv",
-    "method": "GET",
-    "sortNum": 0,
-    "created": "2023-04-05T10:23:37.512Z",
-    "modified": "2023-04-05T10:23:37.512Z",
-    "headers": [],
-    "params": [
-      {
-        "name": "product_status",
-        "value": "draft",
         "isPath": false
       },
       {
@@ -1217,12 +941,12 @@
     "method": "POST",
     "sortNum": 0,
     "created": "2023-04-20T09:36:40.523Z",
-    "modified": "2023-05-17T09:36:23.887Z",
+    "modified": "2023-05-18T10:46:16.552Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n  \"shipping_address_id\": 1,\n  \"mobile_no\": \"9876543219\",\n  \"order_items\": [\n    {\n      \"product_item_id\": 11,\n      \"quantity\": 2,\n      \"discount_percent\": 50,\n      \"discount\": 50,\n      \"tax\": 20\n    },\n    {\n      \"product_item_id\": 12,\n      \"quantity\": 2,\n      \"discount_percent\": 50,\n      \"discount\": 50,\n      \"tax\": 20\n    }\n  ]\n}",
+      "raw": "{\n  \"shipping_address_id\": 1,\n  \"mobile_no\": \"9876543219\",\n  \"order_items\": [\n    {\n      \"product_item_id\": 13,\n      \"quantity\": 2,\n      \"discount_percent\": 50,\n      \"discount\": 50,\n      \"tax\": 20\n    },\n    {\n      \"product_item_id\": 12,\n      \"quantity\": 2,\n      \"discount_percent\": 50,\n      \"discount\": 50,\n      \"tax\": 20\n    }\n  ]\n}",
       "form": []
     },
     "auth": {
@@ -2622,6 +2346,98 @@
     "auth": {
       "type": "bearer",
       "bearer": "{{customer_token}}"
+    },
+    "tests": []
+  },
+  {
+    "_id": "ad750c95-537e-4dca-8889-d4e9e0a0e9f2",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/sellers/product-items/7",
+    "url": "{{baseUrl}}/sellers/product-items/7",
+    "method": "PATCH",
+    "sortNum": 0,
+    "created": "2023-05-18T10:45:02.108Z",
+    "modified": "2023-05-18T10:45:02.108Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n  \"product_item_status\": \"published\"\n}",
+      "form": []
+    },
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{admin_token}}"
+    },
+    "tests": []
+  },
+  {
+    "_id": "aef266f5-f21f-4c44-bbcf-59990015ea54",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/sellers/product-items/14",
+    "url": "{{baseUrl}}/sellers/product-items/14",
+    "method": "PATCH",
+    "sortNum": 0,
+    "created": "2023-05-18T10:45:12.633Z",
+    "modified": "2023-05-18T10:45:12.633Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n  \"product_item_status\": \"published\"\n}",
+      "form": []
+    },
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{admin_token}}"
+    },
+    "tests": []
+  },
+  {
+    "_id": "6924087d-a91c-48b4-9b8d-30137671b723",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/sellers/product-items/15",
+    "url": "{{baseUrl}}/sellers/product-items/15",
+    "method": "PATCH",
+    "sortNum": 0,
+    "created": "2023-05-18T10:45:24.175Z",
+    "modified": "2023-05-18T10:45:24.175Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n  \"product_item_status\": \"published\"\n}",
+      "form": []
+    },
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{admin_token}}"
+    },
+    "tests": []
+  },
+  {
+    "_id": "89385d25-1523-4873-80be-793d5ae8fba0",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/sellers/product-items/12",
+    "url": "{{baseUrl}}/sellers/product-items/12",
+    "method": "PATCH",
+    "sortNum": 0,
+    "created": "2023-05-18T10:48:08.533Z",
+    "modified": "2023-05-18T10:48:08.533Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n  \"quantity_in_stock\": 25\n}",
+      "form": []
+    },
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{seller_token}}"
     },
     "tests": []
   }

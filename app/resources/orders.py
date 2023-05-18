@@ -26,43 +26,67 @@ class Orders(Resource):
         order_dict["sub_total"] = 0
         order_dict["total_discount"] = 0
         order_dict["total_tax"] = 0
-        for order_item_dict in order_dict["order_items"]:
-            GET_PRICE = """SELECT original_price, offer_price, product_item_status FROM product_items 
-            WHERE id = %s"""
-            try:
+
+        # before beginning transaction autocommit must be off
+        app_globals.db_conn.autocommit = False
+        try:
+            for order_item_dict in order_dict["order_items"]:
+                product_item_id = order_item_dict.get("product_item_id")
                 cursor = app_globals.get_named_tuple_cursor()
-                cursor.execute(GET_PRICE, (order_item_dict.get("product_item_id"),))
+
+                GET_PRICE_AND_QTY_IN_STOCK = """SELECT original_price, offer_price, product_item_status, quantity_in_stock
+                FROM product_items WHERE id = %s"""
+                cursor.execute(
+                    GET_PRICE_AND_QTY_IN_STOCK,
+                    (product_item_id,),
+                )
                 row = cursor.fetchone()
                 if row is None:
                     abort(400, "Bad Request")
                 if row.product_item_status != "published":
                     app.logger.debug(
-                        "product_item_status is not published for %s",
-                        order_item_dict.get("product_item_id"),
+                        "product_item_status is not published for %s", product_item_id
                     )
                     abort(400, "Bad Request")
                 order_item_dict["original_price"] = row.original_price
                 order_item_dict["offer_price"] = row.offer_price
-            except (Exception, psycopg2.Error) as err:
-                app.logger.debug(err)
-                abort(400, "Bad Request")
-            finally:
-                cursor.close()
-            order_dict["total_original_price"] += order_item_dict.get("original_price")
-            order_dict["sub_total"] += order_item_dict.get("offer_price")
-            order_dict["total_discount"] += order_item_dict.get("discount")
-            order_dict["total_tax"] += order_item_dict.get("tax")
-        order_dict["grand_total"] = (
-            order_dict["sub_total"]
-            - order_dict["total_discount"]
-            + order_dict["total_tax"]
-        )
-        # app.logger.debug("order_dict= %s", order_dict)
+                quantity_in_stock = row.quantity_in_stock
+                quantity = order_item_dict.get("quantity")
+                if quantity > quantity_in_stock:
+                    app.logger.debug(
+                        "error: order_item_dict['quantity'] = %s > quantity_in_stock = %s for product_item_id = %s",
+                        quantity,
+                        quantity_in_stock,
+                        product_item_id,
+                    )
+                    abort(400, "Bad Request")
+                remaining_quantity = quantity_in_stock - quantity
+                UPDATE_QUANTITY_IN_STOCK = (
+                    """UPDATE product_items SET quantity_in_stock = %s WHERE id = %s"""
+                )
+                cursor.execute(
+                    UPDATE_QUANTITY_IN_STOCK,
+                    (
+                        remaining_quantity,
+                        product_item_id,
+                    ),
+                )
+                if cursor.rowcount != 1:
+                    abort(400, "Bad Request: update addresses row error")
 
-        # before beginning transaction autocommit must be off
-        app_globals.db_conn.autocommit = False
-        try:
-            cursor = app_globals.get_cursor()
+                order_dict["total_original_price"] += order_item_dict.get(
+                    "original_price"
+                )
+                order_dict["sub_total"] += order_item_dict.get("offer_price")
+                order_dict["total_discount"] += order_item_dict.get("discount")
+                order_dict["total_tax"] += order_item_dict.get("tax")
+            order_dict["grand_total"] = (
+                order_dict["sub_total"]
+                - order_dict["total_discount"]
+                + order_dict["total_tax"]
+            )
+            # app.logger.debug("order_dict= %s", order_dict)
+
             CREATE_ORDER = """INSERT INTO orders(customer_id, shipping_address_id, mobile_no,
             total_original_price, sub_total, total_discount, total_tax, grand_total, added_at)
             VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s) RETURNING id"""
