@@ -290,6 +290,7 @@ class PersonalizedRecommendedProducts(Resource):
                 key_name = str(customer_id) + "_recommended_products_list"
                 app.logger.debug("keyname= %s", key_name)
                 response = app_globals.redis_client.get(key_name)
+                # app_globals.redis_client.delete(key_name)
                 if response:
                     return json.loads(response.decode("utf-8"))
             except Exception as err:
@@ -388,7 +389,7 @@ class PersonalizedRecommendedProducts(Resource):
                     )
                 )
                 product_dict["rating_count"] = row.rating_count
-                
+
                 product_item_status = product_status
                 GET_PRODUCT_BASE_ITEM = """SELECT pi.id AS product_item_id, pi.product_id, pi.product_variant_name, pi."SKU",
                 pi.original_price, pi.offer_price, pi.quantity_in_stock, pi.added_at, pi.updated_at, pi.product_item_status,
@@ -479,7 +480,7 @@ class PersonalizedRecommendedProducts(Resource):
                 key_name,
                 json.dumps(products_list),
             )
-            app_globals.redis_client.expire("recommended_products_list", 60)  # seconds
+            app_globals.redis_client.expire(key_name, 60)  # seconds
         return products_list
 
 
