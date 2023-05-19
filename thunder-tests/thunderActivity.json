@@ -135,93 +135,6 @@
     "tests": []
   },
   {
-    "_id": "90fb3eac-8e33-4c4a-b610-d1c2b9e569b3",
-    "colId": "history",
-    "containerId": "",
-    "name": "{{baseUrl}}/products?SKU=black-colorfv",
-    "url": "{{baseUrl}}/products?SKU=black-colorfv",
-    "method": "GET",
-    "sortNum": 0,
-    "created": "2023-04-05T10:20:57.363Z",
-    "modified": "2023-04-05T11:01:51.904Z",
-    "headers": [],
-    "params": [
-      {
-        "name": "product_status",
-        "value": "draft",
-        "isDisabled": true,
-        "isPath": false
-      },
-      {
-        "name": "min_offer_price",
-        "value": "",
-        "isDisabled": true,
-        "isPath": false
-      },
-      {
-        "name": "max_offer_price",
-        "value": "",
-        "isDisabled": true,
-        "isPath": false
-      },
-      {
-        "name": "in-stock",
-        "value": "",
-        "isDisabled": true,
-        "isPath": false
-      },
-      {
-        "name": "SKU",
-        "value": "black-colorfv",
-        "isPath": false
-      }
-    ],
-    "tests": []
-  },
-  {
-    "_id": "99bff237-e19f-4927-af8f-e6a9c6d042b6",
-    "colId": "history",
-    "containerId": "",
-    "name": "{{baseUrl}}/products?product_status=draft&SKU=dgreen-colorf6",
-    "url": "{{baseUrl}}/products?product_status=draft&SKU=dgreen-colorf6",
-    "method": "GET",
-    "sortNum": 0,
-    "created": "2023-04-05T11:03:48.526Z",
-    "modified": "2023-04-05T11:03:48.526Z",
-    "headers": [],
-    "params": [
-      {
-        "name": "product_status",
-        "value": "draft",
-        "isPath": false
-      },
-      {
-        "name": "min_offer_price",
-        "value": "",
-        "isDisabled": true,
-        "isPath": false
-      },
-      {
-        "name": "max_offer_price",
-        "value": "",
-        "isDisabled": true,
-        "isPath": false
-      },
-      {
-        "name": "in-stock",
-        "value": "",
-        "isDisabled": true,
-        "isPath": false
-      },
-      {
-        "name": "SKU",
-        "value": "dgreen-colorf6",
-        "isPath": false
-      }
-    ],
-    "tests": []
-  },
-  {
     "_id": "e60aa7a2-295e-4665-a573-b2dfdb453da6",
     "colId": "history",
     "containerId": "",
@@ -269,47 +182,6 @@
         "isPath": false
       }
     ],
-    "tests": []
-  },
-  {
-    "_id": "16e55409-5ca6-4c9d-add6-5f6b3339ef0a",
-    "colId": "history",
-    "containerId": "",
-    "name": "{{baseUrl}}/sellers/products/10",
-    "url": "{{baseUrl}}/sellers/products/10",
-    "method": "PUT",
-    "sortNum": 0,
-    "created": "2023-04-05T14:23:05.835Z",
-    "modified": "2023-04-05T14:23:05.835Z",
-    "headers": [],
-    "params": [],
-    "body": {
-      "type": "json",
-      "raw": "{\n  \"product_name\": \"famous madhubani painting\",\n  \"product_description\": \"paintings from madhubani\",\n  \"category_id\": 1,\n  \"subcategory_id\": null,\n  \"currency\": \"INR\",\n  \"min_order_quantity\": 1,\n  \"max_order_quantity\": 5\n}",
-      "form": []
-    },
-    "auth": {
-      "type": "bearer",
-      "bearer": "{{seller_token}}"
-    },
-    "tests": []
-  },
-  {
-    "_id": "d665d86e-d2ff-42c3-ba99-f7ee65704121",
-    "colId": "history",
-    "containerId": "",
-    "name": "{{baseUrl}}/categories/6",
-    "url": "{{baseUrl}}/categories/6",
-    "method": "DELETE",
-    "sortNum": 0,
-    "created": "2023-04-05T14:25:39.152Z",
-    "modified": "2023-04-05T14:25:39.152Z",
-    "headers": [],
-    "params": [],
-    "auth": {
-      "type": "bearer",
-      "bearer": "{{admin_token}}"
-    },
     "tests": []
   },
   {
@@ -2439,6 +2311,32 @@
       "type": "bearer",
       "bearer": "{{seller_token}}"
     },
+    "tests": []
+  },
+  {
+    "_id": "b6b6eca3-d316-4975-a9f3-5dc281b5f318",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/new-products?limit=10",
+    "url": "{{baseUrl}}/new-products?limit=10",
+    "method": "GET",
+    "sortNum": 0,
+    "created": "2023-05-19T07:37:33.973Z",
+    "modified": "2023-05-19T07:37:33.973Z",
+    "headers": [],
+    "params": [
+      {
+        "name": "limit",
+        "value": "10",
+        "isPath": false
+      },
+      {
+        "name": "product_status",
+        "value": "draft",
+        "isDisabled": true,
+        "isPath": false
+      }
+    ],
     "tests": []
   }
 ]

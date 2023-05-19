@@ -77,6 +77,17 @@ class RecommendedProductsForAnonymousCustomer(Resource):
 
                 product_dict["base_product_item_id"] = row.base_product_item_id
 
+                GET_AVERAGE_RATING_AND_COUNT = """SELECT COALESCE(AVG(rating),0) AS average_rating, 
+                COUNT(rating) AS rating_count FROM product_reviews WHERE product_id = %s"""
+                cursor.execute(GET_AVERAGE_RATING_AND_COUNT, (product_dict.get("id"),))
+                row = cursor.fetchone()
+                product_dict.update(
+                    json.loads(
+                        json.dumps({"average_rating": row.average_rating}, default=str)
+                    )
+                )
+                product_dict["rating_count"] = row.rating_count
+
                 product_item_status = product_status
                 GET_PRODUCT_BASE_ITEM = """SELECT pi.id AS product_item_id, pi.product_id, pi.product_variant_name, pi."SKU",
                 pi.original_price, pi.offer_price, pi.quantity_in_stock, pi.added_at, pi.updated_at, pi.product_item_status,
@@ -367,6 +378,17 @@ class PersonalizedRecommendedProducts(Resource):
 
                 product_dict["base_product_item_id"] = row.base_product_item_id
 
+                GET_AVERAGE_RATING_AND_COUNT = """SELECT COALESCE(AVG(rating),0) AS average_rating, 
+                COUNT(rating) AS rating_count FROM product_reviews WHERE product_id = %s"""
+                cursor.execute(GET_AVERAGE_RATING_AND_COUNT, (product_dict.get("id"),))
+                row = cursor.fetchone()
+                product_dict.update(
+                    json.loads(
+                        json.dumps({"average_rating": row.average_rating}, default=str)
+                    )
+                )
+                product_dict["rating_count"] = row.rating_count
+                
                 product_item_status = product_status
                 GET_PRODUCT_BASE_ITEM = """SELECT pi.id AS product_item_id, pi.product_id, pi.product_variant_name, pi."SKU",
                 pi.original_price, pi.offer_price, pi.quantity_in_stock, pi.added_at, pi.updated_at, pi.product_item_status,
@@ -680,6 +702,17 @@ class NewProducts(Resource):
                 product_dict.update({"seller": seller_dict})
 
                 product_dict["base_product_item_id"] = row.base_product_item_id
+
+                GET_AVERAGE_RATING_AND_COUNT = """SELECT COALESCE(AVG(rating),0) AS average_rating, 
+                COUNT(rating) AS rating_count FROM product_reviews WHERE product_id = %s"""
+                cursor.execute(GET_AVERAGE_RATING_AND_COUNT, (product_dict.get("id"),))
+                row = cursor.fetchone()
+                product_dict.update(
+                    json.loads(
+                        json.dumps({"average_rating": row.average_rating}, default=str)
+                    )
+                )
+                product_dict["rating_count"] = row.rating_count
 
                 product_item_status = product_status
                 GET_PRODUCT_BASE_ITEM = """SELECT pi.id AS product_item_id, pi.product_id, pi.product_variant_name, pi."SKU",
