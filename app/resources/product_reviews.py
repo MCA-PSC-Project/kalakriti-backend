@@ -9,6 +9,16 @@ from flask import current_app as app
 from app.resources.media import delete_medias_by_ids
 
 
+def get_avg_ratings_and_count(cursor, product_id):
+    GET_AVERAGE_RATING_AND_COUNT = """SELECT COALESCE(AVG(rating),0) AS average_rating, 
+    COUNT(rating) AS rating_count FROM product_reviews WHERE product_id = %s"""
+    cursor.execute(GET_AVERAGE_RATING_AND_COUNT, (product_id,))
+    row = cursor.fetchone()
+    average_rating = row.average_rating
+    rating_count = row.rating_count
+    return average_rating, rating_count
+
+
 class ProductReview(Resource):
     @f_jwt.jwt_required()
     def post(self):
