@@ -75,6 +75,8 @@ class RecommendedProductsForAnonymousCustomer(Resource):
                 seller_dict["email"] = row.email
                 product_dict.update({"seller": seller_dict})
 
+                product_dict["base_product_item_id"] = row.base_product_item_id
+
                 GET_AVERAGE_RATING_AND_COUNT = """SELECT COALESCE(AVG(rating),0) AS average_rating, 
                 COUNT(rating) AS rating_count FROM product_reviews WHERE product_id = %s"""
                 cursor.execute(GET_AVERAGE_RATING_AND_COUNT, (product_dict.get("id"),))
@@ -86,7 +88,6 @@ class RecommendedProductsForAnonymousCustomer(Resource):
                 )
                 product_dict["rating_count"] = row.rating_count
 
-                product_dict["base_product_item_id"] = row.base_product_item_id
                 product_item_status = product_status
                 GET_PRODUCT_BASE_ITEM = """SELECT pi.id AS product_item_id, pi.product_id, pi.product_variant_name, pi."SKU",
                 pi.original_price, pi.offer_price, pi.quantity_in_stock, pi.added_at, pi.updated_at, pi.product_item_status,
@@ -376,6 +377,8 @@ class PersonalizedRecommendedProducts(Resource):
                 seller_dict["email"] = row.email
                 product_dict.update({"seller": seller_dict})
 
+                product_dict["base_product_item_id"] = row.base_product_item_id
+
                 GET_AVERAGE_RATING_AND_COUNT = """SELECT COALESCE(AVG(rating),0) AS average_rating, 
                 COUNT(rating) AS rating_count FROM product_reviews WHERE product_id = %s"""
                 cursor.execute(GET_AVERAGE_RATING_AND_COUNT, (product_dict.get("id"),))
@@ -386,7 +389,6 @@ class PersonalizedRecommendedProducts(Resource):
                     )
                 )
                 product_dict["rating_count"] = row.rating_count
-                product_dict["base_product_item_id"] = row.base_product_item_id
 
                 product_item_status = product_status
                 GET_PRODUCT_BASE_ITEM = """SELECT pi.id AS product_item_id, pi.product_id, pi.product_variant_name, pi."SKU",
@@ -532,12 +534,6 @@ class PopularProducts(Resource):
                 product_dict.update(
                     json.loads(json.dumps({"updated_at": row.updated_at}, default=str))
                 )
-                seller_dict = {}
-                seller_dict["id"] = row.seller_id
-                seller_dict["seller_name"] = row.seller_name
-                seller_dict["email"] = row.email
-                product_dict.update({"seller": seller_dict})
-
                 product_dict.update(
                     json.loads(
                         json.dumps({"average_rating": row.average_rating}, default=str)
@@ -551,6 +547,11 @@ class PopularProducts(Resource):
                         )
                     )
                 )
+                seller_dict = {}
+                seller_dict["id"] = row.seller_id
+                seller_dict["seller_name"] = row.seller_name
+                seller_dict["email"] = row.email
+                product_dict.update({"seller": seller_dict})
 
                 product_dict["base_product_item_id"] = row.base_product_item_id
                 # product_item_status = product_status
@@ -701,6 +702,8 @@ class NewProducts(Resource):
                 seller_dict["email"] = row.email
                 product_dict.update({"seller": seller_dict})
 
+                product_dict["base_product_item_id"] = row.base_product_item_id
+
                 GET_AVERAGE_RATING_AND_COUNT = """SELECT COALESCE(AVG(rating),0) AS average_rating, 
                 COUNT(rating) AS rating_count FROM product_reviews WHERE product_id = %s"""
                 cursor.execute(GET_AVERAGE_RATING_AND_COUNT, (product_dict.get("id"),))
@@ -712,7 +715,6 @@ class NewProducts(Resource):
                 )
                 product_dict["rating_count"] = row.rating_count
 
-                product_dict["base_product_item_id"] = row.base_product_item_id
                 product_item_status = product_status
                 GET_PRODUCT_BASE_ITEM = """SELECT pi.id AS product_item_id, pi.product_id, pi.product_variant_name, pi."SKU",
                 pi.original_price, pi.offer_price, pi.quantity_in_stock, pi.added_at, pi.updated_at, pi.product_item_status,

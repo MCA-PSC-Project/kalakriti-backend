@@ -76,6 +76,7 @@ class ProductsByCategory(Resource):
                 seller_dict["seller_name"] = row.seller_name
                 seller_dict["email"] = row.email
                 product_dict.update({"seller": seller_dict})
+                product_dict["base_product_item_id"] = row.base_product_item_id
 
                 average_rating, rating_count = get_avg_ratings_and_count(
                     cursor, product_dict["id"]
@@ -86,7 +87,6 @@ class ProductsByCategory(Resource):
                     )
                 )
                 product_dict["rating_count"] = rating_count
-                product_dict["base_product_item_id"] = row.base_product_item_id
 
                 product_item_status = product_status
                 GET_PRODUCT_BASE_ITEM = """SELECT pi.id AS product_item_id, pi.product_id, pi.product_variant_name, pi."SKU",
@@ -244,6 +244,7 @@ class Products(Resource):
             seller_dict["seller_name"] = row.seller_name
             seller_dict["email"] = row.email
             product_dict.update({"seller": seller_dict})
+            product_dict["base_product_item_id"] = row.base_product_item_id
 
             average_rating, rating_count = get_avg_ratings_and_count(
                 cursor, product_dict["id"]
@@ -253,7 +254,6 @@ class Products(Resource):
             )
             product_dict["rating_count"] = rating_count
 
-            product_dict["base_product_item_id"] = row.base_product_item_id
             product_item_status = product_status
             product_items_list = []
             GET_PRODUCT_ITEMS = """SELECT pi.id AS product_item_id, pi.product_id, pi.product_variant_name, pi."SKU", 
@@ -554,6 +554,7 @@ class SellersProducts(Resource):
                 seller_dict["seller_name"] = row.seller_name
                 seller_dict["email"] = row.email
                 product_dict.update({"seller": seller_dict})
+                product_dict["base_product_item_id"] = row.base_product_item_id
 
                 average_rating, rating_count = get_avg_ratings_and_count(
                     cursor, product_dict["id"]
@@ -565,7 +566,6 @@ class SellersProducts(Resource):
                 )
                 product_dict["rating_count"] = rating_count
 
-                product_dict["base_product_item_id"] = row.base_product_item_id
                 product_item_status = product_status
                 GET_PRODUCT_BASE_ITEM = """SELECT pi.id AS product_item_id, pi.product_id, pi.product_variant_name, pi."SKU",
                 pi.original_price, pi.offer_price, pi.quantity_in_stock, pi.added_at, pi.updated_at, pi.product_item_status,
@@ -963,6 +963,7 @@ class ProductsAllDetails(Resource):
             seller_dict["seller_name"] = row.seller_name
             seller_dict["email"] = row.email
             product_dict.update({"seller": seller_dict})
+            product_dict["base_product_item_id"] = row.base_product_item_id
 
             average_rating, rating_count = get_avg_ratings_and_count(
                 cursor, product_dict["id"]
@@ -972,7 +973,6 @@ class ProductsAllDetails(Resource):
             )
             product_dict["rating_count"] = rating_count
 
-            product_dict["base_product_item_id"] = row.base_product_item_id
             product_items_list = []
             GET_PRODUCT_ITEMS = """SELECT pi.id AS product_item_id, pi.product_id, pi.product_variant_name, pi."SKU", 
             pi.original_price, pi.offer_price, pi.quantity_in_stock, pi.added_at, pi.updated_at, pi.product_item_status,
@@ -1159,18 +1159,8 @@ class ProductsByQuery(Resource):
                 seller_dict["seller_name"] = row.seller_name
                 seller_dict["email"] = row.email
                 product_dict.update({"seller": seller_dict})
-
-                average_rating, rating_count = get_avg_ratings_and_count(
-                    cursor, product_dict["id"]
-                )
-                product_dict.update(
-                    json.loads(
-                        json.dumps({"average_rating": average_rating}, default=str)
-                    )
-                )
-                product_dict["rating_count"] = rating_count
-
                 product_dict["base_product_item_id"] = row.base_product_item_id
+
                 product_item_dict = {}
                 product_item_dict["id"] = row.product_item_id
                 product_item_dict["product_id"] = row.pi_product_id
@@ -1201,6 +1191,16 @@ class ProductsByQuery(Resource):
 
                 product_item_dict["variant"] = row.variant
                 product_item_dict["variant_value"] = row.variant_value
+
+                average_rating, rating_count = get_avg_ratings_and_count(
+                    cursor, product_dict["id"]
+                )
+                product_dict.update(
+                    json.loads(
+                        json.dumps({"average_rating": average_rating}, default=str)
+                    )
+                )
+                product_dict["rating_count"] = rating_count
 
                 media_dict = {}
                 GET_BASE_MEDIA = """SELECT m.id AS media_id, m.name, m.path
