@@ -49,6 +49,16 @@ class Banners(Resource):
     def get(self):
         banners_list = []
 
+        try:
+            key_name = "banners"
+            # app.logger.debug("keyname= %s", key_name)
+            response = app_globals.redis_client.get(key_name)
+            # app_globals.redis_client.delete(key_name)
+            if response:
+                return json.loads(response.decode("utf-8"))
+        except Exception as err:
+            app.logger.debug(err)
+
         GET_BANNERS = """SELECT b.id AS banner_id, b.redirect_type, b.redirect_url,
         m.id AS media_id, m.name, m.path 
         FROM banners b LEFT JOIN media m ON b.media_id = m.id"""
@@ -81,6 +91,11 @@ class Banners(Resource):
             abort(400, "Bad Request")
         finally:
             cursor.close()
+        app_globals.redis_client.set(
+            key_name,
+            json.dumps(banners_list),
+        )
+        app_globals.redis_client.expire(key_name, 1800)  # seconds
         # app.logger.debug(banners_list)
         return banners_list
 

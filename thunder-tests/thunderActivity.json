@@ -8,7 +8,7 @@
     "method": "POST",
     "sortNum": 0,
     "created": "2023-03-14T17:30:06.748Z",
-    "modified": "2023-05-16T05:08:51.074Z",
+    "modified": "2023-05-19T09:51:54.715Z",
     "headers": [],
     "params": [],
     "body": {
@@ -97,12 +97,12 @@
     "method": "POST",
     "sortNum": 0,
     "created": "2023-04-03T06:00:22.218Z",
-    "modified": "2023-04-06T11:43:43.816Z",
+    "modified": "2023-05-19T10:53:47.214Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n\t\"media_id\" : 23,\n\t\"redirect_type\" : \"rt\" ,\n\t\"redirect_url\" : \"www.example1.com\"\n}",
+      "raw": "{\n\t\"media_id\" : 8,\n\t\"redirect_type\" : \"rt\" ,\n\t\"redirect_url\" : \"www.example1.com\"\n}",
       "form": []
     },
     "auth": {
@@ -1100,12 +1100,12 @@
     "method": "POST",
     "sortNum": 0,
     "created": "2023-04-22T15:36:43.748Z",
-    "modified": "2023-05-16T10:13:01.779Z",
+    "modified": "2023-05-19T09:51:27.582Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n  \"email\": \"customer2@gmail.com\",\n  \"password\": \"abcd@1234\"\n}",
+      "raw": "{\n  \"email\": \"customer1@gmail.com\",\n  \"password\": \"abcd@1234\"\n}",
       "form": []
     },
     "tests": [],
@@ -2337,6 +2337,99 @@
         "isPath": false
       }
     ],
+    "tests": []
+  },
+  {
+    "_id": "4fd9ac16-1ab1-404d-8152-838e941291c3",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/banners",
+    "url": "{{baseUrl}}/banners",
+    "method": "GET",
+    "sortNum": 0,
+    "created": "2023-05-19T09:50:35.468Z",
+    "modified": "2023-05-19T09:50:35.468Z",
+    "headers": [],
+    "params": [],
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{customer_token}}"
+    },
+    "tests": []
+  },
+  {
+    "_id": "94bee810-8219-407d-83cb-da764b31fd8d",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/uploads/image",
+    "url": "{{baseUrl}}/uploads/image",
+    "method": "POST",
+    "sortNum": 0,
+    "created": "2023-05-19T09:51:04.119Z",
+    "modified": "2023-05-19T10:49:24.406Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "formdata",
+      "raw": "",
+      "form": [],
+      "files": [
+        {
+          "name": "file",
+          "value": "c:\\Users\\prash\\OneDrive\\Pictures\\python.jpg"
+        }
+      ]
+    },
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{admin_token}}"
+    },
+    "tests": []
+  },
+  {
+    "_id": "e8390f04-f9c7-40a7-a619-bae37345bb7b",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/banners/2",
+    "url": "{{baseUrl}}/banners/2",
+    "method": "PUT",
+    "sortNum": 0,
+    "created": "2023-05-19T10:49:51.090Z",
+    "modified": "2023-05-19T10:49:51.090Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n\t\"media_id\" : 7,\n\t\"redirect_type\" : \"rtype_updated\" ,\n\t\"redirect_url\" : \"www.example.com\"\n}",
+      "form": []
+    },
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{admin_token}}"
+    },
+    "tests": []
+  },
+  {
+    "_id": "a38d45c6-103d-46b4-b9ad-cf7537124ddd",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/banners/4",
+    "url": "{{baseUrl}}/banners/4",
+    "method": "PUT",
+    "sortNum": 0,
+    "created": "2023-05-19T10:49:59.948Z",
+    "modified": "2023-05-19T10:49:59.948Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n\t\"media_id\" : 8,\n\t\"redirect_type\" : \"rtype_updated\" ,\n\t\"redirect_url\" : \"www.example.com\"\n}",
+      "form": []
+    },
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{admin_token}}"
+    },
     "tests": []
   }
 ]
