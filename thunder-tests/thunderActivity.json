@@ -97,12 +97,12 @@
     "method": "POST",
     "sortNum": 0,
     "created": "2023-04-03T06:00:22.218Z",
-    "modified": "2023-05-19T10:53:47.214Z",
+    "modified": "2023-05-20T06:19:58.902Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n\t\"media_id\" : 8,\n\t\"redirect_type\" : \"rt\" ,\n\t\"redirect_url\" : \"www.example1.com\"\n}",
+      "raw": "{\n\t\"media_id\" : 7,\n\t\"redirect_type\" : \"rt\" ,\n\t\"redirect_url\" : \"www.example1.com\"\n}",
       "form": []
     },
     "auth": {

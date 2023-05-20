@@ -44,6 +44,7 @@ class Banners(Resource):
             abort(400, "Bad Request")
         finally:
             cursor.close()
+        app_globals.redis_client.delete("banners")
         return f"banner_id = {id} created sucessfully", 201
 
     def get(self):
@@ -95,7 +96,7 @@ class Banners(Resource):
             key_name,
             json.dumps(banners_list),
         )
-        app_globals.redis_client.expire(key_name, 1800)  # seconds
+        app_globals.redis_client.expire(key_name, 7200)  # seconds
         # app.logger.debug(banners_list)
         return banners_list
 
@@ -144,6 +145,7 @@ class Banners(Resource):
             abort(400, "Bad Request")
         finally:
             cursor.close()
+        app_globals.redis_client.delete("banners")
         return {"message": f"Banner_id {banner_id} modified."}, 200
 
     @f_jwt.jwt_required()
@@ -182,4 +184,5 @@ class Banners(Resource):
             abort(400, "Bad Request")
         finally:
             cursor.close()
+        app_globals.redis_client.delete("banners")
         return 200
