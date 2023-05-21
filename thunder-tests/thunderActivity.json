@@ -2177,5 +2177,57 @@
       "bearer": "{{customer_token}}"
     },
     "tests": []
+  },
+  {
+    "_id": "e75478f9-ca72-4ada-91bf-2eb4858b96cc",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/search?query=art",
+    "url": "{{baseUrl}}/search?query=art",
+    "method": "GET",
+    "sortNum": 0,
+    "created": "2023-05-21T07:07:02.898Z",
+    "modified": "2023-05-21T07:07:02.898Z",
+    "headers": [],
+    "params": [
+      {
+        "name": "query",
+        "value": "art",
+        "isPath": false
+      },
+      {
+        "name": "product_status",
+        "value": "draft",
+        "isDisabled": true,
+        "isPath": false
+      }
+    ],
+    "tests": []
+  },
+  {
+    "_id": "676c5423-de18-4482-89e9-6094c83c4daa",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/search?query=madhubani",
+    "url": "{{baseUrl}}/search?query=madhubani",
+    "method": "GET",
+    "sortNum": 0,
+    "created": "2023-05-21T07:07:11.732Z",
+    "modified": "2023-05-21T07:07:11.732Z",
+    "headers": [],
+    "params": [
+      {
+        "name": "query",
+        "value": "madhubani",
+        "isPath": false
+      },
+      {
+        "name": "product_status",
+        "value": "draft",
+        "isDisabled": true,
+        "isPath": false
+      }
+    ],
+    "tests": []
   }
 ]
