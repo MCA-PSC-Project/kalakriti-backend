@@ -8,12 +8,12 @@
     "method": "POST",
     "sortNum": 0,
     "created": "2023-03-14T17:30:06.748Z",
-    "modified": "2023-05-19T09:51:54.715Z",
+    "modified": "2023-05-28T10:52:43.240Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n  \"email\": \"super_admin1@gmail.com\",\n  \"password\": \"abcd@123\"\n}",
+      "raw": "{\n  \"email\": \"admin1@gmail.com\",\n  \"password\": \"abcd@123\"\n}",
       "form": []
     },
     "tests": [],
@@ -135,77 +135,6 @@
     "tests": []
   },
   {
-    "_id": "fe62a29e-bc3c-48ab-bbea-86c2d6f70211",
-    "colId": "history",
-    "containerId": "",
-    "name": "{{baseUrl}}/products?product_status=published&SKU=dgreen-colorf6&product_item_status=unpublished",
-    "url": "{{baseUrl}}/products?product_status=published&SKU=dgreen-colorf6&product_item_status=unpublished",
-    "method": "GET",
-    "sortNum": 0,
-    "created": "2023-04-06T10:32:12.121Z",
-    "modified": "2023-04-06T11:58:26.592Z",
-    "headers": [],
-    "params": [
-      {
-        "name": "product_status",
-        "value": "published",
-        "isPath": false
-      },
-      {
-        "name": "min_offer_price",
-        "value": "200",
-        "isDisabled": true,
-        "isPath": false
-      },
-      {
-        "name": "max_offer_price",
-        "value": "",
-        "isDisabled": true,
-        "isPath": false
-      },
-      {
-        "name": "in-stock",
-        "value": "",
-        "isDisabled": true,
-        "isPath": false
-      },
-      {
-        "name": "SKU",
-        "value": "dgreen-colorf6",
-        "isPath": false
-      },
-      {
-        "name": "product_item_status",
-        "value": "unpublished",
-        "isPath": false
-      }
-    ],
-    "tests": []
-  },
-  {
-    "_id": "ef24244a-e051-40cb-9b92-066af5d9e290",
-    "colId": "history",
-    "containerId": "",
-    "name": "{{baseUrl}}/top-searches",
-    "url": "{{baseUrl}}/top-searches",
-    "method": "PUT",
-    "sortNum": 0,
-    "created": "2023-04-19T16:54:04.762Z",
-    "modified": "2023-04-19T17:00:24.089Z",
-    "headers": [],
-    "params": [],
-    "body": {
-      "type": "json",
-      "raw": "[\n  {\n    \"rank\": 1,\n    \"query\": \"madhubani paintings\"\n  },\n  {\n    \"rank\": 2,\n    \"query\": \"embroidery sarees\"\n  }\n]",
-      "form": []
-    },
-    "auth": {
-      "type": "bearer",
-      "bearer": "{{admin_token}}"
-    },
-    "tests": []
-  },
-  {
     "_id": "2b49ce28-f1ff-4990-872e-7c4c982ceaea",
     "colId": "history",
     "containerId": "",
@@ -320,17 +249,17 @@
     "method": "POST",
     "sortNum": 0,
     "created": "2023-04-20T09:35:57.852Z",
-    "modified": "2023-05-17T09:29:58.215Z",
+    "modified": "2023-05-28T11:02:16.078Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n  \"address_line1\": \"al1\",\n  \"address_line2\": \"al2\",\n  \"city\": \"Patna\",\n  \"district\": \"Patna\",\n  \"state\": \"Bihar\",\n  \"country\": \"India\",\n  \"pincode\": \"801105\",\n  \"landmark\": \"ghanta nhi pta\"\n}",
+      "raw": "{\n  \n  \"mobile_no\":\"\",\n  \"address_line1\": \"al1\",\n  \"address_line2\": \"al2\",\n  \"city\": \"Patna\",\n  \"district\": \"Patna\",\n  \"state\": \"Bihar\",\n  \"country\": \"India\",\n  \"pincode\": \"801105\",\n  \"landmark\": \"ghanta nhi pta\"\n}",
       "form": []
     },
     "auth": {
       "type": "bearer",
-      "bearer": "{{customer2_token}}"
+      "bearer": "{{seller_token}}"
     },
     "tests": []
   },
@@ -2228,6 +2157,52 @@
         "isPath": false
       }
     ],
+    "tests": []
+  },
+  {
+    "_id": "e6a25799-18f7-41d8-9f1e-12e5fb2e4e4d",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/addresses/1",
+    "url": "{{baseUrl}}/addresses/1",
+    "method": "PUT",
+    "sortNum": 0,
+    "created": "2023-05-28T10:59:46.090Z",
+    "modified": "2023-05-28T11:00:06.321Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n  \"full_name\": \"bittu kumar\",\n  \"mobile_no\":\"12345\",\n  \"address_line1\": \"aline1\",\n  \"address_line2\": \"aline2\",\n  \"city\": \"patna\",\n  \"district\": \"Patna\",\n  \"state\": \"Bihar\",\n  \"country\": \"India\",\n  \"pincode\": \"800001\",\n  \"landmark\": \"ghanta nhi pta\"\n}",
+      "form": []
+    },
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{customer_token}}"
+    },
+    "tests": []
+  },
+  {
+    "_id": "97b1338c-bf02-4ad1-a55d-374c4cb2df26",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/addresses/2",
+    "url": "{{baseUrl}}/addresses/2",
+    "method": "PUT",
+    "sortNum": 0,
+    "created": "2023-05-28T11:00:18.568Z",
+    "modified": "2023-05-28T11:00:18.568Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n  \"full_name\": \"bittu kumar\",\n  \"mobile_no\":\"12345\",\n  \"address_line1\": \"aline1\",\n  \"address_line2\": \"aline2\",\n  \"city\": \"patna\",\n  \"district\": \"Patna\",\n  \"state\": \"Bihar\",\n  \"country\": \"India\",\n  \"pincode\": \"800001\",\n  \"landmark\": \"ghanta nhi pta\"\n}",
+      "form": []
+    },
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{customer_token}}"
+    },
     "tests": []
   }
 ]
