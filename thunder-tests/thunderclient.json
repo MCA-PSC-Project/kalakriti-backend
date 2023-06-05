@@ -1140,13 +1140,9 @@
     "method": "GET",
     "sortNum": 600000,
     "created": "2023-02-20T16:38:51.088Z",
-    "modified": "2023-05-03T12:18:24.608Z",
+    "modified": "2023-06-05T10:37:06.332Z",
     "headers": [],
     "params": [],
-    "auth": {
-      "type": "bearer",
-      "bearer": "{{customer_token}}"
-    },
     "tests": []
   },
   {

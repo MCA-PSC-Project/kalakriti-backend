@@ -135,20 +135,6 @@
     "tests": []
   },
   {
-    "_id": "2b49ce28-f1ff-4990-872e-7c4c982ceaea",
-    "colId": "history",
-    "containerId": "",
-    "name": "{{baseUrl}}/categories",
-    "url": "{{baseUrl}}/categories",
-    "method": "GET",
-    "sortNum": 0,
-    "created": "2023-04-20T04:40:50.335Z",
-    "modified": "2023-04-20T04:40:50.335Z",
-    "headers": [],
-    "params": [],
-    "tests": []
-  },
-  {
     "_id": "41bd409e-3784-4945-a912-ae5d0fb25fba",
     "colId": "history",
     "containerId": "",
@@ -167,24 +153,6 @@
     },
     "tests": [],
     "docs": "```json\n{\n    \"email\": \"customer@gmail.com\",\n    \"password\": \"abcd@123\"\n}\n```\n```json\n{\n\t\"email\": \"seller@gmail.com\",\n\t\"password\": \"abcd@123\"\n}\n```\n\n```json\n{\n\t\"email\": \"admin@gmail.com\",\n\t\"password\": \"abcd@123\"\n}\n```\n\n```json\n{\n    \"email\": \"customer1@gmail.com\",\n    \"password\": \"abcd@123\"\n}\n```\n\n```json\n{\n    \"email\": \"seller1@gmail.com\",\n    \"password\": \"abcd@123\"\n}\n```\n\n```json\n{\n    \"email\": \"updated_admin@gmail.com\",\n    \"password\": \"abcd@123\"\n}\n```\n\n```json\n{\n\t\"email\": \"mywebnewslettersinbox123@gmail.com\",\n\t\"password\": \"abcd@123\"\n}\n```"
-  },
-  {
-    "_id": "7129156d-c393-4a9b-97d2-52eb42d34cf8",
-    "colId": "history",
-    "containerId": "",
-    "name": "{{baseUrl}}/customers/profile",
-    "url": "{{baseUrl}}/customers/profile",
-    "method": "GET",
-    "sortNum": 0,
-    "created": "2023-04-20T09:34:10.774Z",
-    "modified": "2023-04-20T09:34:10.774Z",
-    "headers": [],
-    "params": [],
-    "auth": {
-      "type": "bearer",
-      "bearer": "{{customer_token}}"
-    },
-    "tests": []
   },
   {
     "_id": "9c97e29d-59dc-40e7-b304-40f81373da36",
@@ -2203,6 +2171,20 @@
       "type": "bearer",
       "bearer": "{{customer_token}}"
     },
+    "tests": []
+  },
+  {
+    "_id": "41f20ff1-a608-4687-9a4a-034666f55a0a",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/products/10/product-reviews",
+    "url": "{{baseUrl}}/products/10/product-reviews",
+    "method": "GET",
+    "sortNum": 0,
+    "created": "2023-06-05T10:35:38.607Z",
+    "modified": "2023-06-05T10:37:18.376Z",
+    "headers": [],
+    "params": [],
     "tests": []
   }
 ]

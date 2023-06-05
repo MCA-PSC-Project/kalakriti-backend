@@ -108,7 +108,6 @@ class ProductReview(Resource):
             201,
         )
 
-    @f_jwt.jwt_required()
     def get(self, product_id):
         reviews_list = []
         GET_REVIEWS = """SELECT id, customer_id, rating, review, added_at, updated_at 
