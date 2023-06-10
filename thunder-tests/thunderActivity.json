@@ -74,12 +74,12 @@
     "method": "POST",
     "sortNum": 0,
     "created": "2023-03-29T18:20:47.684Z",
-    "modified": "2023-05-15T08:42:39.201Z",
+    "modified": "2023-06-08T08:27:37.294Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n  \"product_id\": 3,\n  \"variant\": \"COLOR\",\n  \"variant_value\": \"BLACK\",\n  \"product_variant_name\": \"black_COLOR_VARIANT\",\n  \"SKU\": \"xyzabcd\",\n  \"original_price\": 1000,\n  \"offer_price\": 500,\n  \"quantity_in_stock\": 20,\n  \"media_list\": [\n    {\n      \"media_id\": 1,\n      \"display_order\": 1\n    },\n    {\n      \"media_id\": 2,\n      \"display_order\": 2\n    }\n  ]\n}",
+      "raw": "{\n  \"product_id\": 3,\n  \"variant\": \"COLOR\",\n  \"variant_value\": \"BLUE\",\n  \"product_variant_name\": \"blue_COLOR_VARIANT\",\n  \"SKU\": \"xyzabcde\",\n  \"original_price\": 1000,\n  \"offer_price\": 500,\n  \"quantity_in_stock\": 20,\n  \"media_list\": [\n    {\n      \"media_id\": 1,\n      \"display_order\": 1\n    },\n    {\n      \"media_id\": 2,\n      \"display_order\": 2\n    }\n  ]\n}",
       "form": []
     },
     "auth": {
@@ -153,42 +153,6 @@
     },
     "tests": [],
     "docs": "```json\n{\n    \"email\": \"customer@gmail.com\",\n    \"password\": \"abcd@123\"\n}\n```\n```json\n{\n\t\"email\": \"seller@gmail.com\",\n\t\"password\": \"abcd@123\"\n}\n```\n\n```json\n{\n\t\"email\": \"admin@gmail.com\",\n\t\"password\": \"abcd@123\"\n}\n```\n\n```json\n{\n    \"email\": \"customer1@gmail.com\",\n    \"password\": \"abcd@123\"\n}\n```\n\n```json\n{\n    \"email\": \"seller1@gmail.com\",\n    \"password\": \"abcd@123\"\n}\n```\n\n```json\n{\n    \"email\": \"updated_admin@gmail.com\",\n    \"password\": \"abcd@123\"\n}\n```\n\n```json\n{\n\t\"email\": \"mywebnewslettersinbox123@gmail.com\",\n\t\"password\": \"abcd@123\"\n}\n```"
-  },
-  {
-    "_id": "9c97e29d-59dc-40e7-b304-40f81373da36",
-    "colId": "history",
-    "containerId": "",
-    "name": "{{baseUrl}}/sellers/profile",
-    "url": "{{baseUrl}}/sellers/profile",
-    "method": "GET",
-    "sortNum": 0,
-    "created": "2023-04-20T09:34:14.932Z",
-    "modified": "2023-04-20T09:34:14.932Z",
-    "headers": [],
-    "params": [],
-    "auth": {
-      "type": "bearer",
-      "bearer": "{{seller_token}}"
-    },
-    "tests": []
-  },
-  {
-    "_id": "56c6f1a5-872f-4b4a-9da1-1314a9a8bf9d",
-    "colId": "history",
-    "containerId": "",
-    "name": "{{baseUrl}}/admins/profile",
-    "url": "{{baseUrl}}/admins/profile",
-    "method": "GET",
-    "sortNum": 0,
-    "created": "2023-04-20T09:34:48.431Z",
-    "modified": "2023-04-20T09:34:48.431Z",
-    "headers": [],
-    "params": [],
-    "auth": {
-      "type": "bearer",
-      "bearer": "{{admin_token}}"
-    },
-    "tests": []
   },
   {
     "_id": "630fe094-e2c2-4462-9dfe-ce3d62592390",
@@ -2185,6 +2149,29 @@
     "modified": "2023-06-05T10:37:18.376Z",
     "headers": [],
     "params": [],
+    "tests": []
+  },
+  {
+    "_id": "d588e6f5-548b-4012-b33d-298354f0c98a",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/sellers/product-items/18",
+    "url": "{{baseUrl}}/sellers/product-items/18",
+    "method": "PATCH",
+    "sortNum": 0,
+    "created": "2023-06-08T08:29:37.965Z",
+    "modified": "2023-06-08T08:30:24.934Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n  \"product_item_status\": \"published\"\n}",
+      "form": []
+    },
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{seller_token}}"
+    },
     "tests": []
   }
 ]

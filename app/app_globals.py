@@ -22,7 +22,7 @@ def get_cursor():
         # db_conn.close()
         # app.logger.debug("db_conn.closed: %s", db_conn.closed)
         if db_conn.closed:
-            app.logger.debug("Getting new connection")
+            app.logger.debug("Getting new database connection")
             db_conn = db_conn_pool.getconn()
             if db_conn == None:
                 app.logger.fatal("Database connection error")
