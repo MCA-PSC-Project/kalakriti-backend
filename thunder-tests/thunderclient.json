@@ -3297,16 +3297,34 @@
     "colId": "80d178ef-5176-474a-8708-db78bd45faee",
     "containerId": "6bd7e1f1-03c2-44e9-a246-827e2d8f4f7f",
     "name": "Get number of item in cart for a user",
-    "url": "{{baseUrl}}/carts/no-of-item",
+    "url": "{{baseUrl}}/carts/items-quantity",
     "method": "GET",
     "sortNum": 1090000,
     "created": "2023-06-13T05:53:33.410Z",
-    "modified": "2023-06-13T06:56:25.001Z",
+    "modified": "2023-06-13T07:40:56.693Z",
     "headers": [],
     "params": [],
     "auth": {
       "type": "bearer",
       "bearer": "{{customer_token}}"
+    },
+    "tests": []
+  },
+  {
+    "_id": "cd7f5465-d9e2-4d1b-abeb-71b5dc495461",
+    "colId": "80d178ef-5176-474a-8708-db78bd45faee",
+    "containerId": "2ffd39e9-6675-40b7-abd0-296aaf9564ad",
+    "name": "Order List for seller",
+    "url": "{{baseUrl}}/order-list-for-seller",
+    "method": "GET",
+    "sortNum": 1100000,
+    "created": "2023-06-13T07:09:43.562Z",
+    "modified": "2023-06-13T07:19:43.583Z",
+    "headers": [],
+    "params": [],
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{seller_token}}"
     },
     "tests": []
   }

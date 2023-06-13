@@ -512,3 +512,7 @@ EXECUTE PROCEDURE check_product_item_status();
 CREATE INDEX "tsv_index" ON "products_tsv_store" USING GIN ("tsv");
 
 END;
+
+
+
+

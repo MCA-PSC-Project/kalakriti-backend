@@ -457,3 +457,99 @@ class CustomerOrders(Resource):
             cursor.close()
         # app.logger.debug(orders_list)
         return orders_list
+    
+
+class SellerOrderList(Resource):
+    @f_jwt.jwt_required()
+    def get(self):
+        seller_id = f_jwt.get_jwt_identity()
+        app.logger.debug("seller_id= %s", seller_id)
+
+        orders_list = [] 
+
+        GET_CUSTOMER_IDS ="""select customer_id from orders where id in
+        (select order_id from order_items where product_item_id in 
+        (select product_id from product_items where id in
+        (select id from products where seller_id = %s)))"""
+
+        try:
+            cursor = app_globals.get_named_tuple_cursor()
+            cursor.execute(GET_CUSTOMER_IDS, (seller_id,))
+            rows = cursor.fetchall()
+            for row in rows:
+                customer_id=(row)
+
+            GET_ORDERS = """SELECT o.id AS order_id, o.added_at, o.updated_at, 
+            temp.order_item_id, temp.product_item_id, temp.order_item_status, temp.quantity, 
+            temp.product_id, temp.product_name 
+            FROM orders o 
+            JOIN LATERAL(
+                SELECT oi.id AS order_item_id, oi.product_item_id, oi.order_item_status, oi.quantity, 
+                p.id AS product_id, p.product_name AS product_name
+                FROM order_items oi 
+                JOIN products p
+                ON p.id = (
+                    SELECT pi.product_id 
+                    FROM product_items pi
+                    WHERE pi.id = oi.product_item_id
+                ) 
+                WHERE oi.order_id = o.id
+            ) AS temp ON TRUE
+            WHERE o.customer_id = %s
+            ORDER BY o.added_at DESC"""
+            cursor = app_globals.get_named_tuple_cursor()
+            cursor.execute(GET_ORDERS, (customer_id,))
+            rows = cursor.fetchall()
+            if not rows:
+                return {}
+            for row in rows:
+                order_dict = {}
+                order_dict["order_id"] = row.order_id
+                order_dict.update(
+                    json.loads(json.dumps({"added_at": row.added_at}, default=str))
+                )
+                order_dict.update(
+                    json.loads(json.dumps({"updated_at": row.updated_at}, default=str))
+                )
+                order_dict["order_item_id"] = row.order_item_id
+                order_dict["product_item_id"] = row.product_item_id
+                order_dict["order_item_status"] = row.order_item_status
+                order_dict["quantity"] = row.quantity
+                order_dict["product_id"] = row.product_id
+                order_dict["product_name"] = row.product_name
+
+                media_dict = {}
+                GET_BASE_MEDIA = """SELECT m.id AS media_id, m.name, m.path
+                FROM media m
+                WHERE m.id = (
+                    SELECT pim.media_id From product_item_medias pim
+                    WHERE pim.product_item_id = %s 
+                    ORDER BY pim.display_order 
+                    LIMIT 1
+                )"""
+                cursor.execute(GET_BASE_MEDIA, (order_dict.get("product_item_id"),))
+                row = cursor.fetchone()
+                if row is None:
+                    app.logger.debug("No media rows")
+                    order_dict.update({"media": media_dict})
+                    orders_list.append(order_dict)
+                    continue
+                media_dict["id"] = row.media_id
+                media_dict["name"] = row.name
+                # media_dict['path'] = row.path
+                path = row.path
+                if path is not None:
+                    media_dict["path"] = "{}/{}".format(app.config["S3_LOCATION"], path)
+                else:
+                    media_dict["path"] = None
+                order_dict.update({"media": media_dict})
+                orders_list.append(order_dict)
+        except (Exception, psycopg2.Error) as err:
+            app.logger.debug(err)
+            abort(400, "Bad Request")
+        finally:
+            cursor.close()
+        # app.logger.debug(orders_list)
+        return orders_list
+    
+

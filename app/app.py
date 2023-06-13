@@ -43,7 +43,7 @@ from app.resources.home import (
     PersonalizedRecommendedProducts,
     ViewedProducts,
 )
-from app.resources.orders import OrderItems, Orders, CustomerOrders
+from app.resources.orders import OrderItems, Orders, CustomerOrders, SellerOrderList
 from app.resources.product_items import (
     ProductItems,
     SellersProductBaseItem,
@@ -254,7 +254,7 @@ def create_app(config_name):
 
     # Carts
     api.add_resource(Carts, "/carts", "/carts/<int:product_item_id>")
-    api.add_resource(NoOfItem, "/carts/no-of-item")
+    api.add_resource(NoOfItem, "/carts/items-quantity")
 
     # Reviews
     api.add_resource(
@@ -274,6 +274,7 @@ def create_app(config_name):
     api.add_resource(Orders, "/orders", "/orders/<int:order_id>")
     api.add_resource(OrderItems, "/order-items/<int:order_item_id>")
     api.add_resource(CustomerOrders, "/customer-orders")
+    api.add_resource(SellerOrderList,"/order-list-for-seller")
 
     # TODO: Homepage related endpoints
     # Home
