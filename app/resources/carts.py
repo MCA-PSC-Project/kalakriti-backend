@@ -214,3 +214,28 @@ class Carts(Resource):
         finally:
             cursor.close()
         return 200
+    
+class NoOfItem(Resource):
+    @f_jwt.jwt_required()
+    def get(self):
+        customer_id = f_jwt.get_jwt_identity()
+        app.logger.debug("user_id= %s", customer_id)
+
+        GET_NO_OF_ITEMS = """ select count(*) as count from cart_items where cart_id = 
+            (select id from carts where customer_id = %s) """
+        try:
+                cursor = app_globals.get_named_tuple_cursor()
+            
+                cursor.execute(GET_NO_OF_ITEMS, (customer_id,))
+                row = cursor.fetchone()
+                if row is None:
+                    return {}
+                
+        except (Exception, psycopg2.Error) as err:
+                app.logger.debug(err)
+                abort(400, "Bad Request")
+        finally:
+                cursor.close()
+    
+        return row
+    
