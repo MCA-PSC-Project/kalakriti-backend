@@ -2173,5 +2173,23 @@
       "bearer": "{{customer_token}}"
     },
     "tests": []
+  },
+  {
+    "_id": "28549448-727e-47ac-9892-a3d1fa754705",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/customer-orders",
+    "url": "{{baseUrl}}/customer-orders",
+    "method": "GET",
+    "sortNum": 0,
+    "created": "2023-06-14T12:14:47.777Z",
+    "modified": "2023-06-14T12:14:47.777Z",
+    "headers": [],
+    "params": [],
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{customer_token}}"
+    },
+    "tests": []
   }
 ]

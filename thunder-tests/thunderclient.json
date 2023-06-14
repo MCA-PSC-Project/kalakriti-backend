@@ -1965,7 +1965,7 @@
     "_id": "876caf27-109d-4dd7-9bd7-242bad77adf1",
     "colId": "80d178ef-5176-474a-8708-db78bd45faee",
     "containerId": "2ffd39e9-6675-40b7-abd0-296aaf9564ad",
-    "name": "get orders of a user",
+    "name": "get orders of a customer",
     "url": "{{baseUrl}}/customer-orders",
     "method": "GET",
     "sortNum": 530000,
