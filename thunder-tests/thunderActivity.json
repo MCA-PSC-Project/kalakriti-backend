@@ -1984,12 +1984,12 @@
     "method": "POST",
     "sortNum": 0,
     "created": "2023-05-20T16:40:42.581Z",
-    "modified": "2023-05-20T16:40:47.200Z",
+    "modified": "2023-06-14T04:41:31.528Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n  \"product_item_id\": 4\n}",
+      "raw": "{\n  \"product_item_id\": 11\n}",
       "form": []
     },
     "auth": {
@@ -2146,7 +2146,7 @@
     "method": "GET",
     "sortNum": 0,
     "created": "2023-06-05T10:35:38.607Z",
-    "modified": "2023-06-05T10:37:18.376Z",
+    "modified": "2023-06-14T04:38:49.334Z",
     "headers": [],
     "params": [],
     "tests": []
@@ -2171,6 +2171,24 @@
     "auth": {
       "type": "bearer",
       "bearer": "{{seller_token}}"
+    },
+    "tests": []
+  },
+  {
+    "_id": "3d803cf5-bfd3-41f2-a4de-da13b2475fac",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/product-review/10",
+    "url": "{{baseUrl}}/product-review/10",
+    "method": "GET",
+    "sortNum": 0,
+    "created": "2023-06-14T04:14:40.282Z",
+    "modified": "2023-06-14T04:14:40.282Z",
+    "headers": [],
+    "params": [],
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{customer_token}}"
     },
     "tests": []
   }

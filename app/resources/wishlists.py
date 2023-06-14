@@ -8,6 +8,7 @@ import json
 from flask import current_app as app
 
 from app.resources.product_reviews import get_avg_ratings_and_count
+from app.resources.seller import get_seller_info
 
 
 class Wishlists(Resource):
@@ -103,7 +104,11 @@ class Wishlists(Resource):
                     )
                 )
                 wishlist_dict["rating_count"] = rating_count
-                
+
+                wishlist_dict.update(
+                    {"seller": get_seller_info(cursor, wishlist_dict["product_id"])}
+                )
+
                 media_dict = {}
                 GET_BASE_MEDIA = """SELECT m.id AS media_id, m.name, m.path
                 FROM media m
