@@ -155,24 +155,6 @@
     "docs": "```json\n{\n    \"email\": \"customer@gmail.com\",\n    \"password\": \"abcd@123\"\n}\n```\n```json\n{\n\t\"email\": \"seller@gmail.com\",\n\t\"password\": \"abcd@123\"\n}\n```\n\n```json\n{\n\t\"email\": \"admin@gmail.com\",\n\t\"password\": \"abcd@123\"\n}\n```\n\n```json\n{\n    \"email\": \"customer1@gmail.com\",\n    \"password\": \"abcd@123\"\n}\n```\n\n```json\n{\n    \"email\": \"seller1@gmail.com\",\n    \"password\": \"abcd@123\"\n}\n```\n\n```json\n{\n    \"email\": \"updated_admin@gmail.com\",\n    \"password\": \"abcd@123\"\n}\n```\n\n```json\n{\n\t\"email\": \"mywebnewslettersinbox123@gmail.com\",\n\t\"password\": \"abcd@123\"\n}\n```"
   },
   {
-    "_id": "630fe094-e2c2-4462-9dfe-ce3d62592390",
-    "colId": "history",
-    "containerId": "",
-    "name": "{{baseUrl}}/addresses",
-    "url": "{{baseUrl}}/addresses",
-    "method": "GET",
-    "sortNum": 0,
-    "created": "2023-04-20T09:35:39.249Z",
-    "modified": "2023-04-20T09:35:39.249Z",
-    "headers": [],
-    "params": [],
-    "auth": {
-      "type": "bearer",
-      "bearer": "{{customer_token}}"
-    },
-    "tests": []
-  },
-  {
     "_id": "c622e62c-b084-44af-9146-cba84500afb2",
     "colId": "history",
     "containerId": "",
