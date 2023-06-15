@@ -38,7 +38,7 @@ class Wishlists(Resource):
         finally:
             cursor.close()
         return (
-            f"Product_item_id = {product_item_id} added to wishilist for user_id {customer_id}",
+            f"Product_item_id = {product_item_id} added to wishlist",
             201,
         )
 
