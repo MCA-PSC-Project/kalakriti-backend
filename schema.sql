@@ -356,7 +356,7 @@ CREATE TABLE "product_reviews"(
 	"id" SERIAL PRIMARY KEY,
 	"customer_id" INT,
 	"product_id" INT,
-	"rating" NUMERIC(2, 1) CHECK("rating" <= 5),
+	"rating" INT CHECK (rating >= 1 AND rating <= 5),
 	"review" VARCHAR(500),
 	"added_at" TIMESTAMPTZ NOT NULL,
 	"updated_at" TIMESTAMPTZ,
