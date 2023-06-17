@@ -282,7 +282,7 @@ class CustomerReviewOnProduct(Resource):
         app.logger.debug("customer_id= %s", customer_id)
 
         GET_REVIEW = """SELECT id, rating, review, added_at, updated_at FROM product_reviews 
-                         WHERE product_id = %s AND customer_id = %s"""
+        WHERE product_id = %s AND customer_id = %s"""
 
         try:
             cursor = app_globals.get_named_tuple_cursor()
@@ -295,7 +295,7 @@ class CustomerReviewOnProduct(Resource):
             )
             row = cursor.fetchone()
             if row is None:
-                return {}
+                abort(400, "Bad Request")
             review_dict = {}
             review_dict["review_id"] = row.id
             review_dict.update(
