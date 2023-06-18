@@ -2209,5 +2209,23 @@
       "bearer": "{{admin_token}}"
     },
     "tests": []
+  },
+  {
+    "_id": "8ae90e27-fd85-4378-adeb-12e954781a3a",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/carts/items-quantity",
+    "url": "{{baseUrl}}/carts/items-quantity",
+    "method": "GET",
+    "sortNum": 0,
+    "created": "2023-06-18T05:49:42.290Z",
+    "modified": "2023-06-18T05:49:42.290Z",
+    "headers": [],
+    "params": [],
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{customer_token}}"
+    },
+    "tests": []
   }
 ]

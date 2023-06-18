@@ -80,7 +80,7 @@ from app.resources.super_admin import AdminsInfo, PromoteToAdmin
 from app.resources.banners import Banners
 from app.resources.seller_applicant_form import Seller_Applicant_Form
 from app.resources.wishlists import Wishlists
-from app.resources.carts import Carts, NoOfItem
+from app.resources.carts import Carts, CartItemsQuantity
 from app.resources.product_reviews import (
     ProductReview,
     CustomerReviewOnProduct,
@@ -254,7 +254,7 @@ def create_app(config_name):
 
     # Carts
     api.add_resource(Carts, "/carts", "/carts/<int:product_item_id>")
-    api.add_resource(NoOfItem, "/carts/no-of-item")
+    api.add_resource(CartItemsQuantity, "/carts/items-quantity")
 
     # Reviews
     api.add_resource(

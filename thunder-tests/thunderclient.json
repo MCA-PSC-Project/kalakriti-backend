@@ -3297,11 +3297,11 @@
     "colId": "80d178ef-5176-474a-8708-db78bd45faee",
     "containerId": "6bd7e1f1-03c2-44e9-a246-827e2d8f4f7f",
     "name": "Get number of item in cart for a user",
-    "url": "{{baseUrl}}/carts/no-of-item",
+    "url": "{{baseUrl}}/carts/items-quantity",
     "method": "GET",
     "sortNum": 1090000,
     "created": "2023-06-13T05:53:33.410Z",
-    "modified": "2023-06-13T06:56:25.001Z",
+    "modified": "2023-06-18T05:49:06.037Z",
     "headers": [],
     "params": [],
     "auth": {
