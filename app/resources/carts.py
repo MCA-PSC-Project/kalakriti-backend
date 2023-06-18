@@ -8,6 +8,8 @@ import flask_jwt_extended as f_jwt
 import json
 from flask import current_app as app
 
+from app.resources.seller import get_seller_info
+
 
 class Carts(Resource):
     @f_jwt.jwt_required()
@@ -110,6 +112,9 @@ class Carts(Resource):
                 )
                 product_item_dict["quantity_in_stock"] = row.quantity_in_stock
 
+                carts_dict.update(
+                    {"seller": get_seller_info(cursor, carts_dict["product_id"])}
+                )
                 media_dict = {}
                 GET_BASE_MEDIA = """SELECT m.id AS media_id, m.name, m.path
                 FROM media m

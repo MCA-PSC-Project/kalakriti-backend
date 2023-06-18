@@ -158,10 +158,12 @@ CREATE TABLE "seller_bank_details"(
 );
 CREATE TABLE "addresses"(
 	"id" SERIAL PRIMARY KEY,
+	"full_name" VARCHAR(100) NOT NULL,
+	"mobile_no" VARCHAR(13) NOT NULL,
 	"address_line1" VARCHAR(500) NOT NULL,
 	"address_line2" VARCHAR(500) NOT NULL,
-	"district" VARCHAR(25) NOT NULL,
 	"city" VARCHAR(25) NOT NULL,
+	"district" VARCHAR(25) NOT NULL,
 	"state" VARCHAR(25) NOT NULL,
 	"country" VARCHAR(25) NOT NULL,
 	"pincode" VARCHAR(10) NOT NULL,
@@ -354,7 +356,7 @@ CREATE TABLE "product_reviews"(
 	"id" SERIAL PRIMARY KEY,
 	"customer_id" INT,
 	"product_id" INT,
-	"rating" NUMERIC(2, 1) CHECK("rating" <= 5),
+	"rating" INT CHECK (rating >= 1 AND rating <= 5),
 	"review" VARCHAR(500),
 	"added_at" TIMESTAMPTZ NOT NULL,
 	"updated_at" TIMESTAMPTZ,
