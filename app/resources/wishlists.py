@@ -7,6 +7,9 @@ import flask_jwt_extended as f_jwt
 import json
 from flask import current_app as app
 
+from app.resources.product_reviews import get_avg_ratings_and_count
+from app.resources.seller import get_seller_info
+
 
 class Wishlists(Resource):
     @f_jwt.jwt_required()
@@ -35,7 +38,7 @@ class Wishlists(Resource):
         finally:
             cursor.close()
         return (
-            f"Product_item_id = {product_item_id} added to wishilist for user_id {customer_id}",
+            f"Product_item_id = {product_item_id} added to wishlist",
             201,
         )
 
@@ -91,6 +94,20 @@ class Wishlists(Resource):
                 )
                 product_item_dict["variant"] = row.variant
                 product_item_dict["variant_value"] = row.variant_value
+
+                average_rating, rating_count = get_avg_ratings_and_count(
+                    cursor, wishlist_dict["product_id"]
+                )
+                wishlist_dict.update(
+                    json.loads(
+                        json.dumps({"average_rating": average_rating}, default=str)
+                    )
+                )
+                wishlist_dict["rating_count"] = rating_count
+
+                wishlist_dict.update(
+                    {"seller": get_seller_info(cursor, wishlist_dict["product_id"])}
+                )
 
                 media_dict = {}
                 GET_BASE_MEDIA = """SELECT m.id AS media_id, m.name, m.path

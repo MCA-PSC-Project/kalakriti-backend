@@ -8,6 +8,8 @@ import flask_jwt_extended as f_jwt
 import json
 from flask import current_app as app
 
+from app.resources.seller import get_seller_info
+
 
 class Carts(Resource):
     @f_jwt.jwt_required()
@@ -110,6 +112,9 @@ class Carts(Resource):
                 )
                 product_item_dict["quantity_in_stock"] = row.quantity_in_stock
 
+                carts_dict.update(
+                    {"seller": get_seller_info(cursor, carts_dict["product_id"])}
+                )
                 media_dict = {}
                 GET_BASE_MEDIA = """SELECT m.id AS media_id, m.name, m.path
                 FROM media m
@@ -214,28 +219,26 @@ class Carts(Resource):
         finally:
             cursor.close()
         return 200
-    
-class NoOfItem(Resource):
+
+
+class CartItemsQuantity(Resource):
     @f_jwt.jwt_required()
     def get(self):
         customer_id = f_jwt.get_jwt_identity()
         app.logger.debug("user_id= %s", customer_id)
 
-        GET_NO_OF_ITEMS = """ select count(*) as count from cart_items where cart_id = 
-            (select id from carts where customer_id = %s) """
+        GET_NO_OF_ITEMS = """SELECT count(*) AS count FROM cart_items WHERE cart_id = 
+            (SELECT id FROM carts WHERE customer_id = %s)"""
         try:
-                cursor = app_globals.get_named_tuple_cursor()
-            
-                cursor.execute(GET_NO_OF_ITEMS, (customer_id,))
-                row = cursor.fetchone()
-                if row is None:
-                    return {}
-                
+            cursor = app_globals.get_cursor()
+            cursor.execute(GET_NO_OF_ITEMS, (customer_id,))
+            row = cursor.fetchone()
+            if row is None:
+                return 0
+            quantity = row[0]
         except (Exception, psycopg2.Error) as err:
-                app.logger.debug(err)
-                abort(400, "Bad Request")
+            app.logger.debug(err)
+            abort(400, "Bad Request")
         finally:
-                cursor.close()
-    
-        return row
-    
+            cursor.close()
+        return quantity

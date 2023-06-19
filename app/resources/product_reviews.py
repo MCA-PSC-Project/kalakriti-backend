@@ -108,7 +108,6 @@ class ProductReview(Resource):
             201,
         )
 
-    @f_jwt.jwt_required()
     def get(self, product_id):
         reviews_list = []
         GET_REVIEWS = """SELECT id, customer_id, rating, review, added_at, updated_at 
@@ -281,15 +280,14 @@ class CustomerReviewOnProduct(Resource):
     def get(self, product_id):
         customer_id = f_jwt.get_jwt_identity()
         app.logger.debug("customer_id= %s", customer_id)
-        reviews_list = []
 
-        GET_REVIEWS = """SELECT id, rating, review, added_at, updated_at FROM product_reviews 
-                         WHERE product_id = %s AND customer_id = %s"""
+        GET_REVIEW = """SELECT id, rating, review, added_at, updated_at FROM product_reviews 
+        WHERE product_id = %s AND customer_id = %s"""
 
         try:
             cursor = app_globals.get_named_tuple_cursor()
             cursor.execute(
-                GET_REVIEWS,
+                GET_REVIEW,
                 (
                     product_id,
                     customer_id,
@@ -297,7 +295,7 @@ class CustomerReviewOnProduct(Resource):
             )
             row = cursor.fetchone()
             if row is None:
-                return {}
+                abort(400, "Bad Request")
             review_dict = {}
             review_dict["review_id"] = row.id
             review_dict.update(
@@ -332,10 +330,9 @@ class CustomerReviewOnProduct(Resource):
             else:
                 media_dict["path"] = None
             review_dict.update({"dp": media_dict})
-            reviews_list.append(review_dict)
         except (Exception, psycopg2.Error) as err:
             app.logger.debug(err)
             abort(400, "Bad Request")
         finally:
             cursor.close()
-        return reviews_list
+        return review_dict

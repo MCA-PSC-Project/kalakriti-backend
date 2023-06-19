@@ -48,12 +48,12 @@
     "method": "POST",
     "sortNum": 30000,
     "created": "2023-02-20T16:38:51.030Z",
-    "modified": "2023-03-07T08:16:19.162Z",
+    "modified": "2023-06-15T10:02:59.596Z",
     "headers": [],
     "params": [],
     "auth": {
       "type": "bearer",
-      "bearer": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTY3ODE3NjkxMywianRpIjoiZDk1NTAwNjMtZjE4Yi00NTZjLWExZjQtYzU0MjljZmVhOTU4IiwidHlwZSI6InJlZnJlc2giLCJzdWIiOnsiYWRtaW5faWQiOjF9LCJuYmYiOjE2NzgxNzY5MTMsImV4cCI6MTY4MDc2ODkxMywidXNlcl90eXBlIjoiYWRtaW4ifQ.lE79BIL3sWfnTHqqPem8dwFvO2xn2mas0B6yCMITFPY"
+      "bearer": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTY4NjgyMzM2OCwianRpIjoiNTYxMzczNDYtYjkzMC00Njg4LThjZDItNjk2NzkyMWQ3MmIzIiwidHlwZSI6InJlZnJlc2giLCJzdWIiOjEsIm5iZiI6MTY4NjgyMzM2OCwiZXhwIjoxNjg2ODIzNjY4LCJ1c2VyX3R5cGUiOiJjdXN0b21lciJ9.Jf4KXqkCBOWqA9NE40pyVs5oBgkrXeNL6QSqclYajpQ"
     },
     "tests": []
   },
@@ -536,12 +536,12 @@
     "method": "POST",
     "sortNum": 295000,
     "created": "2023-02-20T16:38:51.056Z",
-    "modified": "2023-03-30T13:52:50.084Z",
+    "modified": "2023-06-15T16:34:27.118Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n  \"product_item_id\": 5\n}",
+      "raw": "{\n  \"product_item_id\": 12\n}",
       "form": []
     },
     "auth": {
@@ -595,12 +595,12 @@
     "method": "POST",
     "sortNum": 320000,
     "created": "2023-02-20T16:38:51.059Z",
-    "modified": "2023-03-12T08:56:44.794Z",
+    "modified": "2023-06-14T14:02:09.074Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n\t\"product_item_id\":7,\n\t\"quantity\":5\n}",
+      "raw": "{\n  \"product_item_id\": 4,\n  \"quantity\": 5\n}",
       "form": []
     },
     "auth": {
@@ -1140,13 +1140,9 @@
     "method": "GET",
     "sortNum": 600000,
     "created": "2023-02-20T16:38:51.088Z",
-    "modified": "2023-05-03T12:18:24.608Z",
+    "modified": "2023-06-14T04:38:47.856Z",
     "headers": [],
     "params": [],
-    "auth": {
-      "type": "bearer",
-      "bearer": "{{customer_token}}"
-    },
     "tests": []
   },
   {
@@ -1232,16 +1228,16 @@
     "colId": "80d178ef-5176-474a-8708-db78bd45faee",
     "containerId": "3e702aea-670a-4ca4-8b33-d039296af95a",
     "name": "search",
-    "url": "{{baseUrl}}/search?query=art",
+    "url": "{{baseUrl}}/search?query=madhubani",
     "method": "GET",
     "sortNum": 700000,
     "created": "2023-02-20T16:38:51.098Z",
-    "modified": "2023-04-03T10:58:11.910Z",
+    "modified": "2023-05-21T07:07:14.441Z",
     "headers": [],
     "params": [
       {
         "name": "query",
-        "value": "art",
+        "value": "madhubani",
         "isPath": false
       },
       {
@@ -1677,12 +1673,12 @@
     "method": "POST",
     "sortNum": 15000,
     "created": "2023-02-23T11:07:04.114Z",
-    "modified": "2023-05-15T08:42:39.182Z",
+    "modified": "2023-06-08T08:27:33.509Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n  \"product_id\": 3,\n  \"variant\": \"COLOR\",\n  \"variant_value\": \"BLACK\",\n  \"product_variant_name\": \"black_COLOR_VARIANT\",\n  \"SKU\": \"xyzabcd\",\n  \"original_price\": 1000,\n  \"offer_price\": 500,\n  \"quantity_in_stock\": 20,\n  \"media_list\": [\n    {\n      \"media_id\": 1,\n      \"display_order\": 1\n    },\n    {\n      \"media_id\": 2,\n      \"display_order\": 2\n    }\n  ]\n}",
+      "raw": "{\n  \"product_id\": 3,\n  \"variant\": \"COLOR\",\n  \"variant_value\": \"BLUE\",\n  \"product_variant_name\": \"blue_COLOR_VARIANT\",\n  \"SKU\": \"xyzabcde\",\n  \"original_price\": 1000,\n  \"offer_price\": 500,\n  \"quantity_in_stock\": 20,\n  \"media_list\": [\n    {\n      \"media_id\": 1,\n      \"display_order\": 1\n    },\n    {\n      \"media_id\": 2,\n      \"display_order\": 2\n    }\n  ]\n}",
       "form": []
     },
     "auth": {
@@ -1739,11 +1735,11 @@
     "colId": "80d178ef-5176-474a-8708-db78bd45faee",
     "containerId": "9525375d-6d7f-486c-8969-7b49f2983b85",
     "name": "update product item status ",
-    "url": "{{baseUrl}}/sellers/product-items/15",
+    "url": "{{baseUrl}}/sellers/product-items/18",
     "method": "PATCH",
     "sortNum": 30000,
     "created": "2023-02-23T13:11:26.774Z",
-    "modified": "2023-05-18T10:45:24.357Z",
+    "modified": "2023-06-08T08:30:29.631Z",
     "headers": [],
     "params": [],
     "body": {
@@ -1892,12 +1888,12 @@
     "method": "POST",
     "sortNum": 950000,
     "created": "2023-03-03T10:23:13.876Z",
-    "modified": "2023-05-17T09:30:01.749Z",
+    "modified": "2023-05-28T11:02:51.205Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n  \"address_line1\": \"al1\",\n  \"address_line2\": \"al2\",\n  \"city\": \"Patna\",\n  \"district\": \"Patna\",\n  \"state\": \"Bihar\",\n  \"country\": \"India\",\n  \"pincode\": \"801105\",\n  \"landmark\": \"ghanta nhi pta\"\n}",
+      "raw": "{\n  \"full_name\": \"prashant kumar\",\n  \"mobile_no\":\"12345\",\n  \"address_line1\": \"al1\",\n  \"address_line2\": \"al2\",\n  \"city\": \"Patna\",\n  \"district\": \"Patna\",\n  \"state\": \"Bihar\",\n  \"country\": \"India\",\n  \"pincode\": \"801105\",\n  \"landmark\": \"ghanta nhi pta\"\n}",
       "form": []
     },
     "auth": {
@@ -1915,13 +1911,17 @@
     "method": "PUT",
     "sortNum": 960000,
     "created": "2023-03-03T10:23:37.907Z",
-    "modified": "2023-03-21T17:22:33.529Z",
+    "modified": "2023-05-28T11:00:18.771Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n  \"address_line1\": \"aline1\",\n  \"address_line2\": \"aline2\",\n  \"city\": \"patna\",\n  \"district\": \"Patna\",\n  \"state\": \"Bihar\",\n  \"country\": \"India\",\n  \"pincode\": \"800001\",\n  \"landmark\": \"ghanta nhi pta\"\n}",
+      "raw": "{\n  \"full_name\": \"bittu kumar\",\n  \"mobile_no\":\"12345\",\n  \"address_line1\": \"aline1\",\n  \"address_line2\": \"aline2\",\n  \"city\": \"patna\",\n  \"district\": \"Patna\",\n  \"state\": \"Bihar\",\n  \"country\": \"India\",\n  \"pincode\": \"800001\",\n  \"landmark\": \"ghanta nhi pta\"\n}",
       "form": []
+    },
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{customer_token}}"
     },
     "tests": []
   },
@@ -1965,7 +1965,7 @@
     "_id": "876caf27-109d-4dd7-9bd7-242bad77adf1",
     "colId": "80d178ef-5176-474a-8708-db78bd45faee",
     "containerId": "2ffd39e9-6675-40b7-abd0-296aaf9564ad",
-    "name": "get orders of a user",
+    "name": "get orders of a customer",
     "url": "{{baseUrl}}/customer-orders",
     "method": "GET",
     "sortNum": 530000,
@@ -3301,7 +3301,7 @@
     "method": "GET",
     "sortNum": 1090000,
     "created": "2023-06-13T05:53:33.410Z",
-    "modified": "2023-06-13T07:40:56.693Z",
+    "modified": "2023-06-18T05:49:06.037Z",
     "headers": [],
     "params": [],
     "auth": {

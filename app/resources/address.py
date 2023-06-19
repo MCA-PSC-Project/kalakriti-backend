@@ -27,14 +27,34 @@ class UserAddress(Resource):
         app_globals.db_conn.autocommit = False
         try:
             cursor = app_globals.get_cursor()
+            full_name = address_dict.get("full_name")
+            mobile_no = address_dict.get("mobile_no")
+            if (
+                full_name is None
+                or full_name == ""
+                or mobile_no is None
+                or mobile_no == ""
+            ):
+                GET_FULL_NAME = """SELECT {}, mobile_no FROM {} WHERE id = %s""".format(
+                    "first_name || ' ' || last_name"
+                    if user_type != "seller"
+                    else "seller_name",
+                    user_type + "s",
+                )
+                cursor.execute(GET_FULL_NAME, (user_id,))
+                row = cursor.fetchone()
+                full_name = row[0]
+                mobile_no = row[1]
 
-            ADD_ADDRESS = """INSERT INTO addresses(address_line1, address_line2, district, city, state, country, 
-            pincode, landmark, added_at)
-            VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s) RETURNING id"""
+            ADD_ADDRESS = """INSERT INTO addresses(full_name, mobile_no, address_line1, address_line2, 
+            city, district, state, country, pincode, landmark, added_at)
+            VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s) RETURNING id"""
 
             cursor.execute(
                 ADD_ADDRESS,
                 (
+                    full_name,
+                    mobile_no,
                     address_dict.get("address_line1"),
                     address_dict.get("address_line2"),
                     address_dict.get("district"),
@@ -84,14 +104,13 @@ class UserAddress(Resource):
             user_type = "admin"
         addresses_list = []
 
-        GET_ADDRESSES = """SELECT id AS address_id, address_line1, address_line2, district, city, state, 
+        GET_ADDRESSES = """SELECT id AS address_id, full_name, mobile_no, address_line1, address_line2, district, city, state, 
         country, pincode, landmark, added_at, updated_at
         FROM addresses WHERE id IN (
             SELECT address_id FROM {0}_addresses WHERE {0}_id = %s
         ) AND trashed = False""".format(
             user_type
         )
-
         try:
             cursor = app_globals.get_named_tuple_cursor()
             cursor.execute(GET_ADDRESSES, (user_id,))
@@ -101,6 +120,8 @@ class UserAddress(Resource):
             for row in rows:
                 address_dict = {}
                 address_dict["address_id"] = row.address_id
+                address_dict["full_name"] = row.full_name
+                address_dict["mobile_no"] = row.mobile_no
                 address_dict["address_line1"] = row.address_line1
                 address_dict["address_line2"] = row.address_line2
                 address_dict["district"] = row.district
@@ -130,7 +151,7 @@ class UserAddress(Resource):
         data = request.get_json()
         address_dict = json.loads(json.dumps(data))
 
-        UPDATE_ADDRESS = """UPDATE addresses SET address_line1= %s, address_line2= %s, district= %s, city= %s, 
+        UPDATE_ADDRESS = """UPDATE addresses SET full_name= %s, mobile_no= %s, address_line1= %s, address_line2= %s, district= %s, city= %s, 
         state= %s, country= %s, pincode= %s, landmark= %s, updated_at= %s WHERE id= %s"""
 
         try:
@@ -138,6 +159,8 @@ class UserAddress(Resource):
             cursor.execute(
                 UPDATE_ADDRESS,
                 (
+                    address_dict.get("full_name"),
+                    address_dict.get("mobile_no"),
                     address_dict.get("address_line1"),
                     address_dict.get("address_line2"),
                     address_dict.get("district"),

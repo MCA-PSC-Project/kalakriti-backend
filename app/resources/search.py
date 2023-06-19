@@ -7,6 +7,8 @@ import app.app_globals as app_globals
 import flask_jwt_extended as f_jwt
 from flask import current_app as app
 
+from app.resources.product_reviews import get_avg_ratings_and_count
+
 
 class Search(Resource):
     def get(self):
@@ -71,8 +73,17 @@ class Search(Resource):
                 seller_dict["seller_name"] = row.seller_name
                 seller_dict["email"] = row.email
                 product_dict.update({"seller": seller_dict})
-
                 product_dict["base_product_item_id"] = row.base_product_item_id
+
+                average_rating, rating_count = get_avg_ratings_and_count(
+                    cursor, product_dict["id"]
+                )
+                product_dict.update(
+                    json.loads(
+                        json.dumps({"average_rating": average_rating}, default=str)
+                    )
+                )
+                product_dict["rating_count"] = rating_count
 
                 product_item_status = product_status
                 GET_PRODUCT_BASE_ITEM = """SELECT pi.id AS product_item_id, pi.product_id, pi.product_variant_name, pi."SKU",
