@@ -3309,5 +3309,23 @@
       "bearer": "{{customer_token}}"
     },
     "tests": []
+  },
+  {
+    "_id": "228b09c4-3945-42d1-9085-536fef177a3e",
+    "colId": "80d178ef-5176-474a-8708-db78bd45faee",
+    "containerId": "0cb331e2-2642-40c2-8bd3-b94f9e1586ca",
+    "name": "Check item in wislhist",
+    "url": "{{baseUrl}}/check-wishlists/12",
+    "method": "GET",
+    "sortNum": 305000,
+    "created": "2023-06-19T14:49:25.674Z",
+    "modified": "2023-06-19T15:22:26.387Z",
+    "headers": [],
+    "params": [],
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{customer_token}}"
+    },
+    "tests": []
   }
 ]

@@ -167,3 +167,31 @@ class Wishlists(Resource):
         finally:
             cursor.close()
         return 200
+
+
+class IsItemInWishLists(Resource):
+    @f_jwt.jwt_required()
+    def get(self, product_item_id):
+        customer_id = f_jwt.get_jwt_identity()
+        app.logger.debug("customer_id= %s", customer_id)
+
+        IS_ITEM_PRESENT = """SELECT TRUE FROM wishlists WHERE customer_id = %s AND product_item_id = %s"""
+        try:
+            cursor = app_globals.get_cursor()
+            cursor.execute(
+                IS_ITEM_PRESENT,
+                (
+                    customer_id,
+                    product_item_id,
+                ),
+            )
+            row = cursor.fetchone()
+            if row is None:
+                abort(400, "Bad Request")
+            is_item_present = row[0]
+        except (Exception, psycopg2.Error) as err:
+            app.logger.debug(err)
+            abort(400, "Bad Request")
+        finally:
+            cursor.close()
+        return is_item_present

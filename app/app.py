@@ -79,7 +79,7 @@ from app.resources.admin import CustomersInfo, PromoteToSeller, SellersInfo
 from app.resources.super_admin import AdminsInfo, PromoteToAdmin
 from app.resources.banners import Banners
 from app.resources.seller_applicant_form import Seller_Applicant_Form
-from app.resources.wishlists import Wishlists
+from app.resources.wishlists import IsItemInWishLists, Wishlists
 from app.resources.carts import Carts, CartItemsQuantity
 from app.resources.product_reviews import (
     ProductReview,
@@ -251,6 +251,7 @@ def create_app(config_name):
 
     # Wishlists
     api.add_resource(Wishlists, "/wishlists", "/wishlists/<int:product_item_id>")
+    api.add_resource(IsItemInWishLists, "/check-wishlists/<int:product_item_id>")
 
     # Carts
     api.add_resource(Carts, "/carts", "/carts/<int:product_item_id>")
