@@ -2024,17 +2024,17 @@
     "_id": "8e645ad5-8f7e-4e54-abfe-96ea0ea0b0d0",
     "colId": "80d178ef-5176-474a-8708-db78bd45faee",
     "containerId": "a30a8ca7-aed2-44b8-9743-cb6771a99005",
-    "name": "mark/unmark address as trashed",
-    "url": "{{baseUrl}}/addresses/3",
+    "name": "make address default",
+    "url": "{{baseUrl}}/addresses/12",
     "method": "PATCH",
     "sortNum": 965000,
     "created": "2023-03-05T08:03:17.445Z",
-    "modified": "2023-03-11T14:37:51.010Z",
+    "modified": "2023-06-20T14:40:13.115Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n  \"trashed\": true\n}",
+      "raw": "{\n  \"default\": true\n}",
       "form": []
     },
     "auth": {
@@ -3322,6 +3322,29 @@
     "modified": "2023-06-19T15:22:26.387Z",
     "headers": [],
     "params": [],
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{customer_token}}"
+    },
+    "tests": []
+  },
+  {
+    "_id": "ad5c0919-4f52-4e9d-9e5b-3851ac3e3c63",
+    "colId": "80d178ef-5176-474a-8708-db78bd45faee",
+    "containerId": "a30a8ca7-aed2-44b8-9743-cb6771a99005",
+    "name": "mark/unmark address as trashed Copy",
+    "url": "{{baseUrl}}/addresses/3",
+    "method": "PATCH",
+    "sortNum": 967500,
+    "created": "2023-06-20T13:50:42.210Z",
+    "modified": "2023-06-20T14:31:37.316Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n  \"trashed\": false\n}",
+      "form": []
+    },
     "auth": {
       "type": "bearer",
       "bearer": "{{customer_token}}"

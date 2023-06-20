@@ -184,34 +184,66 @@ class UserAddress(Resource):
 
     @f_jwt.jwt_required()
     def patch(self, address_id):
+        user_id = f_jwt.get_jwt_identity()
+        app.logger.debug("user_id= %s", user_id)
+        claims = f_jwt.get_jwt()
+        user_type = claims["user_type"]
+        app.logger.debug("user_type= %s", user_type)
         app.logger.debug("address_id= %s", address_id)
         data = request.get_json()
-        if "trashed" not in data.keys():
-            abort(400, "Bad Request")
-        trashed = data.get("trashed")
 
-        UPDATE_ADDRESS_TRASHED_VALUE = (
-            """UPDATE addresses SET trashed= %s, updated_at= %s WHERE id= %s"""
-        )
-
-        try:
-            cursor = app_globals.get_cursor()
-            cursor.execute(
-                UPDATE_ADDRESS_TRASHED_VALUE,
-                (
-                    trashed,
-                    datetime.now(),
-                    address_id,
-                ),
+        if "trashed" in data.keys():
+            trashed = data.get("trashed")
+            UPDATE_ADDRESS_TRASHED_VALUE = (
+                """UPDATE addresses SET trashed= %s, updated_at= %s WHERE id= %s"""
             )
-            if cursor.rowcount != 1:
-                abort(400, "Bad Request: update adddresses row error")
-        except (Exception, psycopg2.Error) as err:
-            app.logger.debug(err)
+            try:
+                cursor = app_globals.get_cursor()
+                cursor.execute(
+                    UPDATE_ADDRESS_TRASHED_VALUE,
+                    (
+                        trashed,
+                        datetime.now(),
+                        address_id,
+                    ),
+                )
+                if cursor.rowcount != 1:
+                    abort(400, "Bad Request: update addresses row error")
+            except (Exception, psycopg2.Error) as err:
+                app.logger.debug(err)
+                abort(400, "Bad Request")
+            finally:
+                cursor.close()
+            return {"message": f"Address id = {address_id} modified."}, 200
+        elif "default" in data.keys():
+            default = data.get("default")
+            MAKE_ADDRESS_DEFAULT = """UPDATE {0}_addresses SET is_default = %s 
+            WHERE {0}_id = %s AND address_id = %s""".format(
+                user_type
+            )
+            try:
+                cursor = app_globals.get_cursor()
+                cursor.execute(
+                    MAKE_ADDRESS_DEFAULT,
+                    (
+                        default,
+                        user_id,
+                        address_id,
+                    ),
+                )
+                if cursor.rowcount != 1:
+                    abort(
+                        400,
+                        "Bad Request: update {}_addresses row error".format(user_type),
+                    )
+            except (Exception, psycopg2.Error) as err:
+                app.logger.debug(err)
+                abort(400, "Bad Request")
+            finally:
+                cursor.close()
+            return {"message": f"Address id = {address_id} set to default"}, 200
+        else:
             abort(400, "Bad Request")
-        finally:
-            cursor.close()
-        return {"message": f"Address id = {address_id} modified."}, 200
 
     @f_jwt.jwt_required()
     def delete(self, address_id):
