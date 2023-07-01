@@ -21,7 +21,7 @@ class CustomersInfo(Resource):
         customers_list = []
 
         GET_CUSTOMERS_PROFILES = """SELECT c.id, c.first_name, c.last_name, c.email, c.mobile_no, 
-        TO_CHAR(c.dob, 'YYYY-MM-DD') AS dob, c.gender , c.enabled,
+        TO_CHAR(c.dob, 'YYYY-MM-DD') AS dob, c.gender , c.enabled, c.is_verified,
         m.id AS media_id, m.name AS media_name, m.path
         FROM customers c 
         LEFT JOIN media m ON c.dp_id = m.id 
@@ -43,6 +43,7 @@ class CustomersInfo(Resource):
                 customer_profile_dict["dob"] = row.dob
                 customer_profile_dict["gender"] = row.gender
                 customer_profile_dict["enabled"] = row.enabled
+                customer_profile_dict["is_verified"] = row.is_verified
 
                 dp_media_dict = {}
                 dp_media_dict["id"] = row.media_id
@@ -143,7 +144,7 @@ class SellersInfo(Resource):
         sellers_list = []
 
         GET_SELLERS_PROFILES = """SELECT s.id, s.seller_name, s.email, s.mobile_no,
-        s."GSTIN", s."PAN", s.enabled,
+        s."GSTIN", s."PAN", s.enabled, s.is_verified,
         m.id AS media_id, m.name AS media_name, m.path
         FROM sellers s
         LEFT JOIN media m ON s.id = m.id
@@ -164,6 +165,7 @@ class SellersInfo(Resource):
                 seller_profile_dict["GSTIN"] = row.GSTIN
                 seller_profile_dict["PAN"] = row.PAN
                 seller_profile_dict["enabled"] = row.enabled
+                seller_profile_dict["is_verified"] = row.is_verified
 
                 dp_media_dict = {}
                 dp_media_dict["id"] = row.media_id

@@ -20,7 +20,7 @@ class AdminsInfo(Resource):
 
         admins_list = []
         GET_ADMINS_PROFILES = """SELECT a.id, a.first_name, a.last_name, a.email, a.mobile_no, 
-        TO_CHAR(a.dob, 'YYYY-MM-DD') AS dob, a.gender , a.enabled, a.is_super_admin,
+        TO_CHAR(a.dob, 'YYYY-MM-DD') AS dob, a.gender , a.enabled, a.is_verified, a.is_super_admin,
         m.id AS media_id, m.name AS media_name, m.path
         FROM admins a 
         LEFT JOIN media m ON a.dp_id = m.id 
@@ -42,6 +42,7 @@ class AdminsInfo(Resource):
                 admin_profile_dict["dob"] = row.dob
                 admin_profile_dict["gender"] = row.gender
                 admin_profile_dict["enabled"] = row.enabled
+                admin_profile_dict["is_verified"] = row.is_verified
                 admin_profile_dict["is_super_admin"] = row.is_super_admin
 
                 dp_media_dict = {}
