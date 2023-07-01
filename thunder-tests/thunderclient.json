@@ -2468,12 +2468,12 @@
     "method": "POST",
     "sortNum": 5000,
     "created": "2023-03-14T17:06:21.275Z",
-    "modified": "2023-05-14T10:56:04.927Z",
+    "modified": "2023-07-01T14:26:21.616Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n\t\"email\" : \"customer1@gmail.com\"\n}",
+      "raw": "{\n  \"email\": \"customer1@gmail.com\"\n}",
       "form": []
     },
     "auth": {

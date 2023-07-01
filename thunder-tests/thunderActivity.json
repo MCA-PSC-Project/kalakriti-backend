@@ -135,164 +135,6 @@
     "tests": []
   },
   {
-    "_id": "e60aa7a2-295e-4665-a573-b2dfdb453da6",
-    "colId": "history",
-    "containerId": "",
-    "name": "{{baseUrl}}/products?SKU=dgreen-colorf6",
-    "url": "{{baseUrl}}/products?SKU=dgreen-colorf6",
-    "method": "GET",
-    "sortNum": 0,
-    "created": "2023-04-05T11:10:02.119Z",
-    "modified": "2023-04-06T11:57:56.873Z",
-    "headers": [],
-    "params": [
-      {
-        "name": "product_status",
-        "value": "published",
-        "isDisabled": true,
-        "isPath": false
-      },
-      {
-        "name": "min_offer_price",
-        "value": "200",
-        "isDisabled": true,
-        "isPath": false
-      },
-      {
-        "name": "max_offer_price",
-        "value": "",
-        "isDisabled": true,
-        "isPath": false
-      },
-      {
-        "name": "in-stock",
-        "value": "",
-        "isDisabled": true,
-        "isPath": false
-      },
-      {
-        "name": "SKU",
-        "value": "dgreen-colorf6",
-        "isPath": false
-      },
-      {
-        "name": "product_item_status",
-        "value": "unpublished",
-        "isDisabled": true,
-        "isPath": false
-      }
-    ],
-    "tests": []
-  },
-  {
-    "_id": "fe62a29e-bc3c-48ab-bbea-86c2d6f70211",
-    "colId": "history",
-    "containerId": "",
-    "name": "{{baseUrl}}/products?product_status=published&SKU=dgreen-colorf6&product_item_status=unpublished",
-    "url": "{{baseUrl}}/products?product_status=published&SKU=dgreen-colorf6&product_item_status=unpublished",
-    "method": "GET",
-    "sortNum": 0,
-    "created": "2023-04-06T10:32:12.121Z",
-    "modified": "2023-04-06T11:58:26.592Z",
-    "headers": [],
-    "params": [
-      {
-        "name": "product_status",
-        "value": "published",
-        "isPath": false
-      },
-      {
-        "name": "min_offer_price",
-        "value": "200",
-        "isDisabled": true,
-        "isPath": false
-      },
-      {
-        "name": "max_offer_price",
-        "value": "",
-        "isDisabled": true,
-        "isPath": false
-      },
-      {
-        "name": "in-stock",
-        "value": "",
-        "isDisabled": true,
-        "isPath": false
-      },
-      {
-        "name": "SKU",
-        "value": "dgreen-colorf6",
-        "isPath": false
-      },
-      {
-        "name": "product_item_status",
-        "value": "unpublished",
-        "isPath": false
-      }
-    ],
-    "tests": []
-  },
-  {
-    "_id": "f8003ba0-5bb3-44a3-ae1f-a8789662bbfe",
-    "colId": "history",
-    "containerId": "",
-    "name": "{{baseUrl}}/banners/6",
-    "url": "{{baseUrl}}/banners/6",
-    "method": "PUT",
-    "sortNum": 0,
-    "created": "2023-04-06T11:44:02.757Z",
-    "modified": "2023-04-06T11:44:02.757Z",
-    "headers": [],
-    "params": [],
-    "body": {
-      "type": "json",
-      "raw": "{\n\t\"media_id\" : 26,\n\t\"redirect_type\" : \"rtype_updated\" ,\n\t\"redirect_url\" : \"www.example.com\"\n}",
-      "form": []
-    },
-    "auth": {
-      "type": "bearer",
-      "bearer": "{{admin_token}}"
-    },
-    "tests": []
-  },
-  {
-    "_id": "ef24244a-e051-40cb-9b92-066af5d9e290",
-    "colId": "history",
-    "containerId": "",
-    "name": "{{baseUrl}}/top-searches",
-    "url": "{{baseUrl}}/top-searches",
-    "method": "PUT",
-    "sortNum": 0,
-    "created": "2023-04-19T16:54:04.762Z",
-    "modified": "2023-04-19T17:00:24.089Z",
-    "headers": [],
-    "params": [],
-    "body": {
-      "type": "json",
-      "raw": "[\n  {\n    \"rank\": 1,\n    \"query\": \"madhubani paintings\"\n  },\n  {\n    \"rank\": 2,\n    \"query\": \"embroidery sarees\"\n  }\n]",
-      "form": []
-    },
-    "auth": {
-      "type": "bearer",
-      "bearer": "{{admin_token}}"
-    },
-    "tests": []
-  },
-  {
-    "_id": "2b49ce28-f1ff-4990-872e-7c4c982ceaea",
-    "colId": "history",
-    "containerId": "",
-    "name": "{{baseUrl}}/categories",
-    "url": "{{baseUrl}}/categories",
-    "method": "GET",
-    "sortNum": 0,
-    "created": "2023-04-20T04:40:50.335Z",
-    "modified": "2023-04-20T04:40:50.335Z",
-    "headers": [],
-    "params": [],
-    "tests": []
-  },
-  {
     "_id": "41bd409e-3784-4945-a912-ae5d0fb25fba",
     "colId": "history",
     "containerId": "",
@@ -1077,12 +919,12 @@
     "method": "POST",
     "sortNum": 0,
     "created": "2023-05-14T10:53:17.634Z",
-    "modified": "2023-05-14T10:56:04.936Z",
+    "modified": "2023-07-01T14:26:21.631Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n\t\"email\" : \"customer1@gmail.com\"\n}",
+      "raw": "{\n  \"email\": \"customer1@gmail.com\"\n}",
       "form": []
     },
     "auth": {
