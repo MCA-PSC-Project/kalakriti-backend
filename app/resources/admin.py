@@ -20,7 +20,7 @@ class CustomersInfo(Resource):
 
         customers_list = []
 
-        GET_CUSTOMERS_PROFILES = """SELECT c.first_name, c.last_name, c.email, c.mobile_no, 
+        GET_CUSTOMERS_PROFILES = """SELECT c.id, c.first_name, c.last_name, c.email, c.mobile_no, 
         TO_CHAR(c.dob, 'YYYY-MM-DD') AS dob, c.gender , c.enabled,
         m.id AS media_id, m.name AS media_name, m.path
         FROM customers c 
@@ -35,6 +35,7 @@ class CustomersInfo(Resource):
                 return []
             for row in rows:
                 customer_profile_dict = {}
+                customer_profile_dict["id"] = row.id
                 customer_profile_dict["first_name"] = row.first_name
                 customer_profile_dict["last_name"] = row.last_name
                 customer_profile_dict["email"] = row.email
@@ -141,7 +142,7 @@ class SellersInfo(Resource):
 
         sellers_list = []
 
-        GET_SELLERS_PROFILES = """SELECT s.seller_name, s.email, s.mobile_no,
+        GET_SELLERS_PROFILES = """SELECT s.id, s.seller_name, s.email, s.mobile_no,
         s."GSTIN", s."PAN", s.enabled,
         m.id AS media_id, m.name AS media_name, m.path
         FROM sellers s
@@ -156,6 +157,7 @@ class SellersInfo(Resource):
                 return []
             for row in rows:
                 seller_profile_dict = {}
+                seller_profile_dict["id"] = row.id
                 seller_profile_dict["seller_name"] = row.seller_name
                 seller_profile_dict["email"] = row.email
                 seller_profile_dict["mobile_no"] = row.mobile_no

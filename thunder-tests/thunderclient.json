@@ -2449,12 +2449,12 @@
     "method": "POST",
     "sortNum": 20000,
     "created": "2023-03-14T17:06:16.671Z",
-    "modified": "2023-03-15T15:04:20.151Z",
+    "modified": "2023-07-01T11:02:28.940Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n\t\"user_type\" : \"customer\",\n\t\"email\": \"codewiretesting123@gmail.com\"\n}",
+      "raw": "{\n  \"user_type\": \"customer\",\n  \"email\": \"customer1@gmail.com\"\n}",
       "form": []
     },
     "tests": []
@@ -2733,12 +2733,12 @@
     "method": "PATCH",
     "sortNum": 115000,
     "created": "2023-03-22T07:49:03.329Z",
-    "modified": "2023-03-22T08:16:12.139Z",
+    "modified": "2023-07-01T09:19:01.538Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n  \"dp_id\": 6\n}",
+      "raw": "{\n  \"dp_id\": 12\n}",
       "form": []
     },
     "auth": {

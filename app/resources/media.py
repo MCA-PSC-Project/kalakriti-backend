@@ -136,7 +136,7 @@ class UploadImage(Resource):
     @f_jwt.jwt_required()
     def post(self):
         if "file" not in request.files:
-            return "No user_file key in request.files", 400
+            return "No file key in request.files", 400
 
         source_file = request.files["file"]
 
@@ -202,7 +202,7 @@ class UploadAudio(Resource):
     @f_jwt.jwt_required()
     def post(self):
         if "file" not in request.files:
-            return "No user_file key in request.files", 400
+            return "No file key in request.files", 400
 
         source_file = request.files["file"]
 
@@ -268,7 +268,7 @@ class UploadVideo(Resource):
     @f_jwt.jwt_required()
     def post(self):
         if "file" not in request.files:
-            return "No user_file key in request.files", 400
+            return "No file key in request.files", 400
 
         source_file = request.files["file"]
 
@@ -334,7 +334,7 @@ class UploadFile(Resource):
     @f_jwt.jwt_required()
     def post(self):
         if "file" not in request.files:
-            return "No user_file key in request.files", 400
+            return "No file key in request.files", 400
 
         source_file = request.files["file"]
 
