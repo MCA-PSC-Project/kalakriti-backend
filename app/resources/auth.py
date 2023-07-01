@@ -340,7 +340,10 @@ class LoginCustomer(Resource):
             if app.config["SEND_EMAIL"]:
                 send_email(email, subject, verify_email_html_page)
             app.logger.debug("Email sent successfully!")
-            return f"verification Email sent to {email} successfully!", 201
+            return (
+                f"verification Email sent to {email} successfully! Please verify your account.",
+                201,
+            )
 
 
 class LoginSeller(Resource):
