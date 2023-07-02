@@ -342,8 +342,7 @@ class ResetPasswordLoggedIn(Resource):
         new_password = reset_password_dict.get("new_password")
         if not current_password or not new_password:
             abort(400, "Bad Request")
-        if current_password == new_password:
-            abort(400, "new password must not be same as current password")
+        # app.logger.debug("current_password= %s, new_password= %s", current_password, new_password)
 
         GET_USER_HASHED_PASSWORD = (
             "SELECT hashed_password FROM {} WHERE id = %s".format(user_type + "s")
@@ -372,13 +371,16 @@ class ResetPasswordLoggedIn(Resource):
             app.logger.debug("Current Password not correct")
             abort(400, "Current Password not correct")
 
+        if current_password == new_password:
+            abort(400, "new password must not be same as current password")
+
         # store new hashed password
         new_hashed_password = bcrypt.hashpw(
             new_password.encode("utf-8"), bcrypt.gensalt()
         )
         new_hashed_password = new_hashed_password.decode("utf-8")
 
-        CHANGE_USER_HASHED_PASSWORD = """UPDATE {} SET hashed_password= %s, updated_at= %s WHERE id = %s""".format(
+        CHANGE_USER_HASHED_PASSWORD = """UPDATE {} SET hashed_password = %s, updated_at = %s WHERE id = %s""".format(
             user_type + "s"
         )
 
@@ -399,4 +401,6 @@ class ResetPasswordLoggedIn(Resource):
             abort(400, "Bad Request")
         finally:
             cursor.close()
-        return {"message": "Password reset successfully"}, 200
+        return {
+            "message": "Password reset successfully.Please login again with new password."
+        }, 200
