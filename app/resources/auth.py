@@ -275,10 +275,10 @@ class LoginCustomer(Resource):
             abort(400, "Bad Request")
 
         # check if user of given email already exists
-        GET_Customer = "SELECT id, hashed_password, is_verified, mfa_enabled FROM customers WHERE email= %s"
+        GET_CUSTOMER = "SELECT id, hashed_password, is_verified, mfa_enabled FROM customers WHERE email= %s"
         try:
             cursor = app_globals.get_named_tuple_cursor()
-            cursor.execute(GET_Customer, (email,))
+            cursor.execute(GET_CUSTOMER, (email,))
             row = cursor.fetchone()
             if row is None:
                 abort(400, "Bad Request: User not found")
@@ -440,10 +440,10 @@ class LoginAdmin(Resource):
             abort(400, "Bad Request")
 
         # check if user of given email already exists
-        GET_Customer = "SELECT id, hashed_password, is_verified, is_super_admin, mfa_enabled FROM admins WHERE email= %s"
+        GET_ADMIN = "SELECT id, hashed_password, is_verified, is_super_admin, mfa_enabled FROM admins WHERE email= %s"
         try:
             cursor = app_globals.get_named_tuple_cursor()
-            cursor.execute(GET_Customer, (email,))
+            cursor.execute(GET_ADMIN, (email,))
             row = cursor.fetchone()
             if row is None:
                 abort(400, "Bad Request: User not found")

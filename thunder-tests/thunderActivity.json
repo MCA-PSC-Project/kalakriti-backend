@@ -2152,5 +2152,28 @@
       "bearer": "{{super_admin_token}}"
     },
     "tests": []
+  },
+  {
+    "_id": "d40c3b66-0ce4-4689-b59c-3e6d7eb6a2c1",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/reset-password/logged-in",
+    "url": "{{baseUrl}}/reset-password/logged-in",
+    "method": "POST",
+    "sortNum": 0,
+    "created": "2023-07-02T04:42:55.276Z",
+    "modified": "2023-07-02T04:47:01.753Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n  \"current_password\": \"abcd@123\",\n  \"new_password\": \"abcd@1234\"\n}",
+      "form": []
+    },
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{customer_token}}"
+    },
+    "tests": []
   }
 ]

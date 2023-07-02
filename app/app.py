@@ -65,6 +65,7 @@ from app.resources.reset import (
     ResetEmail,
     ResetMobile,
     ResetPassword,
+    ResetPasswordLoggedIn,
 )
 from app.resources.media import (
     BucketObjects,
@@ -186,6 +187,8 @@ def create_app(config_name):
     api.add_resource(ResetMobile, "/reset-mobile")
     api.add_resource(RequestResetPassword, "/reset-password/request")
     api.add_resource(ResetPassword, "/reset-password")
+    # user already logged in and using old password 
+    api.add_resource(ResetPasswordLoggedIn, "/reset-password/logged-in")
 
     # MFA (TOTP)
     api.add_resource(MFAStatus, "/auth/mfa/status")

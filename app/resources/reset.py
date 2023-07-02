@@ -1,4 +1,5 @@
 from datetime import datetime
+import json
 import bcrypt
 from flask import Response, make_response, request, abort
 from flask_restful import Resource
@@ -322,3 +323,80 @@ class ResetPassword(Resource):
         # return {"message": "Status accepted"}, 202
         headers = {"Content-Type": "text/html"}
         return make_response("Password changed successfully")
+
+
+class ResetPasswordLoggedIn(Resource):
+    @f_jwt.jwt_required()
+    def post(self):
+        user_id = f_jwt.get_jwt_identity()
+        app.logger.debug("user_id= %s", user_id)
+        claims = f_jwt.get_jwt()
+        user_type = claims["user_type"]
+        app.logger.debug("user_type= %s", user_type)
+        if user_type == "super_admin":
+            user_type = "admin"
+
+        data = request.get_json()
+        reset_password_dict = json.loads(json.dumps(data))
+        current_password = reset_password_dict.get("current_password")
+        new_password = reset_password_dict.get("new_password")
+        if not current_password or not new_password:
+            abort(400, "Bad Request")
+        if current_password == new_password:
+            abort(400, "new password must not be same as current password")
+
+        GET_USER_HASHED_PASSWORD = (
+            "SELECT hashed_password FROM {} WHERE id = %s".format(user_type + "s")
+        )
+        try:
+            cursor = app_globals.get_named_tuple_cursor()
+            cursor.execute(GET_USER_HASHED_PASSWORD, (user_id,))
+            row = cursor.fetchone()
+            if row is None:
+                abort(400, "Bad Request: User not found")
+            else:
+                hashed_password = row.hashed_password
+        except (Exception, psycopg2.Error) as err:
+            app.logger.debug(err)
+            abort(400, "Bad Request")
+        finally:
+            cursor.close()
+
+        # check user's entered current password's hash with db's stored hashed password
+        if (
+            bcrypt.checkpw(
+                current_password.encode("utf-8"), hashed_password.encode("utf-8")
+            )
+            == False
+        ):
+            app.logger.debug("Current Password not correct")
+            abort(400, "Current Password not correct")
+
+        # store new hashed password
+        new_hashed_password = bcrypt.hashpw(
+            new_password.encode("utf-8"), bcrypt.gensalt()
+        )
+        new_hashed_password = new_hashed_password.decode("utf-8")
+
+        CHANGE_USER_HASHED_PASSWORD = """UPDATE {} SET hashed_password= %s, updated_at= %s WHERE id = %s""".format(
+            user_type + "s"
+        )
+
+        try:
+            cursor = app_globals.get_cursor()
+            cursor.execute(
+                CHANGE_USER_HASHED_PASSWORD,
+                (
+                    new_hashed_password,
+                    datetime.now(),
+                    user_id,
+                ),
+            )
+            if cursor.rowcount != 1:
+                abort(400, "Bad Request: update row error")
+        except (Exception, psycopg2.Error) as err:
+            app.logger.debug(err)
+            abort(400, "Bad Request")
+        finally:
+            cursor.close()
+        return {"message": "Password reset successfully"}, 200
