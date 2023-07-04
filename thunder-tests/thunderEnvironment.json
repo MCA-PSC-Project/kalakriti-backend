@@ -56,7 +56,7 @@
       },
       {
         "name": "seller_token",
-        "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6dHJ1ZSwiaWF0IjoxNjg2NjQwNjgzLCJqdGkiOiIwOGNiM2JkZi0wNWM0LTQ5YjUtODA2ZC1mN2IxYjQxMDc1NTQiLCJ0eXBlIjoiYWNjZXNzIiwic3ViIjoxLCJuYmYiOjE2ODY2NDA2ODMsImV4cCI6MTY4NzA3MjY4MywidXNlcl90eXBlIjoic2VsbGVyIn0.LL_y-NrUQvArsVVEDRvlmgIOtyWH2DgHc_Ki4RBGyXM"
+        "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6dHJ1ZSwiaWF0IjoxNjg4Mzc5NDk4LCJqdGkiOiIzMTc2NTQ2YS02MzM2LTQwYTgtYWZiYy1iZmUyYzhhNjgyZDYiLCJ0eXBlIjoiYWNjZXNzIiwic3ViIjoxLCJuYmYiOjE2ODgzNzk0OTgsImV4cCI6MTY4ODgxMTQ5OCwidXNlcl90eXBlIjoic2VsbGVyIn0.cuuGiUkC_4oRFXQDFY2rEnTz4dT0aFWCNWc1DZnOrjk"
       },
       {
         "name": "admin_token",
