@@ -104,11 +104,13 @@ class UserAddress(Resource):
             user_type = "admin"
         addresses_list = []
 
-        GET_ADDRESSES = """SELECT id AS address_id, full_name, mobile_no, address_line1, address_line2, district, city, state, 
-        country, pincode, landmark, added_at, updated_at
-        FROM addresses WHERE id IN (
-            SELECT address_id FROM {0}_addresses WHERE {0}_id = %s
-        ) AND trashed = False""".format(
+        GET_ADDRESSES = """SELECT a.id AS address_id, a.full_name, a.mobile_no, 
+        a.address_line1, a.address_line2, a.district, a.city, a.state,
+        a.country, a.pincode, a.landmark, a.added_at, a.updated_at, ca.is_default
+        FROM addresses a
+        JOIN {0}_addresses ca ON a.id = ca.address_id
+        WHERE ca.{0}_id = %s AND a.trashed = False
+        ORDER BY ca.is_default, address_id""".format(
             user_type
         )
         try:
@@ -130,6 +132,7 @@ class UserAddress(Resource):
                 address_dict["country"] = row.country
                 address_dict["pincode"] = row.pincode
                 address_dict["landmark"] = row.landmark
+                address_dict["is_default"] = row.is_default
                 address_dict.update(
                     json.loads(json.dumps({"added_at": row.added_at}, default=str))
                 )

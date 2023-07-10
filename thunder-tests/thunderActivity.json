@@ -201,52 +201,6 @@
     "tests": []
   },
   {
-    "_id": "4d9febd3-8974-4bae-9db5-3bd7d98bffde",
-    "colId": "history",
-    "containerId": "",
-    "name": "{{baseUrl}}/orders/6",
-    "url": "{{baseUrl}}/orders/6",
-    "method": "PATCH",
-    "sortNum": 0,
-    "created": "2023-04-20T09:38:58.995Z",
-    "modified": "2023-04-20T09:39:12.982Z",
-    "headers": [],
-    "params": [],
-    "body": {
-      "type": "json",
-      "raw": "{\n  \"order_status\": \"dispatched\"\n}",
-      "form": []
-    },
-    "auth": {
-      "type": "bearer",
-      "bearer": "{{seller_token}}"
-    },
-    "tests": []
-  },
-  {
-    "_id": "30caf1fb-a5df-4665-b9cf-d86dbc9b12ec",
-    "colId": "history",
-    "containerId": "",
-    "name": "{{baseUrl}}/orders/1",
-    "url": "{{baseUrl}}/orders/1",
-    "method": "PATCH",
-    "sortNum": 0,
-    "created": "2023-04-20T09:39:20.603Z",
-    "modified": "2023-04-20T09:39:20.603Z",
-    "headers": [],
-    "params": [],
-    "body": {
-      "type": "json",
-      "raw": "{\n  \"order_status\": \"dispatched\"\n}",
-      "form": []
-    },
-    "auth": {
-      "type": "bearer",
-      "bearer": "{{seller_token}}"
-    },
-    "tests": []
-  },
-  {
     "_id": "fea158d4-320b-41f7-96ff-970c42208878",
     "colId": "history",
     "containerId": "",
@@ -1984,12 +1938,12 @@
     "method": "PATCH",
     "sortNum": 0,
     "created": "2023-06-20T14:30:10.050Z",
-    "modified": "2023-06-20T14:32:45.091Z",
+    "modified": "2023-07-10T10:54:03.011Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n  \"default\": true\n}",
+      "raw": "{\n  \"trashed\": false\n}",
       "form": []
     },
     "auth": {
@@ -2007,7 +1961,7 @@
     "method": "PATCH",
     "sortNum": 0,
     "created": "2023-06-20T14:33:37.737Z",
-    "modified": "2023-06-20T14:40:13.123Z",
+    "modified": "2023-07-10T10:53:12.747Z",
     "headers": [],
     "params": [],
     "body": {
@@ -2168,6 +2122,66 @@
     "body": {
       "type": "json",
       "raw": "{\n  \"current_password\": \"abcd123\",\n  \"new_password\": \"abcd@1234\"\n}",
+      "form": []
+    },
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{customer_token}}"
+    },
+    "tests": []
+  },
+  {
+    "_id": "c5eb8d41-308f-4700-a4ca-3ba51ded6fb3",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/auth/motp",
+    "url": "{{baseUrl}}/auth/motp",
+    "method": "POST",
+    "sortNum": 0,
+    "created": "2023-07-02T16:43:02.149Z",
+    "modified": "2023-07-04T07:42:55.657Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n\t\"mobile_no\" : \"9078563419\"\n}",
+      "form": []
+    },
+    "tests": []
+  },
+  {
+    "_id": "54413d00-570d-45c0-8aad-8696e1c62c35",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/addresses",
+    "url": "{{baseUrl}}/addresses",
+    "method": "GET",
+    "sortNum": 0,
+    "created": "2023-07-10T10:46:40.132Z",
+    "modified": "2023-07-10T10:46:40.132Z",
+    "headers": [],
+    "params": [],
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{customer_token}}"
+    },
+    "tests": []
+  },
+  {
+    "_id": "8e42cee8-637e-4707-81b0-e44601880329",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/addresses/13",
+    "url": "{{baseUrl}}/addresses/13",
+    "method": "PATCH",
+    "sortNum": 0,
+    "created": "2023-07-10T10:49:59.975Z",
+    "modified": "2023-07-10T10:49:59.975Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n  \"default\": true\n}",
       "form": []
     },
     "auth": {

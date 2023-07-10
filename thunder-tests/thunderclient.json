@@ -127,12 +127,12 @@
     "method": "POST",
     "sortNum": 43750,
     "created": "2023-02-20T16:38:51.034Z",
-    "modified": "2023-03-15T14:36:34.843Z",
+    "modified": "2023-07-02T16:43:02.335Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n\t\"mobile_no\" : \"9879870000\"\n}",
+      "raw": "{\n  \"mobile_no\": \"9879870000\"\n}",
       "form": []
     },
     "tests": []
@@ -2029,7 +2029,7 @@
     "method": "PATCH",
     "sortNum": 965000,
     "created": "2023-03-05T08:03:17.445Z",
-    "modified": "2023-06-20T14:40:13.115Z",
+    "modified": "2023-07-10T10:53:12.740Z",
     "headers": [],
     "params": [],
     "body": {
@@ -3337,7 +3337,7 @@
     "method": "PATCH",
     "sortNum": 967500,
     "created": "2023-06-20T13:50:42.210Z",
-    "modified": "2023-06-20T14:31:37.316Z",
+    "modified": "2023-07-10T10:54:03.003Z",
     "headers": [],
     "params": [],
     "body": {
