@@ -1694,9 +1694,9 @@
     "name": "get product item by id",
     "url": "{{baseUrl}}/product-items/19?product_item_status=draft",
     "method": "GET",
-    "sortNum": 10000,
+    "sortNum": 2500,
     "created": "2023-02-23T11:46:39.450Z",
-    "modified": "2023-04-05T14:43:14.695Z",
+    "modified": "2023-07-11T13:32:09.111Z",
     "headers": [],
     "params": [
       {
@@ -3372,6 +3372,31 @@
       "type": "bearer",
       "bearer": "{{customer_token}}"
     },
+    "tests": []
+  },
+  {
+    "_id": "ee865211-822d-407f-87d5-aae5d567f1cc",
+    "colId": "80d178ef-5176-474a-8708-db78bd45faee",
+    "containerId": "9525375d-6d7f-486c-8969-7b49f2983b85",
+    "name": "GET  product items by ids basic info",
+    "url": "{{baseUrl}}/product-items/basic-info?product_status=published&product_item_ids=5,4",
+    "method": "GET",
+    "sortNum": 5000,
+    "created": "2023-07-11T13:16:55.425Z",
+    "modified": "2023-07-11T16:14:38.340Z",
+    "headers": [],
+    "params": [
+      {
+        "name": "product_status",
+        "value": "published",
+        "isPath": false
+      },
+      {
+        "name": "product_item_ids",
+        "value": "5,4",
+        "isPath": false
+      }
+    ],
     "tests": []
   }
 ]

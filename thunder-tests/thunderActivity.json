@@ -2189,5 +2189,106 @@
       "bearer": "{{customer_token}}"
     },
     "tests": []
+  },
+  {
+    "_id": "0d765172-b50d-4805-8fea-b57a9ca11eee",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/product-items/basic-info?product_status=published&product_item_ids=[5,14]",
+    "url": "{{baseUrl}}/product-items/basic-info?product_status=published&product_item_ids=[5,14]",
+    "method": "GET",
+    "sortNum": 0,
+    "created": "2023-07-11T16:02:54.642Z",
+    "modified": "2023-07-11T16:02:54.642Z",
+    "headers": [],
+    "params": [
+      {
+        "name": "product_status",
+        "value": "published",
+        "isPath": false
+      },
+      {
+        "name": "product_item_ids",
+        "value": "[5,14]",
+        "isPath": false
+      }
+    ],
+    "tests": []
+  },
+  {
+    "_id": "dd9c866b-7e62-4e5c-a74c-0a6a686f0eed",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/product-items/basic-info?product_status=published&product_item_ids=(5,14)",
+    "url": "{{baseUrl}}/product-items/basic-info?product_status=published&product_item_ids=(5,14)",
+    "method": "GET",
+    "sortNum": 0,
+    "created": "2023-07-11T16:03:54.779Z",
+    "modified": "2023-07-11T16:03:54.779Z",
+    "headers": [],
+    "params": [
+      {
+        "name": "product_status",
+        "value": "published",
+        "isPath": false
+      },
+      {
+        "name": "product_item_ids",
+        "value": "(5,14)",
+        "isPath": false
+      }
+    ],
+    "tests": []
+  },
+  {
+    "_id": "d6e61cb4-1400-44b3-8141-5b17003c8c51",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/product-items/basic-info?product_status=published&product_item_ids=5,14",
+    "url": "{{baseUrl}}/product-items/basic-info?product_status=published&product_item_ids=5,14",
+    "method": "GET",
+    "sortNum": 0,
+    "created": "2023-07-11T16:05:01.059Z",
+    "modified": "2023-07-11T16:05:01.059Z",
+    "headers": [],
+    "params": [
+      {
+        "name": "product_status",
+        "value": "published",
+        "isPath": false
+      },
+      {
+        "name": "product_item_ids",
+        "value": "5,14",
+        "isPath": false
+      }
+    ],
+    "tests": []
+  },
+  {
+    "_id": "0ecce08c-2352-4d52-90d9-2d7e75588867",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/product-items/basic-info?product_item_ids=5,14",
+    "url": "{{baseUrl}}/product-items/basic-info?product_item_ids=5,14",
+    "method": "GET",
+    "sortNum": 0,
+    "created": "2023-07-11T16:13:54.982Z",
+    "modified": "2023-07-11T16:14:01.554Z",
+    "headers": [],
+    "params": [
+      {
+        "name": "product_status",
+        "value": "draft",
+        "isDisabled": true,
+        "isPath": false
+      },
+      {
+        "name": "product_item_ids",
+        "value": "5,14",
+        "isPath": false
+      }
+    ],
+    "tests": []
   }
 ]

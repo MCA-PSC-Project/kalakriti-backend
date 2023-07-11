@@ -46,6 +46,7 @@ from app.resources.home import (
 from app.resources.orders import OrderItems, Orders, CustomerOrders
 from app.resources.product_items import (
     ProductItems,
+    ProductItemsBasicInfoByIds,
     SellersProductBaseItem,
     SellersProductItems,
 )
@@ -187,7 +188,7 @@ def create_app(config_name):
     api.add_resource(ResetMobile, "/reset-mobile")
     api.add_resource(RequestResetPassword, "/reset-password/request")
     api.add_resource(ResetPassword, "/reset-password")
-    # user already logged in and using old password 
+    # user already logged in and using old password
     api.add_resource(ResetPasswordLoggedIn, "/reset-password/logged-in")
 
     # MFA (TOTP)
@@ -235,6 +236,7 @@ def create_app(config_name):
     )
     api.add_resource(SellersProductBaseItem, "/sellers/products/base-item")
     api.add_resource(ProductsAllDetails, "/products/<int:product_id>/all-details")
+    api.add_resource(ProductItemsBasicInfoByIds, "/product-items/basic-info")
 
     # Tags
     api.add_resource(Tags, "/products/<int:product_id>/tags")

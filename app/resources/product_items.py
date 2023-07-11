@@ -8,6 +8,7 @@ import json
 from flask import current_app as app
 
 from app.resources.media import delete_medias_by_ids
+from app.resources.product_reviews import get_avg_ratings_and_count
 
 
 class ProductItems(Resource):
@@ -171,9 +172,9 @@ class SellersProductItems(Resource):
                 ),
             )
             # product_item_value_id = cursor.fetchone()[0]
-            
+
             media_id_list = product_item_dict.get("media_list")
-            if media_id_list is not None and len(media_id_list)>0:
+            if media_id_list is not None and len(media_id_list) > 0:
                 INSERT_MEDIAS = """INSERT INTO product_item_medias(product_item_id, media_id, display_order)
                 VALUES(%s, %s, %s)"""
 
@@ -681,3 +682,137 @@ class SellersProductBaseItem(Resource):
         finally:
             cursor.close()
         return {"message": f"Base item modified successfully."}, 200
+
+
+class ProductItemsBasicInfoByIds(Resource):
+    def get(self):
+        args = request.args  # retrieve args from query string
+        product_status = args.get("product_status", None)
+        product_item_ids = args.get("product_item_ids", None)
+        if not product_status:
+            product_status = "published"
+        try:
+            cursor = app_globals.get_named_tuple_cursor()
+            GET_PRODUCT_ITEMS = """SELECT p.id, p.product_name, p.product_description, 
+            p.currency, p.product_status, p.min_order_quantity, p.max_order_quantity,
+            p.added_at, p.updated_at, 
+            s.id AS seller_id, s.seller_name, s.email,
+            pi.id AS product_item_id, pi.product_id, pi.product_variant_name, pi."SKU", 
+            pi.original_price, pi.offer_price, pi.quantity_in_stock,
+            pi.added_at AS item_added_at, pi.updated_at AS item_updated_at, pi.product_item_status,
+            (SELECT v.variant AS variant FROM variants v WHERE v.id = 
+            (SELECT vv.variant_id FROM variant_values vv WHERE vv.id = piv.variant_value_id)),
+            (SELECT vv.variant_value AS variant_value FROM variant_values vv WHERE vv.id = piv.variant_value_id)
+            FROM product_items pi 
+            JOIN products p ON p.id = pi.product_id AND p.product_status = %s
+            JOIN sellers s ON p.seller_id = s.id 
+            JOIN product_item_values piv ON pi.id = piv.product_item_id
+            WHERE pi.id IN %s"""
+
+            cursor.execute(
+                GET_PRODUCT_ITEMS,
+                (
+                    product_status,
+                    tuple(map(int, product_item_ids.split(","))),
+                ),
+            )
+            rows = cursor.fetchall()
+            if not rows:
+                return []
+            product_list = []
+            for row in rows:
+                product_dict = {}
+                product_dict["id"] = row.id
+                product_dict["product_name"] = row.product_name
+                product_dict["currency"] = row.currency
+                product_dict["product_status"] = row.product_status
+                product_dict["min_order_quantity"] = row.min_order_quantity
+                product_dict["max_order_quantity"] = row.max_order_quantity
+                product_dict.update(
+                    json.loads(json.dumps({"added_at": row.added_at}, default=str))
+                )
+                product_dict.update(
+                    json.loads(json.dumps({"updated_at": row.updated_at}, default=str))
+                )
+
+                seller_dict = {}
+                seller_dict["id"] = row.seller_id
+                seller_dict["seller_name"] = row.seller_name
+                seller_dict["email"] = row.email
+                product_dict.update({"seller": seller_dict})
+                product_dict["product_item_id"] = row.product_item_id
+
+                average_rating, rating_count = get_avg_ratings_and_count(
+                    cursor, product_dict["id"]
+                )
+                product_dict.update(
+                    json.loads(
+                        json.dumps({"average_rating": average_rating}, default=str)
+                    )
+                )
+                product_dict["rating_count"] = rating_count
+
+                product_item_dict = {}
+                product_item_dict["id"] = row.product_item_id
+                product_item_dict["product_id"] = row.product_id
+                product_item_dict["product_variant_name"] = row.product_variant_name
+                product_item_dict["SKU"] = row.SKU
+
+                product_item_dict.update(
+                    json.loads(
+                        json.dumps({"original_price": row.original_price}, default=str)
+                    )
+                )
+                product_item_dict.update(
+                    json.loads(
+                        json.dumps({"offer_price": row.offer_price}, default=str)
+                    )
+                )
+
+                product_item_dict["quantity_in_stock"] = row.quantity_in_stock
+                product_item_dict.update(
+                    json.loads(json.dumps({"added_at": row.added_at}, default=str))
+                )
+                product_item_dict.update(
+                    json.loads(json.dumps({"updated_at": row.updated_at}, default=str))
+                )
+                product_item_dict["product_item_status"] = row.product_item_status
+
+                product_item_dict["variant"] = row.variant
+                product_item_dict["variant_value"] = row.variant_value
+
+                media_dict = {}
+                GET_BASE_MEDIA = """SELECT m.id AS media_id, m.name, m.path
+                FROM media m
+                WHERE m.id = (
+                    SELECT pim.media_id From product_item_medias pim
+                    WHERE pim.product_item_id = %s 
+                    ORDER BY pim.display_order LIMIT 1
+                )"""
+                cursor.execute(GET_BASE_MEDIA, (product_dict["product_item_id"],))
+                row = cursor.fetchone()
+                if row is None:
+                    app.logger.debug("No media rows")
+                    product_item_dict.update({"media": media_dict})
+                    product_dict.update({"base_product_item": product_item_dict})
+                    product_list.append(product_dict)
+                    continue
+                media_dict["id"] = row.media_id
+                media_dict["name"] = row.name
+                # media_dict['path'] = row.path
+                path = row.path
+                if path is not None:
+                    media_dict["path"] = "{}/{}".format(app.config["S3_LOCATION"], path)
+                else:
+                    media_dict["path"] = None
+                product_item_dict.update({"media": media_dict})
+                product_dict.update({"product_item": product_item_dict})
+                product_list.append(product_dict)
+
+        except (Exception, psycopg2.Error) as err:
+            app.logger.debug(err)
+            abort(400, "Bad Request")
+        finally:
+            cursor.close()
+        # app.logger.debug(products_list)
+        return product_list
