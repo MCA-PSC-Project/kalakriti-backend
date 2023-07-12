@@ -2290,5 +2290,30 @@
       }
     ],
     "tests": []
+  },
+  {
+    "_id": "c186147b-32a6-4e99-b29f-13e12d8971ce",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/product-items/basic-info?product_status=published&product_item_ids=5,4",
+    "url": "{{baseUrl}}/product-items/basic-info?product_status=published&product_item_ids=5,4",
+    "method": "GET",
+    "sortNum": 0,
+    "created": "2023-07-11T16:17:57.793Z",
+    "modified": "2023-07-11T16:17:57.793Z",
+    "headers": [],
+    "params": [
+      {
+        "name": "product_status",
+        "value": "published",
+        "isPath": false
+      },
+      {
+        "name": "product_item_ids",
+        "value": "5,4",
+        "isPath": false
+      }
+    ],
+    "tests": []
   }
 ]

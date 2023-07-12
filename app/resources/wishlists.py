@@ -49,20 +49,18 @@ class Wishlists(Resource):
 
         wishlists_list = []
         GET_WISHLISTS = """SELECT w.added_at,
-        temp.product_id, temp.product_name, temp.product_item_id,
-        temp.product_variant_name, temp.variant, temp.variant_value, temp.original_price, temp.offer_price
+        p.id AS product_id, p.product_name, p.currency, p.product_status, p.min_order_quantity, p.max_order_quantity,
+        s.id AS seller_id, s.seller_name, s.email,
+        pi.id AS product_item_id, pi.product_variant_name, pi."SKU", 
+        pi.original_price, pi.offer_price, pi.quantity_in_stock, pi.product_item_status,
+        v.variant, vv.variant_value
         FROM wishlists w
-        JOIN LATERAL(
-            SELECT pi.product_id, pi.id AS product_item_id,
-            (SELECT p.product_name FROM products p WHERE p.id = pi.product_id),
-            pi.product_variant_name ,pi.original_price, pi.offer_price,
-            (SELECT v.variant AS variant FROM variants v WHERE v.id =
-            (SELECT vv.variant_id FROM variant_values vv WHERE vv.id = piv.variant_value_id)),
-            (SELECT vv.variant_value AS variant_value FROM variant_values vv WHERE vv.id = piv.variant_value_id) 
-            FROM product_items pi
-            JOIN product_item_values piv ON pi.id = piv.product_item_id
-            WHERE pi.id = w.product_item_id
-        ) AS temp ON TRUE
+        JOIN product_items pi ON w.product_item_id = pi.id
+        JOIN products p ON pi.product_id = p.id
+        JOIN sellers s ON p.seller_id = s.id 
+        JOIN product_item_values piv ON pi.id = piv.product_item_id
+        JOIN variant_values vv ON piv.variant_value_id = vv.id
+        JOIN variants v ON vv.variant_id = v.id
         WHERE w.customer_id = %s 
         ORDER BY w.added_at DESC"""
 
@@ -73,15 +71,28 @@ class Wishlists(Resource):
             if not rows:
                 return {}
             for row in rows:
-                wishlist_dict = {}
-                wishlist_dict.update(
+                product_dict = {}
+                product_dict.update(
                     json.loads(json.dumps({"added_at": row.added_at}, default=str))
                 )
-                wishlist_dict["product_id"] = row.product_id
-                wishlist_dict["product_name"] = row.product_name
+                product_dict["product_id"] = row.product_id
+                product_dict["product_name"] = row.product_name
+                product_dict["currency"] = row.currency
+                product_dict["product_status"] = row.product_status
+                product_dict["min_order_quantity"] = row.min_order_quantity
+                product_dict["max_order_quantity"] = row.max_order_quantity
+
+                seller_dict = {}
+                seller_dict["id"] = row.seller_id
+                seller_dict["seller_name"] = row.seller_name
+                seller_dict["email"] = row.email
+                product_dict.update({"seller": seller_dict})
+
                 product_item_dict = {}
                 product_item_dict["id"] = row.product_item_id
                 product_item_dict["product_variant_name"] = row.product_variant_name
+                product_item_dict["SKU"] = row.SKU
+
                 product_item_dict.update(
                     json.loads(
                         json.dumps({"original_price": row.original_price}, default=str)
@@ -92,22 +103,20 @@ class Wishlists(Resource):
                         json.dumps({"offer_price": row.offer_price}, default=str)
                     )
                 )
+                product_item_dict["quantity_in_stock"] = row.quantity_in_stock
+                product_item_dict["product_variant_name"] = row.product_variant_name
                 product_item_dict["variant"] = row.variant
                 product_item_dict["variant_value"] = row.variant_value
 
                 average_rating, rating_count = get_avg_ratings_and_count(
-                    cursor, wishlist_dict["product_id"]
+                    cursor, product_dict["product_id"]
                 )
-                wishlist_dict.update(
+                product_dict.update(
                     json.loads(
                         json.dumps({"average_rating": average_rating}, default=str)
                     )
                 )
-                wishlist_dict["rating_count"] = rating_count
-
-                wishlist_dict.update(
-                    {"seller": get_seller_info(cursor, wishlist_dict["product_id"])}
-                )
+                product_dict["rating_count"] = rating_count
 
                 media_dict = {}
                 GET_BASE_MEDIA = """SELECT m.id AS media_id, m.name, m.path
@@ -121,8 +130,8 @@ class Wishlists(Resource):
                 if row is None:
                     app.logger.debug("No media rows")
                     product_item_dict.update({"media": media_dict})
-                    wishlist_dict.update({"product_item": product_item_dict})
-                    wishlists_list.append(wishlist_dict)
+                    product_dict.update({"product_item": product_item_dict})
+                    wishlists_list.append(product_dict)
                     continue
                 media_dict["id"] = row.media_id
                 media_dict["name"] = row.name
@@ -132,8 +141,8 @@ class Wishlists(Resource):
                 else:
                     media_dict["path"] = None
                 product_item_dict.update({"media": media_dict})
-                wishlist_dict.update({"product_item": product_item_dict})
-                wishlists_list.append(wishlist_dict)
+                product_dict.update({"product_item": product_item_dict})
+                wishlists_list.append(product_dict)
         except (Exception, psycopg2.Error) as err:
             app.logger.debug(err)
             abort(400, "Bad Request")
