@@ -2315,5 +2315,23 @@
       }
     ],
     "tests": []
+  },
+  {
+    "_id": "36d740d9-d38f-4d14-9b1f-be19309353e0",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/carts",
+    "url": "{{baseUrl}}/carts",
+    "method": "GET",
+    "sortNum": 0,
+    "created": "2023-07-12T07:37:27.602Z",
+    "modified": "2023-07-12T07:37:27.602Z",
+    "headers": [],
+    "params": [],
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{customer_token}}"
+    },
+    "tests": []
   }
 ]
