@@ -11,7 +11,7 @@ from flask import current_app as app
 from app.resources.seller import get_seller_info
 
 
-class Carts(Resource):
+class Cart(Resource):
     @f_jwt.jwt_required()
     def post(self):
         customer_id = f_jwt.get_jwt_identity()
@@ -72,13 +72,14 @@ class Carts(Resource):
         app.logger.debug("user_id= %s", customer_id)
 
         carts_list = []
-        GET_ITEMS_IN_CART = """SELECT ci.cart_id AS cart_id, ci.quantity, 
+        GET_ITEMS_IN_CART = """SELECT ci.cart_id AS cart_id, ci.quantity, ci.added_at, ci.updated_at,
         p.id AS product_id, p.product_name, p.currency, p.min_order_quantity, p.max_order_quantity,
         pi.id AS product_item_id, pi.product_variant_name, pi.original_price, pi.offer_price, pi.quantity_in_stock 
         FROM cart_items ci
         JOIN product_items pi ON pi.id = ci.product_item_id
         JOIN products p ON p.id= (SELECT product_id FROM product_items WHERE id= ci.product_item_id)
-        WHERE cart_id = (SELECT id FROM carts WHERE customer_id =%s)"""
+        WHERE cart_id = (SELECT id FROM carts WHERE customer_id =%s)
+        ORDER BY ci.added_at DESC"""
 
         try:
             cursor = app_globals.get_named_tuple_cursor()
@@ -90,6 +91,12 @@ class Carts(Resource):
                 carts_dict = {}
                 carts_dict["cart_id"] = row.cart_id
                 carts_dict["quantity"] = row.quantity
+                carts_dict.update(
+                    json.loads(json.dumps({"added_at": row.added_at}, default=str))
+                )
+                carts_dict.update(
+                    json.loads(json.dumps({"updated_at": row.updated_at}, default=str))
+                )
                 carts_dict["product_id"] = row.product_id
                 carts_dict["product_name"] = row.product_name
                 carts_dict["currency"] = row.currency
@@ -172,7 +179,7 @@ class Carts(Resource):
                 abort(400, "Bad Request")
             cart_id = row[0]
 
-            UPDATE_QUANTITY = """UPDATE cart_items SET quantity=%s, updated_at= %s 
+            UPDATE_QUANTITY = """UPDATE cart_items SET quantity= %s, updated_at= %s 
             WHERE cart_id= %s AND product_item_id= %s"""
 
             cursor.execute(
@@ -185,7 +192,7 @@ class Carts(Resource):
             abort(400, "Bad Request")
         finally:
             cursor.close()
-        return {"message": f"Quantity modified for cart_id ={cart_id}."}, 200
+        return {"message": f"Quantity modified for cart_id = {cart_id}."}, 200
 
     @f_jwt.jwt_required()
     def delete(self, product_item_id):

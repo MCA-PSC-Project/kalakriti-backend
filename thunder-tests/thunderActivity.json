@@ -2333,5 +2333,28 @@
       "bearer": "{{customer_token}}"
     },
     "tests": []
+  },
+  {
+    "_id": "09aefd39-68b6-4704-af58-76312a2000c0",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/carts/3",
+    "url": "{{baseUrl}}/carts/3",
+    "method": "PATCH",
+    "sortNum": 0,
+    "created": "2023-07-12T08:55:54.578Z",
+    "modified": "2023-07-12T08:55:54.578Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n  \"quantity\": 5\n}",
+      "form": []
+    },
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{customer_token}}"
+    },
+    "tests": []
   }
 ]

@@ -81,8 +81,8 @@ from app.resources.admin import CustomersInfo, PromoteToSeller, SellersInfo
 from app.resources.super_admin import AdminsInfo, PromoteToAdmin
 from app.resources.banners import Banners
 from app.resources.seller_applicant_form import Seller_Applicant_Form
-from app.resources.wishlist import IsItemInWishLists, Wishlists
-from app.resources.cart import Carts, CartItemsQuantity
+from app.resources.wishlist import IsItemInWishList, Wishlist
+from app.resources.cart import Cart, CartItemsQuantity
 from app.resources.product_reviews import (
     ProductReview,
     CustomerReviewOnProduct,
@@ -254,12 +254,12 @@ def create_app(config_name):
         "/sellers-bank-details/<int:bank_detail_id>/bank",
     )
 
-    # Wishlists
-    api.add_resource(Wishlists, "/wishlists", "/wishlists/<int:product_item_id>")
-    api.add_resource(IsItemInWishLists, "/check-wishlists/<int:product_item_id>")
+    # Wishlist
+    api.add_resource(Wishlist, "/wishlists", "/wishlists/<int:product_item_id>")
+    api.add_resource(IsItemInWishList, "/check-wishlists/<int:product_item_id>")
 
-    # Carts
-    api.add_resource(Carts, "/carts", "/carts/<int:product_item_id>")
+    # Cart
+    api.add_resource(Cart, "/carts", "/carts/<int:product_item_id>")
     api.add_resource(CartItemsQuantity, "/carts/items-quantity")
 
     # Reviews
