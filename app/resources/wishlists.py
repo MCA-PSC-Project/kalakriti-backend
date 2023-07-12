@@ -104,7 +104,6 @@ class Wishlists(Resource):
                     )
                 )
                 product_item_dict["quantity_in_stock"] = row.quantity_in_stock
-                product_item_dict["product_variant_name"] = row.product_variant_name
                 product_item_dict["variant"] = row.variant
                 product_item_dict["variant_value"] = row.variant_value
 
@@ -121,10 +120,11 @@ class Wishlists(Resource):
                 media_dict = {}
                 GET_BASE_MEDIA = """SELECT m.id AS media_id, m.name, m.path
                 FROM media m
-                WHERE m.id = (SELECT pim.media_id From product_item_medias pim
-                WHERE pim.product_item_id = %s 
-                ORDER BY pim.display_order LIMIT 1) 
-                """
+                WHERE m.id = (
+                    SELECT pim.media_id From product_item_medias pim
+                    WHERE pim.product_item_id = %s 
+                    ORDER BY pim.display_order LIMIT 1
+                )"""
                 cursor.execute(GET_BASE_MEDIA, (product_item_dict["id"],))
                 row = cursor.fetchone()
                 if row is None:
