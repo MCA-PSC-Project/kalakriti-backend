@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timezone
 import os
 from uuid import uuid4
 from flask import abort, request
@@ -176,7 +176,7 @@ class UploadImage(Resource):
             full_url = "{}/{}".format(app.config["S3_LOCATION"], path_name)
             app.logger.debug(str(full_url))
 
-            current_time = datetime.now()
+            current_time = datetime.now(timezone.utc)
             INSERT_MEDIA = """INSERT INTO media(name, path, media_type, added_at)
          VALUES(%s, %s, %s, %s) RETURNING id"""
 
@@ -260,7 +260,7 @@ class UploadAudio(Resource):
             full_url = "{}/{}".format(app.config["S3_LOCATION"], path_name)
             app.logger.debug(str(full_url))
 
-            current_time = datetime.now()
+            current_time = datetime.now(timezone.utc)
             INSERT_MEDIA = """INSERT INTO media(name, path, media_type, added_at)
          VALUES(%s, %s, %s, %s) RETURNING id"""
 
@@ -341,7 +341,7 @@ class UploadVideo(Resource):
             full_url = "{}/{}".format(app.config["S3_LOCATION"], path_name)
             app.logger.debug(str(full_url))
 
-            current_time = datetime.now()
+            current_time = datetime.now(timezone.utc)
             INSERT_MEDIA = """INSERT INTO media(name, path, media_type, added_at)
          VALUES(%s, %s, %s, %s) RETURNING id"""
 
@@ -425,7 +425,7 @@ class UploadFile(Resource):
             full_url = "{}/{}".format(app.config["S3_LOCATION"], path_name)
             app.logger.debug(str(full_url))
 
-            current_time = datetime.now()
+            current_time = datetime.now(timezone.utc)
             INSERT_MEDIA = """INSERT INTO media(name, path, media_type, added_at)
          VALUES(%s, %s, %s, %s) RETURNING id"""
 

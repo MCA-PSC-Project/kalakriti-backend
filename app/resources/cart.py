@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timezone
 import json
 from flask import request, abort
 from flask_restful import Resource
@@ -47,7 +47,7 @@ class Cart(Resource):
                     cart_id,
                     product_item_id,
                     quantity,
-                    datetime.now(),
+                    datetime.now(timezone.utc),
                 ),
             )
         # id = cursor.fetchone()[0]
@@ -167,7 +167,7 @@ class Cart(Resource):
         quantity = data.get("quantity", None)
         if not quantity:
             abort(400, "Bad Request")
-        current_time = datetime.now()
+        current_time = datetime.now(timezone.utc)
 
         GET_CART_ID = """SELECT id from carts WHERE customer_id = %s"""
         try:

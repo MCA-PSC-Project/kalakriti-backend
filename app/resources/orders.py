@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timezone
 from flask import request, abort
 from flask_restful import Resource
 import psycopg2
@@ -23,7 +23,7 @@ class Orders(Resource):
 
         data = request.get_json()
         order_dict = json.loads(json.dumps(data))
-        current_time = datetime.now()
+        current_time = datetime.now(timezone.utc)
         order_dict["total_original_price"] = 0
         order_dict["sub_total"] = 0
         order_dict["total_discount"] = 0
@@ -344,7 +344,7 @@ class OrderItems(Resource):
                 UPDATE_ORDER_ITEM_STATUS,
                 (
                     order_item_status,
-                    datetime.now(),
+                    datetime.now(timezone.utc),
                     order_item_id,
                 ),
             )

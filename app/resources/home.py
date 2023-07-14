@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timezone
 from flask import request, abort
 from flask_restful import Resource
 import psycopg2
@@ -203,7 +203,7 @@ class RecommendedProductsForAnonymousCustomer(Resource):
                 ADD_RECOMMENDED_PRODUCT,
                 (
                     product_id,
-                    datetime.now(),
+                    datetime.now(timezone.utc),
                 ),
             )
             id = cursor.fetchone()[0]
@@ -990,7 +990,7 @@ class ViewedProducts(Resource):
         claims = f_jwt.get_jwt()
         user_type = claims["user_type"]
         app.logger.debug("user_type= %s", user_type)
-        current_time = datetime.now()
+        current_time = datetime.now(timezone.utc)
         try:
             cursor = app_globals.get_named_tuple_cursor()
             GET_CATEGORY_ID = (

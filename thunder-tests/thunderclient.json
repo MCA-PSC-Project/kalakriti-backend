@@ -3279,11 +3279,11 @@
     "colId": "80d178ef-5176-474a-8708-db78bd45faee",
     "containerId": "bcba1221-b084-4e7e-af87-7859876e2435",
     "name": "viewed product",
-    "url": "{{baseUrl}}/viewed-products/8",
+    "url": "{{baseUrl}}/viewed-products/3",
     "method": "PUT",
     "sortNum": 1080000,
     "created": "2023-05-16T05:49:06.312Z",
-    "modified": "2023-05-16T08:15:01.541Z",
+    "modified": "2023-07-14T12:20:46.966Z",
     "headers": [],
     "params": [],
     "auth": {

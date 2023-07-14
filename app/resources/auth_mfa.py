@@ -1,4 +1,4 @@
-from datetime import datetime, timedelta, timezone
+from datetime import datetime, timezone, timedelta, timezone
 import json
 from flask import flash, redirect, render_template, request, abort, jsonify, url_for
 from flask_restful import Resource
@@ -86,7 +86,7 @@ class MFAStatus(Resource):
                 UPDATE_MFA_ENABLED_STATUS,
                 (
                     mfa_enabled,
-                    datetime.now(),
+                    datetime.now(timezone.utc),
                     user_id,
                 ),
             )
@@ -142,9 +142,9 @@ class SetupTOTPAuthentication(Resource):
                 (
                     user_id,
                     totp_secret_key,
-                    datetime.now(),
+                    datetime.now(timezone.utc),
                     totp_secret_key,
-                    datetime.now(),
+                    datetime.now(timezone.utc),
                 ),
             )
         except (Exception, psycopg2.Error) as err:
@@ -225,7 +225,7 @@ class SetupTOTPAuthentication(Resource):
                 (
                     True,
                     hashed_backup_key,
-                    datetime.now(),
+                    datetime.now(timezone.utc),
                     user_id,
                 ),
             )
@@ -244,7 +244,9 @@ class SetupTOTPAuthentication(Resource):
         )
         try:
             cursor = app_globals.get_cursor()
-            cursor.execute(MAKE_TOTP_MFA_DEFAULT, (True, datetime.now(), user_id))
+            cursor.execute(
+                MAKE_TOTP_MFA_DEFAULT, (True, datetime.now(timezone.utc), user_id)
+            )
             if cursor.rowcount != 1:
                 app.logger.debug("could not set totp as default mfa")
                 # abort(400, 'Bad Request: update {} row error'.format(user_type+'s_mfa'))
@@ -430,7 +432,7 @@ class MFABackupKey(Resource):
                 UPDATE_MFA_ENABLED_HASHED_BACKUP_KEY,
                 (
                     hashed_backup_key,
-                    datetime.now(),
+                    datetime.now(timezone.utc),
                     user_id,
                 ),
             )

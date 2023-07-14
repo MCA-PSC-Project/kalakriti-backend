@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timezone
 from flask import request, abort
 from flask_restful import Resource
 import psycopg2
@@ -119,7 +119,7 @@ class SellersProductItems(Resource):
 
         data = request.get_json()
         product_item_dict = json.loads(json.dumps(data))
-        current_time = datetime.now()
+        current_time = datetime.now(timezone.utc)
 
         if user_type != "seller":
             abort(400, "only sellers can create product-items")
@@ -347,7 +347,7 @@ class SellersProductItems(Resource):
         data = request.get_json()
         product_item_dict = json.loads(json.dumps(data))
 
-        current_time = datetime.now()
+        current_time = datetime.now(timezone.utc)
 
         if (
             user_type != "seller"
@@ -555,7 +555,7 @@ class SellersProductItems(Resource):
                 PATCH_PRODUCT_ITEM,
                 (
                     value,
-                    datetime.now(),
+                    datetime.now(timezone.utc),
                     product_item_id,
                 ),
             )

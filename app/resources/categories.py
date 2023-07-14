@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timezone
 from flask import request, abort
 from flask_restful import Resource
 import psycopg2
@@ -30,7 +30,8 @@ class Categories(Resource):
         try:
             cursor = app_globals.get_cursor()
             cursor.execute(
-                CREATE_CATEGORY, (name, datetime.now(), cover_id, parent_id, admin_id)
+                CREATE_CATEGORY,
+                (name, datetime.now(timezone.utc), cover_id, parent_id, admin_id),
             )
             id = cursor.fetchone()[0]
         except (Exception, psycopg2.Error) as err:
@@ -156,7 +157,7 @@ class Categories(Resource):
                     category_dict["name"],
                     category_dict["parent_id"],
                     category_dict["cover_id"],
-                    datetime.now(),
+                    datetime.now(timezone.utc),
                     category_id,
                 ),
             )

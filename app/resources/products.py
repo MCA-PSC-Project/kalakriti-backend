@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timezone
 from flask import request, abort
 from flask_restful import Resource
 import psycopg2
@@ -363,7 +363,7 @@ class SellersProducts(Resource):
         data = request.get_json()
         product_dict = json.loads(json.dumps(data))
         product_item_dict = product_dict["product_items"][0]
-        current_time = datetime.now()
+        current_time = datetime.now(timezone.utc)
 
         if user_type != "seller":
             abort(400, "only sellers can create products")
@@ -675,7 +675,7 @@ class SellersProducts(Resource):
         data = request.get_json()
         product_dict = json.loads(json.dumps(data))
         # app.logger.debug(product_dict)
-        current_time = datetime.now()
+        current_time = datetime.now(timezone.utc)
 
         try:
             cursor = app_globals.get_cursor()
@@ -727,7 +727,7 @@ class SellersProducts(Resource):
 
         app.logger.debug("product_id= %s", product_id)
         data = request.get_json()
-        current_time = datetime.now()
+        current_time = datetime.now(timezone.utc)
 
         if "product_status" in data.keys():
             if user_type != "admin" and user_type != "super_admin":

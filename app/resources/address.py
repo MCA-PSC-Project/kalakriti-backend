@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timezone
 from flask import request, abort
 from flask_restful import Resource
 import psycopg2
@@ -63,7 +63,7 @@ class UserAddress(Resource):
                     address_dict.get("country"),
                     address_dict.get("pincode"),
                     address_dict.get("landmark"),
-                    datetime.now(),
+                    datetime.now(timezone.utc),
                 ),
             )
             address_id = cursor.fetchone()[0]
@@ -172,7 +172,7 @@ class UserAddress(Resource):
                     address_dict.get("country"),
                     address_dict.get("pincode"),
                     address_dict.get("landmark"),
-                    datetime.now(),
+                    datetime.now(timezone.utc),
                     address_id,
                 ),
             )
@@ -206,7 +206,7 @@ class UserAddress(Resource):
                     UPDATE_ADDRESS_TRASHED_VALUE,
                     (
                         trashed,
-                        datetime.now(),
+                        datetime.now(timezone.utc),
                         address_id,
                     ),
                 )

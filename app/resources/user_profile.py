@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timezone
 from flask import request, abort
 from flask_restful import Resource
 import psycopg2
@@ -89,7 +89,7 @@ class CustomerProfile(Resource):
                     customer_dict.get("last_name"),
                     customer_dict.get("dob"),
                     customer_dict.get("gender"),
-                    datetime.now(),
+                    datetime.now(timezone.utc),
                     customer_id,
                 ),
             )
@@ -126,7 +126,7 @@ class CustomerProfile(Resource):
                 UPDATE_CUSTOMER_PROFILE,
                 (
                     customer_dict.get("dp_id"),
-                    datetime.now(),
+                    datetime.now(timezone.utc),
                     customer_id,
                     customer_id,
                 ),
@@ -278,7 +278,7 @@ class SellerProfile(Resource):
                     seller_dict.get("seller_name"),
                     seller_dict.get("GSTIN"),
                     seller_dict.get("PAN"),
-                    datetime.now(),
+                    datetime.now(timezone.utc),
                     seller_id,
                 ),
             )
@@ -328,7 +328,7 @@ class SellerProfile(Resource):
                 UPDATE_SELLER_PROFILE,
                 (
                     column_value,
-                    datetime.now(),
+                    datetime.now(timezone.utc),
                     seller_id,
                     seller_id,
                 ),
@@ -469,7 +469,7 @@ class AdminProfile(Resource):
                     admin_dict.get("last_name"),
                     admin_dict.get("dob"),
                     admin_dict.get("gender"),
-                    datetime.now(),
+                    datetime.now(timezone.utc),
                     admin_id,
                 ),
             )
@@ -506,7 +506,7 @@ class AdminProfile(Resource):
                 UPDATE_ADMIN_PROFILE,
                 (
                     admin_dict.get("dp_id"),
-                    datetime.now(),
+                    datetime.now(timezone.utc),
                     admin_id,
                     admin_id,
                 ),

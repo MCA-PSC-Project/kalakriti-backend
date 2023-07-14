@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timezone
 from flask import request, abort
 from flask_restful import Resource
 import psycopg2
@@ -35,7 +35,7 @@ class ProductReview(Resource):
         app.logger.debug("order_item_id= %s", order_item_id)
         rating = data.get("rating", None)
         review = data.get("review", None)
-        current_time = datetime.now()
+        current_time = datetime.now(timezone.utc)
 
         # before beginning transaction autocommit must be off
         app_globals.db_conn.autocommit = False
@@ -185,7 +185,7 @@ class ProductReview(Resource):
                 (
                     review_dict["rating"],
                     review_dict["review"],
-                    datetime.now(),
+                    datetime.now(timezone.utc),
                     review_id,
                     customer_id,
                 ),

@@ -1,4 +1,4 @@
-from datetime import datetime, timedelta, timezone
+from datetime import datetime, timezone, timedelta, timezone
 from flask import flash, redirect, render_template, request, abort, jsonify, url_for
 from flask_restful import Resource
 import flask_jwt_extended as f_jwt
@@ -55,7 +55,7 @@ class RegisterCustomer(Resource):
                     hashed_password,
                     dob,
                     gender,
-                    datetime.now(),
+                    datetime.now(timezone.utc),
                 ),
             )
             customer_id = cursor.fetchone()[0]
@@ -138,7 +138,7 @@ class RegisterSeller(Resource):
                     hashed_password,
                     GSTIN,
                     PAN,
-                    datetime.now(),
+                    datetime.now(timezone.utc),
                 ),
             )
             seller_id = cursor.fetchone()[0]
@@ -224,7 +224,7 @@ class RegisterAdmin(Resource):
                     hashed_password,
                     dob,
                     gender,
-                    datetime.now(),
+                    datetime.now(timezone.utc),
                 ),
             )
             admin_id = cursor.fetchone()[0]
@@ -588,7 +588,7 @@ class VerifyEmail(Resource):
                     UPDATE_USER_VERIFIED,
                     (
                         True,
-                        datetime.now(),
+                        datetime.now(timezone.utc),
                         user_id,
                     ),
                 )

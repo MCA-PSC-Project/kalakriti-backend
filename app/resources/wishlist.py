@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timezone
 from flask import request, abort
 from flask_restful import Resource
 import psycopg2
@@ -29,7 +29,7 @@ class Wishlist(Resource):
                 (
                     customer_id,
                     product_item_id,
-                    datetime.now(),
+                    datetime.now(timezone.utc),
                 ),
             )
         except (Exception, psycopg2.Error) as err:
