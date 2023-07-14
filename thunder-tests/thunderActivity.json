@@ -244,65 +244,6 @@
     "docs": "```json\n{\n    \"email\": \"customer1@gmail.com\",\n    \"password\": \"abcd@1234\"\n}\n```\n```\n{\n  \"email\": \"customer2@gmail.com\",\n  \"password\": \"abcd@1234\"\n}\n```\n"
   },
   {
-    "_id": "9d967da7-49c1-4f8a-b5b1-122ce866b1ec",
-    "colId": "history",
-    "containerId": "",
-    "name": "{{baseUrl}}/product-reviews/1",
-    "url": "{{baseUrl}}/product-reviews/1",
-    "method": "DELETE",
-    "sortNum": 0,
-    "created": "2023-04-22T15:58:06.412Z",
-    "modified": "2023-04-22T15:58:06.412Z",
-    "headers": [],
-    "params": [],
-    "auth": {
-      "type": "bearer",
-      "bearer": "{{customer_token}}"
-    },
-    "tests": []
-  },
-  {
-    "_id": "83763aa0-2953-4a77-bce5-142e7f0435ff",
-    "colId": "history",
-    "containerId": "",
-    "name": "{{baseUrl}}/customers",
-    "url": "{{baseUrl}}/customers",
-    "method": "GET",
-    "sortNum": 0,
-    "created": "2023-05-03T06:24:38.429Z",
-    "modified": "2023-05-03T06:24:38.429Z",
-    "headers": [],
-    "params": [],
-    "auth": {
-      "type": "bearer",
-      "bearer": "{{admin_token}}"
-    },
-    "tests": []
-  },
-  {
-    "_id": "742f3271-d2bd-4448-99d8-ebbc419e5eb5",
-    "colId": "history",
-    "containerId": "",
-    "name": "{{baseUrl}}/product-reviews/7",
-    "url": "{{baseUrl}}/product-reviews/7",
-    "method": "PUT",
-    "sortNum": 0,
-    "created": "2023-05-03T06:25:38.505Z",
-    "modified": "2023-05-03T06:25:38.505Z",
-    "headers": [],
-    "params": [],
-    "body": {
-      "type": "json",
-      "raw": "{\n\t\"rating\" : 4,\n\t\"review\": \"really awesome\"\n}",
-      "form": []
-    },
-    "auth": {
-      "type": "bearer",
-      "bearer": "{{customer_token}}"
-    },
-    "tests": []
-  },
-  {
     "_id": "75f58e2b-b7b3-4aba-98fd-b9527e6e178a",
     "colId": "history",
     "containerId": "",
@@ -2241,6 +2182,64 @@
         "isPath": false
       }
     ],
+    "tests": []
+  },
+  {
+    "_id": "0a36806d-b9d1-4452-ac5d-4ae45d890bf8",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/uploads/video",
+    "url": "{{baseUrl}}/uploads/video",
+    "method": "POST",
+    "sortNum": 0,
+    "created": "2023-07-14T09:51:40.152Z",
+    "modified": "2023-07-14T09:51:40.152Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "formdata",
+      "raw": "",
+      "form": [],
+      "files": [
+        {
+          "name": "file",
+          "value": "C:\\Users\\prash\\Downloads\\file_example_MP4_480_1_5MG.mp4"
+        }
+      ]
+    },
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{customer_token}}"
+    },
+    "tests": []
+  },
+  {
+    "_id": "becdd665-6397-40f3-b662-e41d4116bdb0",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/uploads/file",
+    "url": "{{baseUrl}}/uploads/file",
+    "method": "POST",
+    "sortNum": 0,
+    "created": "2023-07-14T09:51:54.164Z",
+    "modified": "2023-07-14T09:57:29.035Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "formdata",
+      "raw": "",
+      "form": [],
+      "files": [
+        {
+          "name": "file",
+          "value": "c:\\Users\\prash\\OneDrive\\Documents\\Python Programming.pptx"
+        }
+      ]
+    },
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{customer_token}}"
+    },
     "tests": []
   }
 ]
