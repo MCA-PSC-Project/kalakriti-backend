@@ -2241,5 +2241,23 @@
       "bearer": "{{customer_token}}"
     },
     "tests": []
+  },
+  {
+    "_id": "8c24c8fb-d396-4b71-b8a5-cd574a76a27b",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/customer-orders",
+    "url": "{{baseUrl}}/customer-orders",
+    "method": "GET",
+    "sortNum": 0,
+    "created": "2023-07-14T10:37:00.403Z",
+    "modified": "2023-07-14T10:37:00.403Z",
+    "headers": [],
+    "params": [],
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{customer_token}}"
+    },
+    "tests": []
   }
 ]

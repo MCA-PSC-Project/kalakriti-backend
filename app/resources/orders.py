@@ -385,24 +385,37 @@ class CustomerOrders(Resource):
         #     WHERE o.customer_id = %s
         #     ORDER BY o.added_at'''
 
+        # GET_ORDERS = """SELECT o.id AS order_id, o.added_at, o.updated_at,
+        #     temp.order_item_id, temp.product_item_id, temp.order_item_status, temp.quantity,
+        #     temp.product_id, temp.product_name
+        #     FROM orders o
+        #     JOIN LATERAL(
+        #         SELECT oi.id AS order_item_id, oi.product_item_id, oi.order_item_status, oi.quantity,
+        #         p.id AS product_id, p.product_name AS product_name
+        #         FROM order_items oi
+        #         JOIN products p
+        #         ON p.id = (
+        #             SELECT pi.product_id
+        #             FROM product_items pi
+        #             WHERE pi.id = oi.product_item_id
+        #         )
+        #         WHERE oi.order_id = o.id
+        #     ) AS temp ON TRUE
+        #     WHERE o.customer_id = %s
+        #     ORDER BY o.added_at DESC"""
+
         GET_ORDERS = """SELECT o.id AS order_id, o.added_at, o.updated_at, 
-            temp.order_item_id, temp.product_item_id, temp.order_item_status, temp.quantity, 
-            temp.product_id, temp.product_name 
-            FROM orders o 
-            JOIN LATERAL(
-                SELECT oi.id AS order_item_id, oi.product_item_id, oi.order_item_status, oi.quantity, 
-                p.id AS product_id, p.product_name AS product_name
-                FROM order_items oi 
-                JOIN products p
-                ON p.id = (
-                    SELECT pi.product_id 
-                    FROM product_items pi
-                    WHERE pi.id = oi.product_item_id
-                ) 
-                WHERE oi.order_id = o.id
-            ) AS temp ON TRUE
-            WHERE o.customer_id = %s
-            ORDER BY o.added_at DESC"""
+        oi.id AS order_item_id, oi.order_item_status, oi.quantity, 
+        p.id AS product_id, p.product_name, p.product_status,
+        s.id AS seller_id, s.seller_name, s.email,
+        pi.id AS product_item_id, pi.product_variant_name, pi."SKU", pi.quantity_in_stock, pi.product_item_status
+        FROM orders o
+        JOIN order_items oi ON oi.order_id = o.id
+        JOIN product_items pi ON pi.id = oi.product_item_id
+        JOIN products p ON p.id = pi.product_id
+        JOIN sellers s ON p.seller_id = s.id 
+        WHERE o.customer_id = %s
+        ORDER BY o.added_at DESC"""
 
         try:
             cursor = app_globals.get_named_tuple_cursor()
@@ -420,15 +433,23 @@ class CustomerOrders(Resource):
                     json.loads(json.dumps({"updated_at": row.updated_at}, default=str))
                 )
                 order_dict["order_item_id"] = row.order_item_id
-                order_dict["product_item_id"] = row.product_item_id
                 order_dict["order_item_status"] = row.order_item_status
                 order_dict["quantity"] = row.quantity
                 order_dict["product_id"] = row.product_id
                 order_dict["product_name"] = row.product_name
+                order_dict["product_status"] = row.product_status
 
-                order_dict.update(
-                    {"seller": get_seller_info(cursor, order_dict["product_id"])}
-                )
+                seller_dict = {}
+                seller_dict["id"] = row.seller_id
+                seller_dict["seller_name"] = row.seller_name
+                seller_dict["email"] = row.email
+                order_dict.update({"seller": seller_dict})
+
+                order_dict["product_item_id"] = row.product_item_id
+                order_dict["product_variant_name"] = row.product_variant_name
+                order_dict["SKU"] = row.SKU
+                order_dict["quantity_in_stock"] = row.quantity_in_stock
+                order_dict["product_item_status"] = row.product_item_status
 
                 media_dict = {}
                 GET_BASE_MEDIA = """SELECT m.id AS media_id, m.name, m.path

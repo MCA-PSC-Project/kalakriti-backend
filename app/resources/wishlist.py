@@ -104,6 +104,7 @@ class Wishlist(Resource):
                     )
                 )
                 product_item_dict["quantity_in_stock"] = row.quantity_in_stock
+                product_item_dict["product_item_status"] = row.product_item_status
                 product_item_dict["variant"] = row.variant
                 product_item_dict["variant_value"] = row.variant_value
 
