@@ -8,12 +8,12 @@
     "method": "POST",
     "sortNum": 0,
     "created": "2023-03-14T17:30:06.748Z",
-    "modified": "2023-07-01T12:48:38.354Z",
+    "modified": "2023-07-13T07:41:28.958Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n  \"email\": \"super_admin1@gmail.com\",\n  \"password\": \"abcd@123\"\n}",
+      "raw": "{\n  \"email\": \"admin1@gmail.com\",\n  \"password\": \"abcd@123\"\n}",
       "form": []
     },
     "tests": [],
@@ -201,52 +201,6 @@
     "tests": []
   },
   {
-    "_id": "fea158d4-320b-41f7-96ff-970c42208878",
-    "colId": "history",
-    "containerId": "",
-    "name": "{{baseUrl}}/order-items/1",
-    "url": "{{baseUrl}}/order-items/1",
-    "method": "PATCH",
-    "sortNum": 0,
-    "created": "2023-04-20T10:51:39.518Z",
-    "modified": "2023-04-20T10:52:22.664Z",
-    "headers": [],
-    "params": [],
-    "body": {
-      "type": "json",
-      "raw": "{\n  \"order_item_status\": \"dispatched\"\n}",
-      "form": []
-    },
-    "auth": {
-      "type": "bearer",
-      "bearer": "{{seller_token}}"
-    },
-    "tests": []
-  },
-  {
-    "_id": "b8e45bca-c950-41b6-92b6-8548a97b4298",
-    "colId": "history",
-    "containerId": "",
-    "name": "{{baseUrl}}/order-items/2",
-    "url": "{{baseUrl}}/order-items/2",
-    "method": "PATCH",
-    "sortNum": 0,
-    "created": "2023-04-20T10:53:32.077Z",
-    "modified": "2023-04-20T10:53:32.077Z",
-    "headers": [],
-    "params": [],
-    "body": {
-      "type": "json",
-      "raw": "{\n  \"order_item_status\": \"dispatched\"\n}",
-      "form": []
-    },
-    "auth": {
-      "type": "bearer",
-      "bearer": "{{seller_token}}"
-    },
-    "tests": []
-  },
-  {
     "_id": "edf72bd3-51ff-425d-ad94-02738563d98c",
     "colId": "history",
     "containerId": "",
@@ -263,119 +217,6 @@
       "raw": "{\n  \"order_item_id\": 6,\n  \"rating\": 4.5,\n  \"review\": \"good\",\n  \"media_list\": [\n    {\n      \"media_id\": 1,\n      \"display_order\": 1\n    },\n    {\n      \"media_id\": 2,\n      \"display_order\": 2\n    }\n  ]\n}",
       "form": []
     },
-    "auth": {
-      "type": "bearer",
-      "bearer": "{{customer_token}}"
-    },
-    "tests": []
-  },
-  {
-    "_id": "e2b1207d-9f6b-487e-9d57-aed3067b2130",
-    "colId": "history",
-    "containerId": "",
-    "name": "{{baseUrl}}/product-reviews/26/product-id",
-    "url": "{{baseUrl}}/product-reviews/26/product-id",
-    "method": "GET",
-    "sortNum": 0,
-    "created": "2023-04-20T17:21:04.456Z",
-    "modified": "2023-04-20T17:21:04.456Z",
-    "headers": [],
-    "params": [],
-    "auth": {
-      "type": "bearer",
-      "bearer": "{{customer_token}}"
-    },
-    "tests": []
-  },
-  {
-    "_id": "4edf1e86-4ed5-4d0b-a96a-d3ee2009668a",
-    "colId": "history",
-    "containerId": "",
-    "name": "{{baseUrl}}/product-review/19",
-    "url": "{{baseUrl}}/product-review/19",
-    "method": "GET",
-    "sortNum": 0,
-    "created": "2023-04-20T17:23:34.541Z",
-    "modified": "2023-04-20T17:23:34.541Z",
-    "headers": [],
-    "params": [],
-    "auth": {
-      "type": "bearer",
-      "bearer": "{{customer_token}}"
-    },
-    "tests": []
-  },
-  {
-    "_id": "10fede5d-ff9d-44f4-9406-26392015fc3c",
-    "colId": "history",
-    "containerId": "",
-    "name": "{{baseUrl}}/product-review/9",
-    "url": "{{baseUrl}}/product-review/9",
-    "method": "GET",
-    "sortNum": 0,
-    "created": "2023-04-20T17:24:28.594Z",
-    "modified": "2023-04-20T17:24:28.594Z",
-    "headers": [],
-    "params": [],
-    "auth": {
-      "type": "bearer",
-      "bearer": "{{customer_token}}"
-    },
-    "tests": []
-  },
-  {
-    "_id": "6d8d325b-2deb-4241-8a4a-404772e433a6",
-    "colId": "history",
-    "containerId": "",
-    "name": "{{baseUrl}}/product-reviews/1",
-    "url": "{{baseUrl}}/product-reviews/1",
-    "method": "PUT",
-    "sortNum": 0,
-    "created": "2023-04-20T17:28:52.526Z",
-    "modified": "2023-04-22T15:57:53.875Z",
-    "headers": [],
-    "params": [],
-    "body": {
-      "type": "json",
-      "raw": "{\n\t\"rating\" : 5,\n\t\"review\": \"really really awesome\"\n}",
-      "form": []
-    },
-    "auth": {
-      "type": "bearer",
-      "bearer": "{{customer_token}}"
-    },
-    "tests": []
-  },
-  {
-    "_id": "a3a05e0d-cad9-4e27-b1a7-0a0c1f91d614",
-    "colId": "history",
-    "containerId": "",
-    "name": "{{baseUrl}}/products/product-reviews/1",
-    "url": "{{baseUrl}}/products/product-reviews/1",
-    "method": "GET",
-    "sortNum": 0,
-    "created": "2023-04-20T17:39:08.508Z",
-    "modified": "2023-04-20T17:39:08.508Z",
-    "headers": [],
-    "params": [],
-    "auth": {
-      "type": "bearer",
-      "bearer": "{{customer_token}}"
-    },
-    "tests": []
-  },
-  {
-    "_id": "72bc0c98-4e12-4018-a8b9-5d39b738a10b",
-    "colId": "history",
-    "containerId": "",
-    "name": "{{baseUrl}}/products/1/product-reviews",
-    "url": "{{baseUrl}}/products/1/product-reviews",
-    "method": "GET",
-    "sortNum": 0,
-    "created": "2023-04-20T17:39:57.395Z",
-    "modified": "2023-04-20T17:39:57.395Z",
-    "headers": [],
-    "params": [],
     "auth": {
       "type": "bearer",
       "bearer": "{{customer_token}}"
@@ -401,24 +242,6 @@
     },
     "tests": [],
     "docs": "```json\n{\n    \"email\": \"customer1@gmail.com\",\n    \"password\": \"abcd@1234\"\n}\n```\n```\n{\n  \"email\": \"customer2@gmail.com\",\n  \"password\": \"abcd@1234\"\n}\n```\n"
-  },
-  {
-    "_id": "18431e48-22ec-4121-8de5-73dd9d05018d",
-    "colId": "history",
-    "containerId": "",
-    "name": "{{baseUrl}}/products/4/product-reviews",
-    "url": "{{baseUrl}}/products/4/product-reviews",
-    "method": "GET",
-    "sortNum": 0,
-    "created": "2023-04-22T15:55:19.258Z",
-    "modified": "2023-04-22T15:55:19.258Z",
-    "headers": [],
-    "params": [],
-    "auth": {
-      "type": "bearer",
-      "bearer": "{{customer_token}}"
-    },
-    "tests": []
   },
   {
     "_id": "9d967da7-49c1-4f8a-b5b1-122ce866b1ec",
@@ -2355,6 +2178,69 @@
       "type": "bearer",
       "bearer": "{{customer_token}}"
     },
+    "tests": []
+  },
+  {
+    "_id": "caa28540-9bef-4583-bd6e-e2efa6b2e4fe",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/top-searches",
+    "url": "{{baseUrl}}/top-searches",
+    "method": "GET",
+    "sortNum": 0,
+    "created": "2023-07-13T07:39:25.343Z",
+    "modified": "2023-07-13T07:39:25.343Z",
+    "headers": [],
+    "params": [],
+    "tests": []
+  },
+  {
+    "_id": "98820085-55bb-4b23-9b85-d06175547874",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/top-searches",
+    "url": "{{baseUrl}}/top-searches",
+    "method": "PUT",
+    "sortNum": 0,
+    "created": "2023-07-13T07:39:34.285Z",
+    "modified": "2023-07-13T07:39:34.285Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "[\n  {\n    \"rank\": 1,\n    \"query\": \"madhubani paintings\"\n  },\n  {\n    \"rank\": 2,\n    \"query\": \"embroidery sarees\"\n  }\n]",
+      "form": []
+    },
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{admin_token}}"
+    },
+    "tests": []
+  },
+  {
+    "_id": "4130c0bb-b357-47b8-8649-05ef712c2db0",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/search?query=madhubani",
+    "url": "{{baseUrl}}/search?query=madhubani",
+    "method": "GET",
+    "sortNum": 0,
+    "created": "2023-07-13T12:08:56.445Z",
+    "modified": "2023-07-13T12:08:56.445Z",
+    "headers": [],
+    "params": [
+      {
+        "name": "query",
+        "value": "madhubani",
+        "isPath": false
+      },
+      {
+        "name": "product_status",
+        "value": "draft",
+        "isDisabled": true,
+        "isPath": false
+      }
+    ],
     "tests": []
   }
 ]
