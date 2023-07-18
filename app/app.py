@@ -154,9 +154,12 @@ def create_app(config_name):
     for bucket in response["Buckets"]:
         print(f'{bucket["Name"]}')
 
-    # payment_client = razorpay.Client(
-    #     auth=(app.config["PAYMENT_API_KEY"], app.config["PAYMENT_SECRET_KEY"])
-    # )
+    app_globals.payment_client = razorpay.Client(
+        auth=(app.config["PAYMENT_API_KEY"], app.config["PAYMENT_SECRET_KEY"])
+    )
+    app_globals.payment_client.set_app_details(
+        {"title": app.config["APP_NAME"], "version": app.config["APP_VERSION"]}
+    )
     # Endpoints
 
     # Media

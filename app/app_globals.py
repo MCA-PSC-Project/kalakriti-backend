@@ -7,7 +7,7 @@ global db_conn
 global redis_client
 global mail
 global s3
-
+global payment_client
 
 def get_cursor():
     # cursor = db_conn.cursor()
