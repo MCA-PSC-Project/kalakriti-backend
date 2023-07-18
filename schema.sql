@@ -28,10 +28,10 @@ CREATE TYPE "order__item__status" AS ENUM (
 CREATE TYPE "payment__status" AS ENUM ('failure', 'success', 'pending');
 CREATE TYPE "approval__status" AS ENUM ('pending', 'approved', 'rejected');
 CREATE TYPE "payment__mode" AS ENUM (
+	'POD',
 	'upi',
 	'credit_card',
 	'debit_card',
-	'cash',
 	'net_banking',
 	'digital_wallet'
 );
@@ -312,8 +312,8 @@ CREATE TABLE "banners"(
 CREATE TABLE "orders"(
 	"id" SERIAL PRIMARY KEY,
 	"customer_id" INT,
-	"shipping_address_id" INT NOT NULL,
-	"mobile_no" VARCHAR NOT NULL,
+	-- "shipping_address_id" INT NOT NULL,
+	-- "mobile_no" VARCHAR NOT NULL,
 	"total_original_price" NUMERIC NOT NULL CHECK ("total_original_price" >= 0),
 	"sub_total" NUMERIC NOT NULL CHECK ("sub_total" >= 0),
 	"total_discount" NUMERIC NOT NULL DEFAULT 0 CHECK ("total_discount" >= 0),
@@ -323,7 +323,7 @@ CREATE TABLE "orders"(
 	"updated_at" TIMESTAMPTZ,
 	FOREIGN KEY("customer_id") REFERENCES "customers"("id") ON DELETE
 	SET NULL,
-		FOREIGN KEY("shipping_address_id") REFERENCES "addresses"("id"),
+		-- FOREIGN KEY("shipping_address_id") REFERENCES "addresses"("id"),
 		CONSTRAINT "sub_total_le_total_original_price" CHECK("sub_total" <= "total_original_price")
 );
 CREATE TABLE "order_items"(
@@ -345,6 +345,23 @@ CREATE TABLE "order_items"(
 	SET NULL,
 		CONSTRAINT "offer_price_le_original_price" CHECK("offer_price" <= "original_price")
 );
+CREATE TABLE "order_addresses"(
+	"id" SERIAL PRIMARY KEY,
+	"order_id" INT NOT NULL UNIQUE,
+	"full_name" VARCHAR(100) NOT NULL,
+	"mobile_no" VARCHAR(13) NOT NULL,
+	"address_line1" VARCHAR(500) NOT NULL,
+	"address_line2" VARCHAR(500) NOT NULL,
+	"city" VARCHAR(25) NOT NULL,
+	"district" VARCHAR(25) NOT NULL,
+	"state" VARCHAR(25) NOT NULL,
+	"country" VARCHAR(25) NOT NULL,
+	"pincode" VARCHAR(10) NOT NULL,
+	"landmark" VARCHAR(50),
+	"added_at" TIMESTAMPTZ NOT NULL,
+	"updated_at" TIMESTAMPTZ,
+	FOREIGN KEY("order_id") REFERENCES "orders"("id")
+);
 CREATE TABLE "payments"(
 	"id" SERIAL PRIMARY KEY,
 	"order_id" INT,
@@ -354,7 +371,7 @@ CREATE TABLE "payments"(
 	"payment_mode" payment__mode,
 	"payment_status" payment__status,
 	"added_at" TIMESTAMPTZ NOT NULL,
-	"updated_at" TIMESTAMPTZ NOT NULL,
+	"updated_at" TIMESTAMPTZ,
 	FOREIGN KEY("order_id") REFERENCES "orders"("id") ON DELETE
 	SET NULL
 );

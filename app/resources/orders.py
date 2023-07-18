@@ -89,16 +89,14 @@ class Orders(Resource):
             )
             # app.logger.debug("order_dict= %s", order_dict)
 
-            CREATE_ORDER = """INSERT INTO orders(customer_id, shipping_address_id, mobile_no,
-            total_original_price, sub_total, total_discount, total_tax, grand_total, added_at)
-            VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s) RETURNING id"""
+            CREATE_ORDER = """INSERT INTO orders(customer_id, total_original_price, sub_total, total_discount, 
+            total_tax, grand_total, added_at)
+            VALUES(%s, %s, %s, %s, %s, %s, %s) RETURNING id"""
 
             cursor.execute(
                 CREATE_ORDER,
                 (
                     customer_id,
-                    order_dict.get("shipping_address_id"),
-                    order_dict.get("mobile_no"),
                     order_dict.get("total_original_price"),
                     order_dict.get("sub_total"),
                     order_dict.get("total_discount"),
@@ -108,6 +106,60 @@ class Orders(Resource):
                 ),
             )
             order_id = cursor.fetchone()[0]
+
+            address_id = order_dict.get("address_id")
+
+            GET_ADDRESS = """SELECT a.id AS address_id, a.full_name, a.mobile_no, 
+            a.address_line1, a.address_line2, a.city, a.district, a.state,
+            a.country, a.pincode, a.landmark, a.added_at, a.updated_at
+            FROM addresses a WHERE a.id = %s"""
+
+            cursor.execute(GET_ADDRESS, (address_id,))
+            row = cursor.fetchone()
+            if not row:
+                abort(400, "No such address by id")
+            address_dict = {}
+            address_dict["address_id"] = row.address_id
+            address_dict["full_name"] = row.full_name
+            address_dict["mobile_no"] = row.mobile_no
+            address_dict["address_line1"] = row.address_line1
+            address_dict["address_line2"] = row.address_line2
+            address_dict["city"] = row.city
+            address_dict["district"] = row.district
+            address_dict["state"] = row.state
+            address_dict["country"] = row.country
+            address_dict["pincode"] = row.pincode
+            address_dict["landmark"] = row.landmark
+            address_dict.update(
+                json.loads(json.dumps({"added_at": row.added_at}, default=str))
+            )
+            address_dict.update(
+                json.loads(json.dumps({"updated_at": row.updated_at}, default=str))
+            )
+             
+            # add adddress for order
+            CREATE_ORDER_ADDRESS = """INSERT INTO order_addresses(order_id, full_name, mobile_no, address_line1, address_line2, 
+            city, district, state, country, pincode, landmark, added_at)
+            VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s) RETURNING id"""
+
+            cursor.execute(
+                CREATE_ORDER_ADDRESS,
+                (
+                    order_id,
+                    address_dict.get("full_name"), 
+                    address_dict.get("mobile_no"),
+                    address_dict.get("address_line1"),
+                    address_dict.get("address_line2"),
+                    address_dict.get("city"),
+                    address_dict.get("district"),
+                    address_dict.get("state"),
+                    address_dict.get("country"),
+                    address_dict.get("pincode"),
+                    address_dict.get("landmark"),
+                    current_time,
+                ),
+            )
+            order_address_id = cursor.fetchone()[0]
 
             # add order items
             INSERT_ORDER_ITEMS = """INSERT INTO order_items(order_id, product_item_id, quantity,

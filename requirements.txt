@@ -13,3 +13,4 @@ qrcode
 redis
 flask-cors
 filetype
+razorpay

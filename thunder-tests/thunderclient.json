@@ -1168,11 +1168,11 @@
     "colId": "80d178ef-5176-474a-8708-db78bd45faee",
     "containerId": "3c47a409-79a2-440c-b50c-c521a6ce6beb",
     "name": "update product  reviews",
-    "url": "{{baseUrl}}/product-reviews/6",
+    "url": "{{baseUrl}}/product-reviews/1",
     "method": "PUT",
     "sortNum": 620000,
     "created": "2023-02-20T16:38:51.090Z",
-    "modified": "2023-05-17T11:39:51.231Z",
+    "modified": "2023-07-14T12:55:59.572Z",
     "headers": [],
     "params": [],
     "body": {

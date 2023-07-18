@@ -9,6 +9,7 @@ import boto3
 import atexit
 
 import redis
+import razorpay
 
 # local imports
 from app.config import app_config
@@ -153,6 +154,9 @@ def create_app(config_name):
     for bucket in response["Buckets"]:
         print(f'{bucket["Name"]}')
 
+    # payment_client = razorpay.Client(
+    #     auth=(app.config["PAYMENT_API_KEY"], app.config["PAYMENT_SECRET_KEY"])
+    # )
     # Endpoints
 
     # Media
