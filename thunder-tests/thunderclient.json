@@ -1579,17 +1579,17 @@
     "method": "PATCH",
     "sortNum": 538750,
     "created": "2023-02-22T14:05:51.975Z",
-    "modified": "2023-07-19T09:02:59.975Z",
+    "modified": "2023-07-19T09:22:50.492Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n  \"product_status\": \"unpublished\"\n}",
+      "raw": "{\n  \"product_status\": \"trashed\"\n}",
       "form": []
     },
     "auth": {
       "type": "bearer",
-      "bearer": "{{admin_token}}"
+      "bearer": "{{seller_token}}"
     },
     "tests": []
   },
@@ -1616,16 +1616,16 @@
     "colId": "80d178ef-5176-474a-8708-db78bd45faee",
     "containerId": "d3f02f76-889e-4a8d-88e7-d026529d83a9",
     "name": "mark/unmark product as trashed",
-    "url": "{{baseUrl}}/sellers/products/3",
+    "url": "{{baseUrl}}/sellers/products/12",
     "method": "PATCH",
     "sortNum": 915000,
     "created": "2023-02-22T17:09:11.102Z",
-    "modified": "2023-05-15T08:22:13.815Z",
+    "modified": "2023-07-19T09:23:59.444Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n  \"trashed\": true\n}",
+      "raw": "{\n  \"trashed\": false\n}",
       "form": []
     },
     "auth": {
