@@ -12,3 +12,5 @@ pyotp
 qrcode
 redis
 flask-cors
+filetype
+razorpay

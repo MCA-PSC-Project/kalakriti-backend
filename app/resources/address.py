@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timezone
 from flask import request, abort
 from flask_restful import Resource
 import psycopg2
@@ -57,13 +57,13 @@ class UserAddress(Resource):
                     mobile_no,
                     address_dict.get("address_line1"),
                     address_dict.get("address_line2"),
-                    address_dict.get("district"),
                     address_dict.get("city"),
+                    address_dict.get("district"),
                     address_dict.get("state"),
                     address_dict.get("country"),
                     address_dict.get("pincode"),
                     address_dict.get("landmark"),
-                    datetime.now(),
+                    datetime.now(timezone.utc),
                 ),
             )
             address_id = cursor.fetchone()[0]
@@ -105,7 +105,7 @@ class UserAddress(Resource):
         addresses_list = []
 
         GET_ADDRESSES = """SELECT a.id AS address_id, a.full_name, a.mobile_no, 
-        a.address_line1, a.address_line2, a.district, a.city, a.state,
+        a.address_line1, a.address_line2, a.city, a.district, a.state,
         a.country, a.pincode, a.landmark, a.added_at, a.updated_at, ca.is_default
         FROM addresses a
         JOIN {0}_addresses ca ON a.id = ca.address_id
@@ -126,8 +126,8 @@ class UserAddress(Resource):
                 address_dict["mobile_no"] = row.mobile_no
                 address_dict["address_line1"] = row.address_line1
                 address_dict["address_line2"] = row.address_line2
-                address_dict["district"] = row.district
                 address_dict["city"] = row.city
+                address_dict["district"] = row.district
                 address_dict["state"] = row.state
                 address_dict["country"] = row.country
                 address_dict["pincode"] = row.pincode
@@ -154,8 +154,9 @@ class UserAddress(Resource):
         data = request.get_json()
         address_dict = json.loads(json.dumps(data))
 
-        UPDATE_ADDRESS = """UPDATE addresses SET full_name= %s, mobile_no= %s, address_line1= %s, address_line2= %s, district= %s, city= %s, 
-        state= %s, country= %s, pincode= %s, landmark= %s, updated_at= %s WHERE id= %s"""
+        UPDATE_ADDRESS = """UPDATE addresses SET full_name= %s, mobile_no= %s, address_line1= %s, address_line2= %s, 
+        city= %s, district= %s, state= %s, country= %s, pincode= %s, landmark= %s, updated_at= %s 
+        WHERE id= %s"""
 
         try:
             cursor = app_globals.get_cursor()
@@ -166,13 +167,13 @@ class UserAddress(Resource):
                     address_dict.get("mobile_no"),
                     address_dict.get("address_line1"),
                     address_dict.get("address_line2"),
-                    address_dict.get("district"),
                     address_dict.get("city"),
+                    address_dict.get("district"),
                     address_dict.get("state"),
                     address_dict.get("country"),
                     address_dict.get("pincode"),
                     address_dict.get("landmark"),
-                    datetime.now(),
+                    datetime.now(timezone.utc),
                     address_id,
                 ),
             )
@@ -206,7 +207,7 @@ class UserAddress(Resource):
                     UPDATE_ADDRESS_TRASHED_VALUE,
                     (
                         trashed,
-                        datetime.now(),
+                        datetime.now(timezone.utc),
                         address_id,
                     ),
                 )

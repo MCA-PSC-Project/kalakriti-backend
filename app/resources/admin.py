@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timezone
 from flask import request, abort
 from flask_restful import Resource
 import psycopg2
@@ -91,7 +91,7 @@ class CustomersInfo(Resource):
                 UPDATE_CUSTOMER_ENABLED_STATUS,
                 (
                     enabled,
-                    datetime.now(),
+                    datetime.now(timezone.utc),
                     customer_id,
                 ),
             )
@@ -211,7 +211,7 @@ class SellersInfo(Resource):
                 UPDATE_SELLER_ENABLED_STATUS,
                 (
                     enabled,
-                    datetime.now(),
+                    datetime.now(timezone.utc),
                     seller_id,
                 ),
             )
@@ -265,7 +265,7 @@ class PromoteToSeller(Resource):
         if user_type != "admin" and user_type != "super_admin":
             abort(400, "only super-admins and admins can promote to seller")
 
-        current_time = datetime.now()
+        current_time = datetime.now(timezone.utc)
 
         PROMOTE_TO_SELLER = (
             """UPDATE users SET user_type= %s, updated_at= %s where email = %s"""

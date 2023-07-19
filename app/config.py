@@ -9,7 +9,7 @@ class Config(object):
     CSRF_ENABLED = True
     # gets variables from environment
     SECRET_KEY = os.getenv("SECRET_KEY")
-    JWT_ACCESS_TOKEN_EXPIRES = datetime.timedelta(days=5)
+    JWT_ACCESS_TOKEN_EXPIRES = datetime.timedelta(days=10)
     JWT_REFRESH_TOKEN_EXPIRES = datetime.timedelta(days=30)
     DATABASE_URI = os.getenv("DATABASE_URI")
     if DATABASE_URI == None:
@@ -37,10 +37,14 @@ class Config(object):
     S3_SECRET = os.getenv("S3_SECRET")
     S3_LOCATION = os.getenv("S3_LOCATION")
 
-    SEND_EMAIL = False
-    SEND_MOTP = False
+    PAYMENT_API_KEY = os.getenv("PAYMENT_API_KEY")
+    PAYMENT_SECRET_KEY = os.getenv("PAYMENT_SECRET_KEY")
 
     APP_NAME = os.getenv("APP_NAME")
+    APP_VERSION = os.getenv("APP_VERSION")
+    
+    SEND_EMAIL = False
+    SEND_MOTP = False
 
 
 class DevelopmentConfig(Config):

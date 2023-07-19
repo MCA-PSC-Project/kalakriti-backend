@@ -1,4 +1,4 @@
-from datetime import datetime, timedelta
+from datetime import datetime, timezone, timedelta
 from flask_restful import Resource
 from flask import abort, current_app as app, request
 import psycopg2
@@ -16,7 +16,7 @@ class GetMobileOtp(Resource):
 
         generated_motp = otp.generate_motp()
         app.logger.debug("generated otp= %s", generated_motp)
-        now_plus_10_mins = datetime.now() + timedelta(minutes=10)
+        now_plus_10_mins = datetime.now(timezone.utc) + timedelta(minutes=10)
 
         UPSERT_MOBILE_OTP = """INSERT INTO mobile_otp(mobile_no, motp, expiry_at)
         VALUES(%s, %s, %s)

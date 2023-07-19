@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timezone
 from flask import request, abort
 from flask_restful import Resource
 import psycopg2
@@ -11,7 +11,7 @@ from app.resources.product_reviews import get_avg_ratings_and_count
 from app.resources.seller import get_seller_info
 
 
-class Wishlists(Resource):
+class Wishlist(Resource):
     @f_jwt.jwt_required()
     def post(self):
         customer_id = f_jwt.get_jwt_identity()
@@ -29,7 +29,7 @@ class Wishlists(Resource):
                 (
                     customer_id,
                     product_item_id,
-                    datetime.now(),
+                    datetime.now(timezone.utc),
                 ),
             )
         except (Exception, psycopg2.Error) as err:
@@ -104,6 +104,7 @@ class Wishlists(Resource):
                     )
                 )
                 product_item_dict["quantity_in_stock"] = row.quantity_in_stock
+                product_item_dict["product_item_status"] = row.product_item_status
                 product_item_dict["variant"] = row.variant
                 product_item_dict["variant_value"] = row.variant_value
 
@@ -178,7 +179,7 @@ class Wishlists(Resource):
         return 200
 
 
-class IsItemInWishLists(Resource):
+class IsItemInWishList(Resource):
     @f_jwt.jwt_required()
     def get(self, product_item_id):
         customer_id = f_jwt.get_jwt_identity()

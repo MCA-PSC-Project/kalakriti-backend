@@ -9,6 +9,7 @@ import boto3
 import atexit
 
 import redis
+import razorpay
 
 # local imports
 from app.config import app_config
@@ -43,7 +44,8 @@ from app.resources.home import (
     PersonalizedRecommendedProducts,
     ViewedProducts,
 )
-from app.resources.orders import OrderItems, Orders, CustomerOrders, SellerOrderList
+from app.resources.orders import OrderItems, Orders, CustomerOrders
+from app.resources.payment import Payment
 from app.resources.product_items import (
     ProductItems,
     ProductItemsBasicInfoByIds,
@@ -81,8 +83,8 @@ from app.resources.admin import CustomersInfo, PromoteToSeller, SellersInfo
 from app.resources.super_admin import AdminsInfo, PromoteToAdmin
 from app.resources.banners import Banners
 from app.resources.seller_applicant_form import Seller_Applicant_Form
-from app.resources.wishlists import IsItemInWishLists, Wishlists
-from app.resources.carts import Carts, CartItemsQuantity
+from app.resources.wishlist import IsItemInWishList, Wishlist
+from app.resources.cart import Cart, CartItemsQuantity
 from app.resources.product_reviews import (
     ProductReview,
     CustomerReviewOnProduct,
@@ -152,6 +154,13 @@ def create_app(config_name):
     print("Existing buckets:")
     for bucket in response["Buckets"]:
         print(f'{bucket["Name"]}')
+
+    app_globals.payment_client = razorpay.Client(
+        auth=(app.config["PAYMENT_API_KEY"], app.config["PAYMENT_SECRET_KEY"])
+    )
+    app_globals.payment_client.set_app_details(
+        {"title": app.config["APP_NAME"], "version": app.config["APP_VERSION"]}
+    )
 
     # Endpoints
 
@@ -254,12 +263,12 @@ def create_app(config_name):
         "/sellers-bank-details/<int:bank_detail_id>/bank",
     )
 
-    # Wishlists
-    api.add_resource(Wishlists, "/wishlists", "/wishlists/<int:product_item_id>")
-    api.add_resource(IsItemInWishLists, "/check-wishlists/<int:product_item_id>")
+    # Wishlist
+    api.add_resource(Wishlist, "/wishlists", "/wishlists/<int:product_item_id>")
+    api.add_resource(IsItemInWishList, "/check-wishlists/<int:product_item_id>")
 
-    # Carts
-    api.add_resource(Carts, "/carts", "/carts/<int:product_item_id>")
+    # Cart
+    api.add_resource(Cart, "/carts", "/carts/<int:product_item_id>")
     api.add_resource(CartItemsQuantity, "/carts/items-quantity")
 
     # Reviews
@@ -275,6 +284,9 @@ def create_app(config_name):
     # Search
     api.add_resource(Search, "/search")
     api.add_resource(TopSearches, "/top-searches")
+
+    # Payment
+    api.add_resource(Payment, "/payment/order")
 
     # Orders
     api.add_resource(Orders, "/orders", "/orders/<int:order_id>")

@@ -264,25 +264,25 @@
     "method": "POST",
     "sortNum": 140000,
     "created": "2023-02-20T16:38:51.041Z",
-    "modified": "2023-02-20T16:38:51.041Z",
+    "modified": "2023-07-14T09:51:44.234Z",
     "headers": [],
     "params": [],
     "body": {
+      "type": "formdata",
+      "raw": "",
       "form": [],
       "files": [
         {
           "name": "file",
-          "value": "C:\\Users\\prash\\Downloads\\file_example_MP4_480_1_5MG.mp4",
-          "isDisabled": false
+          "value": "C:\\Users\\prash\\Downloads\\file_example_MP4_480_1_5MG.mp4"
         }
-      ],
-      "type": "formdata"
+      ]
     },
     "auth": {
       "type": "bearer",
       "bearer": "{{customer_token}}"
     },
-    "docs": ""
+    "tests": []
   },
   {
     "_id": "fc6e9293-525a-4aab-9f33-c77b879f91b0",
@@ -293,25 +293,25 @@
     "method": "POST",
     "sortNum": 150000,
     "created": "2023-02-20T16:38:51.042Z",
-    "modified": "2023-02-20T16:38:51.042Z",
+    "modified": "2023-07-14T09:57:29.025Z",
     "headers": [],
     "params": [],
     "body": {
+      "type": "formdata",
+      "raw": "",
       "form": [],
       "files": [
         {
           "name": "file",
-          "value": "C:\\Users\\prash\\Downloads\\db.txt",
-          "isDisabled": false
+          "value": "c:\\Users\\prash\\OneDrive\\Documents\\Python Programming.pptx"
         }
-      ],
-      "type": "formdata"
+      ]
     },
     "auth": {
       "type": "bearer",
       "bearer": "{{customer_token}}"
     },
-    "docs": ""
+    "tests": []
   },
   {
     "_id": "0bb861fb-2cb9-443f-9a3d-2d2674faba45",
@@ -1168,11 +1168,11 @@
     "colId": "80d178ef-5176-474a-8708-db78bd45faee",
     "containerId": "3c47a409-79a2-440c-b50c-c521a6ce6beb",
     "name": "update product  reviews",
-    "url": "{{baseUrl}}/product-reviews/6",
+    "url": "{{baseUrl}}/product-reviews/1",
     "method": "PUT",
     "sortNum": 620000,
     "created": "2023-02-20T16:38:51.090Z",
-    "modified": "2023-05-17T11:39:51.231Z",
+    "modified": "2023-07-14T12:55:59.572Z",
     "headers": [],
     "params": [],
     "body": {
@@ -3279,11 +3279,11 @@
     "colId": "80d178ef-5176-474a-8708-db78bd45faee",
     "containerId": "bcba1221-b084-4e7e-af87-7859876e2435",
     "name": "viewed product",
-    "url": "{{baseUrl}}/viewed-products/8",
+    "url": "{{baseUrl}}/viewed-products/3",
     "method": "PUT",
     "sortNum": 1080000,
     "created": "2023-05-16T05:49:06.312Z",
-    "modified": "2023-05-16T08:15:01.541Z",
+    "modified": "2023-07-14T12:20:46.966Z",
     "headers": [],
     "params": [],
     "auth": {
@@ -3397,6 +3397,24 @@
         "isPath": false
       }
     ],
+    "tests": []
+  },
+  {
+    "_id": "0fe04e53-d3c5-4ed3-a32a-3304b5f59f50",
+    "colId": "80d178ef-5176-474a-8708-db78bd45faee",
+    "containerId": "7b879ee0-19ee-43db-97ae-ac220cdb79c1",
+    "name": "create payment order",
+    "url": "{{baseUrl}}/payment",
+    "method": "POST",
+    "sortNum": 1100000,
+    "created": "2023-07-19T07:38:32.892Z",
+    "modified": "2023-07-19T07:40:09.355Z",
+    "headers": [],
+    "params": [],
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{customer_token}}"
+    },
     "tests": []
   }
 ]

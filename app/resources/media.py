@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timezone
 import os
 from uuid import uuid4
 from flask import abort, request
@@ -8,6 +8,7 @@ from flask_restful import Resource
 import psycopg2
 from werkzeug.utils import secure_filename
 import app.app_globals as app_globals
+import filetype
 
 
 def upload_file_to_bucket(file, bucket_name, acl="public-read"):
@@ -131,7 +132,15 @@ class DeleteMedia(Resource):
 
 
 class UploadImage(Resource):
-    ALLOWED_EXTENSIONS = {"png", "jpg", "jpeg", "gif", "webp"}
+    ALLOWED_IMAGE_MIME_TYPES = [
+        "image/bmp",
+        "image/gif",
+        "image/jpeg",
+        "image/png",
+        "image/svg+xml",
+        "image/tiff",
+        "image/webp",
+    ]
 
     @f_jwt.jwt_required()
     def post(self):
@@ -144,12 +153,20 @@ class UploadImage(Resource):
             return "Please select a file", 400
 
         if source_file:
-            ext = source_file.filename.rsplit(".", 1)[1].lower()
-            if ext not in UploadImage.ALLOWED_EXTENSIONS:
+            kind = filetype.guess(source_file)
+            if kind is None:
+                print("Cannot guess file type!")
+            else:
+                print(f"File MIME type: {kind.mime}")
+                print(f"File extension: {kind.extension}")
+
+            # ext = source_file.filename.rsplit(".", 1)[1].lower()
+            if kind.mime not in UploadImage.ALLOWED_IMAGE_MIME_TYPES:
                 return "File type not allowed", 400
 
             source_filename = secure_filename(source_file.filename)
-            source_extension = os.path.splitext(source_filename)[1]
+            # source_extension = os.path.splitext(source_filename)[1]
+            source_extension = "." + kind.extension
             destination_filename = uuid4().hex + source_extension
             app.logger.debug("destination file name= %s", destination_filename)
             source_file.filename = destination_filename
@@ -159,7 +176,7 @@ class UploadImage(Resource):
             full_url = "{}/{}".format(app.config["S3_LOCATION"], path_name)
             app.logger.debug(str(full_url))
 
-            current_time = datetime.now()
+            current_time = datetime.now(timezone.utc)
             INSERT_MEDIA = """INSERT INTO media(name, path, media_type, added_at)
          VALUES(%s, %s, %s, %s) RETURNING id"""
 
@@ -197,7 +214,18 @@ class UploadImage(Resource):
 
 
 class UploadAudio(Resource):
-    ALLOWED_EXTENSIONS = {"mp3", "ogg"}
+    ALLOWED_AUDIO_MIME_TYPES = [
+        "audio/aac",
+        "audio/midi",
+        "audio/x-midi",
+        "audio/mpeg",
+        "audio/ogg",
+        "audio/opus",
+        "audio/wav",
+        "audio/webm",
+        "audio/3gpp",
+        "audio/3gpp2",
+    ]
 
     @f_jwt.jwt_required()
     def post(self):
@@ -210,12 +238,19 @@ class UploadAudio(Resource):
             return "Please select a file", 400
 
         if source_file:
-            ext = source_file.filename.rsplit(".", 1)[1].lower()
-            if ext not in UploadAudio.ALLOWED_EXTENSIONS:
+            kind = filetype.guess(source_file)
+            if kind is None:
+                print("Cannot guess file type!")
+            else:
+                print(f"File MIME type: {kind.mime}")
+                print(f"File extension: {kind.extension}")
+            # ext = source_file.filename.rsplit(".", 1)[1].lower()
+            if kind.mime not in UploadAudio.ALLOWED_AUDIO_MIME_TYPES:
                 return "File type not allowed", 400
 
             source_filename = secure_filename(source_file.filename)
-            source_extension = os.path.splitext(source_filename)[1]
+            # source_extension = os.path.splitext(source_filename)[1]
+            source_extension = "." + kind.extension
             destination_filename = uuid4().hex + source_extension
             app.logger.debug("destination file name= %s", destination_filename)
             source_file.filename = destination_filename
@@ -225,7 +260,7 @@ class UploadAudio(Resource):
             full_url = "{}/{}".format(app.config["S3_LOCATION"], path_name)
             app.logger.debug(str(full_url))
 
-            current_time = datetime.now()
+            current_time = datetime.now(timezone.utc)
             INSERT_MEDIA = """INSERT INTO media(name, path, media_type, added_at)
          VALUES(%s, %s, %s, %s) RETURNING id"""
 
@@ -263,7 +298,15 @@ class UploadAudio(Resource):
 
 
 class UploadVideo(Resource):
-    ALLOWED_EXTENSIONS = {"mp4", "mkv"}
+    ALLOWED_VIDEO_MIME_TYPES = [
+        "video/x-msvideo",
+        "video/mp4",
+        "video/mpeg",
+        "video/ogg",
+        "video/webm",
+        "video/3gpp",
+        "video/3gpp2",
+    ]
 
     @f_jwt.jwt_required()
     def post(self):
@@ -276,12 +319,19 @@ class UploadVideo(Resource):
             return "Please select a file", 400
 
         if source_file:
-            ext = source_file.filename.rsplit(".", 1)[1].lower()
-            if ext not in UploadVideo.ALLOWED_EXTENSIONS:
+            kind = filetype.guess(source_file)
+            if kind is None:
+                print("Cannot guess file type!")
+            else:
+                print(f"File MIME type: {kind.mime}")
+                print(f"File extension: {kind.extension}")
+            # ext = source_file.filename.rsplit(".", 1)[1].lower()
+            if kind.mime not in UploadVideo.ALLOWED_VIDEO_MIME_TYPES:
                 return "File type not allowed", 400
 
             source_filename = secure_filename(source_file.filename)
-            source_extension = os.path.splitext(source_filename)[1]
+            # source_extension = os.path.splitext(source_filename)[1]
+            source_extension = "." + kind.extension
             destination_filename = uuid4().hex + source_extension
             app.logger.debug("destination file name= %s", destination_filename)
             source_file.filename = destination_filename
@@ -291,7 +341,7 @@ class UploadVideo(Resource):
             full_url = "{}/{}".format(app.config["S3_LOCATION"], path_name)
             app.logger.debug(str(full_url))
 
-            current_time = datetime.now()
+            current_time = datetime.now(timezone.utc)
             INSERT_MEDIA = """INSERT INTO media(name, path, media_type, added_at)
          VALUES(%s, %s, %s, %s) RETURNING id"""
 
@@ -329,7 +379,18 @@ class UploadVideo(Resource):
 
 
 class UploadFile(Resource):
-    ALLOWED_EXTENSIONS = {"pdf", "txt", "doc", "docx", "xls", "xlsx", "ppt", "pptx"}
+    ALLOWED_FILE_MIME_TYPES = [
+        "application/pdf",
+        "application/msword",
+        "application/vnd.ms-excel",
+        "application/vnd.ms-powerpoint",
+        "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+        "text/plain",
+        "text/csv",
+        "text/html",
+    ]
 
     @f_jwt.jwt_required()
     def post(self):
@@ -342,12 +403,19 @@ class UploadFile(Resource):
             return "Please select a file", 400
 
         if source_file:
-            ext = source_file.filename.rsplit(".", 1)[1].lower()
-            if ext not in UploadFile.ALLOWED_EXTENSIONS:
+            kind = filetype.guess(source_file)
+            if kind is None:
+                print("Cannot guess file type!")
+            else:
+                print(f"File MIME type: {kind.mime}")
+                print(f"File extension: {kind.extension}")
+            # ext = source_file.filename.rsplit(".", 1)[1].lower()
+            if kind.mime not in UploadFile.ALLOWED_FILE_MIME_TYPES:
                 return "File type not allowed", 400
 
             source_filename = secure_filename(source_file.filename)
-            source_extension = os.path.splitext(source_filename)[1]
+            # source_extension = os.path.splitext(source_filename)[1]
+            source_extension = "." + kind.extension
             destination_filename = uuid4().hex + source_extension
             app.logger.debug("destination file name= %s", destination_filename)
             source_file.filename = destination_filename
@@ -357,7 +425,7 @@ class UploadFile(Resource):
             full_url = "{}/{}".format(app.config["S3_LOCATION"], path_name)
             app.logger.debug(str(full_url))
 
-            current_time = datetime.now()
+            current_time = datetime.now(timezone.utc)
             INSERT_MEDIA = """INSERT INTO media(name, path, media_type, added_at)
          VALUES(%s, %s, %s, %s) RETURNING id"""
 

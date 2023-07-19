@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timezone
 import json
 import bcrypt
 from flask import Response, make_response, request, abort
@@ -117,7 +117,7 @@ class ResetEmail(Resource):
                 UPDATE_USER_EMAIL,
                 (
                     new_email,
-                    datetime.now(),
+                    datetime.now(timezone.utc),
                     old_email,
                 ),
             )
@@ -185,7 +185,7 @@ class ResetMobile(Resource):
                 UPDATE_MOBILE_NUMBER,
                 (
                     provided_mobile_no,
-                    datetime.now(),
+                    datetime.now(timezone.utc),
                     user_id,
                 ),
             )
@@ -309,7 +309,7 @@ class ResetPassword(Resource):
                 CHANGE_USER_PASSWORD,
                 (
                     new_hashed_password,
-                    datetime.now(),
+                    datetime.now(timezone.utc),
                     email,
                 ),
             )
@@ -390,7 +390,7 @@ class ResetPasswordLoggedIn(Resource):
                 CHANGE_USER_HASHED_PASSWORD,
                 (
                     new_hashed_password,
-                    datetime.now(),
+                    datetime.now(timezone.utc),
                     user_id,
                 ),
             )

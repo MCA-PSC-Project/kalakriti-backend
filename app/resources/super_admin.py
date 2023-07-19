@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timezone
 import json
 from flask import request, abort
 from flask_restful import Resource
@@ -87,7 +87,7 @@ class AdminsInfo(Resource):
                 UPDATE_ADMIN_ENABLED_STATUS,
                 (
                     enabled,
-                    datetime.now(),
+                    datetime.now(timezone.utc),
                     str(admin_id),
                 ),
             )
@@ -139,7 +139,7 @@ class PromoteToAdmin(Resource):
         if user_type != "super_admin":
             abort(400, "only super_admins have privilege to promote to admin")
 
-        current_time = datetime.now()
+        current_time = datetime.now(timezone.utc)
 
         UPDATE_USER_ENABLED_STATUS = (
             """UPDATE users SET user_type= %s, updated_at= %s where email = %s"""

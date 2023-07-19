@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timezone
 from flask import request, abort
 from flask_restful import Resource
 import psycopg2
@@ -21,7 +21,7 @@ class Seller_Applicant_Form(Resource):
         mobile_no = data.get("mobile_no", None)
         description = data.get("description", None)
 
-        current_time = datetime.now()
+        current_time = datetime.now(timezone.utc)
 
         APPLY_FOR_SELLER = """INSERT INTO seller_applicant_forms(name, email, mobile_no, added_at, description)
         VALUES(%s, %s, %s, %s, %s) RETURNING id"""
@@ -89,7 +89,7 @@ class Seller_Applicant_Form(Resource):
         seller_form_dict = json.loads(json.dumps(data))
         # app.logger.debug(seller_form_dict)
 
-        current_time = datetime.now()
+        current_time = datetime.now(timezone.utc)
 
         UPDATE_SELLER_FORM = """UPDATE seller_applicant_forms SET name=%s, email=%s, mobile_no=%s, 
                         description=%s, updated_at=%s  WHERE id= %s"""
