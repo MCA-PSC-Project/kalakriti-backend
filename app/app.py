@@ -44,7 +44,7 @@ from app.resources.home import (
     PersonalizedRecommendedProducts,
     ViewedProducts,
 )
-from app.resources.orders import OrderItems, Orders, CustomerOrders
+from app.resources.orders import OrderItems, Orders, CustomerOrders, SellerOrderList
 from app.resources.payment import Payment
 from app.resources.product_items import (
     ProductItems,

@@ -6,8 +6,6 @@ CREATE TYPE "product__status" AS ENUM (
 	'published',
 	'unpublished',
 	'draft',
-	'submitted_for_review',
-	'review_rejected',
 	'trashed'
 );
 CREATE TYPE "order__item__status" AS ENUM (

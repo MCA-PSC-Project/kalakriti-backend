@@ -729,7 +729,7 @@ class SellersProducts(Resource):
         data = request.get_json()
         current_time = datetime.now(timezone.utc)
 
-        if "product_status" in data.keys():
+        if "product_status" in data.keys() and data["product_status"] != "unpublished":
             if user_type != "admin" and user_type != "super_admin" :
                 abort(
                     400,
