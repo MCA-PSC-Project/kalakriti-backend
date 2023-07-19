@@ -729,12 +729,17 @@ class SellersProducts(Resource):
         data = request.get_json()
         current_time = datetime.now(timezone.utc)
 
-        if "product_status" in data.keys() and data["product_status"] != "unpublished":
-            if user_type != "admin" and user_type != "super_admin" :
+        if "product_status" in data.keys():
+            if user_type == "customer" :
                 abort(
                     400,
                     "only super-admins and admins are allowed to update product status",
                 )
+            elif user_type == "seller" and data["product_status"] == "unpublished":
+                abort(
+                    400,
+                    "seller cannot unpublish a product",
+                ) 
           
             
             product_item_status = product_status = data["product_status"]

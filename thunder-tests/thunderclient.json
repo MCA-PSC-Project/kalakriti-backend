@@ -1579,17 +1579,17 @@
     "method": "PATCH",
     "sortNum": 538750,
     "created": "2023-02-22T14:05:51.975Z",
-    "modified": "2023-07-19T10:05:09.587Z",
+    "modified": "2023-07-19T13:43:46.478Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n  \"product_status\": \"trashed\"\n}",
+      "raw": "{\n  \"product_status\": \"draft\"\n}",
       "form": []
     },
     "auth": {
       "type": "bearer",
-      "bearer": "{{admin_token}}"
+      "bearer": "{{seller_token}}"
     },
     "tests": []
   },

@@ -244,47 +244,6 @@
     "docs": "```json\n{\n    \"email\": \"customer1@gmail.com\",\n    \"password\": \"abcd@1234\"\n}\n```\n```\n{\n  \"email\": \"customer2@gmail.com\",\n  \"password\": \"abcd@1234\"\n}\n```\n"
   },
   {
-    "_id": "5fd71489-9e5b-4d6f-9a3c-d8fc1f2fb4c3",
-    "colId": "history",
-    "containerId": "",
-    "name": "{{baseUrl}}/product-review/10",
-    "url": "{{baseUrl}}/product-review/10",
-    "method": "PUT",
-    "sortNum": 0,
-    "created": "2023-05-03T07:08:38.499Z",
-    "modified": "2023-05-03T07:14:48.066Z",
-    "headers": [],
-    "params": [],
-    "body": {
-      "type": "json",
-      "raw": "{\n   \"media_list\": [\n        {\n          \"media_id\": 20,\n          \"display_order\": 1\n        },\n        {\n          \"media_id\": 19,\n          \"display_order\": 2\n        }\n      ]\n}",
-      "form": []
-    },
-    "auth": {
-      "type": "bearer",
-      "bearer": "{{customer_token}}"
-    },
-    "tests": []
-  },
-  {
-    "_id": "fcb7ba87-af89-4df2-807c-5bd364d17c04",
-    "colId": "history",
-    "containerId": "",
-    "name": "{{baseUrl}}/uploads/media/all",
-    "url": "{{baseUrl}}/uploads/media/all",
-    "method": "GET",
-    "sortNum": 0,
-    "created": "2023-05-04T02:34:08.050Z",
-    "modified": "2023-05-04T02:34:08.050Z",
-    "headers": [],
-    "params": [],
-    "auth": {
-      "type": "bearer",
-      "bearer": "{{admin_token}}"
-    },
-    "tests": []
-  },
-  {
     "_id": "a0b784c8-5066-4873-8860-2c1d710cfdaf",
     "colId": "history",
     "containerId": "",
