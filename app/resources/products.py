@@ -730,7 +730,7 @@ class SellersProducts(Resource):
         current_time = datetime.now()
 
         if "product_status" in data.keys():
-            if user_type != "admin" and user_type != "super_admin" and user_type !="seller":
+            if user_type != "admin" and user_type != "super_admin":
                 abort(
                     400,
                     "only super-admins and admins are allowed to update product status",
