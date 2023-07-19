@@ -46,6 +46,7 @@ from app.resources.home import (
 from app.resources.orders import OrderItems, Orders, CustomerOrders, SellerOrderList
 from app.resources.product_items import (
     ProductItems,
+    ProductItemsBasicInfoByIds,
     SellersProductBaseItem,
     SellersProductItems,
 )
@@ -65,6 +66,7 @@ from app.resources.reset import (
     ResetEmail,
     ResetMobile,
     ResetPassword,
+    ResetPasswordLoggedIn,
 )
 from app.resources.media import (
     BucketObjects,
@@ -79,7 +81,7 @@ from app.resources.admin import CustomersInfo, PromoteToSeller, SellersInfo
 from app.resources.super_admin import AdminsInfo, PromoteToAdmin
 from app.resources.banners import Banners
 from app.resources.seller_applicant_form import Seller_Applicant_Form
-from app.resources.wishlists import Wishlists
+from app.resources.wishlists import IsItemInWishLists, Wishlists
 from app.resources.carts import Carts, CartItemsQuantity
 from app.resources.product_reviews import (
     ProductReview,
@@ -109,7 +111,7 @@ def create_app(config_name):
     app.logger.debug(app_config[config_name])
     app.logger.debug("DATABASE_URI=%s" % app.config["DATABASE_URI"])
     app.logger.debug("REDIS_URL=%s" % app.config["REDIS_URL"])
-    app.logger.debug("SECRET_KEY=%s" % app.config["SECRET_KEY"])
+    # app.logger.debug("SECRET_KEY=%s" % app.config["SECRET_KEY"])
 
     # app_globals.db_conn = psycopg2.connect(app.config['DATABASE_URI'])
 
@@ -186,6 +188,8 @@ def create_app(config_name):
     api.add_resource(ResetMobile, "/reset-mobile")
     api.add_resource(RequestResetPassword, "/reset-password/request")
     api.add_resource(ResetPassword, "/reset-password")
+    # user already logged in and using old password
+    api.add_resource(ResetPasswordLoggedIn, "/reset-password/logged-in")
 
     # MFA (TOTP)
     api.add_resource(MFAStatus, "/auth/mfa/status")
@@ -232,6 +236,7 @@ def create_app(config_name):
     )
     api.add_resource(SellersProductBaseItem, "/sellers/products/base-item")
     api.add_resource(ProductsAllDetails, "/products/<int:product_id>/all-details")
+    api.add_resource(ProductItemsBasicInfoByIds, "/product-items/basic-info")
 
     # Tags
     api.add_resource(Tags, "/products/<int:product_id>/tags")
@@ -251,6 +256,7 @@ def create_app(config_name):
 
     # Wishlists
     api.add_resource(Wishlists, "/wishlists", "/wishlists/<int:product_item_id>")
+    api.add_resource(IsItemInWishLists, "/check-wishlists/<int:product_item_id>")
 
     # Carts
     api.add_resource(Carts, "/carts", "/carts/<int:product_item_id>")

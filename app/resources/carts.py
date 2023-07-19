@@ -225,7 +225,7 @@ class CartItemsQuantity(Resource):
     @f_jwt.jwt_required()
     def get(self):
         customer_id = f_jwt.get_jwt_identity()
-        app.logger.debug("user_id= %s", customer_id)
+        app.logger.debug("customer_id= %s", customer_id)
 
         GET_NO_OF_ITEMS = """SELECT count(*) AS count FROM cart_items WHERE cart_id = 
             (SELECT id FROM carts WHERE customer_id = %s)"""

@@ -175,21 +175,27 @@ CREATE TABLE "addresses"(
 CREATE TABLE "customer_addresses"(
 	"customer_id" INT,
 	"address_id" INT,
+	"is_default" BOOLEAN CHECK("is_default" != false),
 	PRIMARY KEY("customer_id", "address_id"),
+	UNIQUE("customer_id", "is_default"),
 	FOREIGN KEY("customer_id") REFERENCES "customers"("id") ON DELETE CASCADE,
 	FOREIGN KEY("address_id") REFERENCES "addresses"("id") ON DELETE CASCADE
 );
 CREATE TABLE "seller_addresses"(
 	"seller_id" INT,
 	"address_id" INT,
+	"is_default" BOOLEAN CHECK("is_default" != false),
 	PRIMARY KEY("seller_id", "address_id"),
+	UNIQUE("seller_id", "is_default"),
 	FOREIGN KEY("seller_id") REFERENCES "sellers"("id") ON DELETE CASCADE,
 	FOREIGN KEY("address_id") REFERENCES "addresses"("id") ON DELETE CASCADE
 );
 CREATE TABLE "admin_addresses"(
 	"admin_id" INT,
 	"address_id" INT,
+	"is_default" BOOLEAN CHECK("is_default" != false),
 	PRIMARY KEY("admin_id", "address_id"),
+	UNIQUE("admin_id", "is_default"),
 	FOREIGN KEY("admin_id") REFERENCES "admins"("id") ON DELETE CASCADE,
 	FOREIGN KEY("address_id") REFERENCES "addresses"("id") ON DELETE CASCADE
 );

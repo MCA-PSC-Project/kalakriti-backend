@@ -19,8 +19,8 @@ class AdminsInfo(Resource):
             abort(403, "Forbidden: only super-admins can view all admins")
 
         admins_list = []
-        GET_ADMINS_PROFILES = """SELECT a.id AS user_id, a.first_name, a.last_name, a.email, a.mobile_no, 
-        TO_CHAR(a.dob, 'YYYY-MM-DD') AS dob, a.gender , a.enabled, a.is_super_admin,
+        GET_ADMINS_PROFILES = """SELECT a.id, a.first_name, a.last_name, a.email, a.mobile_no, 
+        TO_CHAR(a.dob, 'YYYY-MM-DD') AS dob, a.gender , a.enabled, a.is_verified, a.is_super_admin,
         m.id AS media_id, m.name AS media_name, m.path
         FROM admins a 
         LEFT JOIN media m ON a.dp_id = m.id 
@@ -34,7 +34,7 @@ class AdminsInfo(Resource):
                 return {}
             for row in rows:
                 admin_profile_dict = {}
-                admin_profile_dict["user_id"] = row.user_id
+                admin_profile_dict["id"] = row.id
                 admin_profile_dict["first_name"] = row.first_name
                 admin_profile_dict["last_name"] = row.last_name
                 admin_profile_dict["email"] = row.email
@@ -42,6 +42,7 @@ class AdminsInfo(Resource):
                 admin_profile_dict["dob"] = row.dob
                 admin_profile_dict["gender"] = row.gender
                 admin_profile_dict["enabled"] = row.enabled
+                admin_profile_dict["is_verified"] = row.is_verified
                 admin_profile_dict["is_super_admin"] = row.is_super_admin
 
                 dp_media_dict = {}

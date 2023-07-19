@@ -275,10 +275,10 @@ class LoginCustomer(Resource):
             abort(400, "Bad Request")
 
         # check if user of given email already exists
-        GET_Customer = "SELECT id, hashed_password, is_verified, mfa_enabled FROM customers WHERE email= %s"
+        GET_CUSTOMER = "SELECT id, hashed_password, is_verified, mfa_enabled FROM customers WHERE email= %s"
         try:
             cursor = app_globals.get_named_tuple_cursor()
-            cursor.execute(GET_Customer, (email,))
+            cursor.execute(GET_CUSTOMER, (email,))
             row = cursor.fetchone()
             if row is None:
                 abort(400, "Bad Request: User not found")
@@ -330,7 +330,10 @@ class LoginCustomer(Resource):
             # send email
             # verify_url = url_for("accounts.verify_email", token=generate_email_token, _external=True)
             verify_url = url_for(
-                "verifyemail", token=generated_email_token, _external=True
+                "verifyemail",
+                user_type="customer",
+                token=generated_email_token,
+                _external=True,
             )
             app.logger.debug("verify url= %s", verify_url)
             verify_email_html_page = render_template(
@@ -340,7 +343,10 @@ class LoginCustomer(Resource):
             if app.config["SEND_EMAIL"]:
                 send_email(email, subject, verify_email_html_page)
             app.logger.debug("Email sent successfully!")
-            return f"verification Email sent to {email} successfully!", 201
+            return (
+                f"verification Email sent to {email} successfully! Please verify your account.",
+                201,
+            )
 
 
 class LoginSeller(Resource):
@@ -408,7 +414,10 @@ class LoginSeller(Resource):
             # send email
             # verify_url = url_for("accounts.verify_email", token=generate_email_token, _external=True)
             verify_url = url_for(
-                "verifyemail", token=generated_email_token, _external=True
+                "verifyemail",
+                user_type="seller",
+                token=generated_email_token,
+                _external=True,
             )
             app.logger.debug("verify url= %s", verify_url)
             verify_email_html_page = render_template(
@@ -431,10 +440,10 @@ class LoginAdmin(Resource):
             abort(400, "Bad Request")
 
         # check if user of given email already exists
-        GET_Customer = "SELECT id, hashed_password, is_verified, is_super_admin, mfa_enabled FROM admins WHERE email= %s"
+        GET_ADMIN = "SELECT id, hashed_password, is_verified, is_super_admin, mfa_enabled FROM admins WHERE email= %s"
         try:
             cursor = app_globals.get_named_tuple_cursor()
-            cursor.execute(GET_Customer, (email,))
+            cursor.execute(GET_ADMIN, (email,))
             row = cursor.fetchone()
             if row is None:
                 abort(400, "Bad Request: User not found")
@@ -491,7 +500,10 @@ class LoginAdmin(Resource):
             # send email
             # verify_url = url_for("accounts.verify_email", token=generate_email_token, _external=True)
             verify_url = url_for(
-                "verifyemail", token=generated_email_token, _external=True
+                "verifyemail",
+                user_type="admin",
+                token=generated_email_token,
+                _external=True,
             )
             app.logger.debug("verify url= %s", verify_url)
             verify_email_html_page = render_template(
