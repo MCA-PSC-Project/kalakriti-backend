@@ -45,6 +45,7 @@ from app.resources.home import (
     ViewedProducts,
 )
 from app.resources.orders import OrderItems, Orders, CustomerOrders
+from app.resources.payment import Payment
 from app.resources.product_items import (
     ProductItems,
     ProductItemsBasicInfoByIds,
@@ -160,6 +161,7 @@ def create_app(config_name):
     app_globals.payment_client.set_app_details(
         {"title": app.config["APP_NAME"], "version": app.config["APP_VERSION"]}
     )
+
     # Endpoints
 
     # Media
@@ -282,6 +284,9 @@ def create_app(config_name):
     # Search
     api.add_resource(Search, "/search")
     api.add_resource(TopSearches, "/top-searches")
+
+    # Payment
+    api.add_resource(Payment, "/payment/order")
 
     # Orders
     api.add_resource(Orders, "/orders", "/orders/<int:order_id>")
