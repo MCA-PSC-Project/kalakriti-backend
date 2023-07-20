@@ -244,29 +244,6 @@
     "docs": "```json\n{\n    \"email\": \"customer1@gmail.com\",\n    \"password\": \"abcd@1234\"\n}\n```\n```\n{\n  \"email\": \"customer2@gmail.com\",\n  \"password\": \"abcd@1234\"\n}\n```\n"
   },
   {
-    "_id": "a0b784c8-5066-4873-8860-2c1d710cfdaf",
-    "colId": "history",
-    "containerId": "",
-    "name": "{{baseUrl}}/sellers/product-items/37",
-    "url": "{{baseUrl}}/sellers/product-items/37",
-    "method": "PATCH",
-    "sortNum": 0,
-    "created": "2023-05-04T02:35:49.081Z",
-    "modified": "2023-05-04T02:35:49.081Z",
-    "headers": [],
-    "params": [],
-    "body": {
-      "type": "json",
-      "raw": "{\n  \"product_item_status\": \"published\"\n}",
-      "form": []
-    },
-    "auth": {
-      "type": "bearer",
-      "bearer": "{{admin_token}}"
-    },
-    "tests": []
-  },
-  {
     "_id": "a621605f-b642-4e3e-a7f5-90e5d94477eb",
     "colId": "history",
     "containerId": "",
@@ -2205,12 +2182,12 @@
     "method": "POST",
     "sortNum": 0,
     "created": "2023-07-20T05:25:37.602Z",
-    "modified": "2023-07-20T05:25:37.602Z",
+    "modified": "2023-07-20T10:06:25.172Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n  \"order_items\": [\n    {\n      \"product_item_id\": 13,\n      \"quantity\": 2,\n      \"discount_percent\": 50,\n      \"discount\": 50,\n      \"tax\": 20\n    }\n  ]\n}",
+      "raw": "{\n  \"order_items\": [\n    {\n      \"product_item_id\": 4,\n      \"quantity\": 2,\n      \"discount_percent\": 50,\n      \"discount\": 50,\n      \"tax\": 20\n    }\n  ]\n}",
       "form": []
     },
     "auth": {

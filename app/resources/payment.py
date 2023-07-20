@@ -6,6 +6,8 @@ import app.app_globals as app_globals
 import flask_jwt_extended as f_jwt
 import json
 from flask import current_app as app
+import hmac
+import hashlib
 
 
 class Payment(Resource):
@@ -89,3 +91,50 @@ class Payment(Resource):
             abort(400, "Bad request")
 
         return payment_order, 201
+
+
+class PaymentSuccessful(Resource):
+    @f_jwt.jwt_required()
+    def post(self):
+        customer_id = f_jwt.get_jwt_identity()
+        app.logger.debug("customer_id= %s", customer_id)
+        claims = f_jwt.get_jwt()
+        user_type = claims["user_type"]
+
+        data = request.get_json()
+        razorpay_dict = json.loads(json.dumps(data))
+        try:
+            # getting the details back from our front-end
+            orderCreationId = razorpay_dict["orderCreationId"]
+            razorpayPaymentId = razorpay_dict["razorpayPaymentId"]
+            razorpayOrderId = razorpay_dict["razorpayOrderId"]
+            razorpaySignature = razorpay_dict["razorpaySignature"]
+
+            # Creating our own digest
+            # The format should be like this:
+            # digest = hmac_sha256(orderCreationId + "|" + razorpayPaymentId, secret);
+            key = app.config["PAYMENT_SECRET_KEY"]
+            message = f"{orderCreationId}|{razorpayPaymentId}"
+            calculated_digest = hmac.new(
+                key.encode("utf-8"),
+                msg=message.encode("utf-8"),
+                digestmod=hashlib.sha256,
+            ).hexdigest()
+
+            app.logger.debug("calculated_digest= %s", calculated_digest)
+            app.logger.debug("razorpaySignature= %s", razorpaySignature)
+
+            # comparing our digest with the actual signature
+            if calculated_digest != razorpaySignature:
+                return {"msg": "Transaction not legit!"}, 400
+
+            # THE PAYMENT IS LEGIT & VERIFIED
+            # YOU CAN SAVE THE DETAILS IN YOUR DATABASE IF YOU WANT
+
+            return {
+                "msg": "success",
+                "orderId": razorpayOrderId,
+                "paymentId": razorpayPaymentId,
+            }, 200
+        except Exception as error:
+            return str(error), 500

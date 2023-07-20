@@ -3408,12 +3408,35 @@
     "method": "POST",
     "sortNum": 1100000,
     "created": "2023-07-19T07:38:32.892Z",
-    "modified": "2023-07-20T05:25:37.987Z",
+    "modified": "2023-07-20T10:06:25.155Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n  \"order_items\": [\n    {\n      \"product_item_id\": 13,\n      \"quantity\": 2,\n      \"discount_percent\": 50,\n      \"discount\": 50,\n      \"tax\": 20\n    }\n  ]\n}",
+      "raw": "{\n  \"order_items\": [\n    {\n      \"product_item_id\": 4,\n      \"quantity\": 2,\n      \"discount_percent\": 50,\n      \"discount\": 50,\n      \"tax\": 20\n    }\n  ]\n}",
+      "form": []
+    },
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{customer_token}}"
+    },
+    "tests": []
+  },
+  {
+    "_id": "8ad5a4c0-db4a-470b-a1b9-9203533f1007",
+    "colId": "80d178ef-5176-474a-8708-db78bd45faee",
+    "containerId": "7b879ee0-19ee-43db-97ae-ac220cdb79c1",
+    "name": "payment success",
+    "url": "{{baseUrl}}/payment/order",
+    "method": "POST",
+    "sortNum": 1110000,
+    "created": "2023-07-20T10:08:30.466Z",
+    "modified": "2023-07-20T10:08:30.466Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n  \"order_items\": [\n    {\n      \"product_item_id\": 4,\n      \"quantity\": 2,\n      \"discount_percent\": 50,\n      \"discount\": 50,\n      \"tax\": 20\n    }\n  ]\n}",
       "form": []
     },
     "auth": {

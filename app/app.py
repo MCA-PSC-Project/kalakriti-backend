@@ -45,7 +45,7 @@ from app.resources.home import (
     ViewedProducts,
 )
 from app.resources.orders import OrderItems, Orders, CustomerOrders
-from app.resources.payment import Payment
+from app.resources.payment import Payment, PaymentSuccessful
 from app.resources.product_items import (
     ProductItems,
     ProductItemsBasicInfoByIds,
@@ -287,6 +287,7 @@ def create_app(config_name):
 
     # Payment
     api.add_resource(Payment, "/payment/order")
+    api.add_resource(PaymentSuccessful, "/payment/success")
 
     # Orders
     api.add_resource(Orders, "/orders", "/orders/<int:order_id>")
