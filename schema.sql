@@ -362,6 +362,27 @@ CREATE TABLE "order_addresses"(
 	"updated_at" TIMESTAMPTZ,
 	FOREIGN KEY("order_id") REFERENCES "orders"("id")
 );
+-- CREATE TABLE "coupons"(
+-- 	"id" SERIAL PRIMARY KEY,
+-- 	"code" VARCHAR(50) UNIQUE NOT NULL,
+-- 	"description" TEXT,
+-- 	"discount_amount" NUMERIC,
+-- 	"discount_percentage" NUMERIC CHECK("discount_percentage" >= 0 AND "discount_percentage" <= 100),
+-- 	"start_date" DATE NOT NULL,
+-- 	"end_date" DATE NOT NULL,
+-- 	CHECK(("discount_amount" IS NOT NULL AND "discount_percentage" IS NULL) OR ("discount_amount" IS NULL AND "discount_percentage" IS NOT NULL))
+-- );
+-- CREATE TABLE "coupon_product_items"(
+-- 	"id" SERIAL PRIMARY KEY,
+-- 	"coupon_id" INT NOT NULL,
+-- 	"product_item_id" INT NOT NULL,
+-- 	FOREIGN KEY("coupon_id") REFERENCES "coupons"("id") ON DELETE CASCADE,
+-- 	FOREIGN KEY("product_item_id") REFERENCES "product_items"("id") ON DELETE CASCADE
+-- );
+-- ALTER TABLE "orders"
+-- ADD COLUMN "coupon_id" INT,
+-- ADD FOREIGN KEY("coupon_id") REFERENCES "coupons"("id") ON DELETE SET NULL;
+
 CREATE TABLE "payments"(
 	"id" SERIAL PRIMARY KEY,
 	"order_id" INT,

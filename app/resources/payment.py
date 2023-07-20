@@ -18,9 +18,66 @@ class Payment(Resource):
         # app.logger.debug("user_type= %s", user_type)
         # if user_type != "customer":
         #     abort(403, "Forbidden: only customers can create orders")
+        data = request.get_json()
+        checkout_dict = json.loads(json.dumps(data))
+        current_time = datetime.now(timezone.utc)
+        checkout_dict["total_original_price"] = 0
+        checkout_dict["sub_total"] = 0
+        checkout_dict["total_discount"] = 0
+        checkout_dict["total_tax"] = 0
+
+        try:
+            for checkout_item_dict in checkout_dict["order_items"]:
+                product_item_id = checkout_item_dict.get("product_item_id")
+                cursor = app_globals.get_named_tuple_cursor()
+
+                GET_PRICE_AND_QTY_IN_STOCK = """SELECT original_price, offer_price, product_item_status, quantity_in_stock
+                FROM product_items WHERE id = %s"""
+                cursor.execute(
+                    GET_PRICE_AND_QTY_IN_STOCK,
+                    (product_item_id,),
+                )
+                row = cursor.fetchone()
+                if row is None:
+                    abort(400, "Bad Request")
+                if row.product_item_status != "published":
+                    app.logger.debug(
+                        "product_item_status is not published for %s", product_item_id
+                    )
+                    abort(400, "Bad Request")
+                checkout_item_dict["original_price"] = row.original_price
+                checkout_item_dict["offer_price"] = row.offer_price
+                quantity_in_stock = row.quantity_in_stock
+                quantity = checkout_item_dict.get("quantity")
+                if quantity > quantity_in_stock:
+                    app.logger.debug(
+                        "error: checkout_item_dict['quantity'] = %s > quantity_in_stock = %s for product_item_id = %s",
+                        quantity,
+                        quantity_in_stock,
+                        product_item_id,
+                    )
+                    abort(400, "Bad Request")
+                checkout_dict["total_original_price"] += checkout_item_dict.get(
+                    "original_price"
+                )
+                checkout_dict["sub_total"] += checkout_item_dict.get(
+                    "offer_price"
+                ) * checkout_item_dict.get("quantity")
+                checkout_dict["total_discount"] += checkout_item_dict.get("discount")
+                checkout_dict["total_tax"] += checkout_item_dict.get("tax")
+            checkout_dict["grand_total"] = (
+                checkout_dict["sub_total"]
+                - checkout_dict["total_discount"]
+                + checkout_dict["total_tax"]
+            )
+        except (Exception, psycopg2.Error) as err:
+            app.logger.debug(err)
+            abort(400, "Bad Request")
+        finally:
+            cursor.close()
 
         data = {
-            "amount": 500,
+            "amount": int(checkout_dict["grand_total"] * 100),
             "currency": "INR",
             "receipt": "order_rcptid_11",
             "payment_capture": 1,
