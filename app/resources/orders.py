@@ -89,14 +89,34 @@ class Orders(Resource):
             )
             # app.logger.debug("order_dict= %s", order_dict)
 
-            CREATE_ORDER = """INSERT INTO orders(customer_id, total_original_price, sub_total, total_discount, 
-            total_tax, grand_total, added_at)
-            VALUES(%s, %s, %s, %s, %s, %s, %s) RETURNING id"""
+            # add payment info
+            CREATE_PAYMENT = """INSERT INTO payments(provider, provider_order_id, provider_payment_id, 
+            payment_mode, payment_status, added_at)
+            VALUES(%s, %s, %s, %s, %s, %s) RETURNING id"""
+
+            cursor.execute(
+                CREATE_PAYMENT,
+                (
+                    app.config["PAYMENT_PROVIDER"],
+                    0,
+                    None,
+                    "POD",
+                    "initiated",
+                    datetime.now(timezone.utc),
+                ),
+            )
+            payment_id = cursor.fetchone()[0]
+
+            CREATE_ORDER = """INSERT INTO orders(customer_id, payment_id, order_status, total_original_price, sub_total, 
+            total_discount, total_tax, grand_total, added_at)
+            VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s) RETURNING id"""
 
             cursor.execute(
                 CREATE_ORDER,
                 (
                     customer_id,
+                    payment_id,
+                    "placed",
                     order_dict.get("total_original_price"),
                     order_dict.get("sub_total"),
                     order_dict.get("total_discount"),
@@ -107,7 +127,7 @@ class Orders(Resource):
             )
             order_id = cursor.fetchone()[0]
 
-            address_id = order_dict.get("address_id")
+            address_id = order_dict.get("shipping_address_id")
 
             GET_ADDRESS = """SELECT a.id AS address_id, a.full_name, a.mobile_no, 
             a.address_line1, a.address_line2, a.city, a.district, a.state,
@@ -136,7 +156,7 @@ class Orders(Resource):
             address_dict.update(
                 json.loads(json.dumps({"updated_at": row.updated_at}, default=str))
             )
-             
+
             # add adddress for order
             CREATE_ORDER_ADDRESS = """INSERT INTO order_addresses(order_id, full_name, mobile_no, address_line1, address_line2, 
             city, district, state, country, pincode, landmark, added_at)
@@ -146,7 +166,7 @@ class Orders(Resource):
                 CREATE_ORDER_ADDRESS,
                 (
                     order_id,
-                    address_dict.get("full_name"), 
+                    address_dict.get("full_name"),
                     address_dict.get("mobile_no"),
                     address_dict.get("address_line1"),
                     address_dict.get("address_line2"),
@@ -183,15 +203,6 @@ class Orders(Resource):
             app.logger.debug("values_tuple_list= %s", values_tuple_list)
 
             psycopg2.extras.execute_batch(cursor, INSERT_ORDER_ITEMS, values_tuple_list)
-
-            # add payment info
-            # INSERT_PAYMENT_INFO = '''INSERT INTO payments
-            # (order_id, provider, provider_order_id, provider_payment_id, payment_mode, payment_status, added_at)
-            # VALUES(%s, %s, %s, %s, %s, %s, %s) RETURNING id'''
-
-            # cursor.execute(INSERT_PAYMENT_INFO,
-            #                (order_id, current_time,))
-            # payment_id = cursor.fetchone()[0]
 
         except (Exception, psycopg2.Error) as err:
             app.logger.debug(err)

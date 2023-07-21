@@ -90,6 +90,28 @@ class Payment(Resource):
         if not payment_order:
             abort(400, "Bad request")
 
+        
+        CREATE_PAYMENT = """INSERT INTO payments(provider, provider_order_id, provider_payment_id, 
+        payment_mode, payment_status, added_at)
+        VALUES(%s, %s, %s, %s, %s, %s)"""
+        try:
+            cursor = app_globals.get_cursor()
+            cursor.execute(
+                CREATE_PAYMENT,
+                (
+                    app.config["PAYMENT_PROVIDER"],
+                    payment_order.id,
+                    None,
+                    None,
+                    "initiated",
+                    datetime.now(timezone.utc),
+                ),
+            )
+        except (Exception, psycopg2.Error) as err:
+            app.logger.debug(err)
+            abort(400, "Bad Request")
+        finally:
+            cursor.close()
         return payment_order, 201
 
 

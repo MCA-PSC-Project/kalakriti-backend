@@ -971,17 +971,17 @@
     "_id": "e9e59924-2871-4ebf-919d-2751a0b3bdcc",
     "colId": "80d178ef-5176-474a-8708-db78bd45faee",
     "containerId": "2ffd39e9-6675-40b7-abd0-296aaf9564ad",
-    "name": "place order",
+    "name": "place order POD",
     "url": "{{baseUrl}}/orders",
     "method": "POST",
     "sortNum": 520000,
     "created": "2023-02-20T16:38:51.080Z",
-    "modified": "2023-05-18T10:46:16.535Z",
+    "modified": "2023-07-21T07:48:43.014Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n  \"shipping_address_id\": 1,\n  \"mobile_no\": \"9876543219\",\n  \"order_items\": [\n    {\n      \"product_item_id\": 13,\n      \"quantity\": 2,\n      \"discount_percent\": 50,\n      \"discount\": 50,\n      \"tax\": 20\n    },\n    {\n      \"product_item_id\": 12,\n      \"quantity\": 2,\n      \"discount_percent\": 50,\n      \"discount\": 50,\n      \"tax\": 20\n    }\n  ]\n}",
+      "raw": "{\n  \"shipping_address_id\": 2,\n  \"order_items\": [\n    {\n      \"product_item_id\": 13,\n      \"quantity\": 2,\n      \"discount_percent\": 50,\n      \"discount\": 50,\n      \"tax\": 20\n    },\n    {\n      \"product_item_id\": 12,\n      \"quantity\": 2,\n      \"discount_percent\": 50,\n      \"discount\": 50,\n      \"tax\": 20\n    }\n  ]\n}",
       "form": []
     },
     "auth": {

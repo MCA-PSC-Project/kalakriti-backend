@@ -10,6 +10,11 @@ CREATE TYPE "product__status" AS ENUM (
 	'review_rejected',
 	'trashed'
 );
+CREATE TYPE "order__status" AS ENUM (
+	'checkout',
+	'placed',
+	'failed'
+);
 CREATE TYPE "order__item__status" AS ENUM (
 	'initiated',
 	'pending',
@@ -25,11 +30,11 @@ CREATE TYPE "order__item__status" AS ENUM (
 	'failure',
 	'success'
 );
-CREATE TYPE "payment__status" AS ENUM ('failure', 'success', 'pending');
+CREATE TYPE "payment__status" AS ENUM ('initiated', 'failure', 'success', 'pending');
 CREATE TYPE "approval__status" AS ENUM ('pending', 'approved', 'rejected');
 CREATE TYPE "payment__mode" AS ENUM (
 	'POD',
-	'upi',
+	'UPI',
 	'credit_card',
 	'debit_card',
 	'net_banking',
@@ -309,9 +314,46 @@ CREATE TABLE "banners"(
 	"redirect_url" VARCHAR NOT NULL,
 	FOREIGN KEY("media_id") REFERENCES "media"("id") ON DELETE CASCADE
 );
+CREATE TABLE "product_reviews"(
+	"id" SERIAL PRIMARY KEY,
+	"customer_id" INT,
+	"product_id" INT,
+	"rating" INT CHECK (rating >= 1 AND rating <= 5),
+	"review" VARCHAR(500),
+	"added_at" TIMESTAMPTZ NOT NULL,
+	"updated_at" TIMESTAMPTZ,
+	UNIQUE("customer_id", "product_id"),
+	FOREIGN KEY("customer_id") REFERENCES "customers"("id") ON DELETE SET NULL,
+	FOREIGN KEY("product_id") REFERENCES "products"("id") ON DELETE CASCADE
+);
+CREATE TABLE "product_review_medias"(
+	-- "id" SERIAL PRIMARY KEY,
+	"product_review_id" INT NOT NULL,
+	"media_id" INT NOT NULL,
+	"display_order" SMALLINT NOT NULL CHECK("display_order" > 0),
+	PRIMARY KEY("media_id", "product_review_id"),
+	UNIQUE("product_review_id", "display_order"),
+	FOREIGN KEY("media_id") REFERENCES "media"("id") ON DELETE CASCADE,
+	FOREIGN KEY("product_review_id") REFERENCES "product_reviews"("id") ON DELETE CASCADE
+);
+
+CREATE TABLE "payments"(
+	"id" SERIAL PRIMARY KEY,
+	-- "order_id" INT,
+	"provider" VARCHAR(50) NOT NULL,
+	"provider_order_id" VARCHAR NOT NULL,
+	"provider_payment_id" VARCHAR,
+	"payment_mode" payment__mode,
+	"payment_status" payment__status,
+	"added_at" TIMESTAMPTZ NOT NULL,
+	"updated_at" TIMESTAMPTZ
+	-- FOREIGN KEY("order_id") REFERENCES "orders"("id") ON DELETE SET NULL
+);
 CREATE TABLE "orders"(
 	"id" SERIAL PRIMARY KEY,
 	"customer_id" INT,
+	"payment_id" INT,
+	"order_status" order__status NOT NULL, 
 	-- "shipping_address_id" INT NOT NULL,
 	-- "mobile_no" VARCHAR NOT NULL,
 	"total_original_price" NUMERIC NOT NULL CHECK ("total_original_price" >= 0),
@@ -321,8 +363,8 @@ CREATE TABLE "orders"(
 	"grand_total" NUMERIC NOT NULL CHECK ("grand_total" >= 0),
 	"added_at" TIMESTAMPTZ NOT NULL,
 	"updated_at" TIMESTAMPTZ,
-	FOREIGN KEY("customer_id") REFERENCES "customers"("id") ON DELETE
-	SET NULL,
+	FOREIGN KEY("customer_id") REFERENCES "customers"("id") ON DELETE SET NULL,
+	FOREIGN KEY("payment_id") REFERENCES "payments"("id") ON DELETE SET NULL,
 		-- FOREIGN KEY("shipping_address_id") REFERENCES "addresses"("id"),
 		CONSTRAINT "sub_total_le_total_original_price" CHECK("sub_total" <= "total_original_price")
 );
@@ -382,42 +424,6 @@ CREATE TABLE "order_addresses"(
 -- ALTER TABLE "orders"
 -- ADD COLUMN "coupon_id" INT,
 -- ADD FOREIGN KEY("coupon_id") REFERENCES "coupons"("id") ON DELETE SET NULL;
-
-CREATE TABLE "payments"(
-	"id" SERIAL PRIMARY KEY,
-	"order_id" INT,
-	"provider" VARCHAR(50) NOT NULL,
-	"provider_order_id" VARCHAR NOT NULL,
-	"provider_payment_id" VARCHAR NOT NULL,
-	"payment_mode" payment__mode,
-	"payment_status" payment__status,
-	"added_at" TIMESTAMPTZ NOT NULL,
-	"updated_at" TIMESTAMPTZ,
-	FOREIGN KEY("order_id") REFERENCES "orders"("id") ON DELETE
-	SET NULL
-);
-CREATE TABLE "product_reviews"(
-	"id" SERIAL PRIMARY KEY,
-	"customer_id" INT,
-	"product_id" INT,
-	"rating" INT CHECK (rating >= 1 AND rating <= 5),
-	"review" VARCHAR(500),
-	"added_at" TIMESTAMPTZ NOT NULL,
-	"updated_at" TIMESTAMPTZ,
-	UNIQUE("customer_id", "product_id"),
-	FOREIGN KEY("customer_id") REFERENCES "customers"("id") ON DELETE SET NULL,
-	FOREIGN KEY("product_id") REFERENCES "products"("id") ON DELETE CASCADE
-);
-CREATE TABLE "product_review_medias"(
-	-- "id" SERIAL PRIMARY KEY,
-	"product_review_id" INT NOT NULL,
-	"media_id" INT NOT NULL,
-	"display_order" SMALLINT NOT NULL CHECK("display_order" > 0),
-	PRIMARY KEY("media_id", "product_review_id"),
-	UNIQUE("product_review_id", "display_order"),
-	FOREIGN KEY("media_id") REFERENCES "media"("id") ON DELETE CASCADE,
-	FOREIGN KEY("product_review_id") REFERENCES "product_reviews"("id") ON DELETE CASCADE
-);
 CREATE TABLE "seller_applicant_forms"(
 	"id" SERIAL PRIMARY KEY,
 	"name" VARCHAR NOT NULL,

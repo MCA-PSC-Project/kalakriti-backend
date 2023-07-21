@@ -290,7 +290,7 @@ def create_app(config_name):
     api.add_resource(PaymentSuccessful, "/payment/success")
 
     # Orders
-    api.add_resource(Orders, "/orders", "/orders/<int:order_id>")
+    api.add_resource(Orders, "/orders", "/orders/<int:order_id>")  # For POD
     api.add_resource(OrderItems, "/order-items/<int:order_item_id>")
     api.add_resource(CustomerOrders, "/customer-orders")
 
