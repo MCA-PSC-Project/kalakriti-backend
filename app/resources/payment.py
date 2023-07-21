@@ -234,108 +234,6 @@ class Payment(Resource):
         # return f"order_id = {order_id} created successfully", 201
         return payment_order, 201
 
-    # @f_jwt.jwt_required()
-    # def post(self):
-    #     customer_id = f_jwt.get_jwt_identity()
-    #     app.logger.debug("customer_id= %s", customer_id)
-    #     claims = f_jwt.get_jwt()
-    #     user_type = claims["user_type"]
-    #     # app.logger.debug("user_type= %s", user_type)
-    #     # if user_type != "customer":
-    #     #     abort(403, "Forbidden: only customers can create orders")
-    #     data = request.get_json()
-    #     checkout_dict = json.loads(json.dumps(data))
-    #     current_time = datetime.now(timezone.utc)
-    #     checkout_dict["total_original_price"] = 0
-    #     checkout_dict["sub_total"] = 0
-    #     checkout_dict["total_discount"] = 0
-    #     checkout_dict["total_tax"] = 0
-
-    #     try:
-    #         for checkout_item_dict in checkout_dict["order_items"]:
-    #             product_item_id = checkout_item_dict.get("product_item_id")
-    #             cursor = app_globals.get_named_tuple_cursor()
-
-    #             GET_PRICE_AND_QTY_IN_STOCK = """SELECT original_price, offer_price, product_item_status, quantity_in_stock
-    #             FROM product_items WHERE id = %s"""
-    #             cursor.execute(
-    #                 GET_PRICE_AND_QTY_IN_STOCK,
-    #                 (product_item_id,),
-    #             )
-    #             row = cursor.fetchone()
-    #             if row is None:
-    #                 abort(400, "Bad Request")
-    #             if row.product_item_status != "published":
-    #                 app.logger.debug(
-    #                     "product_item_status is not published for %s", product_item_id
-    #                 )
-    #                 abort(400, "Bad Request")
-    #             checkout_item_dict["original_price"] = row.original_price
-    #             checkout_item_dict["offer_price"] = row.offer_price
-    #             quantity_in_stock = row.quantity_in_stock
-    #             quantity = checkout_item_dict.get("quantity")
-    #             if quantity > quantity_in_stock:
-    #                 app.logger.debug(
-    #                     "error: checkout_item_dict['quantity'] = %s > quantity_in_stock = %s for product_item_id = %s",
-    #                     quantity,
-    #                     quantity_in_stock,
-    #                     product_item_id,
-    #                 )
-    #                 abort(400, "Bad Request")
-    #             checkout_dict["total_original_price"] += checkout_item_dict.get(
-    #                 "original_price"
-    #             )
-    #             checkout_dict["sub_total"] += checkout_item_dict.get(
-    #                 "offer_price"
-    #             ) * checkout_item_dict.get("quantity")
-    #             checkout_dict["total_discount"] += checkout_item_dict.get("discount")
-    #             checkout_dict["total_tax"] += checkout_item_dict.get("tax")
-    #         checkout_dict["grand_total"] = (
-    #             checkout_dict["sub_total"]
-    #             - checkout_dict["total_discount"]
-    #             + checkout_dict["total_tax"]
-    #         )
-    #     except (Exception, psycopg2.Error) as err:
-    #         app.logger.debug(err)
-    #         abort(400, "Bad Request")
-    #     finally:
-    #         cursor.close()
-
-    #     data = {
-    #         "amount": int(checkout_dict["grand_total"] * 100),
-    #         "currency": "INR",
-    #         "receipt": "order_rcptid_11",
-    #         "payment_capture": 1,
-    #     }
-
-    #     payment_order = app_globals.payment_client.order.create(data=data)
-    #     app.logger.debug("payment_order=", payment_order)
-    #     if not payment_order:
-    #         abort(400, "Bad request")
-
-    #     CREATE_PAYMENT = """INSERT INTO payments(provider, provider_order_id, provider_payment_id,
-    #     payment_mode, payment_status, added_at)
-    #     VALUES(%s, %s, %s, %s, %s, %s)"""
-    #     try:
-    #         cursor = app_globals.get_cursor()
-    #         cursor.execute(
-    #             CREATE_PAYMENT,
-    #             (
-    #                 app.config["PAYMENT_PROVIDER"],
-    #                 payment_order.id,
-    #                 None,
-    #                 None,
-    #                 "initiated",
-    #                 datetime.now(timezone.utc),
-    #             ),
-    #         )
-    #     except (Exception, psycopg2.Error) as err:
-    #         app.logger.debug(err)
-    #         abort(400, "Bad Request")
-    #     finally:
-    #         cursor.close()
-    #     return payment_order, 201
-
 
 class PaymentSuccessful(Resource):
     @f_jwt.jwt_required()
@@ -373,12 +271,42 @@ class PaymentSuccessful(Resource):
                 return {"msg": "Transaction not legit!"}, 400
 
             # THE PAYMENT IS LEGIT & VERIFIED
-            # YOU CAN SAVE THE DETAILS IN YOUR DATABASE IF YOU WANT
+            # SAVE THE DETAILS IN DATABASE
 
+            # before beginning transaction autocommit must be off
+            app_globals.db_conn.autocommit = False
+            try:
+                cursor = app_globals.get_named_tuple_cursor()
+                UPDATE_ADDRESS = """UPDATE payments SET payment_status= %s, provider_payment_id= %s, updated_at= %s 
+                WHERE provider_order_id = %s"""
+
+                cursor.execute(
+                    UPDATE_ADDRESS,
+                    (
+                        "success",
+                        razorpay_dict.get("razorpayPaymentId"),
+                        datetime.now(timezone.utc),
+                        razorpay_dict.get("razorpayOrderId"),
+                    ),
+                )
+                if cursor.rowcount != 1:
+                    abort(400, "Bad Request: update payments row error")
+
+            except (Exception, psycopg2.Error) as err:
+                app.logger.debug(err)
+                app_globals.db_conn.rollback()
+                app_globals.db_conn.autocommit = True
+                app.logger.debug("autocommit switched back from off to on")
+                abort(400, "Bad Request")
+            finally:
+                cursor.close()
+            app_globals.db_conn.commit()
+            app_globals.db_conn.autocommit = True
             return {
                 "msg": "success",
                 "orderId": razorpayOrderId,
                 "paymentId": razorpayPaymentId,
             }, 200
         except Exception as error:
+            app.logger.debug(error)
             return str(error), 500

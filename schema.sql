@@ -366,7 +366,7 @@ CREATE TABLE "orders"(
 	FOREIGN KEY("customer_id") REFERENCES "customers"("id") ON DELETE SET NULL,
 	FOREIGN KEY("payment_id") REFERENCES "payments"("id") ON DELETE SET NULL,
 		-- FOREIGN KEY("shipping_address_id") REFERENCES "addresses"("id"),
-		CONSTRAINT "sub_total_le_total_original_price" CHECK("sub_total" <= "total_original_price")
+		-- CONSTRAINT "sub_total_le_total_original_price" CHECK("sub_total" <= "total_original_price")
 );
 CREATE TABLE "order_items"(
 	"id" SERIAL PRIMARY KEY,
@@ -424,6 +424,7 @@ CREATE TABLE "order_addresses"(
 -- ALTER TABLE "orders"
 -- ADD COLUMN "coupon_id" INT,
 -- ADD FOREIGN KEY("coupon_id") REFERENCES "coupons"("id") ON DELETE SET NULL;
+
 CREATE TABLE "seller_applicant_forms"(
 	"id" SERIAL PRIMARY KEY,
 	"name" VARCHAR NOT NULL,
