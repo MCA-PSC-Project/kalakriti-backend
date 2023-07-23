@@ -1656,12 +1656,12 @@
     "method": "POST",
     "sortNum": 0,
     "created": "2023-07-01T11:02:28.684Z",
-    "modified": "2023-07-01T11:02:28.684Z",
+    "modified": "2023-07-23T14:59:53.462Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n  \"user_type\": \"customer\",\n  \"email\": \"customer1@gmail.com\"\n}",
+      "raw": "{\n  \"user_type\": \"customer\",\n  \"email\": \"customer2@gmail.com\"\n}",
       "form": []
     },
     "tests": []
@@ -1752,12 +1752,12 @@
     "method": "POST",
     "sortNum": 0,
     "created": "2023-07-02T16:43:02.149Z",
-    "modified": "2023-07-04T07:42:55.657Z",
+    "modified": "2023-07-23T14:56:28.551Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n\t\"mobile_no\" : \"9078563419\"\n}",
+      "raw": "{\n  \"mobile_no\": \"9879870000\"\n}",
       "form": []
     },
     "tests": []

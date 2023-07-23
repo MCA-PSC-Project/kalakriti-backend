@@ -36,6 +36,7 @@ class Payment(Resource):
         # before beginning transaction autocommit must be off
         app_globals.db_conn.autocommit = False
         try:
+            cursor = app_globals.get_named_tuple_cursor()
             checkout_from_cart = checkout_dict.get("checkout_from_cart")
             if checkout_from_cart == False:
                 # buy now
@@ -46,62 +47,81 @@ class Payment(Resource):
                 product_item_id = checkout_item_dict.get("product_item_id")
                 quantity = checkout_item_dict.get("quantity")
             
-                    cursor = app_globals.get_named_tuple_cursor()
-                    GET_PRICE_AND_QTY_IN_STOCK = """SELECT original_price, offer_price, product_item_status, quantity_in_stock
-                    FROM product_items WHERE id = %s"""
-                    cursor.execute(
-                        GET_PRICE_AND_QTY_IN_STOCK,
-                        (product_item_id,),
+                GET_PRICE_AND_QTY_IN_STOCK = """SELECT original_price, offer_price, product_item_status, quantity_in_stock
+                FROM product_items WHERE id = %s"""
+                cursor.execute(
+                    GET_PRICE_AND_QTY_IN_STOCK,
+                    (product_item_id,),
+                )
+                row = cursor.fetchone()
+                if row is None:
+                    abort(400, "Bad Request: product item not found")
+                if row.product_item_status != "published":
+                    app.logger.debug(
+                        "product_item_status is not published for %s", product_item_id
                     )
-                    row = cursor.fetchone()
-                    if row is None:
-                        abort(400, "Bad Request: product item not found")
-                    if row.product_item_status != "published":
-                        app.logger.debug(
-                            "product_item_status is not published for %s", product_item_id
-                        )
-                        abort(400, "Bad Request")
-                    checkout_item_dict["original_price"] = row.original_price
-                    checkout_item_dict["offer_price"] = row.offer_price
-                    quantity_in_stock = row.quantity_in_stock
-                    if quantity > quantity_in_stock:
-                        app.logger.debug(
-                            "error: order_item_dict['quantity'] = %s > quantity_in_stock = %s for product_item_id = %s",
-                            quantity,
-                            quantity_in_stock,
-                            product_item_id,
-                        )
-                        abort(400, "Bad Request")
-                    # remaining_quantity = quantity_in_stock - quantity
-                    # UPDATE_QUANTITY_IN_STOCK = (
-                    #     """UPDATE product_items SET quantity_in_stock = %s WHERE id = %s"""
-                    # )
-                    # cursor.execute(
-                    #     UPDATE_QUANTITY_IN_STOCK,
-                    #     (
-                    #         remaining_quantity,
-                    #         product_item_id,
-                    #     ),
-                    # )
-                    # if cursor.rowcount != 1:
-                    #     abort(400, "Bad Request: update product_items row error")
+                    abort(400, "Bad Request")
+                checkout_item_dict["original_price"] = row.original_price
+                checkout_item_dict["offer_price"] = row.offer_price
+                quantity_in_stock = row.quantity_in_stock
+                if quantity > quantity_in_stock:
+                    app.logger.debug(
+                        "error: order_item_dict['quantity'] = %s > quantity_in_stock = %s for product_item_id = %s",
+                        quantity,
+                        quantity_in_stock,
+                        product_item_id,
+                    )
+                    abort(400, "Bad Request")
+                # remaining_quantity = quantity_in_stock - quantity
+                # UPDATE_QUANTITY_IN_STOCK = (
+                #     """UPDATE product_items SET quantity_in_stock = %s WHERE id = %s"""
+                # )
+                # cursor.execute(
+                #     UPDATE_QUANTITY_IN_STOCK,
+                #     (
+                #         remaining_quantity,
+                #         product_item_id,
+                #     ),
+                # )
+                # if cursor.rowcount != 1:
+                #     abort(400, "Bad Request: update product_items row error")
 
-                    checkout_dict["total_original_price"] += checkout_item_dict.get(
-                        "original_price"
-                    )
-                    checkout_dict["sub_total"] += checkout_item_dict.get(
-                        "offer_price"
-                    ) * checkout_item_dict.get("quantity")
-                    checkout_dict["total_discount"] += checkout_item_dict.get("discount")
-                    checkout_dict["total_tax"] += checkout_item_dict.get("tax")
-                    checkout_dict["grand_total"] = (
-                        checkout_dict["sub_total"]
-                        - checkout_dict["total_discount"]
-                        + checkout_dict["total_tax"]
-                    )
-                    # app.logger.debug("order_dict= %s", order_dict)
-                    app.logger.debug("grand_total= %s", checkout_dict.get("grand_total"))
-                
+                checkout_dict["total_original_price"] += checkout_item_dict.get(
+                    "original_price"
+                )
+                checkout_dict["sub_total"] += checkout_item_dict.get(
+                    "offer_price"
+                ) * checkout_item_dict.get("quantity")
+                checkout_dict["total_discount"] += checkout_item_dict.get("discount")
+                checkout_dict["total_tax"] += checkout_item_dict.get("tax")
+                checkout_dict["grand_total"] = (
+                    checkout_dict["sub_total"]
+                    - checkout_dict["total_discount"]
+                    + checkout_dict["total_tax"]
+                )
+                # app.logger.debug("order_dict= %s", order_dict)
+                app.logger.debug("grand_total= %s", checkout_dict.get("grand_total"))
+
+                CREATE_CHECKOUT = """INSERT INTO checkout(, payment_id, order_status, total_original_price, sub_total,
+                total_discount, total_tax, grand_total, added_at)
+                VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s) RETURNING id"""
+
+                cursor.execute(
+                    CREATE_CHECKOUT,
+                    (
+                        customer_id,
+                        payment_id,
+                        "checkout",
+                        checkout_dict.get("total_original_price"),
+                        checkout_dict.get("sub_total"),
+                        checkout_dict.get("total_discount"),
+                        checkout_dict.get("total_tax"),
+                        checkout_dict.get("grand_total"),
+                        current_time,
+                    ),
+                )
+                order_id = cursor.fetchone()[0]
+
             elif checkout_from_cart == True:
                 pass
             else:

@@ -351,29 +351,7 @@ CREATE TABLE "shipping_addresses"(
 	"pincode" VARCHAR(10) NOT NULL,
 	"landmark" VARCHAR(50),
 	"added_at" TIMESTAMPTZ NOT NULL,
-	"updated_at" TIMESTAMPTZ,
-);
--- for temporary checkout using non-POD payments
-CREATE TABLE "checkouts"(
-	"id" SERIAL PRIMARY KEY,
-	"customer_id" INT,
-	"payment_id" INT NOT NULL UNIQUE,
-	"buy_now_product_item_id" INT, --for buy now only, not for checkout from cart
-	"buy_now_quantity" INT, --for buy now only, not for checkout from cart
-	"shipping_address_id" INT NOT NULL,
-	"checkout_status" checkout__status NOT NULL, 
-	"total_original_price" NUMERIC NOT NULL CHECK ("total_original_price" >= 0),
-	"sub_total" NUMERIC NOT NULL CHECK ("sub_total" >= 0),
-	"total_discount" NUMERIC NOT NULL DEFAULT 0 CHECK ("total_discount" >= 0),
-	"total_tax" NUMERIC NOT NULL DEFAULT 0 CHECK ("total_tax" >= 0),
-	"grand_total" NUMERIC NOT NULL CHECK ("grand_total" >= 0),
-	"added_at" TIMESTAMPTZ NOT NULL,
-	"updated_at" TIMESTAMPTZ,
-	FOREIGN KEY("customer_id") REFERENCES "customers"("id") ON DELETE SET NULL,
-	FOREIGN KEY("payment_id") REFERENCES "payments"("id") ON DELETE SET NULL,
-	FOREIGN KEY("shipping_address_id") REFERENCES "shipping_addresses"("id"),
-	FOREIGN KEY("buy_now_product_item_id") REFERENCES "product_items"("id"),
-		-- CONSTRAINT "sub_total_le_total_original_price" CHECK("sub_total" <= "total_original_price")
+	"updated_at" TIMESTAMPTZ
 );
 CREATE TABLE "payments"(
 	"id" SERIAL PRIMARY KEY,
@@ -386,6 +364,28 @@ CREATE TABLE "payments"(
 	"added_at" TIMESTAMPTZ NOT NULL,
 	"updated_at" TIMESTAMPTZ
 	-- FOREIGN KEY("order_id") REFERENCES "orders"("id") ON DELETE SET NULL
+);
+-- for temporary checkout using non-POD payments
+CREATE TABLE "checkouts"(
+	"id" SERIAL PRIMARY KEY,
+	"customer_id" INT,
+	"payment_id" INT NOT NULL UNIQUE,
+	"buy_now_product_item_id" INT, --for buy now only, not for checkout from cart
+	"buy_now_quantity" INT, --for buy now only, not for checkout from cart
+	"shipping_address_id" INT NOT NULL,
+	"checkout_status" checkout__status NOT NULL DEFAULT 'pending', 
+	"total_original_price" NUMERIC NOT NULL CHECK ("total_original_price" >= 0),
+	"sub_total" NUMERIC NOT NULL CHECK ("sub_total" >= 0),
+	"total_discount" NUMERIC NOT NULL DEFAULT 0 CHECK ("total_discount" >= 0),
+	"total_tax" NUMERIC NOT NULL DEFAULT 0 CHECK ("total_tax" >= 0),
+	"grand_total" NUMERIC NOT NULL CHECK ("grand_total" >= 0),
+	"added_at" TIMESTAMPTZ NOT NULL,
+	"updated_at" TIMESTAMPTZ,
+	FOREIGN KEY("customer_id") REFERENCES "customers"("id") ON DELETE SET NULL,
+	FOREIGN KEY("payment_id") REFERENCES "payments"("id") ON DELETE SET NULL,
+	FOREIGN KEY("shipping_address_id") REFERENCES "shipping_addresses"("id"),
+	FOREIGN KEY("buy_now_product_item_id") REFERENCES "product_items"("id")
+		-- CONSTRAINT "sub_total_le_total_original_price" CHECK("sub_total" <= "total_original_price")
 );
 CREATE TABLE "orders"(
 	"id" SERIAL PRIMARY KEY,
@@ -401,7 +401,7 @@ CREATE TABLE "orders"(
 	"updated_at" TIMESTAMPTZ,
 	FOREIGN KEY("customer_id") REFERENCES "customers"("id") ON DELETE SET NULL,
 	FOREIGN KEY("payment_id") REFERENCES "payments"("id") ON DELETE SET NULL,
-	FOREIGN KEY("shipping_address_id") REFERENCES "shipping_addresses"("id"),
+	FOREIGN KEY("shipping_address_id") REFERENCES "shipping_addresses"("id")
 		-- CONSTRAINT "sub_total_le_total_original_price" CHECK("sub_total" <= "total_original_price")
 );
 CREATE TABLE "order_items"(

@@ -2449,12 +2449,12 @@
     "method": "POST",
     "sortNum": 20000,
     "created": "2023-03-14T17:06:16.671Z",
-    "modified": "2023-07-01T11:02:28.940Z",
+    "modified": "2023-07-23T14:59:53.447Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n  \"user_type\": \"customer\",\n  \"email\": \"customer1@gmail.com\"\n}",
+      "raw": "{\n  \"user_type\": \"customer\",\n  \"email\": \"customer2@gmail.com\"\n}",
       "form": []
     },
     "tests": []
