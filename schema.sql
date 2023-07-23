@@ -352,7 +352,7 @@ CREATE TABLE "payments"(
 CREATE TABLE "orders"(
 	"id" SERIAL PRIMARY KEY,
 	"customer_id" INT,
-	"payment_id" INT,
+	"payment_id" INT UNIQUE,
 	"order_status" order__status NOT NULL, 
 	-- "shipping_address_id" INT NOT NULL,
 	-- "mobile_no" VARCHAR NOT NULL,

@@ -277,11 +277,11 @@ class PaymentSuccessful(Resource):
             app_globals.db_conn.autocommit = False
             try:
                 cursor = app_globals.get_named_tuple_cursor()
-                UPDATE_ADDRESS = """UPDATE payments SET payment_status= %s, provider_payment_id= %s, updated_at= %s 
-                WHERE provider_order_id = %s"""
+                UPDATE_PAYMENT = """UPDATE payments SET payment_status= %s, provider_payment_id= %s, updated_at= %s 
+                WHERE provider_order_id = %s RETURNING id"""
 
                 cursor.execute(
-                    UPDATE_ADDRESS,
+                    UPDATE_PAYMENT,
                     (
                         "success",
                         razorpay_dict.get("razorpayPaymentId"),
@@ -291,7 +291,22 @@ class PaymentSuccessful(Resource):
                 )
                 if cursor.rowcount != 1:
                     abort(400, "Bad Request: update payments row error")
+                payment_id = cursor.fetchone().id
+                app.logger.debug("payment_id= %s", payment_id)
 
+                UPDATE_ORDER_STATUS = """UPDATE orders SET order_status= %s, updated_at= %s 
+                WHERE payment_id = %s"""
+
+                cursor.execute(
+                    UPDATE_ORDER_STATUS,
+                    (
+                        "placed",
+                        datetime.now(timezone.utc),
+                        payment_id,
+                    ),
+                )
+                if cursor.rowcount != 1:
+                    abort(400, "Bad Request: update orders row error")
             except (Exception, psycopg2.Error) as err:
                 app.logger.debug(err)
                 app_globals.db_conn.rollback()
