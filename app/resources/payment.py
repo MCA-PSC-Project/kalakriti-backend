@@ -102,7 +102,92 @@ class Payment(Resource):
                 # app.logger.debug("order_dict= %s", order_dict)
                 app.logger.debug("grand_total= %s", checkout_dict.get("grand_total"))
 
-                CREATE_CHECKOUT = """INSERT INTO checkout(, payment_id, order_status, total_original_price, sub_total,
+                # add payment info
+                data = {
+                    "amount": int(checkout_dict.get("grand_total") * 100),
+                    "currency": "INR",
+                    "receipt": "order_rcptid_11",
+                    "payment_capture": 1,
+                }
+
+                payment_order = app_globals.payment_client.order.create(data=data)
+                # app.logger.debug("payment_client= %s", app_globals.payment_client)
+                # app.logger.debug("payment_order= %s", payment_order)
+                if not payment_order:
+                    app.logger.debug("error : payment_order= %s", payment_order)
+                    abort(400, "Bad request")
+
+                CREATE_PAYMENT = """INSERT INTO payments(provider, provider_order_id, provider_payment_id, 
+                payment_mode, payment_status, added_at)
+                VALUES(%s, %s, %s, %s, %s, %s) RETURNING id"""
+
+                cursor.execute(
+                    CREATE_PAYMENT,
+                    (
+                        app.config["PAYMENT_PROVIDER"],
+                        payment_order.get("id"),
+                        None,
+                        None,
+                        "initiated",
+                        datetime.now(timezone.utc),
+                    ),
+                )
+                payment_id = cursor.fetchone()[0]
+
+                GET_ADDRESS = """SELECT a.id AS address_id, a.full_name, a.mobile_no, 
+                a.address_line1, a.address_line2, a.city, a.district, a.state,
+                a.country, a.pincode, a.landmark, a.added_at, a.updated_at
+                FROM addresses a WHERE a.id = %s"""
+
+                cursor.execute(GET_ADDRESS, (shipping_address_id,))
+                row = cursor.fetchone()
+                if not row:
+                    abort(400, "No such address by id")
+                address_dict = {}
+                address_dict["address_id"] = row.address_id
+                address_dict["full_name"] = row.full_name
+                address_dict["mobile_no"] = row.mobile_no
+                address_dict["address_line1"] = row.address_line1
+                address_dict["address_line2"] = row.address_line2
+                address_dict["city"] = row.city
+                address_dict["district"] = row.district
+                address_dict["state"] = row.state
+                address_dict["country"] = row.country
+                address_dict["pincode"] = row.pincode
+                address_dict["landmark"] = row.landmark
+                address_dict.update(
+                    json.loads(json.dumps({"added_at": row.added_at}, default=str))
+                )
+                address_dict.update(
+                    json.loads(json.dumps({"updated_at": row.updated_at}, default=str))
+                )
+
+                # add adddress for order
+                CREATE_SHIPPING_ADDRESS = """INSERT INTO shipping_addresses(full_name, mobile_no, address_line1, address_line2, 
+                city, district, state, country, pincode, landmark, added_at)
+                VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s) RETURNING id"""
+
+                cursor.execute(
+                    CREATE_SHIPPING_ADDRESS,
+                    (
+                        address_dict.get("full_name"),
+                        address_dict.get("mobile_no"),
+                        address_dict.get("address_line1"),
+                        address_dict.get("address_line2"),
+                        address_dict.get("city"),
+                        address_dict.get("district"),
+                        address_dict.get("state"),
+                        address_dict.get("country"),
+                        address_dict.get("pincode"),
+                        address_dict.get("landmark"),
+                        current_time,
+                    ),
+                )
+                shipping_address_id = cursor.fetchone()[0]
+
+                CREATE_CHECKOUT = """INSERT INTO checkouts(customer_id, payment_id, shipping_address_id,  
+                buy_now_product_item_id, buy_now_quantity, checkout_status,
+                total_original_price, sub_total,
                 total_discount, total_tax, grand_total, added_at)
                 VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s) RETURNING id"""
 
@@ -111,7 +196,10 @@ class Payment(Resource):
                     (
                         customer_id,
                         payment_id,
-                        "checkout",
+                        shipping_address_id,
+                        product_item_id,
+                        quantity,
+                        "pending",
                         checkout_dict.get("total_original_price"),
                         checkout_dict.get("sub_total"),
                         checkout_dict.get("total_discount"),
@@ -120,45 +208,14 @@ class Payment(Resource):
                         current_time,
                     ),
                 )
-                order_id = cursor.fetchone()[0]
+                checkout_id = cursor.fetchone()[0]
 
             elif checkout_from_cart == True:
                 pass
             else:
                 abort(404, "checkout_from_cart not provided correctly")
 
-            # add payment info
-            data = {
-                "amount": int(checkout_dict.get("grand_total") * 100),
-                "currency": "INR",
-                "receipt": "order_rcptid_11",
-                "payment_capture": 1,
-            }
-
-            payment_order = app_globals.payment_client.order.create(data=data)
-            # app.logger.debug("payment_client= %s", app_globals.payment_client)
-            # app.logger.debug("payment_order= %s", payment_order)
-            if not payment_order:
-                app.logger.debug("error : payment_order= %s", payment_order)
-                abort(400, "Bad request")
-
-            CREATE_PAYMENT = """INSERT INTO payments(provider, provider_order_id, provider_payment_id, 
-            payment_mode, payment_status, added_at)
-            VALUES(%s, %s, %s, %s, %s, %s) RETURNING id"""
-
-            cursor.execute(
-                CREATE_PAYMENT,
-                (
-                    app.config["PAYMENT_PROVIDER"],
-                    payment_order.get("id"),
-                    None,
-                    None,
-                    "initiated",
-                    datetime.now(timezone.utc),
-                ),
-            )
-            payment_id = cursor.fetchone()[0]
-
+            
             # CREATE_ORDER = """INSERT INTO orders(customer_id, payment_id, order_status, total_original_price, sub_total,
             # total_discount, total_tax, grand_total, added_at)
             # VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s) RETURNING id"""
@@ -179,80 +236,29 @@ class Payment(Resource):
             # )
             # order_id = cursor.fetchone()[0]
 
-            GET_ADDRESS = """SELECT a.id AS address_id, a.full_name, a.mobile_no, 
-            a.address_line1, a.address_line2, a.city, a.district, a.state,
-            a.country, a.pincode, a.landmark, a.added_at, a.updated_at
-            FROM addresses a WHERE a.id = %s"""
-
-            cursor.execute(GET_ADDRESS, (address_id,))
-            row = cursor.fetchone()
-            if not row:
-                abort(400, "No such address by id")
-            address_dict = {}
-            address_dict["address_id"] = row.address_id
-            address_dict["full_name"] = row.full_name
-            address_dict["mobile_no"] = row.mobile_no
-            address_dict["address_line1"] = row.address_line1
-            address_dict["address_line2"] = row.address_line2
-            address_dict["city"] = row.city
-            address_dict["district"] = row.district
-            address_dict["state"] = row.state
-            address_dict["country"] = row.country
-            address_dict["pincode"] = row.pincode
-            address_dict["landmark"] = row.landmark
-            address_dict.update(
-                json.loads(json.dumps({"added_at": row.added_at}, default=str))
-            )
-            address_dict.update(
-                json.loads(json.dumps({"updated_at": row.updated_at}, default=str))
-            )
-
-            # add adddress for order
-            CREATE_ORDER_ADDRESS = """INSERT INTO order_addresses(order_id, full_name, mobile_no, address_line1, address_line2, 
-            city, district, state, country, pincode, landmark, added_at)
-            VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s) RETURNING id"""
-
-            cursor.execute(
-                CREATE_ORDER_ADDRESS,
-                (
-                    order_id,
-                    address_dict.get("full_name"),
-                    address_dict.get("mobile_no"),
-                    address_dict.get("address_line1"),
-                    address_dict.get("address_line2"),
-                    address_dict.get("city"),
-                    address_dict.get("district"),
-                    address_dict.get("state"),
-                    address_dict.get("country"),
-                    address_dict.get("pincode"),
-                    address_dict.get("landmark"),
-                    current_time,
-                ),
-            )
-            order_address_id = cursor.fetchone()[0]
-
+            
             # add order items
-            INSERT_ORDER_ITEMS = """INSERT INTO order_items(order_id, product_item_id, quantity,
-            original_price, offer_price, discount_percent, discount, tax, added_at)
-            VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s)"""
+            # INSERT_ORDER_ITEMS = """INSERT INTO order_items(order_id, product_item_id, quantity,
+            # original_price, offer_price, discount_percent, discount, tax, added_at)
+            # VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s)"""
 
-            values_tuple_list = []
-            for checkout_item_dict in checkout_dict["order_items"]:
-                values_tuple = (
-                    order_id,
-                    checkout_item_dict.get("product_item_id"),
-                    checkout_item_dict.get("quantity"),
-                    checkout_item_dict.get("original_price"),
-                    checkout_item_dict.get("offer_price"),
-                    checkout_item_dict.get("discount_percent"),
-                    checkout_item_dict.get("discount"),
-                    checkout_item_dict.get("tax"),
-                    current_time,
-                )
-                values_tuple_list.append(values_tuple)
-            app.logger.debug("values_tuple_list= %s", values_tuple_list)
+            # values_tuple_list = []
+            # for checkout_item_dict in checkout_dict["order_items"]:
+            #     values_tuple = (
+            #         checkout_id,
+            #         checkout_item_dict.get("product_item_id"),
+            #         checkout_item_dict.get("quantity"),
+            #         checkout_item_dict.get("original_price"),
+            #         checkout_item_dict.get("offer_price"),
+            #         checkout_item_dict.get("discount_percent"),
+            #         checkout_item_dict.get("discount"),
+            #         checkout_item_dict.get("tax"),
+            #         current_time,
+            #     )
+            #     values_tuple_list.append(values_tuple)
+            # app.logger.debug("values_tuple_list= %s", values_tuple_list)
 
-            psycopg2.extras.execute_batch(cursor, INSERT_ORDER_ITEMS, values_tuple_list)
+            # psycopg2.extras.execute_batch(cursor, INSERT_ORDER_ITEMS, values_tuple_list)
         except (Exception, psycopg2.Error) as err:
             app.logger.debug(err)
             app_globals.db_conn.rollback()

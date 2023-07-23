@@ -370,9 +370,9 @@ CREATE TABLE "checkouts"(
 	"id" SERIAL PRIMARY KEY,
 	"customer_id" INT,
 	"payment_id" INT NOT NULL UNIQUE,
+	"shipping_address_id" INT NOT NULL,
 	"buy_now_product_item_id" INT, --for buy now only, not for checkout from cart
 	"buy_now_quantity" INT, --for buy now only, not for checkout from cart
-	"shipping_address_id" INT NOT NULL,
 	"checkout_status" checkout__status NOT NULL DEFAULT 'pending', 
 	"total_original_price" NUMERIC NOT NULL CHECK ("total_original_price" >= 0),
 	"sub_total" NUMERIC NOT NULL CHECK ("sub_total" >= 0),
