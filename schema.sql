@@ -15,6 +15,10 @@ CREATE TYPE "order__status" AS ENUM (
 	'placed',
 	'failed'
 );
+CREATE TYPE "checkout__from" AS ENUM (
+	'cart',
+	'buy_now',
+);
 CREATE TYPE "order__item__status" AS ENUM (
 	'initiated',
 	'pending',
@@ -354,6 +358,7 @@ CREATE TABLE "orders"(
 	"customer_id" INT,
 	"payment_id" INT UNIQUE,
 	"order_status" order__status NOT NULL, 
+	"checkout_from" checkout__from NOT NULL,
 	-- "shipping_address_id" INT NOT NULL,
 	-- "mobile_no" VARCHAR NOT NULL,
 	"total_original_price" NUMERIC NOT NULL CHECK ("total_original_price" >= 0),
