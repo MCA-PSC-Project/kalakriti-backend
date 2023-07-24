@@ -286,7 +286,7 @@ def create_app(config_name):
     api.add_resource(TopSearches, "/top-searches")
 
     # Payment
-    api.add_resource(Payment, "/payment/order/buy-now")
+    api.add_resource(Payment, "/payment/order")
     api.add_resource(PaymentSuccessful, "/payment/success")
 
     # Orders
