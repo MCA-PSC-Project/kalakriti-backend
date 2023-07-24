@@ -29,6 +29,13 @@ class Orders(Resource):
         order_dict["total_discount"] = 0
         order_dict["total_tax"] = 0
 
+        if order_dict.get("checkout_from_cart") == True:
+            checkout_from = "cart"
+        elif order_dict.get("checkout_from_cart") == False:
+            checkout_from = "buy_now"
+        else:
+            abort(400, "checkout_from_cart not passed correctly")
+
         # before beginning transaction autocommit must be off
         app_globals.db_conn.autocommit = False
         try:
@@ -80,8 +87,8 @@ class Orders(Resource):
                     "original_price"
                 )
                 order_dict["sub_total"] += order_item_dict.get("offer_price")
-                order_dict["total_discount"] += order_item_dict.get("discount")
-                order_dict["total_tax"] += order_item_dict.get("tax")
+                order_dict["total_discount"] += order_item_dict.get("discount", 0)
+                order_dict["total_tax"] += order_item_dict.get("tax", 0)
             order_dict["grand_total"] = (
                 order_dict["sub_total"]
                 - order_dict["total_discount"]
@@ -97,7 +104,7 @@ class Orders(Resource):
             cursor.execute(
                 CREATE_PAYMENT,
                 (
-                    app.config["PAYMENT_PROVIDER"],
+                    "POD",
                     0,
                     None,
                     "POD",
@@ -107,28 +114,7 @@ class Orders(Resource):
             )
             payment_id = cursor.fetchone()[0]
 
-            CREATE_ORDER = """INSERT INTO orders(customer_id, payment_id, order_status, total_original_price, sub_total, 
-            total_discount, total_tax, grand_total, added_at)
-            VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s) RETURNING id"""
-
-            cursor.execute(
-                CREATE_ORDER,
-                (
-                    customer_id,
-                    payment_id,
-                    "placed",
-                    order_dict.get("total_original_price"),
-                    order_dict.get("sub_total"),
-                    order_dict.get("total_discount"),
-                    order_dict.get("total_tax"),
-                    order_dict.get("grand_total"),
-                    current_time,
-                ),
-            )
-            order_id = cursor.fetchone()[0]
-
             address_id = order_dict.get("shipping_address_id")
-
             GET_ADDRESS = """SELECT a.id AS address_id, a.full_name, a.mobile_no, 
             a.address_line1, a.address_line2, a.city, a.district, a.state,
             a.country, a.pincode, a.landmark, a.added_at, a.updated_at
@@ -158,14 +144,13 @@ class Orders(Resource):
             )
 
             # add adddress for order
-            CREATE_ORDER_ADDRESS = """INSERT INTO order_addresses(order_id, full_name, mobile_no, address_line1, address_line2, 
+            CREATE_ORDER_ADDRESS = """INSERT INTO order_addresses(full_name, mobile_no, address_line1, address_line2, 
             city, district, state, country, pincode, landmark, added_at)
-            VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s) RETURNING id"""
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s) RETURNING id"""
 
             cursor.execute(
                 CREATE_ORDER_ADDRESS,
                 (
-                    order_id,
                     address_dict.get("full_name"),
                     address_dict.get("mobile_no"),
                     address_dict.get("address_line1"),
@@ -181,6 +166,28 @@ class Orders(Resource):
             )
             order_address_id = cursor.fetchone()[0]
 
+            CREATE_ORDER = """INSERT INTO orders(customer_id, payment_id, order_address_id, order_status, checkout_from,
+            total_original_price, sub_total, total_discount, total_tax, grand_total, added_at)
+            VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s) RETURNING id"""
+
+            cursor.execute(
+                CREATE_ORDER,
+                (
+                    customer_id,
+                    payment_id,
+                    order_address_id,
+                    "placed",
+                    checkout_from,
+                    order_dict.get("total_original_price"),
+                    order_dict.get("sub_total"),
+                    order_dict.get("total_discount"),
+                    order_dict.get("total_tax"),
+                    order_dict.get("grand_total"),
+                    current_time,
+                ),
+            )
+            order_id = cursor.fetchone()[0]
+
             # add order items
             INSERT_ORDER_ITEMS = """INSERT INTO order_items(order_id, product_item_id, quantity,
             original_price, offer_price, discount_percent, discount, tax, added_at)
@@ -194,15 +201,39 @@ class Orders(Resource):
                     order_item_dict.get("quantity"),
                     order_item_dict.get("original_price"),
                     order_item_dict.get("offer_price"),
-                    order_item_dict.get("discount_percent"),
-                    order_item_dict.get("discount"),
-                    order_item_dict.get("tax"),
+                    order_item_dict.get("discount_percent", 0),
+                    order_item_dict.get("discount", 0),
+                    order_item_dict.get("tax", 0),
                     current_time,
                 )
                 values_tuple_list.append(values_tuple)
-            app.logger.debug("values_tuple_list= %s", values_tuple_list)
+            # app.logger.debug("values_tuple_list= %s", values_tuple_list)
 
             psycopg2.extras.execute_batch(cursor, INSERT_ORDER_ITEMS, values_tuple_list)
+
+            # remove items from cart if checkout_from is 'cart'
+            if checkout_from == "cart":
+                for order_item_dict in order_dict["order_items"]:
+                    product_item_id = order_item_dict["product_item_id"]
+                    quantity = order_item_dict["quantity"]
+
+                    GET_CART_ID = """SELECT id FROM carts WHERE customer_id = %s"""
+                    cursor.execute(GET_CART_ID, (customer_id,))
+                    row = cursor.fetchone()
+                    if not row:
+                        app.logger.debug("cart_id not found!")
+                    cart_id = row.id
+
+                    DELETE_ITEMS_ORDERED_FROM_CART = """DELETE FROM cart_items WHERE product_item_id = %s AND cart_id = %s"""
+                    cursor.execute(
+                        DELETE_ITEMS_ORDERED_FROM_CART,
+                        (
+                            product_item_id,
+                            cart_id,
+                        ),
+                    )
+                    # if cursor.rowcount == 0:
+                    #     abort(400, "Bad Request: delete cart_items rows error")
 
         except (Exception, psycopg2.Error) as err:
             app.logger.debug(err)

@@ -171,8 +171,7 @@ class Payment(Resource):
             order_address_id = cursor.fetchone()[0]
 
             CREATE_ORDER = """INSERT INTO orders(customer_id, payment_id, order_address_id, order_status, checkout_from,
-            total_original_price, sub_total, 
-            total_discount, total_tax, grand_total, added_at)
+            total_original_price, sub_total, total_discount, total_tax, grand_total, added_at)
             VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s) RETURNING id"""
 
             cursor.execute(
