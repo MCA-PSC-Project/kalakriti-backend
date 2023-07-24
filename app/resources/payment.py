@@ -290,7 +290,7 @@ class PaymentSuccessful(Resource):
                 app.logger.debug("payment_id= %s", payment_id)
 
                 UPDATE_ORDER_STATUS = """UPDATE orders SET order_status= %s, updated_at= %s 
-                WHERE payment_id = %s RETURNING id"""
+                WHERE payment_id = %s RETURNING id, checkout_from"""
 
                 cursor.execute(
                     UPDATE_ORDER_STATUS,
@@ -302,7 +302,9 @@ class PaymentSuccessful(Resource):
                 )
                 if cursor.rowcount != 1:
                     abort(400, "Bad Request: update orders row error")
-                order_id = cursor.fetchone().id
+                row = cursor.fetchone()
+                order_id = row.id
+                checkout_from = row.checkout_from
 
                 # for updating quantity_in_stock
                 GET_ITEM_AND_QUANTITY_ORDERED = """SELECT id, product_item_id, quantity FROM order_items 
@@ -325,10 +327,10 @@ class PaymentSuccessful(Resource):
                 for order_item_dict in order_items_list:
                     product_item_id = order_item_dict["product_item_id"]
                     quantity = order_item_dict["quantity"]
-                    UPDATE_QUANTITY_IN_STOCK = """UPDATE product_items SET quantity_in_stock = quantity_in_stock - %s 
+                    DELETE_ITEMS_ORDERED_FROM_CART = """UPDATE product_items SET quantity_in_stock = quantity_in_stock - %s 
                     WHERE id = %s"""
                     cursor.execute(
-                        UPDATE_QUANTITY_IN_STOCK,
+                        DELETE_ITEMS_ORDERED_FROM_CART,
                         (
                             quantity,
                             product_item_id,
@@ -336,6 +338,30 @@ class PaymentSuccessful(Resource):
                     )
                     if cursor.rowcount != 1:
                         abort(400, "Bad Request: update product_items row error")
+
+                # remove items from cart if checkout_from is 'cart'
+                if checkout_from == "cart":
+                    for order_item_dict in order_items_list:
+                        product_item_id = order_item_dict["product_item_id"]
+                        quantity = order_item_dict["quantity"]
+
+                        GET_CART_ID = """SELECT id FROM carts WHERE customer_id = %s"""
+                        cursor.execute(GET_CART_ID, (customer_id,))
+                        row = cursor.fetchone()
+                        if not row:
+                            app.logger.debug("cart_id not found!")
+                        cart_id = row.id
+
+                        DELETE_ITEMS_ORDERED_FROM_CART = """DELETE FROM cart_items WHERE product_item_id = %s AND cart_id = %s"""
+                        cursor.execute(
+                            DELETE_ITEMS_ORDERED_FROM_CART,
+                            (
+                                product_item_id,
+                                cart_id,
+                            ),
+                        )
+                        if cursor.rowcount == 0:
+                            abort(400, "Bad Request: delete cart_items rows error")
 
             except (Exception, psycopg2.Error) as err:
                 app.logger.debug(err)
