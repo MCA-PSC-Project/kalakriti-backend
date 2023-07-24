@@ -15,6 +15,10 @@ CREATE TYPE "order__status" AS ENUM (
 	'placed',
 	'failed'
 );
+CREATE TYPE "checkout__from" AS ENUM (
+	'cart',
+	'buy-now'
+);
 CREATE TYPE "order__item__status" AS ENUM (
 	'initiated',
 	'pending',
@@ -349,11 +353,28 @@ CREATE TABLE "payments"(
 	"updated_at" TIMESTAMPTZ
 	-- FOREIGN KEY("order_id") REFERENCES "orders"("id") ON DELETE SET NULL
 );
+CREATE TABLE "order_addresses"(
+	"id" SERIAL PRIMARY KEY,
+	"full_name" VARCHAR(100) NOT NULL,
+	"mobile_no" VARCHAR(13) NOT NULL,
+	"address_line1" VARCHAR(500) NOT NULL,
+	"address_line2" VARCHAR(500) NOT NULL,
+	"city" VARCHAR(25) NOT NULL,
+	"district" VARCHAR(25) NOT NULL,
+	"state" VARCHAR(25) NOT NULL,
+	"country" VARCHAR(25) NOT NULL,
+	"pincode" VARCHAR(10) NOT NULL,
+	"landmark" VARCHAR(50),
+	"added_at" TIMESTAMPTZ NOT NULL,
+	"updated_at" TIMESTAMPTZ
+);
 CREATE TABLE "orders"(
 	"id" SERIAL PRIMARY KEY,
 	"customer_id" INT,
 	"payment_id" INT UNIQUE,
+	"order_address_id" INT NOT NULL,
 	"order_status" order__status NOT NULL, 
+	"checkout_from" checkout__from NOT NULL, 
 	-- "shipping_address_id" INT NOT NULL,
 	-- "mobile_no" VARCHAR NOT NULL,
 	"total_original_price" NUMERIC NOT NULL CHECK ("total_original_price" >= 0),
@@ -365,6 +386,7 @@ CREATE TABLE "orders"(
 	"updated_at" TIMESTAMPTZ,
 	FOREIGN KEY("customer_id") REFERENCES "customers"("id") ON DELETE SET NULL,
 	FOREIGN KEY("payment_id") REFERENCES "payments"("id") ON DELETE SET NULL,
+	FOREIGN KEY("order_address_id") REFERENCES "order_addresses"("id") ON DELETE SET NULL
 		-- FOREIGN KEY("shipping_address_id") REFERENCES "addresses"("id"),
 		-- CONSTRAINT "sub_total_le_total_original_price" CHECK("sub_total" <= "total_original_price")
 );
@@ -387,23 +409,7 @@ CREATE TABLE "order_items"(
 	SET NULL,
 		CONSTRAINT "offer_price_le_original_price" CHECK("offer_price" <= "original_price")
 );
-CREATE TABLE "order_addresses"(
-	"id" SERIAL PRIMARY KEY,
-	"order_id" INT NOT NULL UNIQUE,
-	"full_name" VARCHAR(100) NOT NULL,
-	"mobile_no" VARCHAR(13) NOT NULL,
-	"address_line1" VARCHAR(500) NOT NULL,
-	"address_line2" VARCHAR(500) NOT NULL,
-	"city" VARCHAR(25) NOT NULL,
-	"district" VARCHAR(25) NOT NULL,
-	"state" VARCHAR(25) NOT NULL,
-	"country" VARCHAR(25) NOT NULL,
-	"pincode" VARCHAR(10) NOT NULL,
-	"landmark" VARCHAR(50),
-	"added_at" TIMESTAMPTZ NOT NULL,
-	"updated_at" TIMESTAMPTZ,
-	FOREIGN KEY("order_id") REFERENCES "orders"("id")
-);
+
 -- CREATE TABLE "coupons"(
 -- 	"id" SERIAL PRIMARY KEY,
 -- 	"code" VARCHAR(50) UNIQUE NOT NULL,
