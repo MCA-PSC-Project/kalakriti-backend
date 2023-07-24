@@ -29,6 +29,13 @@ class Payment(Resource):
         order_dict["total_discount"] = 0
         order_dict["total_tax"] = 0
 
+        if order_dict.get("checkout_from_cart") == True:
+            checkout_from = "cart"
+        elif order_dict.get("checkout_from_cart") == False:
+            checkout_from = "buy_now"
+        else:
+            abort(400, "checkout_from_cart not passed correctly")
+
         # before beginning transaction autocommit must be off
         app_globals.db_conn.autocommit = False
         try:
@@ -62,19 +69,6 @@ class Payment(Resource):
                         product_item_id,
                     )
                     abort(400, "Bad Request")
-                remaining_quantity = quantity_in_stock - quantity
-                UPDATE_QUANTITY_IN_STOCK = (
-                    """UPDATE product_items SET quantity_in_stock = %s WHERE id = %s"""
-                )
-                cursor.execute(
-                    UPDATE_QUANTITY_IN_STOCK,
-                    (
-                        remaining_quantity,
-                        product_item_id,
-                    ),
-                )
-                if cursor.rowcount != 1:
-                    abort(400, "Bad Request: update addresses row error")
 
                 order_dict["total_original_price"] += order_item_dict.get(
                     "original_price"
@@ -82,8 +76,8 @@ class Payment(Resource):
                 order_dict["sub_total"] += order_item_dict.get(
                     "offer_price"
                 ) * order_item_dict.get("quantity")
-                order_dict["total_discount"] += order_item_dict.get("discount")
-                order_dict["total_tax"] += order_item_dict.get("tax")
+                order_dict["total_discount"] += order_item_dict.get("discount", 0)
+                order_dict["total_tax"] += order_item_dict.get("tax", 0)
             order_dict["grand_total"] = (
                 order_dict["sub_total"]
                 - order_dict["total_discount"]
@@ -124,28 +118,7 @@ class Payment(Resource):
             )
             payment_id = cursor.fetchone()[0]
 
-            CREATE_ORDER = """INSERT INTO orders(customer_id, payment_id, order_status, total_original_price, sub_total, 
-            total_discount, total_tax, grand_total, added_at)
-            VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s) RETURNING id"""
-
-            cursor.execute(
-                CREATE_ORDER,
-                (
-                    customer_id,
-                    payment_id,
-                    "checkout",
-                    order_dict.get("total_original_price"),
-                    order_dict.get("sub_total"),
-                    order_dict.get("total_discount"),
-                    order_dict.get("total_tax"),
-                    order_dict.get("grand_total"),
-                    current_time,
-                ),
-            )
-            order_id = cursor.fetchone()[0]
-
             address_id = order_dict.get("shipping_address_id")
-
             GET_ADDRESS = """SELECT a.id AS address_id, a.full_name, a.mobile_no, 
             a.address_line1, a.address_line2, a.city, a.district, a.state,
             a.country, a.pincode, a.landmark, a.added_at, a.updated_at
@@ -175,14 +148,13 @@ class Payment(Resource):
             )
 
             # add adddress for order
-            CREATE_ORDER_ADDRESS = """INSERT INTO order_addresses(order_id, full_name, mobile_no, address_line1, address_line2, 
+            CREATE_ORDER_ADDRESS = """INSERT INTO order_addresses(full_name, mobile_no, address_line1, address_line2, 
             city, district, state, country, pincode, landmark, added_at)
-            VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s) RETURNING id"""
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s) RETURNING id"""
 
             cursor.execute(
                 CREATE_ORDER_ADDRESS,
                 (
-                    order_id,
                     address_dict.get("full_name"),
                     address_dict.get("mobile_no"),
                     address_dict.get("address_line1"),
@@ -198,6 +170,29 @@ class Payment(Resource):
             )
             order_address_id = cursor.fetchone()[0]
 
+            CREATE_ORDER = """INSERT INTO orders(customer_id, payment_id, order_address_id, order_status, checkout_from,
+            total_original_price, sub_total, 
+            total_discount, total_tax, grand_total, added_at)
+            VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s) RETURNING id"""
+
+            cursor.execute(
+                CREATE_ORDER,
+                (
+                    customer_id,
+                    payment_id,
+                    order_address_id,
+                    "checkout",
+                    checkout_from,
+                    order_dict.get("total_original_price"),
+                    order_dict.get("sub_total"),
+                    order_dict.get("total_discount"),
+                    order_dict.get("total_tax"),
+                    order_dict.get("grand_total"),
+                    current_time,
+                ),
+            )
+            order_id = cursor.fetchone()[0]
+
             # add order items
             INSERT_ORDER_ITEMS = """INSERT INTO order_items(order_id, product_item_id, quantity,
             original_price, offer_price, discount_percent, discount, tax, added_at)
@@ -211,13 +206,13 @@ class Payment(Resource):
                     order_item_dict.get("quantity"),
                     order_item_dict.get("original_price"),
                     order_item_dict.get("offer_price"),
-                    order_item_dict.get("discount_percent"),
-                    order_item_dict.get("discount"),
-                    order_item_dict.get("tax"),
+                    order_item_dict.get("discount_percent", 0),
+                    order_item_dict.get("discount", 0),
+                    order_item_dict.get("tax", 0),
                     current_time,
                 )
                 values_tuple_list.append(values_tuple)
-            app.logger.debug("values_tuple_list= %s", values_tuple_list)
+            # app.logger.debug("values_tuple_list= %s", values_tuple_list)
 
             psycopg2.extras.execute_batch(cursor, INSERT_ORDER_ITEMS, values_tuple_list)
 
@@ -277,11 +272,11 @@ class PaymentSuccessful(Resource):
             app_globals.db_conn.autocommit = False
             try:
                 cursor = app_globals.get_named_tuple_cursor()
-                UPDATE_ADDRESS = """UPDATE payments SET payment_status= %s, provider_payment_id= %s, updated_at= %s 
-                WHERE provider_order_id = %s"""
+                UPDATE_PAYMENT = """UPDATE payments SET payment_status= %s, provider_payment_id= %s, updated_at= %s 
+                WHERE provider_order_id = %s RETURNING id"""
 
                 cursor.execute(
-                    UPDATE_ADDRESS,
+                    UPDATE_PAYMENT,
                     (
                         "success",
                         razorpay_dict.get("razorpayPaymentId"),
@@ -291,6 +286,56 @@ class PaymentSuccessful(Resource):
                 )
                 if cursor.rowcount != 1:
                     abort(400, "Bad Request: update payments row error")
+                payment_id = cursor.fetchone().id
+                app.logger.debug("payment_id= %s", payment_id)
+
+                UPDATE_ORDER_STATUS = """UPDATE orders SET order_status= %s, updated_at= %s 
+                WHERE payment_id = %s RETURNING id"""
+
+                cursor.execute(
+                    UPDATE_ORDER_STATUS,
+                    (
+                        "placed",
+                        datetime.now(timezone.utc),
+                        payment_id,
+                    ),
+                )
+                if cursor.rowcount != 1:
+                    abort(400, "Bad Request: update orders row error")
+                order_id = cursor.fetchone().id
+
+                # for updating quantity_in_stock
+                GET_ITEM_AND_QUANTITY_ORDERED = """SELECT id, product_item_id, quantity FROM order_items 
+                WHERE order_id = %s"""
+                cursor.execute(
+                    GET_ITEM_AND_QUANTITY_ORDERED,
+                    (order_id,),
+                )
+                rows = cursor.fetchall()
+                if not rows:
+                    pass
+                order_items_list = []
+                for row in rows:
+                    order_item_dict = {}
+                    order_item_dict["id"] = row.id
+                    order_item_dict["product_item_id"] = row.product_item_id
+                    order_item_dict["quantity"] = row.quantity
+                    order_items_list.append(order_item_dict)
+
+                for order_item_dict in order_items_list:
+                    product_item_id = order_item_dict["product_item_id"]
+                    quantity = order_item_dict["quantity"]
+                    UPDATE_QUANTITY_IN_STOCK = """UPDATE product_items SET quantity_in_stock = quantity_in_stock - %s 
+                    WHERE id = %s"""
+                    cursor.execute(
+                        UPDATE_QUANTITY_IN_STOCK,
+                        (
+                            quantity,
+                            product_item_id,
+                        ),
+                    )
+                    if cursor.rowcount != 1:
+                        abort(400, "Bad Request: update product_items row error")
 
             except (Exception, psycopg2.Error) as err:
                 app.logger.debug(err)

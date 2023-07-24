@@ -17,7 +17,7 @@ CREATE TYPE "order__status" AS ENUM (
 );
 CREATE TYPE "checkout__from" AS ENUM (
 	'cart',
-	'buy-now'
+	'buy_now'
 );
 CREATE TYPE "order__item__status" AS ENUM (
 	'initiated',

@@ -2182,12 +2182,12 @@
     "method": "POST",
     "sortNum": 0,
     "created": "2023-07-20T05:25:37.602Z",
-    "modified": "2023-07-21T09:40:56.664Z",
+    "modified": "2023-07-24T14:36:37.203Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n  \"shipping_address_id\": 2,\n  \"order_items\": [\n    {\n      \"product_item_id\": 4,\n      \"quantity\": 2,\n      \"discount_percent\": 50,\n      \"discount\": 50,\n      \"tax\": 20\n    }\n  ]\n}",
+      "raw": "{\n  \"checkout_from_cart\": false,\n  \"shipping_address_id\": 2,\n  \"order_items\": [\n    {\n      \"product_item_id\": 13,\n      \"quantity\": 2\n    },\n    {\n      \"product_item_id\": 12,\n      \"quantity\": 2\n    }\n  ]\n}",
       "form": []
     },
     "auth": {
