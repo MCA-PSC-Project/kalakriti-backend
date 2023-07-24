@@ -20,10 +20,11 @@ class Cart(Resource):
         data = request.get_json()
         product_item_id = data.get("product_item_id", None)
         quantity = data.get("quantity", None)
+        current_time = datetime.now(timezone.utc)
 
         app_globals.db_conn.autocommit = False
         try:
-            cursor = app_globals.get_cursor()
+            cursor = app_globals.get_named_tuple_cursor()
             GET_CART_ID = """SELECT id from carts WHERE customer_id = %s"""
             cursor.execute(GET_CART_ID, (customer_id,))
             row = cursor.fetchone()
@@ -39,18 +40,35 @@ class Cart(Resource):
                 row = cursor.fetchone()
             cart_id = row[0]
 
-            ADD_TO_CART = """INSERT INTO cart_items(cart_id,product_item_id,quantity, added_at)
-                                VALUES(%s,%s,%s,%s)"""
+            # the RETURNING clause is used to return the value of the quantity column after the
+            # INSERT or UPDATE operation is performed.
+            # If an INSERT operation is performed, the value returned will be the value that was inserted.
+            # If an UPDATE operation is performed, the value returned will be the updated value of the quantity column.
+
+            ADD_TO_CART = """INSERT INTO cart_items(cart_id, product_item_id, quantity, added_at)
+            VALUES(%s, %s, %s, %s) ON CONFLICT (cart_id, product_item_id)
+            DO UPDATE SET quantity = cart_items.quantity + 1, updated_at = %s RETURNING quantity"""
+
             cursor.execute(
                 ADD_TO_CART,
                 (
                     cart_id,
                     product_item_id,
                     quantity,
-                    datetime.now(timezone.utc),
+                    current_time,
+                    current_time,
                 ),
             )
-        # id = cursor.fetchone()[0]
+            returned_quantity = cursor.fetchone().quantity
+            if returned_quantity != quantity:
+                # Quantity was updated
+                return_string = f"""Quantity increased by 1 for Product_item_id = {product_item_id} for customer_id = {customer_id}"""
+                return_status_code = 200
+            elif returned_quantity == quantity:
+                # Quantity was inserted
+                return_string = f"""Product_item_id = {product_item_id} added to cart for customer_id = {customer_id}"""
+                return_status_code = 201
+
         except (Exception, psycopg2.Error) as err:
             app.logger.debug(err)
             app_globals.db_conn.rollback()
@@ -61,10 +79,7 @@ class Cart(Resource):
             cursor.close()
         app_globals.db_conn.commit()
         app_globals.db_conn.autocommit = True
-        return (
-            f"Product_item_id = {product_item_id} added to cart for customer_id {customer_id}",
-            201,
-        )
+        return (return_string, return_status_code)
 
     @f_jwt.jwt_required()
     def get(self):
