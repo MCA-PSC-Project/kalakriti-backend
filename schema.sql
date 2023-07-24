@@ -10,10 +10,14 @@ CREATE TYPE "product__status" AS ENUM (
 	'review_rejected',
 	'trashed'
 );
-CREATE TYPE "checkout__status" AS ENUM (
-	'pending',
-	'success',
-	'failure'
+
+CREATE TYPE "checkout__from" AS ENUM (
+	'cart',
+	'buy_now',
+);
+CREATE TYPE "checkout__from" AS ENUM (
+	'cart',
+	'buy_now',
 );
 CREATE TYPE "order__item__status" AS ENUM (
 	'initiated',
@@ -391,7 +395,10 @@ CREATE TABLE "orders"(
 	"id" SERIAL PRIMARY KEY,
 	"customer_id" INT,
 	"payment_id" INT UNIQUE,
-	"shipping_address_id" INT NOT NULL,
+	"order_status" order__status NOT NULL, 
+	"checkout_from" checkout__from NOT NULL,
+	-- "shipping_address_id" INT NOT NULL,
+	-- "mobile_no" VARCHAR NOT NULL,
 	"total_original_price" NUMERIC NOT NULL CHECK ("total_original_price" >= 0),
 	"sub_total" NUMERIC NOT NULL CHECK ("sub_total" >= 0),
 	"total_discount" NUMERIC NOT NULL DEFAULT 0 CHECK ("total_discount" >= 0),
