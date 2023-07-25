@@ -96,7 +96,7 @@ class Payment(Resource):
 
             payment_order = app_globals.payment_client.order.create(data=data)
             # app.logger.debug("payment_client= %s", app_globals.payment_client)
-            # app.logger.debug("payment_order= %s", payment_order)
+            app.logger.debug("payment_order= %s", payment_order)
             if not payment_order:
                 app.logger.debug("error : payment_order= %s", payment_order)
                 abort(400, "Bad request")
