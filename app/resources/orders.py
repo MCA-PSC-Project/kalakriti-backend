@@ -109,7 +109,7 @@ class Orders(Resource):
                     None,
                     "POD",
                     "initiated",
-                    datetime.now(timezone.utc),
+                    current_time,
                 ),
             )
             payment_id = cursor.fetchone()[0]

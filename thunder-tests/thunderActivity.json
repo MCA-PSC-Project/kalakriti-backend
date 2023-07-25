@@ -186,12 +186,12 @@
     "method": "POST",
     "sortNum": 0,
     "created": "2023-04-20T09:36:40.523Z",
-    "modified": "2023-07-24T16:08:50.109Z",
+    "modified": "2023-07-25T14:07:02.308Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n  \"checkout_from_cart\": true,\n  \"shipping_address_id\": 2,\n  \"order_items\": [\n    {\n      \"product_item_id\": 13,\n      \"quantity\": 2,\n      \"discount_percent\": 50,\n      \"discount\": 50,\n      \"tax\": 20\n    },\n    {\n      \"product_item_id\": 12,\n      \"quantity\": 2,\n      \"discount_percent\": 50,\n      \"discount\": 50,\n      \"tax\": 20\n    }\n  ]\n}",
+      "raw": "{\n  \"checkout_from_cart\": true,\n  \"shipping_address_id\": 2,\n  \"order_items\": [\n    {\n      \"product_item_id\": 13,\n      \"quantity\": 2\n    },\n    {\n      \"product_item_id\": 12,\n      \"quantity\": 2\n    }\n  ]\n}",
       "form": []
     },
     "auth": {
@@ -2136,12 +2136,12 @@
     "method": "POST",
     "sortNum": 0,
     "created": "2023-07-20T05:25:37.602Z",
-    "modified": "2023-07-24T16:05:27.698Z",
+    "modified": "2023-07-25T14:05:54.042Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n  \"checkout_from_cart\": false,\n  \"shipping_address_id\": 2,\n  \"order_items\": [\n    {\n      \"product_item_id\": 13,\n      \"quantity\": 2\n    },\n    {\n      \"product_item_id\": 12,\n      \"quantity\": 2\n    }\n  ]\n}",
+      "raw": "{\n  \"checkout_from_cart\": true,\n  \"shipping_address_id\": 2,\n  \"order_items\": [\n    {\n      \"product_item_id\": 13,\n      \"quantity\": 2\n    },\n    {\n      \"product_item_id\": 12,\n      \"quantity\": 2\n    }\n  ]\n}",
       "form": []
     },
     "auth": {

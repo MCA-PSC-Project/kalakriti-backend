@@ -113,7 +113,7 @@ class Payment(Resource):
                     None,
                     None,
                     "initiated",
-                    datetime.now(timezone.utc),
+                    current_time,
                 ),
             )
             payment_id = cursor.fetchone()[0]
