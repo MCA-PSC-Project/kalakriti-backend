@@ -244,52 +244,6 @@
     "docs": "```json\n{\n    \"email\": \"customer1@gmail.com\",\n    \"password\": \"abcd@1234\"\n}\n```\n```\n{\n  \"email\": \"customer2@gmail.com\",\n  \"password\": \"abcd@1234\"\n}\n```\n"
   },
   {
-    "_id": "a621605f-b642-4e3e-a7f5-90e5d94477eb",
-    "colId": "history",
-    "containerId": "",
-    "name": "{{baseUrl}}/sellers/product-items/39",
-    "url": "{{baseUrl}}/sellers/product-items/39",
-    "method": "PATCH",
-    "sortNum": 0,
-    "created": "2023-05-04T02:37:18.206Z",
-    "modified": "2023-05-04T02:37:36.029Z",
-    "headers": [],
-    "params": [],
-    "body": {
-      "type": "json",
-      "raw": "{\n  \"product_item_status\": \"published\"\n}",
-      "form": []
-    },
-    "auth": {
-      "type": "bearer",
-      "bearer": "{{admin_token}}"
-    },
-    "tests": []
-  },
-  {
-    "_id": "315ab257-5050-461d-a751-156e6458c183",
-    "colId": "history",
-    "containerId": "",
-    "name": "{{baseUrl}}/sellers/product-items/40",
-    "url": "{{baseUrl}}/sellers/product-items/40",
-    "method": "PATCH",
-    "sortNum": 0,
-    "created": "2023-05-04T03:25:51.946Z",
-    "modified": "2023-05-04T03:26:04.166Z",
-    "headers": [],
-    "params": [],
-    "body": {
-      "type": "json",
-      "raw": "{\n  \"product_item_status\": \"draft\"\n}",
-      "form": []
-    },
-    "auth": {
-      "type": "bearer",
-      "bearer": "{{admin_token}}"
-    },
-    "tests": []
-  },
-  {
     "_id": "b8e7fa7c-e460-49ce-8a3e-649472992c2a",
     "colId": "history",
     "containerId": "",
@@ -2231,6 +2185,29 @@
     "modified": "2023-07-24T17:13:28.355Z",
     "headers": [],
     "params": [],
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{customer_token}}"
+    },
+    "tests": []
+  },
+  {
+    "_id": "8a3f2a21-63ce-4ef5-89a9-cdbb2db518ac",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/wishlists",
+    "url": "{{baseUrl}}/wishlists",
+    "method": "POST",
+    "sortNum": 0,
+    "created": "2023-07-25T10:33:50.479Z",
+    "modified": "2023-07-25T10:33:50.479Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n  \"product_item_id\": 12\n}",
+      "form": []
+    },
     "auth": {
       "type": "bearer",
       "bearer": "{{customer_token}}"
