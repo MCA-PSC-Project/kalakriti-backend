@@ -498,7 +498,7 @@ class CustomerOrders(Resource):
         #     WHERE o.customer_id = %s
         #     ORDER BY o.added_at DESC"""
 
-        GET_ORDERS = """SELECT o.id AS order_id, o.added_at, o.updated_at, 
+        GET_ORDERS = """SELECT o.id AS order_id, o.order_status, o.added_at, o.updated_at, 
         oi.id AS order_item_id, oi.order_item_status, oi.quantity, 
         p.id AS product_id, p.product_name, p.product_status,
         s.id AS seller_id, s.seller_name, s.email,
@@ -508,7 +508,7 @@ class CustomerOrders(Resource):
         JOIN product_items pi ON pi.id = oi.product_item_id
         JOIN products p ON p.id = pi.product_id
         JOIN sellers s ON p.seller_id = s.id 
-        WHERE o.customer_id = %s
+        WHERE o.customer_id = %s AND order_status != 'checkout'
         ORDER BY o.added_at DESC"""
 
         try:
@@ -520,6 +520,7 @@ class CustomerOrders(Resource):
             for row in rows:
                 order_dict = {}
                 order_dict["order_id"] = row.order_id
+                order_dict["order_status"] = row.order_status
                 order_dict.update(
                     json.loads(json.dumps({"added_at": row.added_at}, default=str))
                 )

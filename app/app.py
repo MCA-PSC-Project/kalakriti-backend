@@ -312,12 +312,12 @@ def create_app(config_name):
         ViewedProducts, "/viewed-products", "/viewed-products/<int:product_id>"
     )
 
-    @app.errorhandler(ExpiredSignatureError)
-    def handle_expired_token(e):
-        response = jsonify({"msg": "Token has expired"})
-        app.logger.debug("Token has expired")
-        response.status_code = 401
-        return response
+    # @app.errorhandler(ExpiredSignatureError)
+    # def handle_expired_token(e):
+    #     response = jsonify({"msg": "Token has expired"})
+    #     app.logger.debug("Token has expired")
+    #     response.status_code = 401
+    #     return response
 
     # to be exceuted at app exit for cleanups
     @atexit.register
