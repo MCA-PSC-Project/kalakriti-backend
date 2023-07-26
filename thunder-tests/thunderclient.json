@@ -48,12 +48,12 @@
     "method": "POST",
     "sortNum": 30000,
     "created": "2023-02-20T16:38:51.030Z",
-    "modified": "2023-06-15T10:02:59.596Z",
+    "modified": "2023-07-26T08:54:57.726Z",
     "headers": [],
     "params": [],
     "auth": {
       "type": "bearer",
-      "bearer": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTY4NjgyMzM2OCwianRpIjoiNTYxMzczNDYtYjkzMC00Njg4LThjZDItNjk2NzkyMWQ3MmIzIiwidHlwZSI6InJlZnJlc2giLCJzdWIiOjEsIm5iZiI6MTY4NjgyMzM2OCwiZXhwIjoxNjg2ODIzNjY4LCJ1c2VyX3R5cGUiOiJjdXN0b21lciJ9.Jf4KXqkCBOWqA9NE40pyVs5oBgkrXeNL6QSqclYajpQ"
+      "bearer": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTY5MDM1NDY2NywianRpIjoiMDRkMDc2OWUtMmRmYS00YWFlLTk5M2EtMDc5MTEyMmMwOTdmIiwidHlwZSI6InJlZnJlc2giLCJzdWIiOjEsIm5iZiI6MTY5MDM1NDY2NywiZXhwIjoxNjkyOTQ2NjY3LCJ1c2VyX3R5cGUiOiJjdXN0b21lciJ9.Q3ZUhLwG0i3O--sJs4uoNEyuVRMl9YGdWzyY-GtYWf0"
     },
     "tests": []
   },

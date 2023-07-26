@@ -2136,12 +2136,12 @@
     "method": "POST",
     "sortNum": 0,
     "created": "2023-07-20T05:25:37.602Z",
-    "modified": "2023-07-25T14:05:54.042Z",
+    "modified": "2023-07-26T05:59:25.559Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n  \"checkout_from_cart\": true,\n  \"shipping_address_id\": 2,\n  \"order_items\": [\n    {\n      \"product_item_id\": 13,\n      \"quantity\": 2\n    },\n    {\n      \"product_item_id\": 12,\n      \"quantity\": 2\n    }\n  ]\n}",
+      "raw": "{\n  \"checkout_from_cart\": false,\n  \"shipping_address_id\": 2,\n  \"order_items\": [\n    {\n      \"product_item_id\": 13,\n      \"quantity\": 2\n    },\n    {\n      \"product_item_id\": 12,\n      \"quantity\": 2\n    }\n  ]\n}",
       "form": []
     },
     "auth": {
@@ -2211,6 +2211,24 @@
     "auth": {
       "type": "bearer",
       "bearer": "{{customer_token}}"
+    },
+    "tests": []
+  },
+  {
+    "_id": "fe84631b-5822-4764-8fee-1af5eff62153",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/auth/refresh",
+    "url": "{{baseUrl}}/auth/refresh",
+    "method": "POST",
+    "sortNum": 0,
+    "created": "2023-07-26T08:54:56.744Z",
+    "modified": "2023-07-26T08:54:56.744Z",
+    "headers": [],
+    "params": [],
+    "auth": {
+      "type": "bearer",
+      "bearer": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTY5MDM1NDY2NywianRpIjoiMDRkMDc2OWUtMmRmYS00YWFlLTk5M2EtMDc5MTEyMmMwOTdmIiwidHlwZSI6InJlZnJlc2giLCJzdWIiOjEsIm5iZiI6MTY5MDM1NDY2NywiZXhwIjoxNjkyOTQ2NjY3LCJ1c2VyX3R5cGUiOiJjdXN0b21lciJ9.Q3ZUhLwG0i3O--sJs4uoNEyuVRMl9YGdWzyY-GtYWf0"
     },
     "tests": []
   }

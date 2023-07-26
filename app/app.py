@@ -1,7 +1,8 @@
 # import psycopg2
 from flask_cors import CORS
+from jwt import ExpiredSignatureError
 from psycopg2.pool import SimpleConnectionPool
-from flask import Flask, request
+from flask import Flask, request, jsonify
 from flask_restful import Api
 import flask_jwt_extended
 import flask_mail
@@ -310,6 +311,13 @@ def create_app(config_name):
     api.add_resource(
         ViewedProducts, "/viewed-products", "/viewed-products/<int:product_id>"
     )
+
+    @app.errorhandler(ExpiredSignatureError)
+    def handle_expired_token(e):
+        response = jsonify({"msg": "Token has expired"})
+        app.logger.debug("Token has expired")
+        response.status_code = 401
+        return response
 
     # to be exceuted at app exit for cleanups
     @atexit.register
