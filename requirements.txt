@@ -1,12 +1,12 @@
 python-dotenv
 flask
 flask-restful
-flask-jwt-extended
+flask-jwt-extended==4.4.4
 flask-mail
 itsdangerous
 psycopg2-binary
 bcrypt
-gunicorn==20.1.0
+gunicorn 
 boto3
 pyotp
 qrcode
