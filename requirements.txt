@@ -6,7 +6,7 @@ flask-mail
 itsdangerous
 psycopg2-binary
 bcrypt
-gunicorn
+gunicorn==20.1.0
 boto3
 pyotp
 qrcode
