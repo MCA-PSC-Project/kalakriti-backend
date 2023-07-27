@@ -402,20 +402,22 @@ class OrderItems(Resource):
         try:
             cursor = app_globals.get_named_tuple_cursor()
 
-            GET_ORDER_ITEMS = """SELECT oi.id AS order_item_id, oi.order_item_status, oi.quantity, 
+            GET_ORDER_ITEM = """SELECT oi.id AS order_item_id, oi.order_item_status, oi.quantity, 
             oi.original_price, oi.offer_price, oi.discount_percent, oi.discount, oi.tax, oi.product_item_id, 
             o.id AS order_id,
+            pay.payment_mode, pay.payment_status,
             pi.product_id, p.product_name,
             o_ad.id AS address_id, o_ad.address_line1, o_ad.address_line2, o_ad.city, 
             o_ad.district, o_ad.state, o_ad.country, o_ad.pincode, o_ad.landmark
             FROM order_items oi
             JOIN orders o ON o.id = oi.order_id
+            JOIN payments pay ON pay.id = o.payment_id
             JOIN order_addresses o_ad ON o_ad.id = o.order_address_id
             JOIN product_items pi ON pi.id = oi.product_item_id
             JOIN products p ON p.id = pi.product_id
             WHERE oi.id = %s"""
 
-            cursor.execute(GET_ORDER_ITEMS, (order_item_id,))
+            cursor.execute(GET_ORDER_ITEM, (order_item_id,))
             rows = cursor.fetchall()
             order_items_list = []
             if not rows:
@@ -451,6 +453,11 @@ class OrderItems(Resource):
                 order_item_dict["product_item_id"] = row.product_item_id
                 order_item_dict["product_id"] = row.product_id
                 order_item_dict["product_name"] = row.product_name
+
+                payment_dict={}
+                payment_dict["payment_mode"]=row.payment_mode
+                payment_dict["payment_status"]=row.payment_status
+                order_item_dict.update({"payment": payment_dict})
 
                 address_dict = {}
                 address_dict["address_id"] = row.address_id
