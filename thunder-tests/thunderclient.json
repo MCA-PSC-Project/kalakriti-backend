@@ -48,12 +48,12 @@
     "method": "POST",
     "sortNum": 30000,
     "created": "2023-02-20T16:38:51.030Z",
-    "modified": "2023-06-15T10:02:59.596Z",
+    "modified": "2023-07-26T08:54:57.726Z",
     "headers": [],
     "params": [],
     "auth": {
       "type": "bearer",
-      "bearer": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTY4NjgyMzM2OCwianRpIjoiNTYxMzczNDYtYjkzMC00Njg4LThjZDItNjk2NzkyMWQ3MmIzIiwidHlwZSI6InJlZnJlc2giLCJzdWIiOjEsIm5iZiI6MTY4NjgyMzM2OCwiZXhwIjoxNjg2ODIzNjY4LCJ1c2VyX3R5cGUiOiJjdXN0b21lciJ9.Jf4KXqkCBOWqA9NE40pyVs5oBgkrXeNL6QSqclYajpQ"
+      "bearer": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTY5MDM1NDY2NywianRpIjoiMDRkMDc2OWUtMmRmYS00YWFlLTk5M2EtMDc5MTEyMmMwOTdmIiwidHlwZSI6InJlZnJlc2giLCJzdWIiOjEsIm5iZiI6MTY5MDM1NDY2NywiZXhwIjoxNjkyOTQ2NjY3LCJ1c2VyX3R5cGUiOiJjdXN0b21lciJ9.Q3ZUhLwG0i3O--sJs4uoNEyuVRMl9YGdWzyY-GtYWf0"
     },
     "tests": []
   },
@@ -2006,11 +2006,11 @@
     "colId": "80d178ef-5176-474a-8708-db78bd45faee",
     "containerId": "2ffd39e9-6675-40b7-abd0-296aaf9564ad",
     "name": "get order information by order id",
-    "url": "{{baseUrl}}/orders/2",
+    "url": "{{baseUrl}}/orders/25",
     "method": "GET",
     "sortNum": 525000,
     "created": "2023-03-05T07:29:39.649Z",
-    "modified": "2023-04-20T09:38:35.072Z",
+    "modified": "2023-07-26T17:06:27.333Z",
     "headers": [],
     "params": [],
     "auth": {
@@ -3468,20 +3468,20 @@
     "tests": []
   },
   {
-    "_id": "38359758-16f2-4c50-94f0-0c7829ab8359",
+    "_id": "a0c079cf-e820-4acc-8dd1-60e61bec7fa6",
     "colId": "80d178ef-5176-474a-8708-db78bd45faee",
     "containerId": "2ffd39e9-6675-40b7-abd0-296aaf9564ad",
-    "name": "get orders for a seller",
-    "url": "{{baseUrl}}/order-list-for-seller",
+    "name": "get order item information by order item id ",
+    "url": "{{baseUrl}}/order-items/42",
     "method": "GET",
-    "sortNum": 1110000,
-    "created": "2023-07-20T07:42:03.725Z",
-    "modified": "2023-07-20T07:42:58.403Z",
+    "sortNum": 526250,
+    "created": "2023-07-27T06:16:50.694Z",
+    "modified": "2023-07-27T06:19:13.328Z",
     "headers": [],
     "params": [],
     "auth": {
       "type": "bearer",
-      "bearer": "{{seller_token}}"
+      "bearer": "{{customer_token}}"
     },
     "tests": []
   }
