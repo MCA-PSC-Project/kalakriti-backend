@@ -8,6 +8,15 @@ CREATE TYPE "product__status" AS ENUM (
 	'draft',
 	'trashed'
 );
+CREATE TYPE "order__status" AS ENUM (
+	'checkout',
+	'placed',
+	'failed'
+);
+CREATE TYPE "checkout__from" AS ENUM (
+	'cart',
+	'buy_now'
+);
 CREATE TYPE "order__item__status" AS ENUM (
 	'initiated',
 	'pending',
@@ -23,11 +32,11 @@ CREATE TYPE "order__item__status" AS ENUM (
 	'failure',
 	'success'
 );
-CREATE TYPE "payment__status" AS ENUM ('failure', 'success', 'pending');
+CREATE TYPE "payment__status" AS ENUM ('initiated', 'failure', 'success', 'pending');
 CREATE TYPE "approval__status" AS ENUM ('pending', 'approved', 'rejected');
 CREATE TYPE "payment__mode" AS ENUM (
 	'POD',
-	'upi',
+	'UPI',
 	'credit_card',
 	'debit_card',
 	'net_banking',
@@ -307,72 +316,6 @@ CREATE TABLE "banners"(
 	"redirect_url" VARCHAR NOT NULL,
 	FOREIGN KEY("media_id") REFERENCES "media"("id") ON DELETE CASCADE
 );
-CREATE TABLE "orders"(
-	"id" SERIAL PRIMARY KEY,
-	"customer_id" INT,
-	-- "shipping_address_id" INT NOT NULL,
-	-- "mobile_no" VARCHAR NOT NULL,
-	"total_original_price" NUMERIC NOT NULL CHECK ("total_original_price" >= 0),
-	"sub_total" NUMERIC NOT NULL CHECK ("sub_total" >= 0),
-	"total_discount" NUMERIC NOT NULL DEFAULT 0 CHECK ("total_discount" >= 0),
-	"total_tax" NUMERIC NOT NULL DEFAULT 0 CHECK ("total_tax" >= 0),
-	"grand_total" NUMERIC NOT NULL CHECK ("grand_total" >= 0),
-	"added_at" TIMESTAMPTZ NOT NULL,
-	"updated_at" TIMESTAMPTZ,
-	FOREIGN KEY("customer_id") REFERENCES "customers"("id") ON DELETE
-	SET NULL,
-		-- FOREIGN KEY("shipping_address_id") REFERENCES "addresses"("id"),
-		CONSTRAINT "sub_total_le_total_original_price" CHECK("sub_total" <= "total_original_price")
-);
-CREATE TABLE "order_items"(
-	"id" SERIAL PRIMARY KEY,
-	"order_id" INT NOT NULL,
-	"product_item_id" INT,
-	"order_item_status" order__item__status DEFAULT 'initiated',
-	"quantity" INT NOT NULL CHECK("quantity" > 0),
-	"original_price" NUMERIC NOT NULL CHECK ("original_price" >= 0),
-	"offer_price" NUMERIC NOT NULL CHECK ("offer_price" >= 0),
-	"discount_percent" NUMERIC NOT NULL CHECK ("discount_percent" >= 0),
-	"discount" NUMERIC NOT NULL CHECK ("discount" >= 0),
-	"tax" NUMERIC NOT NULL CHECK ("tax" >= 0),
-	"added_at" TIMESTAMPTZ NOT NULL,
-	"updated_at" TIMESTAMPTZ,
-	UNIQUE("order_id", "product_item_id"),
-	FOREIGN KEY("order_id") REFERENCES "orders"("id"),
-	FOREIGN KEY("product_item_id") REFERENCES "product_items"("id") ON DELETE
-	SET NULL,
-		CONSTRAINT "offer_price_le_original_price" CHECK("offer_price" <= "original_price")
-);
-CREATE TABLE "order_addresses"(
-	"id" SERIAL PRIMARY KEY,
-	"order_id" INT NOT NULL UNIQUE,
-	"full_name" VARCHAR(100) NOT NULL,
-	"mobile_no" VARCHAR(13) NOT NULL,
-	"address_line1" VARCHAR(500) NOT NULL,
-	"address_line2" VARCHAR(500) NOT NULL,
-	"city" VARCHAR(25) NOT NULL,
-	"district" VARCHAR(25) NOT NULL,
-	"state" VARCHAR(25) NOT NULL,
-	"country" VARCHAR(25) NOT NULL,
-	"pincode" VARCHAR(10) NOT NULL,
-	"landmark" VARCHAR(50),
-	"added_at" TIMESTAMPTZ NOT NULL,
-	"updated_at" TIMESTAMPTZ,
-	FOREIGN KEY("order_id") REFERENCES "orders"("id")
-);
-CREATE TABLE "payments"(
-	"id" SERIAL PRIMARY KEY,
-	"order_id" INT,
-	"provider" VARCHAR(50) NOT NULL,
-	"provider_order_id" VARCHAR NOT NULL,
-	"provider_payment_id" VARCHAR NOT NULL,
-	"payment_mode" payment__mode,
-	"payment_status" payment__status,
-	"added_at" TIMESTAMPTZ NOT NULL,
-	"updated_at" TIMESTAMPTZ,
-	FOREIGN KEY("order_id") REFERENCES "orders"("id") ON DELETE
-	SET NULL
-);
 CREATE TABLE "product_reviews"(
 	"id" SERIAL PRIMARY KEY,
 	"customer_id" INT,
@@ -395,6 +338,97 @@ CREATE TABLE "product_review_medias"(
 	FOREIGN KEY("media_id") REFERENCES "media"("id") ON DELETE CASCADE,
 	FOREIGN KEY("product_review_id") REFERENCES "product_reviews"("id") ON DELETE CASCADE
 );
+
+CREATE TABLE "payments"(
+	"id" SERIAL PRIMARY KEY,
+	-- "order_id" INT,
+	"provider" VARCHAR(50) NOT NULL,
+	"provider_order_id" VARCHAR NOT NULL,
+	"provider_payment_id" VARCHAR,
+	"payment_mode" payment__mode,
+	"payment_status" payment__status,
+	"added_at" TIMESTAMPTZ NOT NULL,
+	"updated_at" TIMESTAMPTZ
+	-- FOREIGN KEY("order_id") REFERENCES "orders"("id") ON DELETE SET NULL
+);
+CREATE TABLE "order_addresses"(
+	"id" SERIAL PRIMARY KEY,
+	"full_name" VARCHAR(100) NOT NULL,
+	"mobile_no" VARCHAR(13) NOT NULL,
+	"address_line1" VARCHAR(500) NOT NULL,
+	"address_line2" VARCHAR(500) NOT NULL,
+	"city" VARCHAR(25) NOT NULL,
+	"district" VARCHAR(25) NOT NULL,
+	"state" VARCHAR(25) NOT NULL,
+	"country" VARCHAR(25) NOT NULL,
+	"pincode" VARCHAR(10) NOT NULL,
+	"landmark" VARCHAR(50),
+	"added_at" TIMESTAMPTZ NOT NULL,
+	"updated_at" TIMESTAMPTZ
+);
+CREATE TABLE "orders"(
+	"id" SERIAL PRIMARY KEY,
+	"customer_id" INT,
+	"payment_id" INT UNIQUE,
+	"order_address_id" INT NOT NULL,
+	"order_status" order__status NOT NULL, 
+	"checkout_from" checkout__from NOT NULL, 
+	-- "shipping_address_id" INT NOT NULL,
+	-- "mobile_no" VARCHAR NOT NULL,
+	"total_original_price" NUMERIC NOT NULL CHECK ("total_original_price" >= 0),
+	"sub_total" NUMERIC NOT NULL CHECK ("sub_total" >= 0),
+	"total_discount" NUMERIC NOT NULL DEFAULT 0 CHECK ("total_discount" >= 0),
+	"total_tax" NUMERIC NOT NULL DEFAULT 0 CHECK ("total_tax" >= 0),
+	"grand_total" NUMERIC NOT NULL CHECK ("grand_total" >= 0),
+	"added_at" TIMESTAMPTZ NOT NULL,
+	"updated_at" TIMESTAMPTZ,
+	FOREIGN KEY("customer_id") REFERENCES "customers"("id") ON DELETE SET NULL,
+	FOREIGN KEY("payment_id") REFERENCES "payments"("id") ON DELETE SET NULL,
+	FOREIGN KEY("order_address_id") REFERENCES "order_addresses"("id") ON DELETE SET NULL
+		-- FOREIGN KEY("shipping_address_id") REFERENCES "addresses"("id"),
+		-- CONSTRAINT "sub_total_le_total_original_price" CHECK("sub_total" <= "total_original_price")
+);
+CREATE TABLE "order_items"(
+	"id" SERIAL PRIMARY KEY,
+	"order_id" INT NOT NULL,
+	"product_item_id" INT,
+	"order_item_status" order__item__status DEFAULT 'initiated',
+	"quantity" INT NOT NULL CHECK("quantity" > 0),
+	"original_price" NUMERIC NOT NULL CHECK ("original_price" >= 0),
+	"offer_price" NUMERIC NOT NULL CHECK ("offer_price" >= 0),
+	"discount_percent" NUMERIC NOT NULL CHECK ("discount_percent" >= 0),
+	"discount" NUMERIC NOT NULL CHECK ("discount" >= 0),
+	"tax" NUMERIC NOT NULL CHECK ("tax" >= 0),
+	"added_at" TIMESTAMPTZ NOT NULL,
+	"updated_at" TIMESTAMPTZ,
+	UNIQUE("order_id", "product_item_id"),
+	FOREIGN KEY("order_id") REFERENCES "orders"("id"),
+	FOREIGN KEY("product_item_id") REFERENCES "product_items"("id") ON DELETE
+	SET NULL,
+		CONSTRAINT "offer_price_le_original_price" CHECK("offer_price" <= "original_price")
+);
+
+-- CREATE TABLE "coupons"(
+-- 	"id" SERIAL PRIMARY KEY,
+-- 	"code" VARCHAR(50) UNIQUE NOT NULL,
+-- 	"description" TEXT,
+-- 	"discount_amount" NUMERIC,
+-- 	"discount_percentage" NUMERIC CHECK("discount_percentage" >= 0 AND "discount_percentage" <= 100),
+-- 	"start_date" DATE NOT NULL,
+-- 	"end_date" DATE NOT NULL,
+-- 	CHECK(("discount_amount" IS NOT NULL AND "discount_percentage" IS NULL) OR ("discount_amount" IS NULL AND "discount_percentage" IS NOT NULL))
+-- );
+-- CREATE TABLE "coupon_product_items"(
+-- 	"id" SERIAL PRIMARY KEY,
+-- 	"coupon_id" INT NOT NULL,
+-- 	"product_item_id" INT NOT NULL,
+-- 	FOREIGN KEY("coupon_id") REFERENCES "coupons"("id") ON DELETE CASCADE,
+-- 	FOREIGN KEY("product_item_id") REFERENCES "product_items"("id") ON DELETE CASCADE
+-- );
+-- ALTER TABLE "orders"
+-- ADD COLUMN "coupon_id" INT,
+-- ADD FOREIGN KEY("coupon_id") REFERENCES "coupons"("id") ON DELETE SET NULL;
+
 CREATE TABLE "seller_applicant_forms"(
 	"id" SERIAL PRIMARY KEY,
 	"name" VARCHAR NOT NULL,

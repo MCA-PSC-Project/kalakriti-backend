@@ -632,11 +632,11 @@
     "colId": "80d178ef-5176-474a-8708-db78bd45faee",
     "containerId": "6bd7e1f1-03c2-44e9-a246-827e2d8f4f7f",
     "name": "Delete item from cart",
-    "url": "{{baseUrl}}/carts/7",
+    "url": "{{baseUrl}}/carts/4",
     "method": "DELETE",
     "sortNum": 340000,
     "created": "2023-02-20T16:38:51.061Z",
-    "modified": "2023-03-12T08:57:03.037Z",
+    "modified": "2023-07-24T17:13:28.749Z",
     "headers": [],
     "params": [],
     "auth": {
@@ -971,17 +971,17 @@
     "_id": "e9e59924-2871-4ebf-919d-2751a0b3bdcc",
     "colId": "80d178ef-5176-474a-8708-db78bd45faee",
     "containerId": "2ffd39e9-6675-40b7-abd0-296aaf9564ad",
-    "name": "place order",
+    "name": "place order POD",
     "url": "{{baseUrl}}/orders",
     "method": "POST",
     "sortNum": 520000,
     "created": "2023-02-20T16:38:51.080Z",
-    "modified": "2023-05-18T10:46:16.535Z",
+    "modified": "2023-07-25T14:06:58.304Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n  \"shipping_address_id\": 1,\n  \"mobile_no\": \"9876543219\",\n  \"order_items\": [\n    {\n      \"product_item_id\": 13,\n      \"quantity\": 2,\n      \"discount_percent\": 50,\n      \"discount\": 50,\n      \"tax\": 20\n    },\n    {\n      \"product_item_id\": 12,\n      \"quantity\": 2,\n      \"discount_percent\": 50,\n      \"discount\": 50,\n      \"tax\": 20\n    }\n  ]\n}",
+      "raw": "{\n  \"checkout_from_cart\": true,\n  \"shipping_address_id\": 2,\n  \"order_items\": [\n    {\n      \"product_item_id\": 13,\n      \"quantity\": 2\n    },\n    {\n      \"product_item_id\": 12,\n      \"quantity\": 2\n    }\n  ]\n}",
       "form": []
     },
     "auth": {
@@ -2448,12 +2448,12 @@
     "method": "POST",
     "sortNum": 20000,
     "created": "2023-03-14T17:06:16.671Z",
-    "modified": "2023-07-01T11:02:28.940Z",
+    "modified": "2023-07-23T14:59:53.447Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n  \"user_type\": \"customer\",\n  \"email\": \"customer1@gmail.com\"\n}",
+      "raw": "{\n  \"user_type\": \"customer\",\n  \"email\": \"customer2@gmail.com\"\n}",
       "form": []
     },
     "tests": []
@@ -3402,14 +3402,65 @@
     "_id": "0fe04e53-d3c5-4ed3-a32a-3304b5f59f50",
     "colId": "80d178ef-5176-474a-8708-db78bd45faee",
     "containerId": "7b879ee0-19ee-43db-97ae-ac220cdb79c1",
-    "name": "create payment order",
-    "url": "{{baseUrl}}/payment",
+    "name": "buy now (create payment order)",
+    "url": "{{baseUrl}}/payment/order",
     "method": "POST",
     "sortNum": 1100000,
     "created": "2023-07-19T07:38:32.892Z",
-    "modified": "2023-07-19T07:40:09.355Z",
+    "modified": "2023-07-24T14:03:32.949Z",
     "headers": [],
     "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n  \"checkout_from_cart\": false,\n  \"shipping_address_id\": 2,\n  \"order_items\": [\n    {\n      \"product_item_id\": 13,\n      \"quantity\": 2\n    },\n    {\n      \"product_item_id\": 12,\n      \"quantity\": 2\n    }\n  ]\n}",
+      "form": []
+    },
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{customer_token}}"
+    },
+    "tests": []
+  },
+  {
+    "_id": "8ad5a4c0-db4a-470b-a1b9-9203533f1007",
+    "colId": "80d178ef-5176-474a-8708-db78bd45faee",
+    "containerId": "7b879ee0-19ee-43db-97ae-ac220cdb79c1",
+    "name": "payment success",
+    "url": "{{baseUrl}}/payment/order",
+    "method": "POST",
+    "sortNum": 1110000,
+    "created": "2023-07-20T10:08:30.466Z",
+    "modified": "2023-07-20T10:08:30.466Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n  \"order_items\": [\n    {\n      \"product_item_id\": 4,\n      \"quantity\": 2,\n      \"discount_percent\": 50,\n      \"discount\": 50,\n      \"tax\": 20\n    }\n  ]\n}",
+      "form": []
+    },
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{customer_token}}"
+    },
+    "tests": []
+  },
+  {
+    "_id": "57ecbad9-e41d-4b5d-b66e-080900b403c6",
+    "colId": "80d178ef-5176-474a-8708-db78bd45faee",
+    "containerId": "7b879ee0-19ee-43db-97ae-ac220cdb79c1",
+    "name": "order from cart (create payment order)",
+    "url": "{{baseUrl}}/payment/order",
+    "method": "POST",
+    "sortNum": 1105000,
+    "created": "2023-07-23T09:12:47.425Z",
+    "modified": "2023-07-24T14:03:15.554Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n  \"checkout_from_cart\": true,\n  \"shipping_address_id\": 2,\n  \"order_items\": [\n    {\n      \"product_item_id\": 13,\n      \"quantity\": 2\n    },\n    {\n      \"product_item_id\": 12,\n      \"quantity\": 2\n    }\n  ]\n}",
+      "form": []
+    },
     "auth": {
       "type": "bearer",
       "bearer": "{{customer_token}}"

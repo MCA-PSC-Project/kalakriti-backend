@@ -37,12 +37,13 @@ class Config(object):
     S3_SECRET = os.getenv("S3_SECRET")
     S3_LOCATION = os.getenv("S3_LOCATION")
 
+    PAYMENT_PROVIDER = os.getenv("PAYMENT_PROVIDER")
     PAYMENT_API_KEY = os.getenv("PAYMENT_API_KEY")
     PAYMENT_SECRET_KEY = os.getenv("PAYMENT_SECRET_KEY")
 
     APP_NAME = os.getenv("APP_NAME")
     APP_VERSION = os.getenv("APP_VERSION")
-    
+
     SEND_EMAIL = False
     SEND_MOTP = False
 
