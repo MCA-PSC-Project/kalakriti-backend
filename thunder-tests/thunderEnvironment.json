@@ -2,7 +2,7 @@
   {
     "_id": "54272c7e-fbf6-40c2-abdc-32d096c941c5",
     "name": "Local",
-    "default": true,
+    "default": false,
     "sortNum": 10000,
     "created": "2023-02-20T16:39:20.436Z",
     "modified": "2023-02-20T16:39:20.436Z",
@@ -16,7 +16,7 @@
   {
     "_id": "d74fa26a-7586-4245-b00c-a39671e45841",
     "name": "Dev",
-    "default": false,
+    "default": true,
     "sortNum": 20000,
     "created": "2023-02-20T16:39:20.441Z",
     "modified": "2023-02-20T16:39:20.441Z",
@@ -52,7 +52,7 @@
     "data": [
       {
         "name": "customer_token",
-        "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6dHJ1ZSwiaWF0IjoxNjkwMzY4MDU5LCJqdGkiOiI2ODA5ODI2OS0yNDhhLTRjMjItYTBkYS1mMmZjODRkZmE4ODAiLCJ0eXBlIjoiYWNjZXNzIiwic3ViIjoxLCJuYmYiOjE2OTAzNjgwNTksImV4cCI6MTY5MDM2OTg1OSwidXNlcl90eXBlIjoiY3VzdG9tZXIifQ.xGMRc5hA8s6klyUIMoYbOzI32dteC_iYxkmiPshPgGQ"
+        "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6dHJ1ZSwiaWF0IjoxNjkwMzkxMjM4LCJqdGkiOiI3NmRkOThlYS01NGI5LTQyOTctYWQ5Yy03NjE1NTIzODBiNTciLCJ0eXBlIjoiYWNjZXNzIiwic3ViIjoxLCJuYmYiOjE2OTAzOTEyMzgsImV4cCI6MTY5MTI1NTIzOCwidXNlcl90eXBlIjoiY3VzdG9tZXIifQ.xGQu06gPVV9LCnqmmb4CBRcu3Hw1W2hbgE7UcMuMwTA"
       },
       {
         "name": "seller_token",
