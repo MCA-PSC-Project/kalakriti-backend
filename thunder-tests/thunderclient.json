@@ -995,17 +995,16 @@
     "colId": "80d178ef-5176-474a-8708-db78bd45faee",
     "containerId": "d3f02f76-889e-4a8d-88e7-d026529d83a9",
     "name": "get product by id",
-    "url": "{{baseUrl}}/products/12",
+    "url": "{{baseUrl}}/products/16?product_status=draft",
     "method": "GET",
     "sortNum": 530000,
     "created": "2023-02-20T16:38:51.081Z",
-    "modified": "2023-07-18T07:23:15.979Z",
+    "modified": "2023-07-21T07:01:00.291Z",
     "headers": [],
     "params": [
       {
         "name": "product_status",
         "value": "draft",
-        "isDisabled": true,
         "isPath": false
       }
     ],
@@ -1045,12 +1044,12 @@
     "method": "POST",
     "sortNum": 535000,
     "created": "2023-02-20T16:38:51.083Z",
-    "modified": "2023-05-16T08:32:32.885Z",
+    "modified": "2023-07-20T14:47:43.349Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n  \"product_name\": \"madhubani painting\",\n  \"product_description\": \"dxvxk\",\n  \"category_id\": 5,\n  \"subcategory_id\": null,\n  \"currency\": \"INR\",\n  \"min_order_quantity\": 2,\n  \"max_order_quantity\": 10,\n  \"product_items\": [\n    {\n      \"variant\": \"BASE\",\n      \"variant_value\": \"BASE\",\n      \"product_variant_name\": \"BASE\",\n      \"SKU\": \"123x\",\n      \"original_price\": 1000,\n      \"offer_price\": 500,\n      \"quantity_in_stock\": 10,\n      \"media_list\": [\n        {\n          \"media_id\": 1,\n          \"display_order\": 1\n        },\n        {\n          \"media_id\": 2,\n          \"display_order\": 2\n        }\n      ]\n    }\n  ]\n}",
+      "raw": "{\n  \"product_name\": \"wall painiting\",\n  \"product_description\": \"dxvxk\",\n  \"category_id\": 5,\n  \"subcategory_id\": null,\n  \"currency\": \"INR\",\n  \"min_order_quantity\": 2,\n  \"max_order_quantity\": 10,\n  \"product_items\": [\n    {\n      \"variant\": \"BASE\",\n      \"variant_value\": \"BASE\",\n      \"product_variant_name\": \"BASE\",\n      \"SKU\": \"123345\",\n      \"original_price\": 1000,\n      \"offer_price\": 500,\n      \"quantity_in_stock\": 10,\n      \"media_list\": [\n        {\n          \"media_id\": 1,\n          \"display_order\": 1\n        },\n        {\n          \"media_id\": 2,\n          \"display_order\": 2\n        },\n           {\n          \"media_id\": 3,\n          \"display_order\": 3\n        }\n      ]\n    }\n  ]\n}",
       "form": []
     },
     "auth": {
@@ -1692,11 +1691,11 @@
     "colId": "80d178ef-5176-474a-8708-db78bd45faee",
     "containerId": "9525375d-6d7f-486c-8969-7b49f2983b85",
     "name": "get product item by id",
-    "url": "{{baseUrl}}/product-items/19?product_item_status=draft",
+    "url": "{{baseUrl}}/product-items/16?product_item_status=draft",
     "method": "GET",
     "sortNum": 2500,
     "created": "2023-02-23T11:46:39.450Z",
-    "modified": "2023-07-11T13:32:09.111Z",
+    "modified": "2023-07-20T14:24:11.247Z",
     "headers": [],
     "params": [
       {
@@ -1848,11 +1847,11 @@
     "colId": "80d178ef-5176-474a-8708-db78bd45faee",
     "containerId": "d3f02f76-889e-4a8d-88e7-d026529d83a9",
     "name": "GET all details of a product",
-    "url": "{{baseUrl}}/products/4/all-details",
+    "url": "{{baseUrl}}/products/16/all-details",
     "method": "GET",
     "sortNum": 925000,
     "created": "2023-03-01T06:55:05.728Z",
-    "modified": "2023-04-03T08:49:22.014Z",
+    "modified": "2023-07-20T07:26:19.271Z",
     "headers": [],
     "params": [],
     "auth": {
@@ -2052,12 +2051,12 @@
     "method": "POST",
     "sortNum": 15000,
     "created": "2023-03-06T07:31:03.558Z",
-    "modified": "2023-03-26T08:32:34.100Z",
+    "modified": "2023-07-20T07:18:39.464Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n\t\"email\": \"seller1@gmail.com\",\n\t\"password\": \"abcd@123\",\n\t\"seller_name\": \"seller1\",\n\t\"GSTIN\": \"12345abcdefghij\",\n\t\"PAN\":\"PKABC12345\"\n}",
+      "raw": "{\n\t\"email\": \"seller2@gmail.com\",\n\t\"password\": \"abcd@12345\",\n\t\"seller_name\": \"seller2\",\n\t\"GSTIN\": \"12345abcdefghij\",\n\t\"PAN\":\"PKABC12343\"\n}",
       "form": []
     },
     "tests": [],
@@ -2133,12 +2132,12 @@
     "method": "POST",
     "sortNum": 7500,
     "created": "2023-03-07T07:12:53.183Z",
-    "modified": "2023-05-14T11:02:10.089Z",
+    "modified": "2023-07-20T07:18:59.818Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n  \"email\": \"seller1@gmail.com\",\n  \"password\": \"abcd@123\"\n}",
+      "raw": "{\n  \"email\": \"seller2@gmail.com\",\n  \"password\": \"abcd@12345\"\n}",
       "form": []
     },
     "tests": [],
@@ -3414,6 +3413,24 @@
     "auth": {
       "type": "bearer",
       "bearer": "{{customer_token}}"
+    },
+    "tests": []
+  },
+  {
+    "_id": "38359758-16f2-4c50-94f0-0c7829ab8359",
+    "colId": "80d178ef-5176-474a-8708-db78bd45faee",
+    "containerId": "2ffd39e9-6675-40b7-abd0-296aaf9564ad",
+    "name": "get orders for a seller",
+    "url": "{{baseUrl}}/order-list-for-seller",
+    "method": "GET",
+    "sortNum": 1110000,
+    "created": "2023-07-20T07:42:03.725Z",
+    "modified": "2023-07-20T07:42:58.403Z",
+    "headers": [],
+    "params": [],
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{seller_token}}"
     },
     "tests": []
   }

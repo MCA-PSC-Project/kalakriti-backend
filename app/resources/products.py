@@ -495,9 +495,9 @@ class SellersProducts(Resource):
         user_type = claims["user_type"]
         app.logger.debug("user_type= %s", user_type)
         args = request.args  # retrieve args from query string
-        product_status = args.get("product_status", None)
-        if not product_status:
-            product_status = "published"
+        # product_status = args.get("product_status", None)
+        # if not product_status:
+        #     product_status = "published"
 
         if user_type == "seller":
             seller_user_id = user_id
@@ -519,14 +519,14 @@ class SellersProducts(Resource):
             FROM products p 
             JOIN sellers s ON p.seller_id = s.id 
             JOIN product_base_item pbi ON p.id = pbi.product_id
-            WHERE p.seller_id = %s AND p.product_status = %s
+            WHERE p.seller_id = %s 
             ORDER BY p.id DESC"""
 
             cursor.execute(
                 GET_PRODUCTS_BY_SELLER,
                 (
                     seller_user_id,
-                    product_status,
+                    # product_status,
                 ),
             )
             rows = cursor.fetchall()
@@ -566,7 +566,7 @@ class SellersProducts(Resource):
                 )
                 product_dict["rating_count"] = rating_count
 
-                product_item_status = product_status
+                # product_item_status = product_status
                 GET_PRODUCT_BASE_ITEM = """SELECT pi.id AS product_item_id, pi.product_id, pi.product_variant_name, pi."SKU",
                 pi.original_price, pi.offer_price, pi.quantity_in_stock, pi.added_at, pi.updated_at, pi.product_item_status,
                 (SELECT v.variant AS variant FROM variants v WHERE v.id = 
@@ -574,14 +574,14 @@ class SellersProducts(Resource):
                 (SELECT vv.variant_value AS variant_value FROM variant_values vv WHERE vv.id = piv.variant_value_id)
                 FROM product_items pi 
                 JOIN product_item_values piv ON pi.id = piv.product_item_id
-                WHERE pi.id = %s AND product_item_status = %s"""
+                WHERE pi.id = %s """
 
                 base_product_item_dict = {}
                 cursor.execute(
                     GET_PRODUCT_BASE_ITEM,
                     (
                         product_dict["base_product_item_id"],
-                        product_item_status,
+                        # product_item_status,
                     ),
                 )
                 row = cursor.fetchone()
