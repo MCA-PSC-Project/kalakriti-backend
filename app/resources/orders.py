@@ -252,12 +252,14 @@ class Orders(Resource):
         customer_id = f_jwt.get_jwt_identity()
         app.logger.debug("customer_id= %s", customer_id)
 
-        GET_ORDER = """SELECT o.id AS order_id, o.customer_id, o.mobile_no,
+        GET_ORDER = """SELECT o.id AS order_id, o.customer_id, o.order_status,
         o.total_original_price, o.sub_total, o.total_discount, o.total_tax, o.grand_total, o.added_at, o.updated_at,
-        ad.id AS address_id, ad.address_line1, ad.address_line2, ad.district, ad.city, ad.state, ad.country, ad.pincode, ad.landmark
+        o_ad.id AS address_id, o_ad.address_line1, o_ad.address_line2, o_ad.city, 
+        o_ad.district, o_ad.state, o_ad.country, o_ad.pincode, o_ad.landmark
         FROM orders o
-        JOIN addresses ad ON ad.id = o.shipping_address_id
-        WHERE o.id = %s"""
+        JOIN payments p ON p.id = o.payment_id
+        JOIN order_addresses o_ad ON o_ad.id = o.order_address_id
+        WHERE o.id = %s AND o.order_status != 'checkout' """
 
         try:
             cursor = app_globals.get_named_tuple_cursor()
@@ -268,7 +270,7 @@ class Orders(Resource):
             order_dict = {}
             order_dict["order_id"] = row.order_id
             order_dict["customer_id"] = row.customer_id
-            order_dict["mobile_no"] = row.mobile_no
+            order_dict["order_status"] = row.order_status
             order_dict.update(
                 json.loads(
                     json.dumps(
@@ -393,6 +395,110 @@ class Orders(Resource):
 
 
 class OrderItems(Resource):
+    @f_jwt.jwt_required()
+    def get(self, order_item_id):
+        customer_id = f_jwt.get_jwt_identity()
+        app.logger.debug("customer_id= %s", customer_id)
+        try:
+            cursor = app_globals.get_named_tuple_cursor()
+
+            GET_ORDER_ITEMS = """SELECT oi.id AS order_item_id, oi.order_item_status, oi.quantity, 
+            oi.original_price, oi.offer_price, oi.discount_percent, oi.discount, oi.tax, oi.product_item_id, 
+            o.id AS order_id,
+            pi.product_id, p.product_name,
+            o_ad.id AS address_id, o_ad.address_line1, o_ad.address_line2, o_ad.city, 
+            o_ad.district, o_ad.state, o_ad.country, o_ad.pincode, o_ad.landmark
+            FROM order_items oi
+            JOIN orders o ON o.id = oi.order_id
+            JOIN order_addresses o_ad ON o_ad.id = o.order_address_id
+            JOIN product_items pi ON pi.id = oi.product_item_id
+            JOIN products p ON p.id = pi.product_id
+            WHERE oi.id = %s"""
+
+            cursor.execute(GET_ORDER_ITEMS, (order_item_id,))
+            rows = cursor.fetchall()
+            order_items_list = []
+            if not rows:
+                return {}
+            for row in rows:
+                order_item_dict = {}
+                order_item_dict["order_item_id"] = row.order_item_id
+                order_item_dict["order_item_status"] = row.order_item_status
+                order_item_dict["quantity"] = row.quantity
+                order_item_dict.update(
+                    json.loads(
+                        json.dumps({"original_price": row.original_price}, default=str)
+                    )
+                )
+                order_item_dict.update(
+                    json.loads(
+                        json.dumps({"offer_price": row.offer_price}, default=str)
+                    )
+                )
+                order_item_dict.update(
+                    json.loads(
+                        json.dumps(
+                            {"discount_percent": row.discount_percent}, default=str
+                        )
+                    )
+                )
+                order_item_dict.update(
+                    json.loads(json.dumps({"discount": row.discount}, default=str))
+                )
+                order_item_dict.update(
+                    json.loads(json.dumps({"tax": row.tax}, default=str))
+                )
+                order_item_dict["product_item_id"] = row.product_item_id
+                order_item_dict["product_id"] = row.product_id
+                order_item_dict["product_name"] = row.product_name
+
+                address_dict = {}
+                address_dict["address_id"] = row.address_id
+                address_dict["address_line1"] = row.address_line1
+                address_dict["address_line2"] = row.address_line2
+                address_dict["district"] = row.district
+                address_dict["city"] = row.city
+                address_dict["state"] = row.state
+                address_dict["country"] = row.country
+                address_dict["pincode"] = row.pincode
+                address_dict["landmark"] = row.landmark
+                order_item_dict.update({"shipping_address": address_dict})
+
+                media_dict = {}
+                GET_BASE_MEDIA = """SELECT m.id AS media_id, m.name, m.path
+                    FROM media m
+                    WHERE m.id = (
+                        SELECT pim.media_id From product_item_medias pim
+                        WHERE pim.product_item_id = %s
+                        ORDER BY pim.display_order
+                        LIMIT 1
+                    )"""
+                cursor.execute(
+                    GET_BASE_MEDIA, (order_item_dict.get("product_item_id"),)
+                )
+                row = cursor.fetchone()
+                if row is None:
+                    app.logger.debug("No media rows")
+                    order_item_dict.update({"media": media_dict})
+                    order_items_list.append(order_item_dict)
+                    continue
+                media_dict["id"] = row.media_id
+                media_dict["name"] = row.name
+                # media_dict['path'] = row.path
+                path = row.path
+                if path is not None:
+                    media_dict["path"] = "{}/{}".format(app.config["S3_LOCATION"], path)
+                else:
+                    media_dict["path"] = None
+                order_item_dict.update({"media": media_dict})
+        except (Exception, psycopg2.Error) as err:
+            app.logger.debug(err)
+            abort(400, "Bad Request")
+        finally:
+            cursor.close()
+        # app.logger.debug(order_item_dict)
+        return order_item_dict
+
     @f_jwt.jwt_required()
     def patch(self, order_item_id):
         user_id = f_jwt.get_jwt_identity()
