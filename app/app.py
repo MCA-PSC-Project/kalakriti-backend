@@ -141,7 +141,8 @@ def create_app(config_name):
     app_globals.redis_client = redis.Redis.from_url(url=app.config["REDIS_URL"])
     if not app_globals.redis_client.ping():
         app.logger.fatal("Redis connection error")
-    app.config['PROPAGATE_EXCEPTIONS'] = True
+
+    app.config["PROPAGATE_EXCEPTIONS"] = True
     jwt = flask_jwt_extended.JWTManager(app)
     app_globals.mail = flask_mail.Mail(app)
 
