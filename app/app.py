@@ -45,7 +45,7 @@ from app.resources.home import (
     PersonalizedRecommendedProducts,
     ViewedProducts,
 )
-from app.resources.orders import OrderItems, Orders, CustomerOrders
+from app.resources.orders import OrderItems, Orders, CustomerOrders, SellerOrderList
 from app.resources.payment import Payment, PaymentSuccessful
 from app.resources.product_items import (
     ProductItems,
@@ -295,6 +295,7 @@ def create_app(config_name):
     api.add_resource(OrderItems, "/order-items/<int:order_item_id>")
     api.add_resource(CustomerOrders, "/customer-orders")
     api.add_resource(SellerOrderList,"/order-list-for-seller")
+    
 
     # TODO: Homepage related endpoints
     # Home

@@ -701,39 +701,35 @@ class SellerOrderList(Resource):
         app.logger.debug("seller_id= %s", seller_id)
 
         orders_list = [] 
+        product_item_id =[]
 
-        GET_CUSTOMER_IDS ="""select customer_id from orders where id in
-        (select order_id from order_items where product_item_id in 
+        GET_PRODUCT_ITEM_IDS ="""
+        (select product_item_id from order_items where id in 
         (select product_id from product_items where id in
         (select id from products where seller_id = %s)))"""
 
         try:
             cursor = app_globals.get_named_tuple_cursor()
-            cursor.execute(GET_CUSTOMER_IDS, (seller_id,))
+            cursor.execute(GET_PRODUCT_ITEM_IDS, (seller_id,))
             rows = cursor.fetchall()
             for row in rows:
-                customer_id=(row)
+               product_item_id.append(row.product_item_id)
+            app.logger.debug(product_item_id)
 
-            GET_ORDERS = """SELECT o.id AS order_id, o.added_at, o.updated_at, 
-            temp.order_item_id, temp.product_item_id, temp.order_item_status, temp.quantity, 
-            temp.product_id, temp.product_name 
-            FROM orders o 
-            JOIN LATERAL(
-                SELECT oi.id AS order_item_id, oi.product_item_id, oi.order_item_status, oi.quantity, 
-                p.id AS product_id, p.product_name AS product_name
-                FROM order_items oi 
-                JOIN products p
-                ON p.id = (
-                    SELECT pi.product_id 
-                    FROM product_items pi
-                    WHERE pi.id = oi.product_item_id
-                ) 
-                WHERE oi.order_id = o.id
-            ) AS temp ON TRUE
-            WHERE o.customer_id = %s
+            GET_ORDERS = """SELECT o.id AS order_id, o.order_status, o.added_at, o.updated_at, 
+            oi.id AS order_item_id, oi.order_item_status, oi.quantity, 
+            p.id AS product_id, p.product_name, p.product_status,
+            pi.id AS product_item_id, pi.product_variant_name, pi."SKU", pi.quantity_in_stock, pi.product_item_status
+            FROM orders o
+            JOIN order_items oi ON oi.order_id = o.id
+            JOIN product_items pi ON pi.id = ANY(ARRAY[%s])
+            JOIN products p ON p.id = pi.product_id
+            where p.seller_id = %s
             ORDER BY o.added_at DESC"""
+
+          
             cursor = app_globals.get_named_tuple_cursor()
-            cursor.execute(GET_ORDERS, (customer_id,))
+            cursor.execute(GET_ORDERS, (product_item_id,seller_id,))
             rows = cursor.fetchall()
             if not rows:
                 return {}
