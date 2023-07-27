@@ -114,7 +114,7 @@ def create_app(config_name):
     app.logger.debug(app_config[config_name])
     app.logger.debug("DATABASE_URI=%s" % app.config["DATABASE_URI"])
     app.logger.debug("REDIS_URL=%s" % app.config["REDIS_URL"])
-    app.logger.debug("SECRET_KEY=%s" % app.config["SECRET_KEY"])
+    # app.logger.debug("SECRET_KEY=%s" % app.config["SECRET_KEY"])
 
     # app_globals.db_conn = psycopg2.connect(app.config['DATABASE_URI'])
 
@@ -141,7 +141,7 @@ def create_app(config_name):
     app_globals.redis_client = redis.Redis.from_url(url=app.config["REDIS_URL"])
     if not app_globals.redis_client.ping():
         app.logger.fatal("Redis connection error")
-
+    app.config['PROPAGATE_EXCEPTIONS'] = True
     jwt = flask_jwt_extended.JWTManager(app)
     app_globals.mail = flask_mail.Mail(app)
 
