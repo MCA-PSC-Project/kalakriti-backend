@@ -1,0 +1,16 @@
+python-dotenv
+flask
+flask-restful
+flask-jwt-extended
+flask-mail
+itsdangerous
+psycopg2-binary
+bcrypt
+gunicorn 
+boto3
+pyotp
+qrcode
+redis
+flask-cors
+filetype
+razorpay
