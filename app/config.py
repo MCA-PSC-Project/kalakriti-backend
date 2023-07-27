@@ -80,7 +80,7 @@ class ProductionConfig(Config):
     TESTING = False
     SEND_EMAIL = True
     SEND_MOTP = True
-    JWT_ACCESS_TOKEN_EXPIRES = datetime.timedelta(minutes=1)
+    JWT_ACCESS_TOKEN_EXPIRES = datetime.timedelta(minutes=30)
     JWT_REFRESH_TOKEN_EXPIRES = datetime.timedelta(days=30)
 
 
