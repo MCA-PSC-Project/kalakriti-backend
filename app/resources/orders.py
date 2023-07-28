@@ -701,35 +701,35 @@ class SellerOrderList(Resource):
         app.logger.debug("seller_id= %s", seller_id)
 
         orders_list = [] 
-        product_item_id =[]
+        order_items_list =[]
 
-        GET_PRODUCT_ITEM_IDS ="""
-        (select product_item_id from order_items where id in 
-        (select product_id from product_items where id in
+        GET_ORDER_ITEM_IDS ="""
+        (select id from order_items where product_item_id in 
+        (select id from product_items where id in
         (select id from products where seller_id = %s)))"""
 
         try:
             cursor = app_globals.get_named_tuple_cursor()
-            cursor.execute(GET_PRODUCT_ITEM_IDS, (seller_id,))
+            cursor.execute(GET_ORDER_ITEM_IDS, (seller_id,))
             rows = cursor.fetchall()
             for row in rows:
-               product_item_id.append(row.product_item_id)
-            app.logger.debug(product_item_id)
+               order_items_list.append(row.id)
+            app.logger.debug(order_items_list)
 
-            GET_ORDERS = """SELECT o.id AS order_id, o.order_status, o.added_at, o.updated_at, 
-            oi.id AS order_item_id, oi.order_item_status, oi.quantity, 
-            p.id AS product_id, p.product_name, p.product_status,
-            pi.id AS product_item_id, pi.product_variant_name, pi."SKU", pi.quantity_in_stock, pi.product_item_status
-            FROM orders o
-            JOIN order_items oi ON oi.order_id = o.id
-            JOIN product_items pi ON pi.id = ANY(ARRAY[%s])
-            JOIN products p ON p.id = pi.product_id
-            where p.seller_id = %s
-            ORDER BY o.added_at DESC"""
+            GET_ORDER_ITEMS = """SELECT o.id AS order_id, o.order_status, o.added_at, o.updated_at, 
+        oi.id AS order_item_id, oi.order_item_status, oi.quantity, 
+        c.id AS customer_id, c.first_name,
+        pi.id AS product_item_id, pi.product_variant_name, pi."SKU", pi.quantity_in_stock, pi.product_item_status
+        FROM orders o
+        JOIN order_items oi ON oi.order_id = o.id
+        JOIN product_items pi ON pi.id = oi.product_item_id
+        JOIN customers c ON c.id = o.customer_id
+        WHERE oi.id = ANY(ARRAY[%s])
+        ORDER BY o.added_at DESC"""
 
           
             cursor = app_globals.get_named_tuple_cursor()
-            cursor.execute(GET_ORDERS, (product_item_id,seller_id,))
+            cursor.execute(GET_ORDER_ITEMS, (order_items_list,))
             rows = cursor.fetchall()
             if not rows:
                 return {}
@@ -746,8 +746,7 @@ class SellerOrderList(Resource):
                 order_dict["product_item_id"] = row.product_item_id
                 order_dict["order_item_status"] = row.order_item_status
                 order_dict["quantity"] = row.quantity
-                order_dict["product_id"] = row.product_id
-                order_dict["product_name"] = row.product_name
+               
 
                 media_dict = {}
                 GET_BASE_MEDIA = """SELECT m.id AS media_id, m.name, m.path
