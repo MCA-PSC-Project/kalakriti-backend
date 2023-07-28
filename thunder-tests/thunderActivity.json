@@ -267,47 +267,6 @@
     "tests": []
   },
   {
-    "_id": "638303b2-af8f-4951-ba0c-44c9d2c25f67",
-    "colId": "history",
-    "containerId": "",
-    "name": "{{baseUrl}}/recommended-products/1",
-    "url": "{{baseUrl}}/recommended-products/1",
-    "method": "PUT",
-    "sortNum": 0,
-    "created": "2023-05-10T09:13:37.920Z",
-    "modified": "2023-05-10T09:13:37.920Z",
-    "headers": [],
-    "params": [],
-    "body": {
-      "type": "json",
-      "raw": "{\n  \"product_id\": 1\n}",
-      "form": []
-    },
-    "auth": {
-      "type": "bearer",
-      "bearer": "{{admin_token}}"
-    },
-    "tests": []
-  },
-  {
-    "_id": "477f8301-be19-4704-8a12-732d80c5fa3f",
-    "colId": "history",
-    "containerId": "",
-    "name": "{{baseUrl}}/recommended-products/1",
-    "url": "{{baseUrl}}/recommended-products/1",
-    "method": "DELETE",
-    "sortNum": 0,
-    "created": "2023-05-10T09:13:43.110Z",
-    "modified": "2023-05-10T09:13:43.110Z",
-    "headers": [],
-    "params": [],
-    "auth": {
-      "type": "bearer",
-      "bearer": "{{admin_token}}"
-    },
-    "tests": []
-  },
-  {
     "_id": "b5872caf-b1b0-4054-985e-5275c31fc0aa",
     "colId": "history",
     "containerId": "",
@@ -325,24 +284,6 @@
         "isPath": false
       }
     ],
-    "tests": []
-  },
-  {
-    "_id": "9699dcdd-a6b1-45f6-87ee-66bed7dff42e",
-    "colId": "history",
-    "containerId": "",
-    "name": "{{baseUrl}}/recommended-products/3",
-    "url": "{{baseUrl}}/recommended-products/3",
-    "method": "DELETE",
-    "sortNum": 0,
-    "created": "2023-05-10T09:35:33.845Z",
-    "modified": "2023-05-10T09:35:33.845Z",
-    "headers": [],
-    "params": [],
-    "auth": {
-      "type": "bearer",
-      "bearer": "{{admin_token}}"
-    },
     "tests": []
   },
   {
@@ -2248,6 +2189,62 @@
       "type": "bearer",
       "bearer": "{{customer_token}}"
     },
+    "tests": []
+  },
+  {
+    "_id": "46d45815-ba15-4a4c-a512-ab9ee50db211",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/categories",
+    "url": "{{baseUrl}}/categories",
+    "method": "GET",
+    "sortNum": 0,
+    "created": "2023-07-28T04:39:34.636Z",
+    "modified": "2023-07-28T04:39:34.636Z",
+    "headers": [],
+    "params": [],
+    "tests": []
+  },
+  {
+    "_id": "aadcb5e6-5485-41ad-a2c4-bdcfa58f8763",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/category/1",
+    "url": "{{baseUrl}}/category/1",
+    "method": "GET",
+    "sortNum": 0,
+    "created": "2023-07-28T05:03:14.603Z",
+    "modified": "2023-07-28T05:03:14.603Z",
+    "headers": [],
+    "params": [],
+    "tests": []
+  },
+  {
+    "_id": "24031a92-41b2-44de-972c-58f66f377157",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/category/6",
+    "url": "{{baseUrl}}/category/6",
+    "method": "GET",
+    "sortNum": 0,
+    "created": "2023-07-28T05:06:46.419Z",
+    "modified": "2023-07-28T05:06:46.419Z",
+    "headers": [],
+    "params": [],
+    "tests": []
+  },
+  {
+    "_id": "edacf81f-2c99-4ad1-a213-dc7875ad615a",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/category/3",
+    "url": "{{baseUrl}}/category/3",
+    "method": "GET",
+    "sortNum": 0,
+    "created": "2023-07-28T05:07:19.587Z",
+    "modified": "2023-07-28T05:07:19.587Z",
+    "headers": [],
+    "params": [],
     "tests": []
   }
 ]

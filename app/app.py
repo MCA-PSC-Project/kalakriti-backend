@@ -79,7 +79,7 @@ from app.resources.media import (
     UploadFile,
     DeleteMedia,
 )
-from app.resources.categories import Categories
+from app.resources.categories import Categories, Category
 from app.resources.admin import CustomersInfo, PromoteToSeller, SellersInfo
 from app.resources.super_admin import AdminsInfo, PromoteToAdmin
 from app.resources.banners import Banners
@@ -218,6 +218,7 @@ def create_app(config_name):
 
     # Category & Subcategory
     api.add_resource(Categories, "/categories", "/categories/<int:category_id>")
+    api.add_resource(Category, "/category/<int:category_id>")
 
     # Admin related endpoints
     api.add_resource(CustomersInfo, "/customers", "/customers/<int:customer_id>")

@@ -3485,5 +3485,19 @@
       "bearer": "{{customer_token}}"
     },
     "tests": []
+  },
+  {
+    "_id": "965807ee-6992-4f9a-b044-f5fbb3e2b724",
+    "colId": "80d178ef-5176-474a-8708-db78bd45faee",
+    "containerId": "67bd2609-a1c1-41da-ab7e-1e5b9002ee51",
+    "name": "get particular category/subcatergory info",
+    "url": "{{baseUrl}}/category/3",
+    "method": "GET",
+    "sortNum": 245000,
+    "created": "2023-07-28T04:48:12.857Z",
+    "modified": "2023-07-28T05:07:20.061Z",
+    "headers": [],
+    "params": [],
+    "tests": []
   }
 ]
