@@ -233,6 +233,46 @@ class Category(Resource):
             else:
                 cover_media_dict["path"] = None
             category_dict.update({"cover": cover_media_dict})
+
+            #  to get subcategories if it is parent
+            if category_dict["parent_id"] == None:
+                subcategories_list = []
+                GET_SUBCATEGORIES = """SELECT c.id AS category_id, c.name AS category_name, c.parent_id,
+                m.id AS media_id, m.name AS media_name, m.path
+                FROM categories c
+                LEFT JOIN media m ON m.id= cover_id
+                WHERE c.parent_id = %s"""
+
+                try:
+                    cursor = app_globals.get_named_tuple_cursor()
+                    cursor.execute(GET_SUBCATEGORIES, (category_id,))
+                    rows = cursor.fetchall()
+                    if not rows:
+                        subcategories_list = []
+                    for row in rows:
+                        subcategory_dict = {}
+                        subcategory_dict["id"] = row.category_id
+                        subcategory_dict["name"] = row.category_name
+                        subcategory_dict["parent_id"] = row.parent_id
+                        cover_media_dict = {}
+                        cover_media_dict["id"] = row.media_id
+                        cover_media_dict["name"] = row.media_name
+                        path = row.path
+                        if path is not None:
+                            cover_media_dict["path"] = "{}/{}".format(
+                                app.config["S3_LOCATION"], path
+                            )
+                        else:
+                            cover_media_dict["path"] = None
+                        subcategory_dict.update({"cover": cover_media_dict})
+                        subcategories_list.append(subcategory_dict)
+                    category_dict.update({"subcategories": subcategories_list})
+                except (Exception, psycopg2.Error) as err:
+                    app.logger.debug(err)
+                    abort(400, "Bad Request")
+                finally:
+                    cursor.close()
+
         except (Exception, psycopg2.Error) as err:
             app.logger.debug(err)
             abort(400, "Bad Request")

@@ -2246,5 +2246,19 @@
     "headers": [],
     "params": [],
     "tests": []
+  },
+  {
+    "_id": "371053db-a0e1-4e77-9016-42b13967c2e6",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{baseUrl}}/category/2",
+    "url": "{{baseUrl}}/category/2",
+    "method": "GET",
+    "sortNum": 0,
+    "created": "2023-07-28T05:34:07.141Z",
+    "modified": "2023-07-28T05:34:07.141Z",
+    "headers": [],
+    "params": [],
+    "tests": []
   }
 ]
