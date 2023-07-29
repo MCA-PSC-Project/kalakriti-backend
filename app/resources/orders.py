@@ -717,13 +717,14 @@ class SellerOrderList(Resource):
             app.logger.debug(order_items_list)
 
             GET_ORDER_ITEMS = """SELECT o.id AS order_id, o.order_status, o.added_at, o.updated_at, 
-        oi.id AS order_item_id, oi.order_item_status, oi.quantity, 
-        c.id AS customer_id, c.first_name,
+        oi.id AS order_item_id, oi.order_item_status, oi.quantity, oi.original_price,oi.offer_price,
+        oa.id AS order_address_id, oa.full_name,oa.mobile_no,oa.address_line1,oa.address_line2,
+        oa.city,
         pi.id AS product_item_id, pi.product_variant_name, pi."SKU", pi.quantity_in_stock, pi.product_item_status
         FROM orders o
         JOIN order_items oi ON oi.order_id = o.id
         JOIN product_items pi ON pi.id = oi.product_item_id
-        JOIN customers c ON c.id = o.customer_id
+        JOIN order_addresses oa ON oa.id = o.order_address_id
         WHERE oi.id = ANY(ARRAY[%s])
         ORDER BY o.added_at DESC"""
 
@@ -736,6 +737,7 @@ class SellerOrderList(Resource):
             for row in rows:
                 order_dict = {}
                 order_dict["order_id"] = row.order_id
+                # order_dict["order_status"] = row.order_status
                 order_dict.update(
                     json.loads(json.dumps({"added_at": row.added_at}, default=str))
                 )
@@ -746,7 +748,22 @@ class SellerOrderList(Resource):
                 order_dict["product_item_id"] = row.product_item_id
                 order_dict["order_item_status"] = row.order_item_status
                 order_dict["quantity"] = row.quantity
-               
+                order_dict.update(
+                    json.loads(json.dumps({"original_price": row.original_price}, default=str))
+                )
+                order_dict.update(
+                    json.loads(json.dumps({"offer_price": row.offer_price}, default=str))
+                )
+                # order_dict["original_price"] = row.original_price
+                # order_dict["offer_price"] = row.offer_price
+                order_dict["order_address_id"] = row.order_address_id
+                order_dict["full_name"] = row.full_name
+                order_dict["mobile_no"] = row.mobile_no
+                order_dict["address_line1"] = row.address_line1
+                order_dict["address_line2"] = row.address_line2
+                order_dict["city"] = row.city
+                order_dict["product_variant_name"] = row.product_variant_name
+                order_dict["SKU"]= row.SKU
 
                 media_dict = {}
                 GET_BASE_MEDIA = """SELECT m.id AS media_id, m.name, m.path
