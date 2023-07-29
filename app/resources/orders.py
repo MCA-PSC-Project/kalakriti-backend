@@ -719,7 +719,7 @@ class SellerOrderList(Resource):
             GET_ORDER_ITEMS = """SELECT o.id AS order_id, o.order_status, o.added_at, o.updated_at, 
         oi.id AS order_item_id, oi.order_item_status, oi.quantity, oi.original_price,oi.offer_price,
         oa.id AS order_address_id, oa.full_name,oa.mobile_no,oa.address_line1,oa.address_line2,
-        oa.city,
+        oa.city, oa.district,oa.state, oa.country ,oa.pincode,oa,landmark,
         p.id AS product_id, p.product_name, p.product_status,
         pi.id AS product_item_id, pi.product_variant_name, pi."SKU", pi.quantity_in_stock, pi.product_item_status
         FROM orders o
@@ -775,6 +775,11 @@ class SellerOrderList(Resource):
                 shipping_address_dict["address_line1"] = row.address_line1
                 shipping_address_dict["address_line2"] = row.address_line2
                 shipping_address_dict["city"] = row.city
+                shipping_address_dict["district"] = row.district
+                shipping_address_dict["state"] = row.state
+                shipping_address_dict["country"]= row.country
+                shipping_address_dict["pincode"]= row.pincode
+                shipping_address_dict["landmark"] = row.landmark
                
                 order_dict.update({"shipping_address": shipping_address_dict})
 
