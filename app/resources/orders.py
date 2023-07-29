@@ -720,10 +720,12 @@ class SellerOrderList(Resource):
         oi.id AS order_item_id, oi.order_item_status, oi.quantity, oi.original_price,oi.offer_price,
         oa.id AS order_address_id, oa.full_name,oa.mobile_no,oa.address_line1,oa.address_line2,
         oa.city,
+        p.id AS product_id, p.product_name, p.product_status,
         pi.id AS product_item_id, pi.product_variant_name, pi."SKU", pi.quantity_in_stock, pi.product_item_status
         FROM orders o
         JOIN order_items oi ON oi.order_id = o.id
         JOIN product_items pi ON pi.id = oi.product_item_id
+        JOIN products p ON p.id = pi.product_id
         JOIN order_addresses oa ON oa.id = o.order_address_id
         WHERE oi.id = ANY(ARRAY[%s])
         ORDER BY o.added_at DESC"""
@@ -744,26 +746,45 @@ class SellerOrderList(Resource):
                 order_dict.update(
                     json.loads(json.dumps({"updated_at": row.updated_at}, default=str))
                 )
-                order_dict["order_item_id"] = row.order_item_id
-                order_dict["product_item_id"] = row.product_item_id
-                order_dict["order_item_status"] = row.order_item_status
-                order_dict["quantity"] = row.quantity
-                order_dict.update(
+
+                product_dict={}
+
+                product_dict["product_id"] = row.product_id
+                product_dict["product_name"] = row.product_name
+
+                order_dict.update({"product_detail": product_dict})
+
+                order_item_dict={}
+
+                order_item_dict["order_item_id"] = row.order_item_id
+                order_item_dict["order_item_status"] = row.order_item_status
+                order_item_dict["quantity"] = row.quantity
+                order_item_dict.update(
                     json.loads(json.dumps({"original_price": row.original_price}, default=str))
                 )
-                order_dict.update(
+                order_item_dict.update(
                     json.loads(json.dumps({"offer_price": row.offer_price}, default=str))
                 )
-                # order_dict["original_price"] = row.original_price
-                # order_dict["offer_price"] = row.offer_price
-                order_dict["order_address_id"] = row.order_address_id
-                order_dict["full_name"] = row.full_name
-                order_dict["mobile_no"] = row.mobile_no
-                order_dict["address_line1"] = row.address_line1
-                order_dict["address_line2"] = row.address_line2
-                order_dict["city"] = row.city
+                order_dict.update({"order_item_detail": order_item_dict})
+               
+                shipping_address_dict={} 
+                
+                shipping_address_dict["order_address_id"] = row.order_address_id
+                shipping_address_dict["full_name"] = row.full_name
+                shipping_address_dict["mobile_no"] = row.mobile_no
+                shipping_address_dict["address_line1"] = row.address_line1
+                shipping_address_dict["address_line2"] = row.address_line2
+                shipping_address_dict["city"] = row.city
+               
+                order_dict.update({"shipping_address": shipping_address_dict})
+
+              
+                order_dict["product_item_id"] = row.product_item_id
                 order_dict["product_variant_name"] = row.product_variant_name
                 order_dict["SKU"]= row.SKU
+                    
+               
+
 
                 media_dict = {}
                 GET_BASE_MEDIA = """SELECT m.id AS media_id, m.name, m.path
