@@ -528,16 +528,17 @@ class OrderItems(Resource):
                 "return_apporved",
                 "failure",
                 "success",
+                "delivered",
+                "returned",
             }
             if order_item_status not in ALLOWED_ORDER_ITEM_STATUS:
                 app.logger.debug("operation not allowed for seller")
                 abort(400, "Bad Request")
         elif user_type == "customer":
             ALLOWED_ORDER_ITEM_STATUS = {
-                "delivered",
                 "cancelled_by_customer",
                 "return_request",
-                "returned",
+               
             }
             if order_item_status not in ALLOWED_ORDER_ITEM_STATUS:
                 app.logger.debug("operation not allowed for customer")

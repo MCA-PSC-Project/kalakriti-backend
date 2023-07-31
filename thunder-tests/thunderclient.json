@@ -1983,11 +1983,11 @@
     "colId": "80d178ef-5176-474a-8708-db78bd45faee",
     "containerId": "2ffd39e9-6675-40b7-abd0-296aaf9564ad",
     "name": "Update order item's status",
-    "url": "{{baseUrl}}/order-items/2",
+    "url": "{{baseUrl}}/order-items/63",
     "method": "PATCH",
     "sortNum": 527500,
     "created": "2023-03-04T14:42:16.324Z",
-    "modified": "2023-04-20T10:53:32.231Z",
+    "modified": "2023-07-31T11:14:50.624Z",
     "headers": [],
     "params": [],
     "body": {
