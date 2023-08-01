@@ -3,5 +3,9 @@
 __pycache__
 *.pyc
 .env
+.old.env
+*.env
 private.md
+old.private.md
+*.private.md
 /app/__pycache__
