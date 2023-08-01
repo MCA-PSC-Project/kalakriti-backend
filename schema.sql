@@ -18,13 +18,14 @@ CREATE TYPE "checkout__from" AS ENUM (
 	'buy_now'
 );
 CREATE TYPE "order__item__status" AS ENUM (
-	'initiated',
+	'placed',
 	'pending',
 	'confirmed_by_seller',
 	'cancelled_by_seller',
 	'cancelled_by_customer',
 	'dispatched',
 	'shipped',
+	'out_for_delivery'
 	'delivered',
 	'return_request',
 	'return_apporved',
@@ -392,7 +393,7 @@ CREATE TABLE "order_items"(
 	"id" SERIAL PRIMARY KEY,
 	"order_id" INT NOT NULL,
 	"product_item_id" INT,
-	"order_item_status" order__item__status DEFAULT 'initiated',
+	"order_item_status" order__item__status DEFAULT 'placed',
 	"quantity" INT NOT NULL CHECK("quantity" > 0),
 	"original_price" NUMERIC NOT NULL CHECK ("original_price" >= 0),
 	"offer_price" NUMERIC NOT NULL CHECK ("offer_price" >= 0),

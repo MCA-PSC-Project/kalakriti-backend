@@ -194,3 +194,90 @@ class Categories(Resource):
             cursor.close()
             # app.logger.debug('cursor closed')
         return 200
+
+
+class Category(Resource):
+    def get(self, category_id):
+        redis_category_id_key = "category_id_" + str(category_id)
+        try:
+            response = app_globals.redis_client.get(redis_category_id_key)
+            if response:
+                return json.loads(response.decode("utf-8"))
+        except Exception as err:
+            app.logger.debug(err)
+
+        category_dict = {}
+        GET_CATEGORY = """SELECT c.id AS category_id, c.name AS category_name, c.parent_id,
+        m.id AS media_id, m.name AS media_name, m.path
+		FROM categories c
+        LEFT JOIN media m ON m.id= cover_id
+		WHERE c.id = %s"""
+
+        try:
+            cursor = app_globals.get_named_tuple_cursor()
+            cursor.execute(GET_CATEGORY, (category_id,))
+            row = cursor.fetchone()
+            if not row:
+                abort(400, "Bad Request")
+            category_dict["id"] = row.category_id
+            category_dict["name"] = row.category_name
+            category_dict["parent_id"] = row.parent_id
+            cover_media_dict = {}
+            cover_media_dict["id"] = row.media_id
+            cover_media_dict["name"] = row.media_name
+            path = row.path
+            if path is not None:
+                cover_media_dict["path"] = "{}/{}".format(
+                    app.config["S3_LOCATION"], path
+                )
+            else:
+                cover_media_dict["path"] = None
+            category_dict.update({"cover": cover_media_dict})
+
+            #  to get subcategories if it is parent
+            if category_dict["parent_id"] == None:
+                subcategories_list = []
+                GET_SUBCATEGORIES = """SELECT c.id AS category_id, c.name AS category_name, c.parent_id,
+                m.id AS media_id, m.name AS media_name, m.path
+                FROM categories c
+                LEFT JOIN media m ON m.id= cover_id
+                WHERE c.parent_id = %s"""
+
+                try:
+                    cursor = app_globals.get_named_tuple_cursor()
+                    cursor.execute(GET_SUBCATEGORIES, (category_id,))
+                    rows = cursor.fetchall()
+                    if not rows:
+                        subcategories_list = []
+                    for row in rows:
+                        subcategory_dict = {}
+                        subcategory_dict["id"] = row.category_id
+                        subcategory_dict["name"] = row.category_name
+                        subcategory_dict["parent_id"] = row.parent_id
+                        cover_media_dict = {}
+                        cover_media_dict["id"] = row.media_id
+                        cover_media_dict["name"] = row.media_name
+                        path = row.path
+                        if path is not None:
+                            cover_media_dict["path"] = "{}/{}".format(
+                                app.config["S3_LOCATION"], path
+                            )
+                        else:
+                            cover_media_dict["path"] = None
+                        subcategory_dict.update({"cover": cover_media_dict})
+                        subcategories_list.append(subcategory_dict)
+                    category_dict.update({"subcategories": subcategories_list})
+                except (Exception, psycopg2.Error) as err:
+                    app.logger.debug(err)
+                    abort(400, "Bad Request")
+                finally:
+                    cursor.close()
+
+        except (Exception, psycopg2.Error) as err:
+            app.logger.debug(err)
+            abort(400, "Bad Request")
+        finally:
+            cursor.close()
+        app_globals.redis_client.set(redis_category_id_key, json.dumps(category_dict))
+        app_globals.redis_client.expire(redis_category_id_key, 60)  # seconds
+        return category_dict
