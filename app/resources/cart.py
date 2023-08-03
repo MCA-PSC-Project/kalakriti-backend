@@ -45,9 +45,23 @@ class Cart(Resource):
             # If an INSERT operation is performed, the value returned will be the value that was inserted.
             # If an UPDATE operation is performed, the value returned will be the updated value of the quantity column.
 
+            GET_QUANTITY_IN_STOCK = (
+                """SELECT quantity_in_stock FROM product_items WHERE id = %s"""
+            )
+
+            cursor.execute(GET_QUANTITY_IN_STOCK, (product_item_id,))
+            quantity_in_stock = cursor.fetchone().quantity_in_stock
+
+            # ADD_TO_CART = """INSERT INTO cart_items(cart_id, product_item_id, quantity, added_at)
+            # VALUES(%s, %s, %s, %s) ON CONFLICT (cart_id, product_item_id)
+            # DO UPDATE SET quantity = cart_items.quantity + 1, updated_at = %s RETURNING quantity"""
+
             ADD_TO_CART = """INSERT INTO cart_items(cart_id, product_item_id, quantity, added_at)
             VALUES(%s, %s, %s, %s) ON CONFLICT (cart_id, product_item_id)
-            DO UPDATE SET quantity = cart_items.quantity + 1, updated_at = %s RETURNING quantity"""
+            DO UPDATE SET quantity = CASE WHEN cart_items.quantity + 1 <= %s
+            THEN cart_items.quantity + 1 END,
+            updated_at = %s
+            RETURNING quantity"""
 
             cursor.execute(
                 ADD_TO_CART,
@@ -56,6 +70,7 @@ class Cart(Resource):
                     product_item_id,
                     quantity,
                     current_time,
+                    quantity_in_stock,
                     current_time,
                 ),
             )
@@ -186,7 +201,7 @@ class Cart(Resource):
 
         GET_CART_ID = """SELECT id from carts WHERE customer_id = %s"""
         try:
-            cursor = app_globals.get_cursor()
+            cursor = app_globals.get_named_tuple_cursor()
             cursor.execute(GET_CART_ID, (customer_id,))
             row = cursor.fetchone()
             if not row:
@@ -194,6 +209,17 @@ class Cart(Resource):
                 abort(400, "Bad Request")
             cart_id = row[0]
 
+            GET_QUANTITY_IN_STOCK = (
+                """SELECT quantity_in_stock FROM product_items WHERE id = %s"""
+            )
+
+            cursor.execute(GET_QUANTITY_IN_STOCK, (product_item_id,))
+            quantity_in_stock = cursor.fetchone().quantity_in_stock
+
+            if quantity > quantity_in_stock:
+                app.logger.debug("Bad Request: quantiy > quantity_in_stock")
+                abort(400, "Bad Request: quantiy > quantity_in_stock")
+                
             UPDATE_QUANTITY = """UPDATE cart_items SET quantity= %s, updated_at= %s 
             WHERE cart_id= %s AND product_item_id= %s"""
 

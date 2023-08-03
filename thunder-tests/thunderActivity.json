@@ -267,24 +267,6 @@
     "tests": []
   },
   {
-    "_id": "e035e534-2a8b-4a61-9e73-4f3915ef6e35",
-    "colId": "history",
-    "containerId": "",
-    "name": "{{baseUrl}}/viewed-products",
-    "url": "{{baseUrl}}/viewed-products",
-    "method": "GET",
-    "sortNum": 0,
-    "created": "2023-05-10T14:33:43.764Z",
-    "modified": "2023-05-10T14:34:49.814Z",
-    "headers": [],
-    "params": [],
-    "auth": {
-      "type": "bearer",
-      "bearer": "{{customer_token}}"
-    },
-    "tests": []
-  },
-  {
     "_id": "b9fa0a4a-9a47-44a5-9286-7873bdb86e89",
     "colId": "history",
     "containerId": "",
