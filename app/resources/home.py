@@ -489,11 +489,21 @@ class PersonalizedRecommendedProducts(Resource):
 class PopularProducts(Resource):
     def get(self):
         args = request.args
+        product_status = args.get("product_status", None)
+        if not product_status:
+            product_status = "published"
+            try:
+                response = app_globals.redis_client.get("popular_products_list")
+                if response:
+                    return json.loads(response.decode("utf-8"))
+            except Exception as err:
+                app.logger.debug(err)
+
         limit = args.get("limit", None)
         if not limit:
             limit = 10
-        popular_products_list = []
-        product_ids = []
+        # popular_products_list = []
+        # product_ids = []
         try:
             cursor = app_globals.get_named_tuple_cursor()
             GET_POPULAR_PRODUCTS = """SELECT p.id AS product_id, p.product_name, p.product_description, 
@@ -636,8 +646,8 @@ class PopularProducts(Resource):
         finally:
             cursor.close()
         # app.logger.debug(products_list)
-        app_globals.redis_client.set("new_products_list", json.dumps(products_list))
-        app_globals.redis_client.expire("new_products_list", 60)  # seconds
+        app_globals.redis_client.set("popular_products_list", json.dumps(products_list))
+        app_globals.redis_client.expire("popular_products_list", 60)  # seconds
         return products_list
 
 
