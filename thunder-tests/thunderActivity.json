@@ -819,11 +819,11 @@
     "colId": "history",
     "containerId": "",
     "name": "{{baseUrl}}/auth/verify-email?user_type=customer&token=ImN1c3RvbWVyMkBnbWFpbC5jb20i.ZGNXLQ.DH4zlOjrtISJpBJuUupQv1JGdOM",
-    "url": "{{baseUrl}}/auth/verify-email?user_type=customer&token=ImN1c3RvbWVyMkBnbWFpbC5jb20i.ZGNXLQ.DH4zlOjrtISJpBJuUupQv1JGdOM",
+    "url": "{{baseUrl}}/auth/verify-email?user_type=customer&token=InNoZWV0YWxrdW1hcmlsaWZlQGdtYWlsLmNvbSI.ZshquA.OuWJ9FHV_5Tnd5KNhxYgMQpTCPw",
     "method": "GET",
     "sortNum": 0,
     "created": "2023-05-16T10:13:37.716Z",
-    "modified": "2023-05-16T10:13:37.716Z",
+    "modified": "2024-08-23T11:24:41.849Z",
     "headers": [],
     "params": [
       {
@@ -833,7 +833,7 @@
       },
       {
         "name": "token",
-        "value": "ImN1c3RvbWVyMkBnbWFpbC5jb20i.ZGNXLQ.DH4zlOjrtISJpBJuUupQv1JGdOM",
+        "value": "InNoZWV0YWxrdW1hcmlsaWZlQGdtYWlsLmNvbSI.ZshquA.OuWJ9FHV_5Tnd5KNhxYgMQpTCPw",
         "isPath": false
       }
     ],

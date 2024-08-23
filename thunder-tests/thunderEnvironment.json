@@ -2,7 +2,7 @@
   {
     "_id": "54272c7e-fbf6-40c2-abdc-32d096c941c5",
     "name": "Local",
-    "default": true,
+    "default": false,
     "sortNum": 10000,
     "created": "2023-02-20T16:39:20.436Z",
     "modified": "2023-02-20T16:39:20.436Z",
@@ -30,14 +30,14 @@
   {
     "_id": "22012c0a-b7d7-4404-a1e6-11ba90d47c92",
     "name": "Release",
-    "default": false,
+    "default": true,
     "sortNum": 30000,
     "created": "2023-02-20T16:39:20.445Z",
     "modified": "2023-02-20T16:39:20.445Z",
     "data": [
       {
         "name": "baseUrl",
-        "value": "https://kalakriti-backend.onrender.com"
+        "value": "https://kalakriti-api.onrender.com"
       }
     ]
   },
