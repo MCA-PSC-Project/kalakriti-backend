@@ -76,7 +76,12 @@ class RegisterCustomer(Resource):
 
         # send email
         # verify_url = url_for("accounts.verify_email", token=generate_email_token, _external=True)
-        verify_url = url_for("verifyemail",user_type="customer", token=generated_email_token, _external=True)
+        verify_url = url_for(
+                "verifyemail",
+                user_type="customer",
+                token=generated_email_token,
+                _external=True,
+            )
         app.logger.debug("verify url= %s", verify_url)
         verify_email_html_page = render_template(
             "verify_email.html", verify_url=verify_url
@@ -159,7 +164,12 @@ class RegisterSeller(Resource):
 
         # send email
         # verify_url = url_for("accounts.verify_email", token=generate_email_token, _external=True)
-        verify_url = url_for("verifyemail", token=generated_email_token, _external=True)
+        verify_url = url_for(
+                "verifyemail",
+                user_type="seller",
+                token=generated_email_token,
+                _external=True,
+            )        
         app.logger.debug("verify url= %s", verify_url)
         verify_email_html_page = render_template(
             "verify_email.html", verify_url=verify_url
@@ -245,7 +255,12 @@ class RegisterAdmin(Resource):
 
         # send email
         # verify_url = url_for("accounts.verify_email", token=generate_email_token, _external=True)
-        verify_url = url_for("verifyemail", token=generated_email_token, _external=True)
+        verify_url = url_for(
+                "verifyemail",
+                user_type="admin",
+                token=generated_email_token,
+                _external=True,
+            )        
         app.logger.debug("verify url= %s", verify_url)
         verify_email_html_page = render_template(
             "verify_email.html", verify_url=verify_url
