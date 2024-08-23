@@ -25,7 +25,7 @@ CREATE TYPE "order__item__status" AS ENUM (
 	'cancelled_by_customer',
 	'dispatched',
 	'shipped',
-	'out_for_delivery'
+	'out_for_delivery',
 	'delivered',
 	'return_request',
 	'return_apporved',
